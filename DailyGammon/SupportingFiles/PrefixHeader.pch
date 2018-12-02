@@ -1,0 +1,46 @@
+//
+//  PrefixHeader.pch
+//  DailyGammon
+//
+//  Created by Peter on 30.11.18.
+//  Copyright © 2018 Peter Schneider. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+
+#import <Availability.h>
+
+#ifndef __IPHONE_5_0
+#warning "This project uses features only available in iOS SDK 5.0 and later."
+#endif
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#endif
+
+#define DEBUG 1
+//#define RELEASE 1
+
+#ifdef DEBUG
+
+// Debug definitions
+#define DEBUG_MODE
+#define XLog(fmt, ...) NSLog(@"%s line:%d " fmt, __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+
+#else
+
+#ifndef RELEASE
+#error DEBUG or RELEASE need to be #defined
+#endif
+
+// Release definitions
+#define RELEASE_MODE
+#define XLog(...)
+
+#endif
+
+
+#endif /* PrefixHeader_pch */
