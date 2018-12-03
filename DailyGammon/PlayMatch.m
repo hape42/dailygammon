@@ -98,6 +98,7 @@
     UIImageView *checker06View =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"spitze_rot_3rot.png"]];
     checker06View.frame = CGRectMake(60 + (5 * checkerBreite), zungenHoehe + checkerBreite, checkerBreite , zungenHoehe);
 
+    
     [boardView addSubview:offView];
     [boardView addSubview:barView];
     [boardView addSubview:cubeView];
