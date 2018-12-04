@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@class Header;
 @class Design;
 
 @interface PlayMatch : UIViewController
 
-@property (strong, readwrite, retain, atomic) Header *header;
 @property (strong, readwrite, retain, atomic) Design *design;
+
+@property (strong, readwrite, retain, atomic) NSString *matchLink;
 
 @end
 

@@ -398,7 +398,10 @@
     [self dismissViewControllerAnimated:YES completion:Nil];
     
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayMatch"];
-    
+    NSArray *zeile = self.topPageArray[indexPath.row];
+    NSDictionary *match = zeile[8];
+    vc.matchLink = [match objectForKey:@"href"];
+
     [self.navigationController pushViewController:vc animated:NO];
 
     
