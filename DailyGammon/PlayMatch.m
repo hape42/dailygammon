@@ -8,17 +8,20 @@
 
 #import "PlayMatch.h"
 #import "TopPageVC.h"
+#import "SetUpVC.h"
 #import "Design.h"
 #import "TFHpple.h"
 
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
-
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
 @property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
 
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
+@property (assign, atomic) int boardSchema;
+@property (readwrite, retain, nonatomic) UIColor *boardColor;
+@property (readwrite, retain, nonatomic) UIColor *randColor;
 
 @end
 
@@ -38,7 +41,9 @@
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     design = [[Design alloc] init];
     
-    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(showMatch) name:@"changeSchemaNotification" object:nil];
+
     [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
 }
@@ -48,11 +53,20 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+    [self showMatch];
+}
+-(void)showMatch
+{
+    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"BoardSchemaColor"];
+    self.boardColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"RandSchemaColor"];
+    self.randColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
+    self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    
     [self readMatch];
     [self drawBoard];
 
 }
-
 -(void)readMatch
 {
     self.boardDict = [[NSMutableDictionary alloc]init];
@@ -256,25 +270,28 @@
 
     int checkerBreite = 40;
     int zungenHoehe = 200;
+    int nummerHoehe = 40;
     UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                  y,
                                                                  60 + (6 * checkerBreite) + checkerBreite + (6 * checkerBreite)  + checkerBreite,
-                                                                 zungenHoehe + checkerBreite + zungenHoehe)];
-    boardView.backgroundColor = [UIColor lightGrayColor];
-    boardView.backgroundColor = HEADERBACKGROUNDCOLOR;
+                                                                 zungenHoehe + checkerBreite + zungenHoehe + nummerHoehe+ nummerHoehe)];
+
+#pragma mark - Ränder
+    boardView.backgroundColor = self.boardColor;
     UIView *offView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 60, boardView.frame.size.height)];
-    offView.backgroundColor = [UIColor blackColor];
+    offView.backgroundColor = self.randColor;
 
     UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(60+(6*checkerBreite), 0, checkerBreite, boardView.frame.size.height)];
-    barView.backgroundColor = [UIColor blackColor];
+    barView.backgroundColor = self.randColor;
 
     UIView *cubeView = [[UIView alloc] initWithFrame:CGRectMake(60+(6*checkerBreite)+checkerBreite+(6*checkerBreite), 0, checkerBreite, boardView.frame.size.height)];
-    cubeView.backgroundColor = [UIColor blackColor];
+    cubeView.backgroundColor = self.randColor;
 
+#pragma mark obere Zungen
     UIImageView *checker24View =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pt_dk_down_b1.gif"]];
     checker24View.frame = CGRectMake(60, 0, checkerBreite, zungenHoehe);
 
-    UIImageView *checker23View =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pt_lt_down0.gif"]];
+    UIImageView *checker23View =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"1/pt_dk_down_b8"]];
     checker23View.frame = CGRectMake(60 + checkerBreite, 0, checkerBreite , zungenHoehe);
 
     UIImageView *checker01View =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"spitze_grau_1rot-1.png"]];

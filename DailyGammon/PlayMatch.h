@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 
-@interface PlayMatch : UIViewController
+@interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

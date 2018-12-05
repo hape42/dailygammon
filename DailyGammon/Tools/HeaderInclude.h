@@ -60,6 +60,7 @@
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
     button4.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
     button4.tag = 4;
+    [button4 addTarget:self action:@selector(popoverSetUp:) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
  
@@ -95,12 +96,29 @@
 
 -(void) topPageVC
 {
-    
     TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
+}
+
+- (IBAction)popoverSetUp:(id)sender
+{
     
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"SetUpVC"];
     
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
     
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 #endif /* HeaderTest_h */

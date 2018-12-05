@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class Header;
 @class Design;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TopPageVC : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface TopPageVC : UIViewController<UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate>
 
-@property (strong, readwrite, retain, atomic) Header *header;
 @property (strong, readwrite, retain, atomic) Design *design;
 
 @end

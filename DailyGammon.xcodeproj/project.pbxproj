@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
+		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
+		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
 		E09C007621B077F10056D2A2 /* pt_dk_down_b1.gif in Resources */ = {isa = PBXBuildFile; fileRef = E09C007521B077F10056D2A2 /* pt_dk_down_b1.gif */; };
 		E09C007A21B07A290056D2A2 /* pt_dk_up0.gif in Resources */ = {isa = PBXBuildFile; fileRef = E09C007721B07A290056D2A2 /* pt_dk_up0.gif */; };
@@ -46,6 +49,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
+		E06E1C5221B717B9003B310F /* SetUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpVC.m; sourceTree = "<group>"; };
+		E06E1C5521B7B468003B310F /* BoardSchemeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardSchemeVC.h; sourceTree = "<group>"; };
+		E06E1C5621B7B468003B310F /* BoardSchemeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoardSchemeVC.m; sourceTree = "<group>"; };
+		E06E1C5821B7BD94003B310F /* classic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = classic.png; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
 		E09C007321B042020056D2A2 /* PlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayMatch.m; sourceTree = "<group>"; };
 		E09C007521B077F10056D2A2 /* pt_dk_down_b1.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = pt_dk_down_b1.gif; sourceTree = "<group>"; };
@@ -108,6 +116,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E06E1C5421B7B2DE003B310F /* SetUp */ = {
+			isa = PBXGroup;
+			children = (
+				E06E1C5121B717B8003B310F /* SetUpVC.h */,
+				E06E1C5221B717B9003B310F /* SetUpVC.m */,
+				E06E1C5521B7B468003B310F /* BoardSchemeVC.h */,
+				E06E1C5621B7B468003B310F /* BoardSchemeVC.m */,
+			);
+			path = SetUp;
+			sourceTree = "<group>";
+		};
 		E09C008821B13D010056D2A2 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +171,7 @@
 		E0F9588821AD1688003DAC01 /* DailyGammon */ = {
 			isa = PBXGroup;
 			children = (
+				E06E1C5421B7B2DE003B310F /* SetUp */,
 				E0F9589F21AD185C003DAC01 /* Tools */,
 				E0F9588921AD1688003DAC01 /* AppDelegate.h */,
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
@@ -183,6 +203,7 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E06E1C5821B7BD94003B310F /* classic.png */,
 				E09C008521B114CD0056D2A2 /* Zahnrad.pdf */,
 				E09C00A821B43E690056D2A2 /* pfeil.pdf */,
 				E0F9589221AD168B003DAC01 /* Assets.xcassets */,
@@ -300,6 +321,7 @@
 				E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */,
 				E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */,
 				E09C007621B077F10056D2A2 /* pt_dk_down_b1.gif in Resources */,
+				E06E1C5921B7BD94003B310F /* classic.png in Resources */,
 				E09C007A21B07A290056D2A2 /* pt_dk_up0.gif in Resources */,
 				E09C009E21B3D2220056D2A2 /* spitze_grau-1.png in Resources */,
 			);
@@ -320,8 +342,10 @@
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
+				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E0F958A521AD4CCE003DAC01 /* Header.m in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
+				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

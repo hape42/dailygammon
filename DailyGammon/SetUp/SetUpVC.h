@@ -1,8 +1,8 @@
 //
-//  Login.h
+//  SetUpVC.h
 //  DailyGammon
 //
-//  Created by Peter on 27.11.18.
+//  Created by Peter on 04.12.18.
 //  Copyright © 2018 Peter Schneider. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class Design;
 
-@interface LoginVC : UIViewController<UIPopoverPresentationControllerDelegate>
+@interface SetUpVC : UIViewController
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

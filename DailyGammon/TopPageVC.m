@@ -29,7 +29,7 @@
 
 @implementation TopPageVC
 
-@synthesize header, design;
+@synthesize design;
 
 - (void)viewDidLoad
 {
@@ -38,7 +38,6 @@
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
 //    self.tableView.backgroundColor = VIEWBACKGROUNDCOLOR;
 
-    header = [[Header alloc] init];
     design = [[Design alloc] init];
 
     [self.view addSubview:[self makeHeader]];
