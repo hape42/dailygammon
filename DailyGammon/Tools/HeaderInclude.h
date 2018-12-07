@@ -73,10 +73,9 @@
     x += buttonBreite + luecke;
 
     UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button6.tintColor = HEADERBACKGROUNDCOLOR;
-    UIImage *btnImage = [UIImage imageNamed:@"SetUp"];
-    [button6 setImage:btnImage forState:UIControlStateNormal];
-    button6.frame = CGRectMake(x, 5, 40, 40);
+    button6 = [design makeNiceButton:button6];
+    [button6 setTitle:@"About" forState: UIControlStateNormal];
+    button6.frame = CGRectMake(x, 5, buttonBreite - 10, 40);
     button6.tag = 6;
 
     x += buttonBreite + luecke;
@@ -89,7 +88,7 @@
     [headerView addSubview:button3];
     [headerView addSubview:button4];
     [headerView addSubview:button5];
-//    [headerView addSubview:button6];
+    [headerView addSubview:button6];
 
     return headerView;
 }

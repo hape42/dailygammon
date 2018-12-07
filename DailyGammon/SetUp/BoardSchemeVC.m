@@ -78,7 +78,7 @@
     UISwitch *schemaSwitch = (UISwitch *)sender;
     if ([schemaSwitch isOn])
     {
-        [[NSUserDefaults standardUserDefaults] setInteger:1  forKey:@"BoardSchema"];
+        [[NSUserDefaults standardUserDefaults] setInteger:2  forKey:@"BoardSchema"];
         
         UIColor *schemaColor = [UIColor lightGrayColor];
         NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:schemaColor];
