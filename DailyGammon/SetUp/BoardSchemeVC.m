@@ -34,9 +34,11 @@
     {
         case 1:
             [self.schema1Outlet setOn:YES animated:YES];
-            break;
+            [self.schema2Outlet setOn:NO animated:YES];
+          break;
         case 2:
             [self.schema2Outlet setOn:YES animated:YES];
+            [self.schema1Outlet setOn:NO animated:YES];
             break;
 
         default:
@@ -55,45 +57,28 @@
     {
         [[NSUserDefaults standardUserDefaults] setInteger:1  forKey:@"BoardSchema"];
         
-        UIColor *schemaColor = [UIColor colorWithRed:255.0/255 green:254.0/255 blue:209.0/255 alpha:1];
-        NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:schemaColor];
-        [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"BoardSchemaColor"];
-
-        UIColor *randColor = [UIColor colorWithRed:63.0/255 green:148.0/255 blue:104.0/255 alpha:1];
-        colorData = [NSKeyedArchiver archivedDataWithRootObject:randColor];
-        [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"RandSchemaColor"];
-
         [[NSUserDefaults standardUserDefaults] synchronize];
         
         //alle anderen auf off setzen
         [self.schema2Outlet setOn:NO animated:YES];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-
     }
 }
 
 - (IBAction)schema2:(id)sender
 {
     UISwitch *schemaSwitch = (UISwitch *)sender;
+    
     if ([schemaSwitch isOn])
     {
         [[NSUserDefaults standardUserDefaults] setInteger:2  forKey:@"BoardSchema"];
-        
-        UIColor *schemaColor = [UIColor lightGrayColor];
-        NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:schemaColor];
-        [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"BoardSchemaColor"];
-        
-        UIColor *randColor = [UIColor blackColor];
-        colorData = [NSKeyedArchiver archivedDataWithRootObject:randColor];
-        [[NSUserDefaults standardUserDefaults] setObject:colorData forKey:@"RandSchemaColor"];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
         //alle anderen auf off setzen
         [self.schema1Outlet setOn:NO animated:YES];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-
     }
 }
 

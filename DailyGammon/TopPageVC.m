@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sortPoolButton;
 @property (weak, nonatomic) IBOutlet UIButton *sortGracePoolButton;
 @property (weak, nonatomic) IBOutlet UIButton *sortRecentButton;
+@property (weak, nonatomic) IBOutlet UILabel *header;
 
 @end
 
@@ -387,6 +388,7 @@
 
 - (void)updateTableView
 {
+    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,self.topPageArray.count];
     [self.tableView reloadData];
 }
 

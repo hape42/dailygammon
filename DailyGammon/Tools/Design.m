@@ -72,4 +72,37 @@
     return text;
 }
 
+#pragma mark - Schema
+-(NSMutableDictionary *)schema:(int)nummer
+{
+    NSMutableDictionary *schemaDict = [[NSMutableDictionary alloc]init];
+    
+    switch (nummer)
+    {
+        case 1:
+        {
+            UIColor *schemaColor = [UIColor colorWithRed:255.0/255 green:254.0/255 blue:209.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"BoardSchemaColor"];
+            
+            UIColor *randColor = [UIColor colorWithRed:63.0/255 green:148.0/255 blue:104.0/255 alpha:1];
+            [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
+            [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
+            [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
+        }
+            break;
+        case 2:
+        {
+            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"BoardSchemaColor"];
+            
+            [schemaDict setObject:[UIColor blackColor] forKey:@"RandSchemaColor"];
+            [schemaDict setObject:[UIColor grayColor] forKey:@"barMittelstreifenColor"];
+            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
+       }
+            break;
+
+        default:
+            break;
+    }
+    return schemaDict;
+}
 @end

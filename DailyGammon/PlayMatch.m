@@ -22,6 +22,9 @@
 @property (assign, atomic) int boardSchema;
 @property (readwrite, retain, nonatomic) UIColor *boardColor;
 @property (readwrite, retain, nonatomic) UIColor *randColor;
+@property (readwrite, retain, nonatomic) UIColor *barMittelstreifenColor;
+@property (readwrite, retain, nonatomic) UIColor *nummerColor;
+@property (readwrite, retain, nonatomic) NSString *matchLaengeText;
 
 @end
 
@@ -57,12 +60,15 @@
 }
 -(void)showMatch
 {
-    NSData *colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"BoardSchemaColor"];
-    self.boardColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
-    colorData = [[NSUserDefaults standardUserDefaults] objectForKey:@"RandSchemaColor"];
-    self.randColor = [NSKeyedUnarchiver unarchiveObjectWithData:colorData];
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    
+
+    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
+
+    self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
+    self.randColor              = [schemaDict objectForKey:@"RandSchemaColor"];
+    self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
+    self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
+
     [self readMatch];
     [self drawBoard];
 
@@ -128,8 +134,11 @@
             {
                 image = [child objectForKey:@"src"];
                 [imgArray addObject:image];
-             //   XLog(@"Image ->%@",image);
             }
+            if(imgArray.count == 0)
+                if(image != nil)
+                    [imgArray addObject:image];
+
         }
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         [dict setObject:imgArray forKey:@"img"];
@@ -174,9 +183,11 @@
 #warning colspan macht evtl. noch Probleme
     elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[4]/td"];
     elementArray = [[NSMutableArray alloc]init];
-    
+    self.matchLaengeText = @"?";
     for(TFHppleElement *element in elements)
     {
+        self.matchLaengeText = [element  content]; // im letzten TD steht "3 Point Match"
+
         NSString *image = @"";
         for (TFHppleElement *child in element.children)
         {
@@ -227,8 +238,10 @@
             {
                 image = [child objectForKey:@"src"];
                 [imgArray addObject:image];
-           }
-            
+            }
+            if(imgArray.count == 0)
+                if(image != nil)
+                    [imgArray addObject:image];
         }
         NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
         [dict setObject:imgArray forKey:@"img"];
@@ -262,7 +275,6 @@
     }
     [self.boardDict setObject:elementArray forKey:@"nummernUnten"];
 
-    XLog(@"fertig");
 }
 -(void)drawBoard
 {
@@ -274,10 +286,10 @@
 
     int checkerBreite = 40;
     int offBreite = 80;
-    int barBreite = 44;
+    int barBreite = 80;
     int cubeBreite = 50;
     int zungenHoehe = 200;
-    int nummerHoehe = 20;
+    int nummerHoehe = 15;
     int indicatorHoehe = 15;
     UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                  y,
@@ -304,6 +316,13 @@
     UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(offBreite+(6*checkerBreite), 0, barBreite, boardView.frame.size.height)];
     barView.backgroundColor = self.randColor;
 
+    UIView *barMitteView = [[UIView alloc] initWithFrame:CGRectMake(((barBreite/2) - 2),
+                                                                    -nummerHoehe,
+                                                                    2,
+                                                                    boardView.frame.size.height + (2 * nummerHoehe))];
+    barMitteView.backgroundColor = self.barMittelstreifenColor;
+    [barView addSubview:barMitteView];
+    
     UIView *cubeView = [[UIView alloc] initWithFrame:CGRectMake(offBreite+(6*checkerBreite)+barBreite+(6*checkerBreite), 0, cubeBreite, boardView.frame.size.height)];
     cubeView.backgroundColor = self.randColor;
     UIView *nummerObenView = [[UIView alloc] initWithFrame:CGRectMake(x,
@@ -333,17 +352,19 @@
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.textColor = self.nummerColor;
         [self.view addSubview:nummer];
 
         x += checkerBreite;
     }
-    x += checkerBreite; // bar
+    x += barBreite; // bar
 
     for(int i = 8; i <= 13; i++)
     {
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.textColor = self.nummerColor;
         [self.view addSubview:nummer];
         
         x += checkerBreite;
@@ -358,17 +379,19 @@
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
-        [self.view addSubview:nummer];
+        nummer.textColor = self.nummerColor;
+       [self.view addSubview:nummer];
         
         x += checkerBreite;
     }
-    x += checkerBreite; // bar
+    x += barBreite; // bar
     
     for(int i = 8; i <= 13; i++)
     {
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.textColor = self.nummerColor;
         [self.view addSubview:nummer];
         
         x += checkerBreite;
@@ -411,11 +434,10 @@
                         //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        int imgBreite = zungeView.frame.size.width;
+                        int imgBreite = MAX(zungeView.frame.size.width,1);
                         int imgHoehe = zungeView.frame.size.height;
-                        //float faktor = checkerBreite/imgBreite;
                         float faktor = imgHoehe / imgBreite;
-                        zungeView.frame = CGRectMake(x + 2 , y, checkerBreite, checkerBreite * faktor);
+                        zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
                         
                         [boardView addSubview:zungeView];
                     }
@@ -499,11 +521,10 @@
                       //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        int imgBreite = zungeView.frame.size.width;
+                        int imgBreite = MAX(zungeView.frame.size.width,1);
                         int imgHoehe = zungeView.frame.size.height;
-                        //float faktor = checkerBreite/imgBreite;
                         float faktor = imgHoehe / imgBreite;
-                        zungeView.frame = CGRectMake(x + 2 , y, checkerBreite, checkerBreite * faktor);
+                        zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
                         
                         [boardView addSubview:zungeView];
                     }
@@ -552,8 +573,9 @@
     x += checkerBreite;
     
 
-     [self.view addSubview:boardView];
+    [self.view addSubview:boardView];
     
+    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
 }
 #include "HeaderInclude.h"
 
