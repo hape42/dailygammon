@@ -83,7 +83,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matches where you can move:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bZE-yF-iqC">
-                                <rect key="frame" x="20" y="97" width="338" height="32"/>
+                                <rect key="frame" x="20" y="97" width="591" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <nil key="textColor"/>
@@ -127,6 +127,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Iof-ad-s2w"/>
                     <connections>
+                        <outlet property="header" destination="bZE-yF-iqC" id="AEH-jd-EIq"/>
                         <outlet property="sortGraceButton" destination="NHZ-tL-QaY" id="gaK-E9-YUI"/>
                         <outlet property="sortGracePoolButton" destination="CSg-VK-I7k" id="5Nt-8B-IgK"/>
                         <outlet property="sortPoolButton" destination="1yw-ON-hkZ" id="ksm-za-ArE"/>
