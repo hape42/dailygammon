@@ -18,6 +18,20 @@
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
 @property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
 
+@property (weak, nonatomic) IBOutlet UIView  *opponentView;
+@property (weak, nonatomic) IBOutlet UILabel *opponentName;
+@property (weak, nonatomic) IBOutlet UILabel *opponentRating;
+@property (weak, nonatomic) IBOutlet UILabel *opponentWinLoss;
+@property (weak, nonatomic) IBOutlet UILabel *opponentPips;
+@property (weak, nonatomic) IBOutlet UILabel *opponentScore;
+
+@property (weak, nonatomic) IBOutlet UIView *playerView;
+@property (weak, nonatomic) IBOutlet UILabel *playerName;
+@property (weak, nonatomic) IBOutlet UILabel *playerRating;
+@property (weak, nonatomic) IBOutlet UILabel *playerWinLoss;
+@property (weak, nonatomic) IBOutlet UILabel *playerPips;
+@property (weak, nonatomic) IBOutlet UILabel *playerScore;
+
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
 @property (assign, atomic) int boardSchema;
 @property (readwrite, retain, nonatomic) UIColor *boardColor;
@@ -577,81 +591,31 @@
     
 #pragma mark - opponent
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
-
-    UILabel *opponetName = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                    boardView.frame.origin.y,
-                                                                    300,
-                                                                    40)];
-//    opponetName.backgroundColor = [UIColor whiteColor];
-    opponetName.font=[opponetName.font fontWithSize:25];
-    opponetName.text = opponentArray[0];
-    UILabel *opponetPip = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                    boardView.frame.origin.y + 40,
-                                                                    300,
-                                                                    40)];
-//    opponetPip.backgroundColor = [UIColor whiteColor];
-//    opponetPip.font=[opponetName.font fontWithSize:25];
-    opponetPip.text = opponentArray[2];
-
-    UILabel *opponetScoreText = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                   boardView.frame.origin.y + 80,
-                                                                   60,
-                                                                   40)];
-//    opponetScoreText.backgroundColor = [UIColor whiteColor];
-    //    opponetPip.font=[opponetName.font fontWithSize:25];
-    opponetScoreText.text = opponentArray[4];
-
-    UILabel *opponetScore = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5 + 60,
-                                                                         boardView.frame.origin.y + 80,
-                                                                         240,
-                                                                         40)];
-//    opponetScore.backgroundColor = [UIColor whiteColor];
-    opponetScore.font=[opponetName.font fontWithSize:20];
-    opponetScore.text = opponentArray[5];
-
-    [self.view addSubview:opponetName];
-    [self.view addSubview:opponetPip];
-    [self.view addSubview:opponetScoreText];
-    [self.view addSubview:opponetScore];
+    
+    CGRect frame = self.opponentView.frame;
+    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
+    frame.origin.y = boardView.frame.origin.y - nummerHoehe;
+    self.opponentView.frame = frame;
+    
+    self.opponentName.text    = opponentArray[0];
+    self.opponentPips.text    = opponentArray[2];
+    self.opponentScore.text   = opponentArray[5];
+    self.opponentRating.text  = @"";
+    self.opponentWinLoss.text = @"";
 
 #pragma mark - player
     NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
     
-    UILabel *playerName = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                    boardView.frame.origin.y + boardView.frame.size.height - 120,
-                                                                    300,
-                                                                    40)];
-    //    opponetName.backgroundColor = [UIColor whiteColor];
-    playerName.font=[playerName.font fontWithSize:25];
-    playerName.text = playerArray[0];
-    UILabel *playerPip = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                   boardView.frame.origin.y + boardView.frame.size.height - 80,
-                                                                   300,
-                                                                   40)];
-    //    opponetPip.backgroundColor = [UIColor whiteColor];
-    //    opponetPip.font=[opponetName.font fontWithSize:25];
-    playerPip.text = playerArray[2];
+    frame = self.playerView.frame;
+    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
+    frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height + nummerHoehe;
+    self.playerView.frame = frame;
     
-    UILabel *playerScoreText = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                         boardView.frame.origin.y + boardView.frame.size.height - 40,
-                                                                         60,
-                                                                         40)];
-    //    opponetScoreText.backgroundColor = [UIColor whiteColor];
-    //    opponetPip.font=[opponetName.font fontWithSize:25];
-    playerScoreText.text = playerArray[4];
-    
-    UILabel *playerScore = [[UILabel alloc]initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5 + 60,
-                                                                     boardView.frame.origin.y + boardView.frame.size.height - 40,
-                                                                     240,
-                                                                     40)];
-    //    opponetScore.backgroundColor = [UIColor whiteColor];
-    playerScore.font=[playerScore.font fontWithSize:20];
-    playerScore.text = playerArray[5];
-    
-    [self.view addSubview:playerName];
-    [self.view addSubview:playerPip];
-    [self.view addSubview:playerScoreText];
-    [self.view addSubview:playerScore];
+    self.playerName.text    = playerArray[0];
+    self.playerPips.text    = playerArray[2];
+    self.playerScore.text   = playerArray[5];
+    self.playerRating.text  = @"";
+    self.playerWinLoss.text = @"";
 
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
 }
