@@ -304,7 +304,7 @@
     int cubeBreite = 50;
     int zungenHoehe = 200;
     int nummerHoehe = 15;
-    int indicatorHoehe = 15;
+    int indicatorHoehe = 22;
     UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
@@ -497,6 +497,84 @@
         }
 
     }
+
+#pragma mark - obere moveIndicator
+    x = 0;
+    y = zungenHoehe ;
+    
+    NSMutableArray *moveIndicatorObenArray = [self.boardDict objectForKey:@"moveIndicatorOben"];
+    for(int i = 0; i < moveIndicatorObenArray.count; i++)
+    {
+        switch(i)
+        {
+            case 0:
+                // off board
+                x += offBreite;
+                break;
+            case 7:
+                // bar
+                x += barBreite;
+                break;
+            case 14:
+                //cube
+                x += cubeBreite;
+                break;
+            default:
+                // zungen
+                {
+                    NSString *img = [[moveIndicatorObenArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
+                    
+                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    zungeView.frame = CGRectMake(x, y, checkerBreite, indicatorHoehe);
+                    
+                    [boardView addSubview:zungeView];
+                    x += checkerBreite;
+                }
+                break;
+                
+        }
+    }
+    x += checkerBreite;
+
+#pragma mark - untere moveIndicator
+    x = 0;
+    y = zungenHoehe + indicatorHoehe + checkerBreite;
+    
+    NSMutableArray *moveIndicatorUntenArray = [self.boardDict objectForKey:@"moveIndicatorUnten"];
+    for(int i = 0; i < moveIndicatorUntenArray.count; i++)
+    {
+        switch(i)
+        {
+            case 0:
+                // off board
+                x += offBreite;
+                break;
+            case 7:
+                // bar
+                x += barBreite;
+                break;
+            case 14:
+                //cube
+                x += cubeBreite;
+                break;
+            default:
+                // zungen
+            {
+                NSString *img = [[moveIndicatorUntenArray[i] lastPathComponent] stringByDeletingPathExtension];
+                NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
+                
+                UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                zungeView.frame = CGRectMake(x, y, checkerBreite, indicatorHoehe);
+                
+                [boardView addSubview:zungeView];
+                x += checkerBreite;
+            }
+                break;
+                
+        }
+    }
+    x += checkerBreite;
 
 #pragma mark - untere Grafiken
     x = 0;
