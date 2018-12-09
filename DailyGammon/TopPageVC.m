@@ -157,7 +157,7 @@
     }
     self.topPageArray = [[NSMutableArray alloc]init];
     NSArray *zeilen  = [xpathParser searchWithXPathQuery:@"//table[2]/tr"];
-    for(int zeile = 2; zeile < zeilen.count; zeile ++)
+    for(int zeile = 2; zeile <= zeilen.count; zeile ++)
     {
         NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
@@ -181,13 +181,14 @@
                 }
                 else
                 {
-                    [topPageZeileSpalte setValue:[element text] forKey:@"Text"];
+                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
 
                 }
             }
             [topPageZeile addObject:topPageZeileSpalte];
 
         }
+        XLog(@"%@", topPageZeile);
 
         [self.topPageArray addObject:topPageZeile];
     }
