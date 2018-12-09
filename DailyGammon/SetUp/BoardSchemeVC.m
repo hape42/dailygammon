@@ -10,8 +10,7 @@
 
 @interface BoardSchemeVC ()
 
-@property (weak, nonatomic) IBOutlet UISwitch *schema1Outlet;
-@property (weak, nonatomic) IBOutlet UISwitch *schema2Outlet;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *schemaWaehlenOutlet;
 
 @end
 
@@ -20,7 +19,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -30,57 +28,23 @@
     
     int schema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     
-    switch (schema)
-    {
-        case 1:
-            [self.schema1Outlet setOn:YES animated:YES];
-            [self.schema2Outlet setOn:NO animated:YES];
-          break;
-        case 2:
-            [self.schema2Outlet setOn:YES animated:YES];
-            [self.schema1Outlet setOn:NO animated:YES];
-            break;
+    self.schemaWaehlenOutlet.selectedSegmentIndex = schema - 1;
 
-        default:
-            break;
-    }
 }
 
 - (IBAction)doneAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-- (IBAction)schema1:(id)sender
-{
-    UISwitch *schemaSwitch = (UISwitch *)sender;
-    if ([schemaSwitch isOn])
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:1  forKey:@"BoardSchema"];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        //alle anderen auf off setzen
-        [self.schema2Outlet setOn:NO animated:YES];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-    }
-}
 
-- (IBAction)schema2:(id)sender
+- (IBAction)schemaWaehlen:(id)sender
 {
-    UISwitch *schemaSwitch = (UISwitch *)sender;
+    [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex + 1  forKey:@"BoardSchema"];
     
-    if ([schemaSwitch isOn])
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:2  forKey:@"BoardSchema"];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        //alle anderen auf off setzen
-        [self.schema1Outlet setOn:NO animated:YES];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-    }
-}
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
 
+}
 
 @end

@@ -35,6 +35,8 @@
 		E09C00A721B3D2220056D2A2 /* spitze_rot_1rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E09C009D21B3D2220056D2A2 /* spitze_rot_1rot.png */; };
 		E09C00A921B43E6A0056D2A2 /* pfeil.pdf in Resources */ = {isa = PBXBuildFile; fileRef = E09C00A821B43E690056D2A2 /* pfeil.pdf */; };
 		E0BDCC3021BC362500E8AF25 /* dice.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC2F21BC362500E8AF25 /* dice.png */; };
+		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
+		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -86,6 +88,8 @@
 		E09C009D21B3D2220056D2A2 /* spitze_rot_1rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spitze_rot_1rot.png; sourceTree = "<group>"; };
 		E09C00A821B43E690056D2A2 /* pfeil.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = pfeil.pdf; sourceTree = "<group>"; };
 		E0BDCC2F21BC362500E8AF25 /* dice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice.png; sourceTree = "<group>"; };
+		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
+		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -154,6 +158,16 @@
 			path = Hpple;
 			sourceTree = "<group>";
 		};
+		E0BDCC3121BD13D700E8AF25 /* Boards */ = {
+			isa = PBXGroup;
+			children = (
+				E0BDCC3221BD140300E8AF25 /* BlueWhite.png */,
+				E06E1C5821B7BD94003B310F /* classic.png */,
+				E0BDCC3421BD142B00E8AF25 /* GrayRed.png */,
+			);
+			path = Boards;
+			sourceTree = "<group>";
+		};
 		E0F9587D21AD1687003DAC01 = {
 			isa = PBXGroup;
 			children = (
@@ -205,8 +219,8 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E0BDCC3121BD13D700E8AF25 /* Boards */,
 				E0BDCC2F21BC362500E8AF25 /* dice.png */,
-				E06E1C5821B7BD94003B310F /* classic.png */,
 				E09C008521B114CD0056D2A2 /* Zahnrad.pdf */,
 				E09C00A821B43E690056D2A2 /* pfeil.pdf */,
 				E0F9589221AD168B003DAC01 /* Assets.xcassets */,
@@ -300,6 +314,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */,
 				E0F9589621AD168B003DAC01 /* LaunchScreen.storyboard in Resources */,
 				E09C007F21B07B980056D2A2 /* spitze_rot.png in Resources */,
 				E0F958AB21AD73AE003DAC01 /* diceDG.png in Resources */,
@@ -310,6 +325,7 @@
 				E09C00A521B3D2220056D2A2 /* spitze_grau_1rot-1.png in Resources */,
 				E0F958A921AD5C52003DAC01 /* die.gif in Resources */,
 				E09C00A921B43E6A0056D2A2 /* pfeil.pdf in Resources */,
+				E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */,
 				E09C00A421B3D2220056D2A2 /* spitze_rot_3rot.png in Resources */,
 				E09C00A221B3D2220056D2A2 /* spitze_grau_3rot.png in Resources */,
 				E09C00A721B3D2220056D2A2 /* spitze_rot_1rot.png in Resources */,
