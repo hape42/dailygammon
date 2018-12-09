@@ -188,7 +188,7 @@
             [topPageZeile addObject:topPageZeileSpalte];
 
         }
-        XLog(@"%@", topPageZeile);
+//        XLog(@"%@", topPageZeile);
 
         [self.topPageArray addObject:topPageZeile];
     }

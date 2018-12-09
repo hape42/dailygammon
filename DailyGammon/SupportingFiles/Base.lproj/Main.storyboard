@@ -71,7 +71,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="102 pips" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ka8-S9-cJQ">
-                                        <rect key="frame" x="0.0" y="54" width="65" height="21"/>
+                                        <rect key="frame" x="0.0" y="54" width="100" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -85,7 +85,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g7H-l2-UdX">
-                                        <rect key="frame" x="56" y="77" width="23" height="21"/>
+                                        <rect key="frame" x="56" y="77" width="50" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -119,7 +119,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="102 pips" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tJ2-g8-DSU">
-                                        <rect key="frame" x="0.0" y="54" width="65" height="21"/>
+                                        <rect key="frame" x="0.0" y="54" width="100" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -133,7 +133,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RHs-Ye-dOZ">
-                                        <rect key="frame" x="56" y="77" width="23" height="21"/>
+                                        <rect key="frame" x="56" y="77" width="50" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -321,6 +321,10 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="800" height="300"/>
                     <connections>
+                        <outlet property="schema1" destination="Z6O-lX-qLo" id="hmf-QP-tib"/>
+                        <outlet property="schema2" destination="v1K-JX-yex" id="z25-Gv-f3P"/>
+                        <outlet property="schema3" destination="Mfv-r1-EpE" id="Zpj-n2-zm6"/>
+                        <outlet property="schema4" destination="aHU-bm-fe8" id="dJ0-iO-nUW"/>
                         <outlet property="schemaWaehlenOutlet" destination="uka-UM-KzC" id="wGw-su-UKG"/>
                     </connections>
                 </viewController>
