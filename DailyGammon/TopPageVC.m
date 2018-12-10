@@ -382,7 +382,6 @@
     [headerView addSubview:lengthLabel];
     [headerView addSubview:opponentLabel];
 
-    
     return headerView;
     
 }
@@ -410,15 +409,34 @@
 }
 #pragma mark - Sort
 
-- (IBAction)sortGrace:(id)sender {
+- (IBAction)sortGrace:(id)sender
+{
+    [self matchOrdering:0];
 }
-- (IBAction)sortPool:(id)sender {
+- (IBAction)sortPool:(id)sender
+{
+    [self matchOrdering:1];
 }
-- (IBAction)sortGracePool:(id)sender {
+- (IBAction)sortGracePool:(id)sender
+{
+    [self matchOrdering:2];
 }
-- (IBAction)sortRecent:(id)sender {
+- (IBAction)sortRecent:(id)sender
+{
+    [self matchOrdering:3];
 }
+-(void)matchOrdering:(int)typ
+{
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/profile/pref"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    NSString *postString = [NSString stringWithFormat:@"order=%d",typ];
+    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    [request setValue:[NSString stringWithFormat:@"%u", [data length]] forHTTPHeaderField:@"Content-Length"];
+    [NSURLConnection connectionWithRequest:request delegate:self];
 
+}
 #pragma mark - Header
 #include "HeaderInclude.h"
 
