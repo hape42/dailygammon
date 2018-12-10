@@ -37,6 +37,8 @@
 		E0BDCC3021BC362500E8AF25 /* dice.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC2F21BC362500E8AF25 /* dice.png */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
 		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
+		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
+		E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -90,6 +92,9 @@
 		E0BDCC2F21BC362500E8AF25 /* dice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice.png; sourceTree = "<group>"; };
 		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
 		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
+		E0BDCC3621BE6AE300E8AF25 /* About.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
+		E0BDCC3721BE6AE300E8AF25 /* About.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
+		E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = BuildInfo.sh; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -140,6 +145,7 @@
 				E0F9588F21AD1688003DAC01 /* Main.storyboard */,
 				E0F9589421AD168B003DAC01 /* LaunchScreen.storyboard */,
 				E0F9589721AD168B003DAC01 /* Info.plist */,
+				E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */,
 				E09C008921B13E000056D2A2 /* PrefixHeader.pch */,
 			);
 			path = SupportingFiles;
@@ -206,6 +212,8 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E0BDCC3621BE6AE300E8AF25 /* About.h */,
+				E0BDCC3721BE6AE300E8AF25 /* About.m */,
 				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0F958A021AD1884003DAC01 /* Design.h */,
 				E0F958A121AD1884003DAC01 /* Design.m */,
@@ -267,6 +275,7 @@
 				E0F9588221AD1688003DAC01 /* Sources */,
 				E0F9588321AD1688003DAC01 /* Frameworks */,
 				E0F9588421AD1688003DAC01 /* Resources */,
+				E0BDCC3B21BE77C000E8AF25 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -327,6 +336,7 @@
 				E09C00A921B43E6A0056D2A2 /* pfeil.pdf in Resources */,
 				E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */,
 				E09C00A421B3D2220056D2A2 /* spitze_rot_3rot.png in Resources */,
+				E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */,
 				E09C00A221B3D2220056D2A2 /* spitze_grau_3rot.png in Resources */,
 				E09C00A721B3D2220056D2A2 /* spitze_rot_1rot.png in Resources */,
 				E09C008321B07E450056D2A2 /* spitze_grau_1rot.png in Resources */,
@@ -349,6 +359,26 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E0BDCC3B21BE77C000E8AF25 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "DailyGammon/SupportingFiles/BuildInfo.sh\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E0F9588221AD1688003DAC01 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -366,6 +396,7 @@
 				E0F958A521AD4CCE003DAC01 /* Header.m in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
+				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

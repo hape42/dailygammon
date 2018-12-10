@@ -77,6 +77,7 @@
     [button6 setTitle:@"About" forState: UIControlStateNormal];
     button6.frame = CGRectMake(x, 5, buttonBreite - 10, 40);
     button6.tag = 6;
+    [button6 addTarget:self action:@selector(showPopOverAbout:) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
     
@@ -120,4 +121,24 @@
     popController.sourceView = button;
     popController.sourceRect = button.bounds;
 }
+
+- (IBAction)showPopOverAbout:(id)sender
+{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"About"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+
+}
+
 #endif /* HeaderTest_h */
