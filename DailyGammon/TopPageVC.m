@@ -88,6 +88,8 @@
     {
         self.datenData = [[NSMutableData alloc] init];
     }
+    
+
 }
 
 
@@ -120,17 +122,6 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-//    XLog(@"Connection Finished");
-    
-//    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
-//    {
-//        NSLog(@"name: '%@'\n",   [cookie name]);
-//        NSLog(@"value: '%@'\n",  [cookie value]);
-//        NSLog(@"domain: '%@'\n", [cookie domain]);
-//        NSLog(@"path: '%@'\n",   [cookie path]);
-//    }
-//    NSLog(@"%@", [NSString stringWithFormat:@"%@", [NSString stringWithUTF8String:[self.datenData bytes]]]);
-    
 
     [ self readTopPage];
     
@@ -141,6 +132,7 @@
 
 -(void)readTopPage
 {
+
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
 
@@ -208,11 +200,6 @@
 {
     return self.topPageArray.count;
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return 30;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -376,6 +363,25 @@
     opponentLabel.text = self.topPageHeaderArray[6];
     opponentLabel.textColor = [UIColor whiteColor];
 
+    int order = [preferences readNextMatchOrdering];
+
+    switch (order)
+    {
+        case 0:
+            graceLabel.textColor = [UIColor redColor];
+            break;
+        case 1:
+            poolLabel.textColor = [UIColor redColor];
+            break;
+        case 2:
+            graceLabel.textColor = [UIColor redColor];
+            poolLabel.textColor = [UIColor redColor];
+            break;
+        case 3:
+            opponentLabel.textColor = [UIColor redColor];
+            break;
+    }
+
     [headerView addSubview:nummerLabel];
     [headerView addSubview:eventLabel];
     [headerView addSubview:graceLabel];
@@ -390,8 +396,9 @@
 
 - (void)updateTableView
 {
-    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,self.topPageArray.count];
+    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,(int)self.topPageArray.count];
     [self.tableView reloadData];
+
 }
 
 #pragma mark - Table view delegate
@@ -414,6 +421,7 @@
 - (IBAction)sortGrace:(id)sender
 {
     [self matchOrdering:0];
+
 }
 - (IBAction)sortPool:(id)sender
 {
@@ -427,6 +435,7 @@
 {
     [self matchOrdering:3];
 }
+
 -(void)matchOrdering:(int)typ
 {
     NSString *postString = [NSString stringWithFormat:@"order=%d",typ];

@@ -299,19 +299,21 @@
     int y = 250;
 
     int checkerBreite = 40;
-    int offBreite = 80;
+    int offBreite = 70;
     int barBreite = 80;
-    int cubeBreite = 50;
+    int cubeBreite = offBreite;
     int zungenHoehe = 200;
     int nummerHoehe = 15;
     int indicatorHoehe = 22;
+    
     UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
                                                                  zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
 
-#pragma mark - Ränder
     boardView.backgroundColor = self.boardColor;
+    
+#pragma mark - Ränder
     UIView *offView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offBreite, boardView.frame.size.height)];
     offView.backgroundColor = self.randColor;
 
@@ -319,7 +321,7 @@
     offInnenObenView.backgroundColor = self.boardColor;
     offInnenObenView.layer.borderWidth = 1;
     offInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
-   [offView addSubview:offInnenObenView];
+    [offView addSubview:offInnenObenView];
     
     UIView *offInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe, checkerBreite, zungenHoehe)];
     offInnenUntenView.backgroundColor = self.boardColor;
@@ -339,6 +341,19 @@
     
     UIView *cubeView = [[UIView alloc] initWithFrame:CGRectMake(offBreite+(6*checkerBreite)+barBreite+(6*checkerBreite), 0, cubeBreite, boardView.frame.size.height)];
     cubeView.backgroundColor = self.randColor;
+
+    UIView *cubeInnenObenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, 0, checkerBreite, zungenHoehe)];
+    cubeInnenObenView.backgroundColor = self.boardColor;
+    cubeInnenObenView.layer.borderWidth = 1;
+    cubeInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
+    [cubeView addSubview:cubeInnenObenView];
+    
+    UIView *cubeInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe, checkerBreite, zungenHoehe)];
+    cubeInnenUntenView.backgroundColor = self.boardColor;
+    cubeInnenUntenView.layer.borderWidth = 1;
+    cubeInnenUntenView.layer.borderColor = [UIColor grayColor].CGColor;
+    [cubeView addSubview:cubeInnenUntenView];
+    
     UIView *nummerObenView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                       boardView.frame.origin.y - nummerHoehe,
                                                                       boardView.frame.size.width,

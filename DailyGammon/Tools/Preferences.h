@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Preferences : NSObject
 
--(NSMutableArray *)readPreferences;
+- (NSMutableArray *)readPreferences;
+- (int)readNextMatchOrdering;
 
 @end
 
