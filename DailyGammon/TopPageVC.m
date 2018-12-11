@@ -11,6 +11,7 @@
 #import "Design.h"
 #import "TFHpple.h"
 #import "PlayMatch.h"
+#import "Preferences.h"
 
 @interface TopPageVC ()
 
@@ -30,7 +31,7 @@
 
 @implementation TopPageVC
 
-@synthesize design;
+@synthesize design, preferences;
 
 - (void)viewDidLoad
 {
@@ -40,6 +41,7 @@
 //    self.tableView.backgroundColor = VIEWBACKGROUNDCOLOR;
 
     design = [[Design alloc] init];
+    preferences = [[Preferences alloc] init];
 
     [self.view addSubview:[self makeHeader]];
     self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
@@ -427,10 +429,24 @@
 }
 -(void)matchOrdering:(int)typ
 {
+    NSString *postString = [NSString stringWithFormat:@"order=%d",typ];
+    NSString *preferencesString = @"";
+    NSMutableDictionary *preferencesArray = [preferences readPreferences];
+    for(NSMutableDictionary *preferencesDict in preferencesArray)
+    {
+        if([preferencesDict objectForKey:@"checked"] != nil)
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=on",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+        else
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=off",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+    }
+    postString = [NSString stringWithFormat:@"%@%@",postString,preferencesString];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/profile/pref"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    NSString *postString = [NSString stringWithFormat:@"order=%d&0=on&1=1",typ];
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%u", [data length]] forHTTPHeaderField:@"Content-Length"];
