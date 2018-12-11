@@ -75,7 +75,8 @@
 -(void)showMatch
 {
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-
+    if(self.boardSchema < 1) self.boardSchema = 4;
+    
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
 
     self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];

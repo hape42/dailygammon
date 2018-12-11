@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-#warning userdefaults auf existenz prüfen und bei nichtexistenz mit init bestücken
+
     return YES;
 }
 
