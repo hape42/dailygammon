@@ -10,6 +10,7 @@
 
 @class Design;
 @class Preferences;
+@class Rating;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Preferences *preferences;
+@property (strong, readwrite, retain, atomic) Rating *rating;
 
 @end
 

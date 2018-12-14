@@ -40,6 +40,7 @@
 		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
 		E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */; };
 		E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */; };
+		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -98,6 +99,8 @@
 		E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = BuildInfo.sh; sourceTree = "<group>"; };
 		E0BDCC3C21BEA8F900E8AF25 /* Preferences.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
 		E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
+		E0BDCC3F21C185A300E8AF25 /* Rating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
+		E0BDCC4021C185A300E8AF25 /* Rating.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -215,9 +218,9 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0BDCC3621BE6AE300E8AF25 /* About.h */,
 				E0BDCC3721BE6AE300E8AF25 /* About.m */,
-				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0F958A021AD1884003DAC01 /* Design.h */,
 				E0F958A121AD1884003DAC01 /* Design.m */,
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
@@ -225,6 +228,8 @@
 				E0F958A421AD4CCE003DAC01 /* Header.m */,
 				E0BDCC3C21BEA8F900E8AF25 /* Preferences.h */,
 				E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */,
+				E0BDCC3F21C185A300E8AF25 /* Rating.h */,
+				E0BDCC4021C185A300E8AF25 /* Rating.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -389,6 +394,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
 				E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */,
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,

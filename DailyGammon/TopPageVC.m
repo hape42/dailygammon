@@ -12,7 +12,7 @@
 #import "TFHpple.h"
 #import "PlayMatch.h"
 #import "Preferences.h"
-
+#import "Rating.h"
 @interface TopPageVC ()
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
@@ -31,7 +31,7 @@
 
 @implementation TopPageVC
 
-@synthesize design, preferences;
+@synthesize design, preferences, rating;
 
 - (void)viewDidLoad
 {
@@ -42,6 +42,7 @@
 
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
+    rating = [[Rating alloc] init];
 
     [self.view addSubview:[self makeHeader]];
     self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
@@ -78,10 +79,10 @@
 #warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
     if(conn)
     {
-        NSLog(@"Connection Successful");
+        XLog(@"Connection Successful");
     } else
     {
-        NSLog(@"Connection could not be made");
+        XLog(@"Connection could not be made");
     }
 
     if (self.downloadConnection)
@@ -122,6 +123,17 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
+    {
+//        XLog(@"name: '%@'\n",   [cookie name]);
+//        XLog(@"value: '%@'\n",  [cookie value]);
+//        XLog(@"domain: '%@'\n", [cookie domain]);
+//        XLog(@"path: '%@'\n",   [cookie path]);
+        if([[cookie name] isEqualToString:@"USERID"])
+            [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 
     [ self readTopPage];
     
@@ -406,12 +418,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self dismissViewControllerAnimated:YES completion:Nil];
-    
-    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSArray *zeile = self.topPageArray[indexPath.row];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+    NSDictionary *opponent = zeile[6];
+    NSString *opponentID = [[opponent objectForKey:@"href"] lastPathComponent];
+
+    NSMutableDictionary *ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = zeile[8];
     vc.matchLink = [match objectForKey:@"href"];
-
+    vc.ratingDict = ratingDict;
+    
     [self.navigationController pushViewController:vc animated:NO];
 
     

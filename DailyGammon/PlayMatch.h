@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
+@property (strong, readwrite, retain, atomic) NSMutableDictionary *ratingDict;
+
 @property (strong, readwrite, retain, atomic) NSString *matchLink;
 
 @end

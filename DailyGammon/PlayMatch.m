@@ -46,6 +46,8 @@
 
 @synthesize design;
 @synthesize matchLink;
+@synthesize ratingDict;
+
 
 - (void)viewDidLoad
 {
@@ -78,6 +80,11 @@
     if(self.boardSchema < 1) self.boardSchema = 4;
     
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
+
+    self.opponentRating.text  = @"";
+    self.opponentWinLoss.text = @"";
+    self.playerRating.text  = @"";
+    self.playerWinLoss.text = @"";
 
     self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     self.randColor              = [schemaDict objectForKey:@"RandSchemaColor"];
@@ -778,7 +785,10 @@
 
     [self.view addSubview:boardView];
     
-#pragma mark - opponent
+#pragma mark - opponent / player
+    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
+    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
+
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
@@ -789,10 +799,7 @@
     self.opponentName.text    = opponentArray[0];
     self.opponentPips.text    = opponentArray[2];
     self.opponentScore.text   = opponentArray[5];
-    self.opponentRating.text  = @"";
-    self.opponentWinLoss.text = @"";
 
-#pragma mark - player
     NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
     
     frame = self.playerView.frame;
@@ -803,10 +810,32 @@
     self.playerName.text    = playerArray[0];
     self.playerPips.text    = playerArray[2];
     self.playerScore.text   = playerArray[5];
-    self.playerRating.text  = @"";
-    self.playerWinLoss.text = @"";
+    
+    if(showRatings)
+    {
+        self.playerRating.text        = [ratingDict objectForKey:@"ratingPlayer"];
+        self.playerRating.textColor   = [UIColor blueColor];
+        self.opponentRating.text      = [ratingDict objectForKey:@"ratingOpponent"];;
+        self.opponentRating.textColor = [UIColor blueColor];
+    }
+    if(showWinLoss)
+    {
+        self.playerWinLoss.text        = [ratingDict objectForKey:@"wlaPlayer"];
+        self.playerWinLoss.textColor   = [UIColor blueColor];
+        self.opponentWinLoss.text      = [ratingDict objectForKey:@"wlaOpponent"];
+        self.opponentWinLoss.textColor = [UIColor blueColor];
+    }
+
 
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
+    
+    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
+                                                                  self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
+                                                                  maxBreite - self.opponentView.frame.origin.x ,
+                                                                  self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
+    
+    actionView.backgroundColor = [UIColor yellowColor];
+    [self.view addSubview:actionView];
 }
 #include "HeaderInclude.h"
 
