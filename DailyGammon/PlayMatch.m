@@ -446,7 +446,7 @@
         switch(i)
         {
             case 0:
-                // off board
+                // linke Seite
                 y = 0;
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
@@ -454,7 +454,18 @@
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    
+                    // ist es ein cube? dann besorge breite und höhe vom img für den view
+                    if ([imgName containsString:@"cube"])
+                    {
+                        UIImage *cubeImg = [UIImage imageNamed:imgName];
+                        float imgBreite = cubeImg.size.width;
+                        float imgHoehe = cubeImg.size.height;
+                        float faktor = checkerBreite / imgBreite;
+                        imgHoehe *= faktor;
+                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
+                        
+                    }
+
                     [boardView addSubview:zungeView];
                     y += zungenHoehe/3;
                 }
@@ -493,7 +504,19 @@
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x, y, cubeBreite, cubeHoehe);
-                    
+                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
+                    // ist es ein cube? dann besorge breite und höhe vom img für den view
+                    if ([imgName containsString:@"cube"])
+                    {
+                        UIImage *cubeImg = [UIImage imageNamed:imgName];
+                        float imgBreite = cubeImg.size.width;
+                        float imgHoehe = cubeImg.size.height;
+                        float faktor = checkerBreite / imgBreite;
+                        imgHoehe *= faktor;
+                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
+                        
+                    }
+
                     [boardView addSubview:zungeView];
                 }
                 y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
@@ -714,7 +737,17 @@
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    
+                    // ist es ein cube? dann besorge breite und höhe vom img für den view
+                    if ([imgName containsString:@"cube"])
+                    {
+                        UIImage *cubeImg = [UIImage imageNamed:imgName];
+                        float imgBreite = cubeImg.size.width;
+                        float imgHoehe = cubeImg.size.height;
+                        float faktor = checkerBreite / imgBreite;
+                        imgHoehe *= faktor;
+                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
+
+                    }
                     [boardView addSubview:zungeView];
                     y -= zungenHoehe/3;
                 }
@@ -735,7 +768,7 @@
                         int imgHoehe = zungeView.frame.size.height;
                         float faktor = imgHoehe / imgBreite;
                         zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
-                        
+
                         [boardView addSubview:zungeView];
                     }
                     x += barBreite;
@@ -743,20 +776,32 @@
                 }
                 break;
             case 14:
-                //cube
+                // rechte Seite
                 {
-                    float cubeHoehe = cubeBreite * (39.0/29.0);
 
-                    y += zungenHoehe - cubeHoehe;
-                    if(bilder.count > 0)
+                    y += (2*(zungenHoehe/3));
+                    for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                     {
-                        NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                        NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        zungeView.frame = CGRectMake(x, y, cubeBreite, cubeHoehe);
-                        
+                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
+                        // ist es ein cube? dann besorge breite und höhe vom img für den view
+                        if ([imgName containsString:@"cube"])
+                        {
+                            UIImage *cubeImg = [UIImage imageNamed:imgName];
+                            float imgBreite = cubeImg.size.width;
+                            float imgHoehe = cubeImg.size.height;
+                            float faktor = checkerBreite / imgBreite;
+                            imgHoehe *= faktor;
+                            zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
+                            
+                        }
+
                         [boardView addSubview:zungeView];
+                        y -= zungenHoehe/3;
                     }
+
                     y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
                     x += cubeBreite;
 
