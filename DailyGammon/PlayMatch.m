@@ -589,16 +589,22 @@
     
     NSMutableArray *diceArray = [self.boardDict objectForKey:@"dice"];
     if(diceArray.count < 8)
-    {
-        x = offBreite + (6 * checkerBreite) + barBreite  + (6 * checkerBreite) ;
-        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
-//        float cubeHoehe = cubeBreite * (39.0/29.0);
-        float cubeHoehe = cubeBreite ;
+    {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
 
-        NSString *img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
+        
+        NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-        zungeView.frame = CGRectMake(x, y, cubeBreite, cubeHoehe);
+        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
+        
+        [boardView addSubview:zungeView];
+
+        x = offBreite + (6 * checkerBreite) + barBreite  + (6 * checkerBreite) ;
+
+        img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
+        imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
+        zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
         
         [boardView addSubview:zungeView];
 
@@ -609,8 +615,16 @@
         {
             switch(i)
             {
-                case 0:                 // off board
-                    break;
+                case 0:
+                {// off board
+                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
+                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
+                    
+                    [boardView addSubview:zungeView];
+                }
+                   break;
                 case 2:     // 1. Würfel linke Boardhälfte
                 {
                     x += offBreite + (checkerBreite / 2) + checkerBreite;
@@ -659,16 +673,14 @@
                     [boardView addSubview:diceView];
                 }
                    break;
-                case 7:     // 2. Würfel rechte Boardhälfte
-                    //cube
+                case 7:     //cube rechts
                 {
                     x += (checkerBreite * 2.5);
-                    float cubeHoehe = cubeBreite * (39.0/29.0);
                     
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, cubeBreite, cubeHoehe);
+                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
                     
                     [boardView addSubview:zungeView];
                     
