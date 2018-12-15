@@ -212,7 +212,72 @@
 {
     return self.topPageArray.count;
 }
+//This function is where all the magic happens
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+//    UIView.animate(
+//                   withDuration: duration,
+//                   delay: delayFactor * Double(indexPath.row),
+//                   options: [.curveEaseInOut],
+//                   animations: {
+//                       cell.transform = CGAffineTransform(translationX: 0, y: 0)
+//                   })
 
+//    //1. Define the initial state (Before the animation)
+//    cell.transform = CGAffineTransformMakeTranslation(0.f, 100);
+//    cell.layer.shadowColor = [[UIColor greenColor]CGColor];
+//    cell.layer.shadowOffset = CGSizeMake(10, 10);
+//    cell.alpha = 0;
+//
+//    //2. Define the final state (After the animation) and commit the animation
+//    [UIView beginAnimations:@"rotation" context:NULL];
+//    [UIView setAnimationDuration:0.5];
+//    cell.transform = CGAffineTransformMakeTranslation(0.f, 0);
+//    cell.alpha = 1;
+//    cell.layer.shadowOffset = CGSizeMake(0, 0);
+//    [UIView commitAnimations];
+    
+    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
+    UIView *cellContentView = [cell contentView];
+    CGFloat rotationAngleDegrees = -30;
+    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
+    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
+    CATransform3D transform = CATransform3DIdentity;
+    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
+    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
+    cellContentView.layer.transform = transform;
+    cellContentView.layer.opacity = 0.8;
+    
+    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
+        cellContentView.layer.transform = CATransform3DIdentity;
+        cellContentView.layer.opacity = 1;
+    } completion:^(BOOL finished) {}];
+
+    return;
+    //1. Setup the CATransform3D structure
+    CATransform3D rotation;
+    rotation = CATransform3DMakeRotation( (90.0*M_PI)/180, 0.0, 0.7, 0.4);
+    rotation.m34 = 1.0/ -600;
+    
+    
+    //2. Define the initial state (Before the animation)
+    cell.layer.shadowColor = [[UIColor blackColor]CGColor];
+    cell.layer.shadowOffset = CGSizeMake(10, 10);
+    cell.alpha = 0;
+    
+    cell.layer.transform = rotation;
+    cell.layer.anchorPoint = CGPointMake(0, 0.5);
+    
+    
+    //3. Define the final state (After the animation) and commit the animation
+    [UIView beginAnimations:@"rotation" context:NULL];
+    [UIView setAnimationDuration:0.8];
+    cell.layer.transform = CATransform3DIdentity;
+    cell.alpha = 1;
+    cell.layer.shadowOffset = CGSizeMake(0, 0);
+    [UIView commitAnimations];
+    
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"cell";
