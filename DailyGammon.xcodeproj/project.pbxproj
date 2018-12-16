@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
 		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
@@ -56,6 +57,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
+		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
 		E06E1C5221B717B9003B310F /* SetUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpVC.m; sourceTree = "<group>"; };
 		E06E1C5521B7B468003B310F /* BoardSchemeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardSchemeVC.h; sourceTree = "<group>"; };
@@ -133,6 +136,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E00EB16621C632220088501C /* ParseDG */ = {
+			isa = PBXGroup;
+			children = (
+				E0BDCC3C21BEA8F900E8AF25 /* Preferences.h */,
+				E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */,
+				E0BDCC3F21C185A300E8AF25 /* Rating.h */,
+				E0BDCC4021C185A300E8AF25 /* Rating.m */,
+				E00EB16721C633580088501C /* Match.h */,
+				E00EB16821C633580088501C /* Match.m */,
+			);
+			path = ParseDG;
+			sourceTree = "<group>";
+		};
 		E06E1C5421B7B2DE003B310F /* SetUp */ = {
 			isa = PBXGroup;
 			children = (
@@ -166,6 +182,7 @@
 				E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */,
 				E09C008D21B2FADB0056D2A2 /* XPathQuery.h */,
 				E09C009021B2FADB0056D2A2 /* XPathQuery.m */,
+				E00EB16621C632220088501C /* ParseDG */,
 			);
 			path = Hpple;
 			sourceTree = "<group>";
@@ -226,10 +243,6 @@
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E0F958A321AD4CCE003DAC01 /* Header.h */,
 				E0F958A421AD4CCE003DAC01 /* Header.m */,
-				E0BDCC3C21BEA8F900E8AF25 /* Preferences.h */,
-				E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */,
-				E0BDCC3F21C185A300E8AF25 /* Rating.h */,
-				E0BDCC4021C185A300E8AF25 /* Rating.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -409,6 +422,7 @@
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
+				E00EB16921C633580088501C /* Match.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

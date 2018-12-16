@@ -11,6 +11,7 @@
 #import "SetUpVC.h"
 #import "Design.h"
 #import "TFHpple.h"
+#import "Match.h"
 
 @interface PlayMatch ()
 
@@ -44,7 +45,7 @@
 
 @implementation PlayMatch
 
-@synthesize design;
+@synthesize design, match;
 @synthesize matchLink;
 @synthesize ratingDict;
 
@@ -59,7 +60,8 @@
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     design = [[Design alloc] init];
-    
+    match  = [[Match alloc] init];
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(showMatch) name:@"changeSchemaNotification" object:nil];
 
@@ -83,221 +85,24 @@
 
     self.opponentRating.text  = @"";
     self.opponentWinLoss.text = @"";
-    self.playerRating.text  = @"";
-    self.playerWinLoss.text = @"";
+    self.playerRating.text    = @"";
+    self.playerWinLoss.text   = @"";
 
     self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     self.randColor              = [schemaDict objectForKey:@"RandSchemaColor"];
     self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
-    [self readMatch];
+    self.boardDict = [match readMatch:matchLink];
+    self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
+    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
+                           [self.boardDict objectForKey:@"matchName"],
+                           [self.boardDict objectForKey:@"matchLaengeText"]] ;
+
     [self drawBoard];
 
 }
--(void)readMatch
-{
-    self.boardDict = [[NSMutableDictionary alloc]init];
-    
-#pragma mark - matchName
-    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-    
-    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-    NSError *error = nil;
-    NSStringEncoding encoding;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                     usedEncoding:&encoding
-                                                            error:&error];
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
-    
-    NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
-    NSMutableString *matchName = [[NSMutableString alloc]init];
-    for(TFHppleElement *element in matchHeader)
-    {
-        for (TFHppleElement *child in element.children)
-        {
-            [matchName appendString:[child content]];
-        }
-    }
-    self.matchName.text = matchName;
-#pragma mark - unexpected Move
-    if ([matchString rangeOfString:@"unexpected"].location == NSNotFound)
-        self.unexpectedMove.text = @"";
-    else
-        self.unexpectedMove.text = @"Your opponent made an unexpected move, and the game has been rolled back to that point.";
 
-#pragma mark - obere Nummern Reihe
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[1]/td"];
-    NSMutableArray *elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        [elementArray addObject:[element text]];
-    }
-    [self.boardDict setObject:elementArray forKey:@"nummernOben"];
-
-#pragma mark - obere Grafik Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[2]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        NSString *image = @"";
-        NSString *href = @"";
-        NSMutableArray *imgArray = [[NSMutableArray alloc]init];
-        for (TFHppleElement *child in element.children)
-        {
-            NSDictionary *hrefChild = [child attributes];
-            href = [hrefChild objectForKey:@"href"];
-            TFHppleElement *childFirst = [child firstChild];
-            NSDictionary *imgChild = [childFirst attributes];
-            image = [imgChild objectForKey:@"src"];
-            if ([child.tagName isEqualToString:@"img"])
-            {
-                image = [child objectForKey:@"src"];
-                [imgArray addObject:image];
-            }
-            if(imgArray.count == 0)
-                if(image != nil)
-                    [imgArray addObject:image];
-
-        }
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        [dict setObject:imgArray forKey:@"img"];
-        [dict setValue:href forKey:@"href"];
-
-        [elementArray addObject:dict];
-    }
-    [self.boardDict setObject:elementArray forKey:@"grafikOben"];
-
-#pragma mark - opponent
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[2]/td[17]"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        for (TFHppleElement *child in element.children)
-        {
-            [elementArray addObject:[child content]];
-        }
-    }
-    [self.boardDict setObject:elementArray forKey:@"opponent"];
-    
-#pragma mark - obere Reihe moveIndicator
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[3]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        NSString *image = @"";
-        for (TFHppleElement *child in element.children)
-        {
-            if ([child.tagName isEqualToString:@"img"])
-            {
-                image = [child objectForKey:@"src"];
-            }
-        }
-        [elementArray addObject:image];
-    }
-    [self.boardDict setObject:elementArray forKey:@"moveIndicatorOben"];
-
-#pragma mark - Würfel Reihe
-#warning colspan macht evtl. noch Probleme
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[4]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    self.matchLaengeText = @"?";
-    for(TFHppleElement *element in elements)
-    {
-        self.matchLaengeText = [element  content]; // im letzten TD steht "3 Point Match"
-
-        NSString *image = @"";
-        for (TFHppleElement *child in element.children)
-        {
-            if ([child.tagName isEqualToString:@"img"])
-            {
-                image = [child objectForKey:@"src"];
-            }
-        }
-        [elementArray addObject:image];
-    }
-    [self.boardDict setObject:elementArray forKey:@"dice"];
-
-#pragma mark - untere Reihe moveIndicator
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[5]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        NSString *image = @"";
-        for (TFHppleElement *child in element.children)
-        {
-            if ([child.tagName isEqualToString:@"img"])
-            {
-                image = [child objectForKey:@"src"];
-            }
-        }
-        [elementArray addObject:image];
-    }
-    [self.boardDict setObject:elementArray forKey:@"moveIndicatorUnten"];
-
-#pragma mark - untere Grafik Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[6]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        NSString *image = @"";
-        NSString *href = @"";
-        NSMutableArray *imgArray = [[NSMutableArray alloc]init];
-        for (TFHppleElement *child in element.children)
-        {
-            NSDictionary *hrefChild = [child attributes];
-            href = [hrefChild objectForKey:@"href"];
-            TFHppleElement *childFirst = [child firstChild];
-            NSDictionary *imgChild = [childFirst attributes];
-            image = [imgChild objectForKey:@"src"];
-            if ([child.tagName isEqualToString:@"img"])
-            {
-                image = [child objectForKey:@"src"];
-                [imgArray addObject:image];
-            }
-            if(imgArray.count == 0)
-                if(image != nil)
-                    [imgArray addObject:image];
-        }
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
-        [dict setObject:imgArray forKey:@"img"];
-        [dict setValue:href forKey:@"href"];
-        
-        [elementArray addObject:dict];
-    }
-    [self.boardDict setObject:elementArray forKey:@"grafikUnten"];
-
-#pragma mark - player
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[6]/td[17]"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        for (TFHppleElement *child in element.children)
-        {
-            [elementArray addObject:[child content]];
-        }
-    }
-    [self.boardDict setObject:elementArray forKey:@"player"];
-    
-#pragma mark - untere Nummern Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[7]/td"];
-    elementArray = [[NSMutableArray alloc]init];
-    
-    for(TFHppleElement *element in elements)
-    {
-        if([element text] != nil)
-            [elementArray addObject:[element text]];
-    }
-    [self.boardDict setObject:elementArray forKey:@"nummernUnten"];
-
-}
 -(void)drawBoard
 {
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
@@ -590,8 +395,6 @@
     NSMutableArray *diceArray = [self.boardDict objectForKey:@"dice"];
     if(diceArray.count < 8)
     {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
-
-        
         NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -884,7 +687,7 @@
     }
 
 
-    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
+//    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
     
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
