@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class Design;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, readwrite, retain, atomic) Design *design;
 
 @property (strong, nonatomic) UIWindow *window;
 

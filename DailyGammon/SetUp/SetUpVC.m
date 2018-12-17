@@ -9,6 +9,7 @@
 #import "SetUpVC.h"
 #import "Design.h"
 #import "BoardSchemeVC.h"
+
 @interface SetUpVC ()
 
 @property (weak, nonatomic) IBOutlet UIButton *boardSchemeButton;
@@ -27,15 +28,25 @@
     [super viewDidLoad];
     
     design = [[Design alloc] init];
-    self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
-    self.preferencesButton = [design makeNiceButton:self.preferencesButton];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    
     [self.showRatingsOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue] animated:YES];
     [self.showWinLossOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue] animated:YES];
+    [self.showRatingsOutlet setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+    [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+    [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+    [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+   self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
+    self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
 }
 - (IBAction)doneAction:(id)sender

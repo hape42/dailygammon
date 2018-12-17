@@ -218,4 +218,31 @@
     return boardDict;
 }
 
+-(NSMutableDictionary *) readActionForm:(NSString *)matchLink
+{
+    NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
+    NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+    
+    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
+
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+    for(TFHppleElement *element in elements)
+    {
+        NSDictionary *elementDict = [element attributes];
+        [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
+        for (TFHppleElement *child in [element children])
+        {
+            NSDictionary *dict = [child attributes];
+            [attributesArray addObject:dict];
+        }
+        [actionDict setObject:attributesArray forKey:@"attributes"];
+
+    }
+
+    return actionDict;
+
+}
+
 @end

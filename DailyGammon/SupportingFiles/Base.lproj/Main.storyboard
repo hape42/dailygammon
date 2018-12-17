@@ -276,7 +276,6 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="done" systemItem="done" id="EsL-af-ewp">
-                                        <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="doneAction:" destination="JeN-h0-CmY" id="Ih8-Of-0Qy"/>
                                         </connections>
@@ -292,7 +291,6 @@
                                     <segment title="Blue / White original"/>
                                     <segment title="Gray / Red HD"/>
                                 </segments>
-                                <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="schemaWaehlen:" destination="JeN-h0-CmY" eventType="valueChanged" id="rwI-JE-xi7"/>
                                 </connections>
@@ -345,7 +343,6 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
                                     <barButtonItem style="done" systemItem="done" id="thk-Ld-dJr">
-                                        <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="doneAction:" destination="dOO-GA-B0a" id="8Zx-eu-vjb"/>
                                         </connections>
@@ -381,8 +378,6 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="yKP-VM-xsc">
                                 <rect key="frame" x="20" y="141" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="onTintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="showRatingsAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="5zd-1V-gQk"/>
                                 </connections>
@@ -397,8 +392,6 @@
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="1YF-bZ-9c9">
                                 <rect key="frame" x="20" y="181" width="49" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="onTintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="showWinLossAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="dmo-cJ-AEw"/>
                                 </connections>

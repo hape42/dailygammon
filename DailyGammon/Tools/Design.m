@@ -13,15 +13,22 @@
 
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    
+    NSMutableDictionary *schemaDict = [self schema:boardSchema];
+
+    UIColor *buttonColor = [schemaDict objectForKey:@"ButtonColor"];
+    
     button.layer.cornerRadius = 14.0f;
     button.layer.masksToBounds = YES;
     button.backgroundColor = [UIColor colorWithRed:230.0/255 green:230.0/255 blue:230.0/255 alpha:1];
-    button.backgroundColor = HEADERBACKGROUNDCOLOR;
+    button.backgroundColor = buttonColor;
     [button setTitleColor:GRAYLIGHT forState:UIControlStateNormal];
     
     button.imageView.layer.cornerRadius = 14.0f;
     button.layer.shadowRadius = .0f;
-    button.layer.shadowColor = HEADERBACKGROUNDCOLOR.CGColor;
+    button.layer.shadowColor = buttonColor.CGColor;
     button.layer.shadowOffset = CGSizeMake(5.0f, 5.0f);
     button.layer.shadowOpacity = 0.5f;
     button.layer.masksToBounds = NO;
@@ -88,6 +95,7 @@
             [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
+            [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"ButtonColor"];
         }
             break;
         case 2:
@@ -99,6 +107,7 @@
             [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
+            [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"ButtonColor"];
         }
             break;
         case 3:
@@ -110,6 +119,10 @@
             [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
+            [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"ButtonColor"];
+            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
+
         }
             break;
       case 4:
@@ -119,6 +132,11 @@
             [schemaDict setObject:[UIColor blackColor] forKey:@"RandSchemaColor"];
             [schemaDict setObject:[UIColor grayColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
+           
+            UIColor *schemaColor = [UIColor colorWithRed:165.0/255 green:46.0/255 blue:40.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"ButtonColor"];
+            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
        }
             break;
 

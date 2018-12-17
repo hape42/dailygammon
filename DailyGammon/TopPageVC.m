@@ -40,18 +40,26 @@
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
 //    self.tableView.backgroundColor = VIEWBACKGROUNDCOLOR;
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
 
+    [self reDrawHeader];
+
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+}
+
+-(void) reDrawHeader
+{
     [self.view addSubview:[self makeHeader]];
     self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
     self.sortPoolButton = [design makeNiceButton:self.sortPoolButton];
     self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
     self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
 
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -7,6 +7,7 @@
 //
 
 #import "BoardSchemeVC.h"
+#import "Design.h"
 
 @interface BoardSchemeVC ()
 
@@ -20,9 +21,14 @@
 
 @implementation BoardSchemeVC
 
+@synthesize design;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    design = [[Design alloc] init];
+
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
@@ -91,6 +97,12 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
 
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    UIWindow* mWindow = [[UIApplication sharedApplication] keyWindow];
+    mWindow.tintColor = [schemaDict objectForKey:@"ButtonColor"];
+    
+    [self viewDidLoad];
 }
 
 @end

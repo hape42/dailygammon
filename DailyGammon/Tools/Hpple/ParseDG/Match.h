@@ -12,7 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Match : NSObject
 
--(NSMutableDictionary *) readMatch:(NSString *)matchLink;
+- (NSMutableDictionary *) readMatch:(NSString *)matchLink;
+- (NSMutableDictionary *) readActionForm:(NSString *)matchLink;
 
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Design.h"
 
 @interface AppDelegate ()
 
@@ -14,10 +15,16 @@
 
 @implementation AppDelegate
 
+@synthesize design;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    design = [[Design alloc] init];
 
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    [self.window setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
     return YES;
 }
 

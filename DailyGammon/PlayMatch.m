@@ -34,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *playerScore;
 
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
+@property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
 @property (assign, atomic) int boardSchema;
 @property (readwrite, retain, nonatomic) UIColor *boardColor;
 @property (readwrite, retain, nonatomic) UIColor *randColor;
@@ -78,6 +79,7 @@
 }
 -(void)showMatch
 {
+    [self.view addSubview:[self makeHeader]];
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
     
@@ -98,6 +100,7 @@
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
                            [self.boardDict objectForKey:@"matchName"],
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
+    self.actionDict = [match readActionForm:matchLink];
 
     [self drawBoard];
 
@@ -671,19 +674,21 @@
     self.playerPips.text    = playerArray[2];
     self.playerScore.text   = playerArray[5];
     
+    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
+
     if(showRatings)
     {
         self.playerRating.text        = [ratingDict objectForKey:@"ratingPlayer"];
-        self.playerRating.textColor   = [UIColor blueColor];
+        self.playerRating.textColor   = [schemaDict objectForKey:@"ButtonColor"];
         self.opponentRating.text      = [ratingDict objectForKey:@"ratingOpponent"];;
-        self.opponentRating.textColor = [UIColor blueColor];
+        self.opponentRating.textColor = [schemaDict objectForKey:@"ButtonColor"];
     }
     if(showWinLoss)
     {
         self.playerWinLoss.text        = [ratingDict objectForKey:@"wlaPlayer"];
-        self.playerWinLoss.textColor   = [UIColor blueColor];
+        self.playerWinLoss.textColor   = [schemaDict objectForKey:@"ButtonColor"];
         self.opponentWinLoss.text      = [ratingDict objectForKey:@"wlaOpponent"];
-        self.opponentWinLoss.textColor = [UIColor blueColor];
+        self.opponentWinLoss.textColor = [schemaDict objectForKey:@"ButtonColor"];
     }
 
 
