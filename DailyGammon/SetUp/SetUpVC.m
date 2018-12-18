@@ -30,6 +30,9 @@
     design = [[Design alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+//    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+//    UINavigationBar.appearance.tintColor = [schemaDict objectForKey:@"TintColor"];
+//    UIBarButtonItem.appearance.tintColor = [schemaDict objectForKey:@"TintColor"];
 
 }
 
@@ -41,10 +44,10 @@
     
     [self.showRatingsOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue] animated:YES];
     [self.showWinLossOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue] animated:YES];
-    [self.showRatingsOutlet setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
-    [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"ButtonColor"]];
-    [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
-    [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+    [self.showRatingsOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
    self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
     self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 

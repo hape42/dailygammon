@@ -38,7 +38,7 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
-//    self.tableView.backgroundColor = VIEWBACKGROUNDCOLOR;
+//    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
 
@@ -46,7 +46,6 @@
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
 
-    [self reDrawHeader];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -60,6 +59,7 @@
     self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
     self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
 
+    [self updateTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -98,6 +98,7 @@
         self.datenData = [[NSMutableData alloc] init];
     }
     
+    [self reDrawHeader];
 
 }
 
@@ -303,7 +304,7 @@
     }
     [cell setTintColor:[UIColor greenColor]];
 
-    cell.backgroundColor = GRAYLIGHT;
+    cell.backgroundColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell setTintColor:[UIColor greenColor]];
     UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DisclosureIndicator"]];
@@ -389,7 +390,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
-    headerView.backgroundColor = [UIColor darkGrayColor];
+    headerView.backgroundColor = [UIColor lightGrayColor];
 
     int x = 0;
 
@@ -450,20 +451,22 @@
 
     int order = [preferences readNextMatchOrdering];
 
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
     switch (order)
     {
         case 0:
-            graceLabel.textColor = [UIColor redColor];
+            graceLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
         case 1:
-            poolLabel.textColor = [UIColor redColor];
+            poolLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
         case 2:
-            graceLabel.textColor = [UIColor redColor];
-            poolLabel.textColor = [UIColor redColor];
+            graceLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            poolLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
         case 3:
-            opponentLabel.textColor = [UIColor redColor];
+            opponentLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
     }
 

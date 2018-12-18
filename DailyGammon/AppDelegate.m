@@ -24,7 +24,7 @@
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
-    [self.window setTintColor:[schemaDict objectForKey:@"ButtonColor"]];
+    [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
     return YES;
 }
 

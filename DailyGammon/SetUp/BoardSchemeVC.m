@@ -100,7 +100,7 @@
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     UIWindow* mWindow = [[UIApplication sharedApplication] keyWindow];
-    mWindow.tintColor = [schemaDict objectForKey:@"ButtonColor"];
+    mWindow.tintColor = [schemaDict objectForKey:@"TintColor"];
     
     [self viewDidLoad];
 }

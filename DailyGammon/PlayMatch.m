@@ -679,16 +679,16 @@
     if(showRatings)
     {
         self.playerRating.text        = [ratingDict objectForKey:@"ratingPlayer"];
-        self.playerRating.textColor   = [schemaDict objectForKey:@"ButtonColor"];
+        self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
         self.opponentRating.text      = [ratingDict objectForKey:@"ratingOpponent"];;
-        self.opponentRating.textColor = [schemaDict objectForKey:@"ButtonColor"];
+        self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
     }
     if(showWinLoss)
     {
         self.playerWinLoss.text        = [ratingDict objectForKey:@"wlaPlayer"];
-        self.playerWinLoss.textColor   = [schemaDict objectForKey:@"ButtonColor"];
+        self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
         self.opponentWinLoss.text      = [ratingDict objectForKey:@"wlaOpponent"];
-        self.opponentWinLoss.textColor = [schemaDict objectForKey:@"ButtonColor"];
+        self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
     }
 
 
@@ -701,6 +701,11 @@
     
     actionView.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:actionView];
+}
+
+- (void)actionNext
+{
+    
 }
 #include "HeaderInclude.h"
 

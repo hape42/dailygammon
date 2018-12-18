@@ -291,6 +291,7 @@
                                     <segment title="Blue / White original"/>
                                     <segment title="Gray / Red HD"/>
                                 </segments>
+                                <color key="tintColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="schemaWaehlen:" destination="JeN-h0-CmY" eventType="valueChanged" id="rwI-JE-xi7"/>
                                 </connections>
