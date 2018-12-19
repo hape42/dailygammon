@@ -291,7 +291,6 @@
                                     <segment title="Blue / White original"/>
                                     <segment title="Gray / Red HD"/>
                                 </segments>
-                                <color key="tintColor" red="0.92143100499999997" green="0.92145264149999995" blue="0.92144101860000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
                                     <action selector="schemaWaehlen:" destination="JeN-h0-CmY" eventType="valueChanged" id="rwI-JE-xi7"/>
                                 </connections>
@@ -325,6 +324,7 @@
                         <outlet property="schema3" destination="Mfv-r1-EpE" id="Zpj-n2-zm6"/>
                         <outlet property="schema4" destination="aHU-bm-fe8" id="dJ0-iO-nUW"/>
                         <outlet property="schemaWaehlenOutlet" destination="uka-UM-KzC" id="wGw-su-UKG"/>
+                        <outlet property="waehleSchemaOutlet" destination="uka-UM-KzC" id="auH-z5-l0E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G2s-Ob-NAo" userLabel="First Responder" sceneMemberID="firstResponder"/>

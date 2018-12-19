@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *schema3;
 @property (weak, nonatomic) IBOutlet UIImageView *schema2;
 @property (weak, nonatomic) IBOutlet UIImageView *schema1;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *waehleSchemaOutlet;
 
 @end
 
@@ -44,7 +45,6 @@
         [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"BoardSchema"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
         self.schemaWaehlenOutlet.selectedSegmentIndex = 3;
     }
     if( CGRectContainsPoint(self.schema3.frame, tapLocation) )
@@ -52,7 +52,6 @@
         [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"BoardSchema"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
         self.schemaWaehlenOutlet.selectedSegmentIndex = 2;
     }
     if( CGRectContainsPoint(self.schema2.frame, tapLocation) )
@@ -60,7 +59,6 @@
         [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"BoardSchema"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
         self.schemaWaehlenOutlet.selectedSegmentIndex = 1;
     }
     if( CGRectContainsPoint(self.schema1.frame, tapLocation) )
@@ -68,9 +66,13 @@
         [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"BoardSchema"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
         self.schemaWaehlenOutlet.selectedSegmentIndex = 0;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
+
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    
+    [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
 
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -92,17 +94,10 @@
 - (IBAction)schemaWaehlen:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex + 1  forKey:@"BoardSchema"];
-    
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-
-    UIWindow* mWindow = [[UIApplication sharedApplication] keyWindow];
-    mWindow.tintColor = [schemaDict objectForKey:@"TintColor"];
-    
-    [self viewDidLoad];
+    [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
 }
 
 @end
