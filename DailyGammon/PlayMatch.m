@@ -46,6 +46,8 @@
 @property (assign, atomic) BOOL verifiedTake;
 @property (assign, atomic) BOOL verifiedPass;
 
+@property (readwrite, retain, nonatomic) NSMutableArray *moveArray;
+
 @end
 
 @implementation PlayMatch
@@ -78,6 +80,12 @@
 
     [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
+    
+    UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
+    oneFingerTap.numberOfTapsRequired = 1;
+    oneFingerTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:oneFingerTap];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -113,7 +121,8 @@
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
     
     self.actionDict = [match readActionForm:matchLink];
-
+    self.moveArray = [[NSMutableArray alloc]init];
+    
     [self drawBoard];
 
 }
@@ -308,8 +317,16 @@
                         zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
                         
                         [boardView addSubview:zungeView];
+                        NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
+                        [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                        [self.moveArray addObject:move];
                     }
                     x += barBreite;
+                    
                 }
                 break;
             case 14:
@@ -356,7 +373,13 @@
                     
                     [boardView addSubview:zungeView];
                     x += checkerBreite;
-                    
+                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
+                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                    [self.moveArray addObject:move];
                 }
                 break;
                 
@@ -600,6 +623,14 @@
                         zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
 
                         [boardView addSubview:zungeView];
+                        NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
+                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
+                        [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                        [self.moveArray addObject:move];
+
                     }
                     x += barBreite;
 
@@ -649,6 +680,13 @@
                     
                     [boardView addSubview:zungeView];
                     x += checkerBreite;
+                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
+                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
+                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                    [self.moveArray addObject:move];
 
                 }
                break;
@@ -804,6 +842,7 @@
                                                                          actionView.frame.size.width - 20,
                                                                          35)];
         messageText.text = [self.actionDict objectForKey:@"Message"];
+        messageText.textAlignment = NSTextAlignmentCenter;
         messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
         [actionView addSubview: messageText];
 
@@ -893,6 +932,28 @@
         return UNDO_MOVE;
     
     return 0;
+}
+
+- (void)cellTouched:(UIGestureRecognizer *)gesture
+{
+    CGPoint tapLocation = [gesture locationInView:self.view];
+    //    XLog(@"TapPoint = %@ ", NSStringFromCGPoint(tapLocation));
+    for(NSMutableDictionary *dict in self.moveArray)
+    {
+        CGRect frame = CGRectMake([[dict objectForKey:@"x"] floatValue],
+                                  [[dict objectForKey:@"y"] floatValue],
+                                  [[dict objectForKey:@"w"] floatValue],
+                                  [[dict objectForKey:@"h"] floatValue]);
+        if( CGRectContainsPoint(frame, tapLocation) )
+        {
+            if([[dict objectForKey:@"href"] length] != 0)
+            {
+                matchLink = [dict objectForKey:@"href"];
+            }
+        }
+    }
+    [self showMatch];
+
 }
 #include "HeaderInclude.h"
 
