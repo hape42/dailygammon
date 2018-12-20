@@ -42,6 +42,10 @@
 @property (readwrite, retain, nonatomic) UIColor *nummerColor;
 @property (readwrite, retain, nonatomic) NSString *matchLaengeText;
 
+@property (assign, atomic) BOOL verifiedDouble;
+@property (assign, atomic) BOOL verifiedTake;
+@property (assign, atomic) BOOL verifiedPass;
+
 @end
 
 @implementation PlayMatch
@@ -50,6 +54,11 @@
 @synthesize matchLink;
 @synthesize ratingDict;
 
+#define NEXT 1
+#define ROLL 2
+#define ROLL_DOUBLE 3
+#define CHECKER_MOVE 4
+#define SWAP_DICE 5
 
 - (void)viewDidLoad
 {
@@ -96,10 +105,12 @@
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
     self.boardDict = [match readMatch:matchLink];
+    
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
                            [self.boardDict objectForKey:@"matchName"],
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
+    
     self.actionDict = [match readActionForm:matchLink];
 
     [self drawBoard];
@@ -696,16 +707,171 @@
     
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
-                                                                  maxBreite - self.opponentView.frame.origin.x ,
+                                                                  maxBreite - self.opponentView.frame.origin.x -5,
                                                                   self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
     
-    actionView.backgroundColor = [UIColor yellowColor];
+//    actionView.backgroundColor = [UIColor yellowColor];
+    actionView.layer.borderWidth = 1;
+
     [self.view addSubview:actionView];
+    
+    switch([self analyzeAction])
+    {
+        case NEXT:
+        {
+#pragma mark - Button Next
+            UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonNext = [design makeNiceButton:buttonNext];
+            [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
+            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonNext addTarget:self action:@selector(actionNext) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonNext];
+            break;
+        }
+        case ROLL:
+        {
+#pragma mark - Button Roll
+            UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonRoll = [design makeNiceButton:buttonRoll];
+            [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
+            buttonRoll.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonRoll];
+            break;
+        }
+        case ROLL_DOUBLE:
+        {
+#pragma mark - Button Roll Double
+            UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonRoll = [design makeNiceButton:buttonRoll];
+            [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
+            buttonRoll.frame = CGRectMake(10, 10, 100, 35);
+            [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonRoll];
+ 
+            UIButton *buttonDouble = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonDouble = [design makeNiceButton:buttonDouble];
+            [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
+            buttonDouble.frame = CGRectMake(10,  buttonRoll.frame.origin.y + 60 , 100, 35);
+            [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonDouble];
+
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count == 3)
+            {
+                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonDouble.frame.origin.y + 4, 50, 35)];
+                [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
+                [verifyDouble setTintColor:[schemaDict objectForKey:@"TintColor"]];
+                [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                [actionView addSubview: verifyDouble];
+                
+                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonDouble.frame.origin.y,100, 35)];
+                verifyDoubleText.text = @"Verify";
+                verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                [actionView addSubview: verifyDoubleText];
+            }
+            break;
+        }
+        case SWAP_DICE:
+        {
+#pragma mark - Button Swap Dice
+            UIButton *buttonSwap = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonSwap = [design makeNiceButton:buttonSwap];
+            [buttonSwap setTitle:@"Swap Dice" forState: UIControlStateNormal];
+            buttonSwap.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonSwap addTarget:self action:@selector(actionSwap) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonSwap];
+            break;
+        }
+
+    }
+    if([[self.actionDict objectForKey:@"Message"] length] != 0)
+    {
+        UILabel *messageText = [[UILabel alloc] initWithFrame:CGRectMake(10,
+                                                                         actionView.frame.size.height - 40 - 10 - 40,
+                                                                         actionView.frame.size.width - 20,
+                                                                         35)];
+        messageText.text = [self.actionDict objectForKey:@"Message"];
+        messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
+        [actionView addSubview: messageText];
+
+    }
+
+#pragma mark - Button Skip Game
+    UIButton *buttonSkipGame = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonSkipGame = [design makeNiceButton:buttonSkipGame];
+    [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
+    buttonSkipGame.frame = CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35);
+    [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
+    [actionView addSubview:buttonSkipGame];
+    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, actionView.frame.size.height - 40 - 10, actionView.frame.size.width - 10, 1)];
+    linie.backgroundColor = [UIColor blackColor];
+    [actionView addSubview:linie];
+
+}
+
+#pragma mark - actions
+- (void)actionSwap
+{
+    matchLink = [self.actionDict objectForKey:@"SwapDice"];
+    [self showMatch];
+}
+
+- (void)actionVerifyDouble:(id)sender
+{
+    self.verifiedDouble = [(UISwitch *)sender isOn];
+}
+- (void)actionRoll
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Roll Dice", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
+}
+- (void)actionDouble
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
 }
 
 - (void)actionNext
 {
-    
+    matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
+}
+
+- (void)actionSkipGame
+{
+    matchLink = [self.actionDict objectForKey:@"SkipGame"];
+    [self showMatch];
+}
+
+- (int) analyzeAction
+{
+    self.verifiedDouble = FALSE;
+    self.verifiedTake   = FALSE;
+    self.verifiedPass   = FALSE;
+
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    if(attributesArray.count == 1)
+    {
+        NSMutableDictionary *dict = attributesArray[0];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Next"])
+            return NEXT;
+        if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
+            return ROLL;
+    }
+    if(attributesArray.count > 1)
+    {
+        NSMutableDictionary *dict = attributesArray[0];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
+        {
+            dict = attributesArray[1];
+            if([[dict objectForKey:@"value"] isEqualToString:@"Double"])
+                return ROLL_DOUBLE;
+        }
+    }
+    if([[self.actionDict objectForKey:@"SwapDice"] length] != 0)
+        return SWAP_DICE;
+    return 0;
 }
 #include "HeaderInclude.h"
 

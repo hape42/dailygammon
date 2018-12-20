@@ -39,7 +39,7 @@
 
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
-    if ([matchString rangeOfString:@"unexpected"].location == NSNotFound)
+    if ([matchString rangeOfString:@"unexpected"].location != NSNotFound)
         unexpectedMove = @"Your opponent made an unexpected move, and the game has been rolled back to that point.";
     [boardDict setObject:unexpectedMove forKey:@"unexpectedMove"];
 
@@ -235,12 +235,31 @@
         for (TFHppleElement *child in [element children])
         {
             NSDictionary *dict = [child attributes];
-            [attributesArray addObject:dict];
+            if([dict objectForKey:@"value"])
+                [attributesArray addObject:dict];
         }
         [actionDict setObject:attributesArray forKey:@"attributes"];
 
     }
 
+    elements  = [xpathParser searchWithXPathQuery:@"//h4"];
+    for(TFHppleElement *element in elements)
+    {
+        [actionDict setObject:[element content] forKey:@"Message"];
+    }
+
+    elements  = [xpathParser searchWithXPathQuery:@"//a"];
+    for(TFHppleElement *element in elements)
+    {
+        if([[element content] isEqualToString:@"Skip Game"])
+        {
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"SkipGame"];
+        }
+        if([[element content] isEqualToString:@"Swap Dice"])
+        {
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"SwapDice"];
+        }
+   }
     return actionDict;
 
 }
