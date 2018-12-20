@@ -259,7 +259,11 @@
         {
             [actionDict setObject:[element objectForKey:@"href"] forKey:@"SwapDice"];
         }
-   }
+        if([[element content] isEqualToString:@"Undo Move"])
+        {
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
+        }
+  }
     return actionDict;
 
 }

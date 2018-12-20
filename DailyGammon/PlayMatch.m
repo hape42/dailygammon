@@ -59,6 +59,7 @@
 #define ROLL_DOUBLE 3
 #define CHECKER_MOVE 4
 #define SWAP_DICE 5
+#define UNDO_MOVE 6
 
 - (void)viewDidLoad
 {
@@ -783,6 +784,17 @@
             [actionView addSubview:buttonSwap];
             break;
         }
+        case UNDO_MOVE:
+        {
+#pragma mark - Button Undo Move
+            UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonUndoMove = [design makeNiceButton:buttonUndoMove];
+            [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
+            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonUndoMove];
+            break;
+        }
 
     }
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
@@ -811,6 +823,12 @@
 }
 
 #pragma mark - actions
+- (void)actionUnDoMove
+{
+    matchLink = [self.actionDict objectForKey:@"UndoMove"];
+    [self showMatch];
+}
+
 - (void)actionSwap
 {
     matchLink = [self.actionDict objectForKey:@"SwapDice"];
@@ -871,6 +889,9 @@
     }
     if([[self.actionDict objectForKey:@"SwapDice"] length] != 0)
         return SWAP_DICE;
+    if([[self.actionDict objectForKey:@"UndoMove"] length] != 0)
+        return UNDO_MOVE;
+    
     return 0;
 }
 #include "HeaderInclude.h"
