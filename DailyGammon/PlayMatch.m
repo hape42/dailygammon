@@ -62,6 +62,7 @@
 #define CHECKER_MOVE 4
 #define SWAP_DICE 5
 #define UNDO_MOVE 6
+#define SUBMIT_MOVE 7
 
 - (void)viewDidLoad
 {
@@ -114,7 +115,7 @@
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
     self.boardDict = [match readMatch:matchLink];
-    
+#warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
                            [self.boardDict objectForKey:@"matchName"],
@@ -743,13 +744,18 @@
 
 
 //    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
-    
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:42]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
                                                                   maxBreite - self.opponentView.frame.origin.x -5,
                                                                   self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
     
 //    actionView.backgroundColor = [UIColor yellowColor];
+    actionView.tag = 42;
     actionView.layer.borderWidth = 1;
 
     [self.view addSubview:actionView];
@@ -833,6 +839,28 @@
             [actionView addSubview:buttonUndoMove];
             break;
         }
+        case SUBMIT_MOVE:
+        {
+#pragma mark - Button Submit Move
+            UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
+            [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
+            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, 10, 100, 35);
+            [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonSubmitMove];
+            
+            UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonUndoMove = [design makeNiceButton:buttonUndoMove];
+            [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
+            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonUndoMove];
+
+            break;
+        }
+           default:
+                XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
+            break;
 
     }
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
@@ -862,6 +890,14 @@
 }
 
 #pragma mark - actions
+- (void)actionSubmitMove
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+
+    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    [self showMatch];
+}
 - (void)actionUnDoMove
 {
     matchLink = [self.actionDict objectForKey:@"UndoMove"];
@@ -880,7 +916,7 @@
 }
 - (void)actionRoll
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Roll Dice", [self.actionDict objectForKey:@"action"]];
+    matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
     [self showMatch];
 }
 - (void)actionDouble
@@ -925,7 +961,11 @@
             if([[dict objectForKey:@"value"] isEqualToString:@"Double"])
                 return ROLL_DOUBLE;
         }
+        dict = attributesArray[1];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
+            return SUBMIT_MOVE;
     }
+    
     if([[self.actionDict objectForKey:@"SwapDice"] length] != 0)
         return SWAP_DICE;
     if([[self.actionDict objectForKey:@"UndoMove"] length] != 0)

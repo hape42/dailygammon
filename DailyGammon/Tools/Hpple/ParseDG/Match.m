@@ -26,6 +26,15 @@
                                                               error:&error];
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
     
+#pragma mark - The http request you submitted was in error.
+    NSString *errorText = @"";
+    if ([matchString rangeOfString:@"The http request you submitted was in error."].location != NSNotFound)
+    {
+        errorText = @"The http request you submitted was in error.";
+        [boardDict setObject:errorText forKey:@"error"];
+        return boardDict;
+    }
+
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
     NSMutableString *matchName = [[NSMutableString alloc]init];
     for(TFHppleElement *element in matchHeader)
@@ -36,7 +45,8 @@
         }
     }
     [boardDict setObject:matchName forKey:@"matchName"];
-
+    
+    
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
     if ([matchString rangeOfString:@"unexpected"].location != NSNotFound)
@@ -258,6 +268,10 @@
         if([[element content] isEqualToString:@"Swap Dice"])
         {
             [actionDict setObject:[element objectForKey:@"href"] forKey:@"SwapDice"];
+        }
+        if([[element content] isEqualToString:@"Undo Move"])
+        {
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
         }
         if([[element content] isEqualToString:@"Undo Move"])
         {
