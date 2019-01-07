@@ -33,6 +33,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *playerPips;
 @property (weak, nonatomic) IBOutlet UILabel *playerScore;
 
+@property (weak, nonatomic) IBOutlet UIView *chatView;
+@property (weak, nonatomic) IBOutlet UITextView *opponentChat;
+@property (weak, nonatomic) IBOutlet UITextView *playerChat;
+@property (weak, nonatomic) IBOutlet UIButton *NextButtonOutlet;
+@property (weak, nonatomic) IBOutlet UIButton *ToTopOutlet;
+@property (weak, nonatomic) IBOutlet UISwitch *quoteSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *quoteMessage;
+@property (weak, nonatomic) IBOutlet UILabel *chatHeaderText;
+@property (assign, atomic) CGRect chatViewFrame;
+
+
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
 @property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
 @property (assign, atomic) int boardSchema;
@@ -63,6 +74,10 @@
 #define SWAP_DICE 5
 #define UNDO_MOVE 6
 #define SUBMIT_MOVE 7
+#define CHAT 8
+#define GREEDY 9
+#define ONLY_MESSAGE 10
+#define NEXT__ 11
 
 - (void)viewDidLoad
 {
@@ -87,6 +102,8 @@
     oneFingerTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:oneFingerTap];
 
+    [self.playerChat setDelegate:self];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -98,6 +115,14 @@
 }
 -(void)showMatch
 {
+    // schieb den chatView aus dem sichtbaren bereich
+    CGRect frame = self.chatView.frame;
+    frame.origin.x = 5000;
+    frame.origin.y = 5000;
+    self.chatView.frame = frame;
+    self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
+    self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
+
     [self.view addSubview:[self makeHeader]];
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
@@ -121,7 +146,7 @@
                            [self.boardDict objectForKey:@"matchName"],
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
     
-    self.actionDict = [match readActionForm:matchLink];
+    self.actionDict = [match readActionForm:matchLink withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
     [self drawBoard];
@@ -773,7 +798,18 @@
             [actionView addSubview:buttonNext];
             break;
         }
-        case ROLL:
+        case NEXT__:
+        {
+#pragma mark - Button Next
+            UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonNext = [design makeNiceButton:buttonNext];
+            [buttonNext setTitle:@"Next>>" forState: UIControlStateNormal];
+            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
+            [buttonNext addTarget:self action:@selector(actionNext__) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonNext];
+            break;
+        }
+       case ROLL:
         {
 #pragma mark - Button Roll
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -858,10 +894,58 @@
 
             break;
         }
-           default:
-                XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            break;
+        case CHAT:
+        {
+#pragma mark - CHAT
+            // schieb den chatView in den sichtbaren Bereich
+            CGRect frame = self.chatView.frame;
+            frame.origin.x = 185;
+            frame.origin.y = actionView.frame.origin.y-85;
+            self.chatView.frame = frame;
+            [self.view bringSubviewToFront:self.chatView ];
+            self.opponentChat.text = [self.actionDict objectForKey:@"content"];
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            BOOL isCheckbox = FALSE;
+            for(NSMutableDictionary *dict in attributesArray)
+            {
+                if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
+                {
+                    isCheckbox = TRUE;;
+                }
+            }
+            if(!isCheckbox)
+            {
+                // schiebe switch und Text weg
+                frame = self.quoteSwitch.frame;
+                frame.origin.x = 9999;
+                frame.origin.y = 9999;
+                self.quoteSwitch.frame = frame;
+                self.quoteMessage.frame = frame;
+            }
+            [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
+            [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+            self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
+            self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
+            self.chatView.layer.cornerRadius = 14.0f;
+            self.chatView.layer.masksToBounds = YES;
 
+            self.chatViewFrame = self.chatView.frame; // position merken um bei keyboard reinfahren view zu verschieben und wieder an die richtige Stelle zurück
+            break;
+        }
+        case ONLY_MESSAGE:
+        {
+            XLog(@"ONLY_MESSAGE");
+            break;
+        }
+        default:
+        {
+            XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
+            TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            
+            [self.navigationController pushViewController:vc animated:NO];
+
+            break;
+        }
     }
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
     {
@@ -930,18 +1014,60 @@
     matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
     [self showMatch];
 }
+- (void)actionNext__
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
+    [self showMatch];
+}
 
 - (void)actionSkipGame
 {
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
+#pragma mark - chat Buttons
 
+- (IBAction)chatNextButton:(id)sender
+{
+    
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSString *checkbox = @"";
+    for(NSMutableDictionary *dict in attributesArray)
+    {
+        if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
+        {
+            if([self.quoteSwitch isOn])
+                checkbox = @"&quote=on";
+            else
+                checkbox = @"&quote=off";
+       }
+    }
+    NSString *escapedString = [self.playerChat.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+
+    matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
+                 [self.actionDict objectForKey:@"action"],
+                 checkbox,
+                 escapedString];
+
+    [self showMatch];
+
+}
+- (IBAction)chatTopButton:(id)sender
+{
+    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+#pragma mark - analyzeAction
 - (int) analyzeAction
 {
     self.verifiedDouble = FALSE;
     self.verifiedTake   = FALSE;
     self.verifiedPass   = FALSE;
+
+    if(self.isChat)
+        return CHAT;
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 1)
@@ -970,10 +1096,33 @@
         return SWAP_DICE;
     if([[self.actionDict objectForKey:@"UndoMove"] length] != 0)
         return UNDO_MOVE;
-    
+    if([[self.actionDict objectForKey:@"Next Game>>"] length] != 0)
+        return NEXT__;
+
+    if(attributesArray == nil)
+    {
+        if([[self.actionDict objectForKey:@"Message"] length] != 0)
+            return ONLY_MESSAGE;
+    }
+    XLog(@"unknown action %@", self.actionDict);
     return 0;
 }
+-(BOOL)isChat
+{
+    NSString *chatString = [self.boardDict objectForKey:@"chat"];
+    if(chatString.length > 0)
+        return TRUE;
 
+    NSString *contentString = [self.actionDict objectForKey:@"content"];
+    if(contentString.length > 0)
+    {
+        if([contentString rangeOfString:@"You may chat with"].location != NSNotFound)
+            return TRUE;
+        if([contentString rangeOfString:@"says"].location != NSNotFound)
+            return TRUE;
+    }
+    return FALSE;
+}
 - (void)cellTouched:(UIGestureRecognizer *)gesture
 {
     CGPoint tapLocation = [gesture locationInView:self.view];
@@ -995,6 +1144,41 @@
     [self showMatch];
 
 }
+
+//Declare a delegate, assign your textField to the delegate and then include these methods
+#pragma mark - textField
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    return YES;
+}
+
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    [self.playerChat endEditing:YES];
+    return YES;
+}
+
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    CGRect frame = self.chatViewFrame;
+    frame.origin.y -= 330;
+    self.chatView.frame = frame;
+    XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
+    
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+    self.chatView.frame = self.chatViewFrame;
+    XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
+
+}
+
 #include "HeaderInclude.h"
 
 @end

@@ -20,19 +20,42 @@
     
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     NSError *error = nil;
-    NSStringEncoding encoding;
+    NSStringEncoding encoding = 0;
     NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                        usedEncoding:&encoding
                                                               error:&error];
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
+    if(error)
+        XLog(@"%@", urlMatch);
     
+    NSData *data = [NSData dataWithContentsOfURL:urlMatch];
+    
+    // wie bekomme ich nur sauber die Sonderzeichen gelesen???
+    NSString *htmlString = [NSString stringWithUTF8String:[data bytes]];
+    htmlString = [[NSString alloc]
+              initWithData:data encoding: NSISOLatin1StringEncoding];
+    
+    NSString *chat = @"";
+    NSRange preStart = [htmlString rangeOfString:@"<PRE>"];
+    if(preStart.length > 0)
+    {
+        NSRange preEnd = [htmlString rangeOfString:@"</PRE>"];
+        NSRange rangeChat = NSMakeRange(preStart.location + preStart.length, preEnd.location - preStart.location - preStart.length);
+        chat = [htmlString substringWithRange:rangeChat];
+        chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    }
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData ] ;
+    
+    xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
+
 #pragma mark - The http request you submitted was in error.
     NSString *errorText = @"";
     if ([matchString rangeOfString:@"The http request you submitted was in error."].location != NSNotFound)
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:errorText forKey:@"error"];
-        return boardDict;
+//        return boardDict;
     }
 
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
@@ -45,6 +68,11 @@
         }
     }
     [boardDict setObject:matchName forKey:@"matchName"];
+    [boardDict setObject:chat forKey:@"chat"];
+    
+#pragma mark -     You have received the following telegram message:
+    
+#warning "You have received the following telegram message:" abfangen
     
     
 #pragma mark - unexpected Move
@@ -228,28 +256,43 @@
     return boardDict;
 }
 
--(NSMutableDictionary *) readActionForm:(NSString *)matchLink
+-(NSMutableDictionary *) readActionForm:(NSString *)matchLink withChat:(NSString *)chat
 {
     NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
     
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-
+    
+    // vv nur zum testen um zu sehen, warum es immer wieder unbekannte action gibt
+    NSString *htmlString = [[NSString alloc]
+                  initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
+    [actionDict setObject:htmlString forKey:@"htmlString"];
+    // ^^
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+    [actionDict setObject:elements forKey:@"elements"];
+
     for(TFHppleElement *element in elements)
     {
-        NSDictionary *elementDict = [element attributes];
-        [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
-        for (TFHppleElement *child in [element children])
+        if([[element raw] rangeOfString:@"textarea"].location != NSNotFound)
         {
-            NSDictionary *dict = [child attributes];
-            if([dict objectForKey:@"value"])
-                [attributesArray addObject:dict];
+            NSArray *pre  = [xpathParser searchWithXPathQuery:@"//pre"];
+            actionDict = [self analyzeChat:element withChat:chat];
         }
-        [actionDict setObject:attributesArray forKey:@"attributes"];
-
+        else
+        {
+            NSDictionary *elementDict = [element attributes];
+            [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
+            for (TFHppleElement *child in [element children])
+            {
+                NSDictionary *dict = [child attributes];
+                if([dict objectForKey:@"value"])
+                    [attributesArray addObject:dict];
+            }
+            [actionDict setObject:attributesArray forKey:@"attributes"];
+            [actionDict setObject:[element content] forKey:@"content"];
+        }
     }
 
     elements  = [xpathParser searchWithXPathQuery:@"//h4"];
@@ -273,13 +316,43 @@
         {
             [actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
         }
-        if([[element content] isEqualToString:@"Undo Move"])
+        if([[element content] isEqualToString:@"Next Game>&gt"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"Next Game>>"];
         }
-  }
+    }
+    [actionDict setObject:elements forKey:@"a"];
+
     return actionDict;
 
 }
 
+- (NSMutableDictionary *) analyzeChat:(TFHppleElement *)element withChat:(NSString *)chat
+{
+    NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
+    NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+
+    NSDictionary *elementDict = [element attributes];
+    [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
+    for (TFHppleElement *child in [element children])
+    {
+        NSDictionary *dict = [child attributes];
+        NSMutableArray *childArray = [[NSMutableArray alloc]init ];
+
+        for (TFHppleElement *childChild in [child children])
+        {
+            [childArray addObject:[childChild attributes]];
+        }
+        [actionDict setObject:childArray forKey:@"childArray"];
+        if(dict.count >0)
+            [attributesArray addObject:dict];
+    }
+    [actionDict setObject:attributesArray forKey:@"attributes"];
+    if([element content] != nil)
+        [actionDict setObject:[element content] forKey:@"content"];
+    else
+        [actionDict setObject:chat forKey:@"content"];
+
+    return actionDict;
+}
 @end

@@ -48,7 +48,7 @@
     [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
     [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
     [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-   self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
+    self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
     self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
 }

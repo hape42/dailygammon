@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Match;
 
-@interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate>
+@interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate, UITextViewDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Match *match;
