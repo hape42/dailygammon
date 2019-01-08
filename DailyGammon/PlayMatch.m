@@ -59,6 +59,8 @@
 
 @property (readwrite, retain, nonatomic) NSMutableArray *moveArray;
 
+@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
+
 @end
 
 @implementation PlayMatch
@@ -155,6 +157,26 @@
 
 -(void)drawBoard
 {
+    if([[self.boardDict objectForKey:@"message"] length] != 0)
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:[self.boardDict objectForKey:@"message"]
+                                     message:[self.boardDict objectForKey:@"chat"]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"NEXT"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                        [self showMatch];
+                                    }];
+        
+        [alert addAction:yesButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
@@ -940,13 +962,11 @@
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
-            
-            [self.navigationController pushViewController:vc animated:NO];
-
+            [self defaultAction];
             break;
         }
     }
+    
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
     {
         UILabel *messageText = [[UILabel alloc] initWithFrame:CGRectMake(10,
@@ -1176,6 +1196,116 @@
 {
     self.chatView.frame = self.chatViewFrame;
     XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
+
+}
+
+#pragma mark - Email
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (error)
+    {
+        XLog(@"Fehler MFMailComposeViewController: %@", error);
+    }
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    }
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+-(void)defaultAction
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"oops"
+                                 message:@"something unexpected happend! Better go to TopPage"
+                                 preferredStyle:UIAlertControllerStyleAlert];
+
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:@"Oooops"];
+    [title addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:30.0]
+                  range:NSMakeRange(0, [title length])];
+    [alert setValue:title forKey:@"attributedTitle"];
+
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"\n\nSomething unexpected happend! \n\nBetter go to TopPage. \n\nAnd/Or send Email to support\n\n"];
+    [message addAttribute:NSFontAttributeName
+                    value:[UIFont systemFontOfSize:20.0]
+                    range:NSMakeRange(0, [message length])];
+    [alert setValue:message forKey:@"attributedMessage"];
+
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"Top Page"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+
+                                    [self.navigationController pushViewController:vc animated:NO];
+                                }];
+
+    UIAlertAction* mailButton = [UIAlertAction
+                                 actionWithTitle:@"Mail to Support"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     if (![MFMailComposeViewController canSendMail])
+                                     {
+                                         XLog(@"Fehler: Mail kann nicht versendet werden");
+                                         return;
+                                     }
+                                     NSString *betreff = [NSString stringWithFormat:@"Something unexpected happend!"];
+
+                                     NSString *text = @"";
+                                     NSString *emailText = @"";
+                                     text = [NSString stringWithFormat:@"Hallo Support-Team of %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"my Data: <br> "];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"] ];
+
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                     text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
+                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+
+                                     MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+                                     emailController.mailComposeDelegate = self;
+                                     NSArray *toSupport = [NSArray arrayWithObjects:@"support@hape42.de",nil];
+
+                                     [emailController setToRecipients:toSupport];
+                                     [emailController setSubject:betreff];
+                                     [emailController setMessageBody:emailText isHTML:YES];
+                                     NSString *dictPath = @"";
+                                     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                                          NSUserDomainMask, YES);
+                                     if([paths count] > 0)
+                                     {
+                                         dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
+                                         [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
+                                     }
+                                     NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+                                     [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
+
+                                     [self presentViewController:emailController animated:YES completion:NULL];
+
+                                 }];
+
+    [alert addAction:yesButton];
+    [alert addAction:mailButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
 
 }
 

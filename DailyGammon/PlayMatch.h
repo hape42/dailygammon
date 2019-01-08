@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Match;
 
-@interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate, UITextViewDelegate>
+@interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate >
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Match *match;

@@ -66,7 +66,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
+#warning userdefaults für user&pw
     NSString *userName = @"hape42";
     NSString *userPassword = @"00450045";
     self.loginOk = FALSE;

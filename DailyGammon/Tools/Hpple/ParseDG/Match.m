@@ -71,9 +71,15 @@
     [boardDict setObject:chat forKey:@"chat"];
     
 #pragma mark -     You have received the following telegram message:
-    
+//    [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
+//    [boardDict setObject:@"!DailyGammon is pleased to announce that the Three Pointer #3317 tournament has begun.  Good luck!" forKey:@"chat"];
 #warning "You have received the following telegram message:" abfangen
-    
+    if ([matchString rangeOfString:@"telegram"].location != NSNotFound)
+    {
+        [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
+        // in "chat" sollte dann der text stehen
+        return boardDict;
+    }
     
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
