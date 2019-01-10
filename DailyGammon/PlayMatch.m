@@ -886,6 +886,17 @@
             [actionView addSubview:buttonSwap];
             break;
         }
+        case GREEDY:
+        {
+#pragma mark - Submit Greedy Bearoff
+            UIButton *buttonGreedy = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonGreedy = [design makeNiceButton:buttonGreedy];
+            [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
+            buttonGreedy.frame = CGRectMake((actionView.frame.size.width/2) - 100, (actionView.frame.size.height/2) -40, 200, 35);
+            [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonGreedy];
+            break;
+        }
         case UNDO_MOVE:
         {
 #pragma mark - Button Undo Move
@@ -1002,6 +1013,15 @@
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch];
 }
+- (void)actionGreedy
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+    
+    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    [self showMatch];
+}
+
 - (void)actionUnDoMove
 {
     matchLink = [self.actionDict objectForKey:@"UndoMove"];
@@ -1110,7 +1130,9 @@
         dict = attributesArray[1];
         if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
             return SUBMIT_MOVE;
-    }
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Greedy Bearoff"])
+            return GREEDY;
+   }
     
     if([[self.actionDict objectForKey:@"SwapDice"] length] != 0)
         return SWAP_DICE;

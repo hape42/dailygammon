@@ -48,9 +48,9 @@
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
 
-
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
 }
 
 -(void) reDrawHeader
