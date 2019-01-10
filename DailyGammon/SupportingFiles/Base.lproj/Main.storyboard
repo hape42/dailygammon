@@ -487,52 +487,88 @@
         <!--LoginVC-->
         <scene sceneID="JUx-7f-xny">
             <objects>
-                <viewController storyboardIdentifier="Login" id="w2s-UI-DeX" customClass="LoginVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginVC" id="w2s-UI-DeX" customClass="LoginVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ffQ-KB-cbs">
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dglogo_grey.gif" id="vO8-Ir-D8B">
-                                <rect key="frame" x="20" y="88" width="285" height="83"/>
+                                <rect key="frame" x="20" y="20" width="285" height="83"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello! Welcome to the DailyGammon web site. Please log in." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Vk-NI-tEF">
-                                <rect key="frame" x="20" y="191" width="458" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello! Welcome to DailyGammon. Please log in." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4Vk-NI-tEF">
+                                <rect key="frame" x="20" y="123" width="360" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fF2-AK-i8s">
-                                <rect key="frame" x="20" y="234" width="86" height="21"/>
+                                <rect key="frame" x="20" y="166" width="86" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zWi-bf-B4M">
-                                <rect key="frame" x="20" y="274" width="74" height="21"/>
+                                <rect key="frame" x="20" y="206" width="74" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="kXn-BH-gnt">
-                                <rect key="frame" x="146" y="231" width="200" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" id="kXn-BH-gnt">
+                                <rect key="frame" x="146" y="163" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="lCD-sw-irl">
-                                <rect key="frame" x="146" y="269" width="200" height="30"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" id="lCD-sw-irl">
+                                <rect key="frame" x="146" y="201" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No account yet? Then make one." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MNO-rW-3wM">
+                                <rect key="frame" x="22" y="305" width="348" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DlB-6N-Kef">
+                                <rect key="frame" x="389" y="305" width="148" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Create Account">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="createAccountAction:" destination="w2s-UI-DeX" eventType="touchUpInside" id="EEV-TT-PZT"/>
+                                    <action selector="loginAction:" destination="w2s-UI-DeX" eventType="touchUpInside" id="PeA-cn-M5G"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or feel free to browse the FAQ first." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ruq-pb-A7Y">
+                                <rect key="frame" x="20" y="348" width="326" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="f6L-5x-ztv">
+                                <rect key="frame" x="389" y="343" width="148" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="FAQ">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="faqAction:" destination="w2s-UI-DeX" eventType="touchUpInside" id="FhO-Uc-11T"/>
+                                    <action selector="loginAction:" destination="w2s-UI-DeX" eventType="touchUpInside" id="cpr-r6-8hc"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Z6m-Br-7xh">
-                                <rect key="frame" x="22" y="382" width="84" height="30"/>
+                                <rect key="frame" x="389" y="197" width="148" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -547,12 +583,16 @@
                     </view>
                     <navigationItem key="navigationItem" id="hNl-zt-Xd9"/>
                     <connections>
+                        <outlet property="createAccountButton" destination="DlB-6N-Kef" id="SF0-Qo-gfy"/>
+                        <outlet property="faqButton" destination="f6L-5x-ztv" id="U0x-ap-EeM"/>
                         <outlet property="loginButton" destination="Z6m-Br-7xh" id="ybG-7n-rdH"/>
+                        <outlet property="passwordOutlet" destination="lCD-sw-irl" id="liC-Sx-cqp"/>
+                        <outlet property="usewrnameOutlet" destination="kXn-BH-gnt" id="mlZ-41-hWC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mub-GW-gBt" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-297" y="-1669"/>
+            <point key="canvasLocation" x="-297.0703125" y="-1669.53125"/>
         </scene>
         <!--View Controller About-->
         <scene sceneID="8rd-ls-ZIj">
@@ -727,7 +767,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eT-bB-Ge5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5786.71875" y="67.96875"/>
+            <point key="canvasLocation" x="32" y="-18"/>
         </scene>
     </scenes>
     <resources>

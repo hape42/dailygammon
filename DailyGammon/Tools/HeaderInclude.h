@@ -69,7 +69,8 @@
     [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
     button5.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
     button5.tag = 5;
-    
+    [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
+
     x += buttonBreite + luecke;
 
     UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -122,6 +123,24 @@
     popController.sourceRect = button.bounds;
 }
 
+- (void)logout
+{
+    NSURL *urlMatch = [NSURL URLWithString:@"http://dailygammon.com/bg/logout"];
+    
+    NSError *error = nil;
+    NSStringEncoding encoding = 0;
+    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                       usedEncoding:&encoding
+                                                              error:&error];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+
+}
 - (IBAction)showPopOverAbout:(id)sender
 {
     

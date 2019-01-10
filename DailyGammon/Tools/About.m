@@ -47,7 +47,7 @@
 
 - (IBAction)MRAboutButtonInfo:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"www.hape42.de"]];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         [self.presentingPopoverController dismissPopoverAnimated:YES];

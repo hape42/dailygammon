@@ -11,10 +11,15 @@
 #import "TopPageVC.h"
 
 @interface LoginVC ()
+@property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
+@property (weak, nonatomic) IBOutlet UITextField *passwordOutlet;
 
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
+@property (weak, nonatomic) IBOutlet UIButton *faqButton;
 
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
+@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
 @end
 
@@ -28,29 +33,22 @@
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     design = [[Design alloc] init];
-
-    [self.view addSubview:[self makeHeader]];
     
     self.loginButton = [design makeNiceButton:self.loginButton];
-
-
-
+    self.createAccountButton = [design makeNiceButton:self.createAccountButton];
+    self.faqButton = [design makeNiceButton:self.faqButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    
-}
+ }
 - (IBAction)loginAction:(id)sender
 {
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSString *userName = @"hape42";
-    NSString *userPassword = @"00450045";
-    
+    NSString *userName = self.usewrnameOutlet.text;
+    NSString *userPassword = self.passwordOutlet.text;
+
     //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
     NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -64,15 +62,15 @@
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     
-#warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
+//#warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
     if(conn)
     {
         NSLog(@"Connection Successful");
-    } else
+    }
+    else
     {
         NSLog(@"Connection could not be made");
     }
-    
 }
 
 #pragma mark NSURLConnection Delegate Methods
@@ -83,19 +81,16 @@
     NSDictionary *fields = [HTTPResponse allHeaderFields];
     NSString *cookie = [fields valueForKey:@"Set-Cookie"];
     XLog(@"Connection begonnen %@", cookie);
-
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     XLog(@"Connection didReceiveData");
-    
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     XLog(@"Connection didFailWithError");
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -107,10 +102,52 @@
         NSLog(@"value: '%@'\n",  [cookie value]);
         NSLog(@"domain: '%@'\n", [cookie domain]);
         NSLog(@"path: '%@'\n",   [cookie path]);
+        if([[cookie value] isEqualToString:@"N/A"])
+        {
+            XLog(@"login nicht ok");
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Message"
+                                         message:@"We cannot validate the user name and password entered"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+                                        }];
+            [alert addAction:yesButton];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }
+        else
+        {
+            XLog(@"login ok");
+            [[NSUserDefaults standardUserDefaults] setValue:self.usewrnameOutlet.text forKey:@"user"];
+            [[NSUserDefaults standardUserDefaults] setValue:self.passwordOutlet.text forKey:@"password"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+
+            TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            [self.navigationController pushViewController:vc animated:NO];
+        }
     }
-
 }
-
-#include "HeaderInclude.h"
+- (IBAction)createAccountAction:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/create"] options:@{} completionHandler:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    }
+}
+- (IBAction)faqAction:(id)sender
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    {
+        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    }
+}
 
 @end

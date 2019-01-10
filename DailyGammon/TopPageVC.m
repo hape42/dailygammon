@@ -13,6 +13,8 @@
 #import "PlayMatch.h"
 #import "Preferences.h"
 #import "Rating.h"
+#import "LoginVC.h"
+
 @interface TopPageVC ()
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
@@ -66,9 +68,10 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-#warning userdefaults für user&pw
-    NSString *userName = @"hape42";
-    NSString *userPassword = @"00450045";
+
+    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
+    NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+
     self.loginOk = FALSE;
     
     //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
@@ -142,9 +145,22 @@
             [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
         
         [[NSUserDefaults standardUserDefaults] synchronize];
+        if([[cookie value] isEqualToString:@"N/A"])
+        {
+            LoginVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+            [self.navigationController pushViewController:vc animated:NO];
+        }
+        else
+        {
+            [ self readTopPage];
+        }
     }
-
-    [ self readTopPage];
+    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
+    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
+    {
+        LoginVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
     
     return;
 }
