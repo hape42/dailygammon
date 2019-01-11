@@ -10,9 +10,13 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+@class Design;
+
 @interface About : UIViewController <MFMailComposeViewControllerDelegate >
 
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
+
+@property (strong, readwrite, retain, atomic) Design *design;
 
 @property (weak, nonatomic) IBOutlet UILabel *MRAbout;
 @property (weak, nonatomic) IBOutlet UILabel *MrAboutAppname;

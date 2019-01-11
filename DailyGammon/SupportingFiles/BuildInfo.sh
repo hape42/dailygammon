@@ -15,7 +15,7 @@
 buildPlist="${BUILT_PRODUCTS_DIR}/${INFOPLIST_PATH}"
 CFBuildDate=$(date +"%d. %B %Y %H:%M:%S")
 #CFBuildDate=$(date +"%d.%m.%Y %H:%M:%S")
-/usr/libexec/PlistBuddy -c "Set :DGBuildDate $CFBuildDate" "$buildPlist"
+/usr/libexec/PlistBuddy -c "Set :DGBuildDate $CFBuildDate" "$INFOPLIST_FILE"
 buildNumber=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "$INFOPLIST_FILE")
 buildNumber=$(($buildNumber + 1))
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $buildNumber" "$INFOPLIST_FILE"
