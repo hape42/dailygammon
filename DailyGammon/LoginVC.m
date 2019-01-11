@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
 @property (weak, nonatomic) IBOutlet UIButton *faqButton;
+@property (weak, nonatomic) IBOutlet UIImageView *logo;
 
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
@@ -37,6 +38,9 @@
     self.loginButton = [design makeNiceButton:self.loginButton];
     self.createAccountButton = [design makeNiceButton:self.createAccountButton];
     self.faqButton = [design makeNiceButton:self.faqButton];
+    
+    self.logo.layer.cornerRadius = 14.0f;
+    self.logo.layer.masksToBounds = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated

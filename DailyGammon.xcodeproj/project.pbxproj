@@ -42,6 +42,13 @@
 		E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */; };
 		E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */; };
 		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
+		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
+		E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81B21E7CCE600494A82 /* dice_blau.png */; };
+		E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81C21E7CCE600494A82 /* dice_gruen.png */; };
+		E0C1D82321E7CCEA00494A82 /* pfeil_rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81D21E7CCE700494A82 /* pfeil_rot.png */; };
+		E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */; };
+		E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81F21E7CCE900494A82 /* dice_rot.png */; };
+		E0C1D82721E7D10800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82621E7D10800494A82 /* app_icon.png */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -104,6 +111,13 @@
 		E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
 		E0BDCC3F21C185A300E8AF25 /* Rating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
 		E0BDCC4021C185A300E8AF25 /* Rating.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
+		E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_gruen.png; sourceTree = "<group>"; };
+		E0C1D81B21E7CCE600494A82 /* dice_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_blau.png; sourceTree = "<group>"; };
+		E0C1D81C21E7CCE600494A82 /* dice_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_gruen.png; sourceTree = "<group>"; };
+		E0C1D81D21E7CCE700494A82 /* pfeil_rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_rot.png; sourceTree = "<group>"; };
+		E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_blau.png; sourceTree = "<group>"; };
+		E0C1D81F21E7CCE900494A82 /* dice_rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_rot.png; sourceTree = "<group>"; };
+		E0C1D82621E7D10800494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -252,6 +266,13 @@
 			children = (
 				E0BDCC3121BD13D700E8AF25 /* Boards */,
 				E0BDCC2F21BC362500E8AF25 /* dice.png */,
+				E0C1D82621E7D10800494A82 /* app_icon.png */,
+				E0C1D81B21E7CCE600494A82 /* dice_blau.png */,
+				E0C1D81C21E7CCE600494A82 /* dice_gruen.png */,
+				E0C1D81F21E7CCE900494A82 /* dice_rot.png */,
+				E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */,
+				E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */,
+				E0C1D81D21E7CCE700494A82 /* pfeil_rot.png */,
 				E09C008521B114CD0056D2A2 /* Zahnrad.pdf */,
 				E09C00A821B43E690056D2A2 /* pfeil.pdf */,
 				E0F9589221AD168B003DAC01 /* Assets.xcassets */,
@@ -348,10 +369,12 @@
 			files = (
 				E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */,
 				E0F9589621AD168B003DAC01 /* LaunchScreen.storyboard in Resources */,
+				E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */,
 				E09C007F21B07B980056D2A2 /* spitze_rot.png in Resources */,
 				E0F958AB21AD73AE003DAC01 /* diceDG.png in Resources */,
 				E09C007B21B07A290056D2A2 /* pt_lt_down0.gif in Resources */,
 				E09C008621B114CD0056D2A2 /* Zahnrad.pdf in Resources */,
+				E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */,
 				E09C00A121B3D2220056D2A2 /* spitze_rot-1.png in Resources */,
 				E09C00A321B3D2220056D2A2 /* spitze_grau_3schwarz.png in Resources */,
 				E09C00A521B3D2220056D2A2 /* spitze_grau_1rot-1.png in Resources */,
@@ -364,7 +387,9 @@
 				E09C00A721B3D2220056D2A2 /* spitze_rot_1rot.png in Resources */,
 				E09C008321B07E450056D2A2 /* spitze_grau_1rot.png in Resources */,
 				E09C007C21B07A290056D2A2 /* pt_lt_up0.gif in Resources */,
+				E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */,
 				E0F958AD21ADA09F003DAC01 /* dglogo_grey.gif in Resources */,
+				E0C1D82321E7CCEA00494A82 /* pfeil_rot.png in Resources */,
 				E0BDCC3021BC362500E8AF25 /* dice.png in Resources */,
 				E09C008021B07B980056D2A2 /* spitze_grau.png in Resources */,
 				E09C009F21B3D2220056D2A2 /* spitze_grau_1schwarz.png in Resources */,
@@ -372,8 +397,11 @@
 				E09C00A621B3D2220056D2A2 /* spitze_rot_3schwarz.png in Resources */,
 				E09C008421B07E450056D2A2 /* spitze_rot_1grau.png in Resources */,
 				E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */,
+				E0C1D82721E7D10800494A82 /* app_icon.png in Resources */,
+				E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */,
 				E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */,
 				E09C007621B077F10056D2A2 /* pt_dk_down_b1.gif in Resources */,
+				E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */,
 				E06E1C5921B7BD94003B310F /* classic.png in Resources */,
 				E09C007A21B07A290056D2A2 /* pt_dk_up0.gif in Resources */,
 				E09C009E21B3D2220056D2A2 /* pt_dk_up0.png in Resources */,

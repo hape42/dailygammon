@@ -25,7 +25,25 @@
 
     int buttonBreite = (headerBreite - diceBreite - (anzalButtons * luecke) ) / anzalButtons;
     
-    UIImageView *diceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dice.png"]];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1)
+        boardSchema = 4;
+    NSString *imageName = @"dice_rot.png";
+    switch(boardSchema)
+    {
+        case 1:
+        case 2:
+            imageName = @"dice_gruen.png";
+            break;
+        case 3:
+            imageName = @"dice_blau.png";
+            break;
+        case 4:
+            imageName = @"dice_rot.png";
+        break;
+            
+    }
+    UIImageView *diceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     diceView.frame = CGRectMake(0, 5, diceBreite, diceBreite);
     
     x +=  diceBreite + luecke;

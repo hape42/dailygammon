@@ -323,7 +323,26 @@
     cell.backgroundColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell setTintColor:[UIColor greenColor]];
-    UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DisclosureIndicator"]];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1)
+        boardSchema = 4;
+    NSString *imageName = @"pfeil_rot.png";
+    switch(boardSchema)
+    {
+        case 1:
+        case 2:
+            imageName = @"pfeil_gruen.png";
+            break;
+        case 3:
+            imageName = @"pfeil_blau.png";
+            break;
+        case 4:
+            imageName = @"pfeil_rot.png";
+            break;
+            
+    }
+
+    UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     CGRect frame = checkmark.frame;
     frame.size.height = 20;
     frame.size.width = 20;

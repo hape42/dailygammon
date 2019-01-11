@@ -112,7 +112,7 @@
             break;
         case 3:
         {
-            UIColor *schemaColor = [UIColor colorWithRed:197.0/255 green:197.0/255 blue:197.0/255 alpha:1];
+            UIColor *schemaColor = [UIColor colorWithRed:204.0/255 green:204.0/255 blue:204.0/255 alpha:1];
             [schemaDict setObject:schemaColor forKey:@"BoardSchemaColor"];
 
             UIColor *randColor = [UIColor colorWithRed:142.0/255 green:142.0/255 blue:142.0/255 alpha:1];
