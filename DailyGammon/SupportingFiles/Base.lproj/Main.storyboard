@@ -770,6 +770,44 @@
             </objects>
             <point key="canvasLocation" x="31.640624999999996" y="-18.75"/>
         </scene>
+        <!--Game Lounge-->
+        <scene sceneID="cf6-yw-aDN">
+            <objects>
+                <viewController storyboardIdentifier="GameLoungeVC" id="DvW-Tf-E0z" customClass="GameLounge" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XW6-DJ-3DP">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="XWE-Rd-rvE">
+                                <rect key="frame" x="20" y="137" width="984" height="611"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="XW6-DJ-3DP" id="4IU-pk-0xn"/>
+                                    <outlet property="delegate" destination="XW6-DJ-3DP" id="jUC-ZA-FqN"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tournament Sign-Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="x0H-Ah-797">
+                                <rect key="frame" x="20" y="97" width="984" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="1jP-Or-YF5"/>
+                    <connections>
+                        <outlet property="header" destination="x0H-Ah-797" id="rnB-5u-3Zf"/>
+                        <outlet property="tableView" destination="XWE-Rd-rvE" id="4hz-tZ-WMK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kzM-Vy-0nU" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1098.6328125" y="-798.4375"/>
+        </scene>
     </scenes>
     <resources>
         <image name="BlueWhite.png" width="722" height="592"/>

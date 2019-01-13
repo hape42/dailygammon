@@ -62,7 +62,8 @@
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
     button2.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
     button2.tag = 2;
-    
+    [button2 addTarget:self action:@selector(GameLoungeVC) forControlEvents:UIControlEventTouchUpInside];
+
     x += buttonBreite + luecke;
     
     UIButton *button3 = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -70,7 +71,8 @@
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
     button3.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
     button3.tag = 3;
-    
+    [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
+
     x += buttonBreite + luecke;
     
     UIButton *button4 = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -116,6 +118,13 @@
 -(void) topPageVC
 {
     TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+-(void) GameLoungeVC
+{
+    GameLounge *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"GameLoungeVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
@@ -177,5 +186,8 @@
     popController.sourceRect = button.bounds;
 
 }
-
+-(void) help
+{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
+}
 #endif /* HeaderTest_h */

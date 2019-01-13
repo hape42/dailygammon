@@ -14,6 +14,7 @@
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
+#import "GameLounge.h"
 
 @interface TopPageVC ()
 

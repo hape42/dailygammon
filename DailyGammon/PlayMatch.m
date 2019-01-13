@@ -12,6 +12,7 @@
 #import "Design.h"
 #import "TFHpple.h"
 #import "Match.h"
+#import "GameLounge.h"
 
 @interface PlayMatch ()
 

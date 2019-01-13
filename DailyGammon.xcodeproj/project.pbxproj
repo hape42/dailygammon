@@ -49,6 +49,7 @@
 		E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */; };
 		E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81F21E7CCE900494A82 /* dice_rot.png */; };
 		E0C1D82721E7D10800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82621E7D10800494A82 /* app_icon.png */; };
+		E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C1D82921E900D100494A82 /* GameLounge.m */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -118,6 +119,8 @@
 		E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_blau.png; sourceTree = "<group>"; };
 		E0C1D81F21E7CCE900494A82 /* dice_rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_rot.png; sourceTree = "<group>"; };
 		E0C1D82621E7D10800494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
+		E0C1D82821E900BA00494A82 /* GameLounge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLounge.h; sourceTree = "<group>"; };
+		E0C1D82921E900D100494A82 /* GameLounge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLounge.m; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -238,6 +241,8 @@
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
 				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
 				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
+				E0C1D82821E900BA00494A82 /* GameLounge.h */,
+				E0C1D82921E900D100494A82 /* GameLounge.m */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
 				E0F9589821AD168B003DAC01 /* main.m */,
@@ -443,6 +448,7 @@
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
+				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
