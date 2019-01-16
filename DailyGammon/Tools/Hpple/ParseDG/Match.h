@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Match : NSObject
+@interface Match : UIViewController
 
 - (NSMutableDictionary *) readMatch:(NSString *)matchLink;
 - (NSMutableDictionary *) readActionForm:(NSString *)matchLink withChat:(NSString *)chat;

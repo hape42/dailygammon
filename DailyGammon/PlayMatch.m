@@ -82,6 +82,9 @@
 #define ONLY_MESSAGE 10
 #define NEXT__ 11
 
+#define FINISHED_MATCH_VIEW 43
+#define CHAT_VIEW 42
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -118,6 +121,12 @@
 }
 -(void)showMatch
 {
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+
     // schieb den chatView aus dem sichtbaren bereich
     CGRect frame = self.chatView.frame;
     frame.origin.x = 5000;
@@ -152,19 +161,19 @@
     self.actionDict = [match readActionForm:matchLink withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
-    [self drawBoard];
-
-}
-
--(void)drawBoard
-{
-    if([[self.boardDict objectForKey:@"message"] length] != 0)
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    if( finishedMatchDict != nil)
+    {
+        XLog(@"%@", finishedMatchDict);
+        [self finishedMatchView:finishedMatchDict];
+    }
+    else if([[self.boardDict objectForKey:@"message"] length] != 0)
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:[self.boardDict objectForKey:@"message"]
                                      message:[self.boardDict objectForKey:@"chat"]
                                      preferredStyle:UIAlertControllerStyleAlert];
-        
+
         UIAlertAction* yesButton = [UIAlertAction
                                     actionWithTitle:@"NEXT"
                                     style:UIAlertActionStyleDefault
@@ -173,11 +182,19 @@
                                         self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
                                         [self showMatch];
                                     }];
-        
+
         [alert addAction:yesButton];
-        
+
         [self presentViewController:alert animated:YES completion:nil];
     }
+    else
+    {
+        [self drawBoard];
+    }
+}
+
+-(void)drawBoard
+{
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
@@ -793,7 +810,7 @@
 
 //    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
     UIView *removeView;
-    while((removeView = [self.view viewWithTag:42]) != nil)
+    while((removeView = [self.view viewWithTag:CHAT_VIEW]) != nil)
     {
         [removeView removeFromSuperview];
     }
@@ -803,7 +820,7 @@
                                                                   self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
     
 //    actionView.backgroundColor = [UIColor yellowColor];
-    actionView.tag = 42;
+    actionView.tag = CHAT_VIEW;
     actionView.layer.borderWidth = 1;
 
     [self.view addSubview:actionView];
@@ -1249,7 +1266,7 @@
                   range:NSMakeRange(0, [title length])];
     [alert setValue:title forKey:@"attributedTitle"];
 
-    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"\n\nSomething unexpected happend! \n\nBetter go to TopPage. \n\nAnd/Or send Email to support\n\n"];
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"\n\nSomething unexpected happend!  \n\n Please send an Email to support.\n\n\nOr just go to the TopPage."];
     [message addAttribute:NSFontAttributeName
                     value:[UIFont systemFontOfSize:20.0]
                     range:NSMakeRange(0, [message length])];
@@ -1330,6 +1347,132 @@
     [self presentViewController:alert animated:YES completion:nil];
 
 
+}
+#pragma mark - finishedMatch
+- (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
+{
+    int rand = 10;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 40,  maxHoehe - 160)];
+    
+    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.tag = FINISHED_MATCH_VIEW;
+    infoView.layer.borderWidth = 1;
+    
+    [self.view addSubview:infoView];
+    
+    UILabel * matchName = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 80)];
+    matchName.text = [finishedMatchDict objectForKey:@"matchName"];
+    matchName.textAlignment = NSTextAlignmentCenter;
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
+    [attr addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:40.0]
+                  range:NSMakeRange(0, [attr length])];
+    [matchName setAttributedText:attr];
+    matchName.adjustsFontSizeToFitWidth = YES;
+    matchName.numberOfLines = 0;
+    matchName.minimumScaleFactor = 0.5;
+    matchName.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:matchName];
+    
+    UILabel * winner = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand, infoView.layer.frame.size.width - (2 * rand), 60)];
+    winner.textAlignment = NSTextAlignmentLeft;
+    attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"winnerName"]];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:30.0]
+                 range:NSMakeRange(0, [attr length])];
+    [winner setAttributedText:attr];
+    winner.adjustsFontSizeToFitWidth = YES;
+    winner.numberOfLines = 0;
+    winner.minimumScaleFactor = 0.5;
+    winner.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:winner];
+
+    UILabel * length = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand, infoView.layer.frame.size.width - (2 * rand), 30)];
+    length.textAlignment = NSTextAlignmentLeft;
+    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
+    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
+    [infoView addSubview:length];
+
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
+    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player1Name.layer.frame.size.width, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
+    player1Name.textAlignment = NSTextAlignmentLeft;
+    player1Name.text = playerArray[0];
+    [infoView addSubview:player1Name];
+    player1Score.textAlignment = NSTextAlignmentRight;
+    player1Score.text = playerArray[1];
+    [infoView addSubview:player1Score];
+
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand + 30 , 100, 30)];
+    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player2Name.layer.frame.size.width, player2Name.layer.frame.origin.y, 100, 30)];
+    player2Name.textAlignment = NSTextAlignmentLeft;
+    player2Name.text = playerArray[2];
+    [infoView addSubview:player2Name];
+    player2Score.textAlignment = NSTextAlignmentRight;
+    player2Score.text = playerArray[3];
+    [infoView addSubview:player2Score];
+
+    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand),  infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
+    chat.textAlignment = NSTextAlignmentLeft;
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    NSString *chatString = @"";
+    for( NSString *chatZeile in chatArray)
+    {
+        chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
+    }
+    chat.text = chatString;
+    chat.editable = NO;
+    [chat setFont:[UIFont systemFontOfSize:20]];
+    [infoView addSubview:chat];
+
+    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonNext = [design makeNiceButton:buttonNext];
+    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonNext];
+ 
+    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonToTop = [design makeNiceButton:buttonToTop];
+    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonToTop];
+
+    return;
+}
+- (void)actionNextFinishedMatch
+{
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    NSString *href = @"";
+    for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+    {
+        href = [dict objectForKey:@"action"];
+    }
+    matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+    [self showMatch];
+}
+- (void)actionToTopFinishedMatch
+{
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    NSString *href = @"";
+    for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+    {
+        href = [dict objectForKey:@"action"];
+    }
+    matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1", href];
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+    
+    NSError *error = nil;
+    NSStringEncoding encoding = 0;
+    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                       usedEncoding:&encoding
+                                                              error:&error];
+    [self topPageVC];
 }
 
 #include "HeaderInclude.h"

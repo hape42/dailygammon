@@ -362,7 +362,7 @@
                                 <rect key="frame" x="40" y="114" width="150" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="classic.png" id="v1K-JX-yex">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="classicHD.png" id="v1K-JX-yex">
                                 <rect key="frame" x="228" y="114" width="150" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -814,5 +814,6 @@
         <image name="GrayRed.png" width="962" height="702"/>
         <image name="app_icon.png" width="1024" height="1024"/>
         <image name="classic.png" width="200" height="166"/>
+        <image name="classicHD.png" width="986" height="724"/>
     </resources>
 </document>

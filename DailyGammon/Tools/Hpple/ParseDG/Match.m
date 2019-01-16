@@ -9,6 +9,8 @@
 #import "Match.h"
 #import "TFHpple.h"
 
+@interface Match ()
+@end
 @implementation Match
 
 -(NSMutableDictionary *) readMatch:(NSString *)matchLink
@@ -21,11 +23,11 @@
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     NSError *error = nil;
     NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                       usedEncoding:&encoding
-                                                              error:&error];
+//    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+//                                                       usedEncoding:&encoding
+//                                                              error:&error];
     if(error)
-        XLog(@"%@", urlMatch);
+        XLog(@"error %@ %@",error ,urlMatch);
     
     NSData *data = [NSData dataWithContentsOfURL:urlMatch];
     
@@ -34,6 +36,53 @@
     htmlString = [[NSString alloc]
               initWithData:data encoding: NSISOLatin1StringEncoding];
     
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData ] ;
+    
+    xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
+
+    NSArray *caption  = [xpathParser searchWithXPathQuery:@"//table/caption"];
+    if(caption.count > 0)
+    {
+        for(TFHppleElement *element in caption)
+        {
+//            UIAlertController * alert = [UIAlertController
+//                                         alertControllerWithTitle:@"caption"
+//                                         message:[element content]
+//                                         preferredStyle:UIAlertControllerStyleAlert];
+//
+//            UIAlertAction* yesButton = [UIAlertAction
+//                                        actionWithTitle:@"OK"
+//                                        style:UIAlertActionStyleDefault
+//                                        handler:^(UIAlertAction * action)
+//                                        {
+//                                        }];
+//            [alert addAction:yesButton];
+//            [self presentViewController:alert animated:YES completion:nil];
+//            id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+//            if([rootViewController isKindOfClass:[UINavigationController class]])
+//            {
+//                rootViewController = ((UINavigationController *)rootViewController).viewControllers.firstObject;
+//            }
+//            if([rootViewController isKindOfClass:[UITabBarController class]])
+//            {
+//                rootViewController = ((UITabBarController *)rootViewController).selectedViewController;
+//            }
+//            [rootViewController presentViewController:alert animated:YES completion:nil];
+            
+            if([[element content] isEqualToString:@"Score"])
+            {
+                NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
+
+                finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
+                [boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
+
+                return boardDict;
+            }
+            
+        }
+    }
     NSString *chat = @"";
     NSRange preStart = [htmlString rangeOfString:@"<PRE>"];
     if(preStart.length > 0)
@@ -43,15 +92,10 @@
         chat = [htmlString substringWithRange:rangeChat];
         chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
     }
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData ] ;
-    
-    xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
 
 #pragma mark - The http request you submitted was in error.
     NSString *errorText = @"";
-    if ([matchString rangeOfString:@"The http request you submitted was in error."].location != NSNotFound)
+    if ([htmlString rangeOfString:@"The http request you submitted was in error."].location != NSNotFound)
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:errorText forKey:@"error"];
@@ -74,18 +118,23 @@
 //    [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
 //    [boardDict setObject:@"!DailyGammon is pleased to announce that the Three Pointer #3317 tournament has begun.  Good luck!" forKey:@"chat"];
 #warning "You have received the following telegram message:" abfangen
-    if ([matchString rangeOfString:@"telegram"].location != NSNotFound)
+    if ([htmlString rangeOfString:@"telegram"].location != NSNotFound)
     {
         [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
-        // in "chat" sollte dann der text stehen
+        NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//pre"];
+        for(TFHppleElement *element in matchHeader)
+        {
+            [boardDict setObject:[element content] forKey:@"chat"];
+        }
         return boardDict;
     }
     
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
-    if ([matchString rangeOfString:@"unexpected"].location != NSNotFound)
+    if ([htmlString rangeOfString:@"unexpected"].location != NSNotFound)
         unexpectedMove = @"Your opponent made an unexpected move, and the game has been rolled back to that point.";
     [boardDict setObject:unexpectedMove forKey:@"unexpectedMove"];
+
 
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[1]/td"];
@@ -360,5 +409,79 @@
         [actionDict setObject:chat forKey:@"content"];
 
     return actionDict;
+}
+
+- (NSMutableDictionary*) analyzeFinishedMatch: (TFHpple *)xpathParser
+{
+    //
+//    <center><h3><a href=/bg/event/74878>November 18 Championship</a>, Round 2</h3></center>
+//    <h4>hape42 wins 1 point and the match.</h4>
+    // <table><caption><u>Score</u></caption>
+//    <tr><th>Length<th>11
+//    <tr><td><b><a href=/bg/user/13014>hape42</a></b><td>11
+//    <tr><td><b><a href=/bg/user/21153>upton girl</a></b><td>1
+//    </table>
+//    <form method=post action=/bg/move/3959519/1916><input type=hidden name=commit value=1>
+//    <b><i>upton girl says:</i></b>
+//    <PRE>Congrats
+//    <p><input type=submit name=submit value="Next Game"> <input type=submit name=submit value="To Top"></form>
+    
+    NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
+    
+    NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
+    NSMutableString *matchName = [[NSMutableString alloc]init];
+    for(TFHppleElement *element in matchHeader)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            [matchName appendString:[child content]];
+        }
+    }
+    [finishedMatchDict setObject:matchName forKey:@"matchName"];
+    
+    NSArray *winnerHeader  = [xpathParser searchWithXPathQuery:@"//h4"];
+    NSMutableString *winnerName = [[NSMutableString alloc]init];
+    for(TFHppleElement *element in winnerHeader)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            [winnerName appendString:[child content]];
+        }
+    }
+    [finishedMatchDict setObject:winnerName forKey:@"winnerName"];
+    
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr/th"];
+    NSMutableArray *elementArray = [[NSMutableArray alloc]init];
+    
+    for(TFHppleElement *element in elements)
+    {
+        [elementArray addObject:[element text]];
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"matchLength"];
+
+    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr/td"];
+    elementArray = [[NSMutableArray alloc]init];
+    
+    for(TFHppleElement *element in elements)
+    {
+        [elementArray addObject:[element content]];
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"matchPlayer"];
+
+    elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+    elementArray = [[NSMutableArray alloc]init];
+    NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+
+    for(TFHppleElement *element in elements)
+    {
+        [elementArray addObject:[element content]];
+        [attributesArray addObject:[element attributes]];
+
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"chat"];
+    [finishedMatchDict setObject:attributesArray forKey:@"attributes"];
+
+
+    return finishedMatchDict;
 }
 @end
