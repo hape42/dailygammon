@@ -62,6 +62,8 @@
 
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
+@property (weak, nonatomic) UIView *infoViewX;
+
 @end
 
 @implementation PlayMatch
@@ -81,6 +83,7 @@
 #define GREEDY 9
 #define ONLY_MESSAGE 10
 #define NEXT__ 11
+#define ACCEPT_DECLINE 12
 
 #define FINISHED_MATCH_VIEW 43
 #define CHAT_VIEW 42
@@ -775,7 +778,7 @@
     frame.origin.y = boardView.frame.origin.y - nummerHoehe;
     self.opponentView.frame = frame;
     
-    self.opponentName.text    = opponentArray[0];
+    self.opponentName.text    = opponentArray[0]; self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
     self.opponentScore.text   = opponentArray[5];
 
@@ -893,7 +896,63 @@
             }
             break;
         }
-        case SWAP_DICE:
+        case ACCEPT_DECLINE:
+        {
+#pragma mark - Button Accept Pass
+            UIButton *buttonAccept = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonAccept = [design makeNiceButton:buttonAccept];
+            [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
+            buttonAccept.frame = CGRectMake(10, 20, 100, 35);
+            [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonAccept];
+            
+            UIButton *buttonPass = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonPass = [design makeNiceButton:buttonPass];
+            [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
+            buttonPass.frame = CGRectMake(10,  buttonAccept.frame.origin.y + 100 , 100, 35);
+            [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonPass];
+            
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count > 2)
+            {
+                for(NSDictionary * dict in attributesArray)
+                {
+                    if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+                    {
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
+                        {
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(150, buttonAccept.frame.origin.y + 4, 50, 35)];
+                            [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
+                           [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            [actionView addSubview: verifyAccept];
+            
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(150 + 60, buttonAccept.frame.origin.y,100, 35)];
+                            verifyAcceptText.text = @"Verify";
+                            verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                            [actionView addSubview: verifyAcceptText];
+                        }
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                        {
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(150, buttonPass.frame.origin.y + 4, 50, 35)];
+                            [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
+                            [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            [actionView addSubview: verifyDecline];
+                            
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(150 + 60, buttonPass.frame.origin.y,100, 35)];
+                            verifyDeclineText.text = @"Verify";
+                            verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                            [actionView addSubview: verifyDeclineText];
+                        }
+
+                    }
+                }
+            }
+            break;
+        }
+       case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
             UIButton *buttonSwap = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -1056,6 +1115,15 @@
 {
     self.verifiedDouble = [(UISwitch *)sender isOn];
 }
+- (void)actionVerifyAccept:(id)sender
+{
+    self.verifiedTake = [(UISwitch *)sender isOn];
+}
+- (void)actionVerifyDecline:(id)sender
+{
+    self.verifiedPass = [(UISwitch *)sender isOn];
+}
+
 - (void)actionRoll
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
@@ -1063,8 +1131,137 @@
 }
 - (void)actionDouble
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    if(attributesArray.count == 3)
+    {
+        if(self.verifiedDouble)
+        {
+            matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [self.actionDict objectForKey:@"action"]];
+            [self showMatch];
+        }
+        else
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Information"
+                                         message:@"Previous move not verified!"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+
+                                        }];
+            
+            [alert addAction:yesButton];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }
+    }
+    else
+    {
+        matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
+        [self showMatch];
+    }
+}
+
+- (void)actionTake
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    BOOL verify = FALSE;
+    if(attributesArray.count > 2)
+    {
+        for(NSDictionary * dict in attributesArray)
+        {
+            if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+            {
+                if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
+                {
+                    verify = TRUE;
+                }
+            }
+        }
+    }
+    if(verify)
+    {
+        if(self.verifiedPass)
+        {
+            matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
+            [self showMatch];
+        }
+        else
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Information"
+                                         message:@"Previous move not verified!"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+                                            
+                                        }];
+            [alert addAction:yesButton];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }
+    else
+    {
+        matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [self.actionDict objectForKey:@"action"]];
+        [self showMatch];
+    } 
+}
+- (void)actionPass
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    BOOL verify = FALSE;
+    if(attributesArray.count > 2)
+    {
+        for(NSDictionary * dict in attributesArray)
+        {
+            if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+            {
+                if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                {
+                    verify = TRUE;
+                }
+            }
+        }
+    }
+    if(verify)
+    {
+        if(self.verifiedPass)
+        {
+            matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [self.actionDict objectForKey:@"action"]];
+            [self showMatch];
+        }
+        else
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Information"
+                                         message:@"Previous move not verified!"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+                                            
+                                        }];
+            [alert addAction:yesButton];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }
+    else
+    {
+        matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [self.actionDict objectForKey:@"action"]];
+        [self showMatch];
+    }
 }
 
 - (void)actionNext
@@ -1144,6 +1341,12 @@
             dict = attributesArray[1];
             if([[dict objectForKey:@"value"] isEqualToString:@"Double"])
                 return ROLL_DOUBLE;
+        }
+        if([[dict objectForKey:@"value"] isEqualToString:@"Accept"])
+        {
+            dict = attributesArray[1];
+            if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
+                return ACCEPT_DECLINE;
         }
         dict = attributesArray[1];
         if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
@@ -1398,7 +1601,7 @@
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
 
-    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand , 150, 30)];
     UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player1Name.layer.frame.size.width, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
     player1Name.textAlignment = NSTextAlignmentLeft;
     player1Name.text = playerArray[0];
@@ -1407,7 +1610,7 @@
     player1Score.text = playerArray[1];
     [infoView addSubview:player1Score];
 
-    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand + 30 , 100, 30)];
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand + 30 , 150, 30)];
     UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player2Name.layer.frame.size.width, player2Name.layer.frame.origin.y, 100, 30)];
     player2Name.textAlignment = NSTextAlignmentLeft;
     player2Name.text = playerArray[2];
@@ -1416,7 +1619,7 @@
     player2Score.text = playerArray[3];
     [infoView addSubview:player2Score];
 
-    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand),  infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
+    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
     chat.textAlignment = NSTextAlignmentLeft;
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     NSString *chatString = @"";
@@ -1453,6 +1656,12 @@
     {
         href = [dict objectForKey:@"action"];
     }
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+//    [ self.infoView removeFromSuperview];
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
     [self showMatch];
 }
