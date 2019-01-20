@@ -23,7 +23,12 @@
     design = [[Design alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-
+    if(schemaDict.count == 0)
+    {
+        [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"BoardSchema"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        schemaDict = [design schema:4];
+    }
     [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
     return YES;
 }

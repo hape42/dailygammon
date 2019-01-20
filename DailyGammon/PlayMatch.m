@@ -1662,7 +1662,10 @@
         [removeView removeFromSuperview];
     }
 //    [ self.infoView removeFromSuperview];
-    matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+    if([href isEqualToString:@""])
+        matchLink = @"/bg/nextgame";
+    else
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
     [self showMatch];
 }
 - (void)actionToTopFinishedMatch

@@ -19,7 +19,7 @@
     
 #pragma mark - matchName
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-    
+    XLog(@"%@",urlMatch);
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     NSError *error = nil;
     NSStringEncoding encoding = 0;
@@ -47,30 +47,6 @@
     {
         for(TFHppleElement *element in caption)
         {
-//            UIAlertController * alert = [UIAlertController
-//                                         alertControllerWithTitle:@"caption"
-//                                         message:[element content]
-//                                         preferredStyle:UIAlertControllerStyleAlert];
-//
-//            UIAlertAction* yesButton = [UIAlertAction
-//                                        actionWithTitle:@"OK"
-//                                        style:UIAlertActionStyleDefault
-//                                        handler:^(UIAlertAction * action)
-//                                        {
-//                                        }];
-//            [alert addAction:yesButton];
-//            [self presentViewController:alert animated:YES completion:nil];
-//            id rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
-//            if([rootViewController isKindOfClass:[UINavigationController class]])
-//            {
-//                rootViewController = ((UINavigationController *)rootViewController).viewControllers.firstObject;
-//            }
-//            if([rootViewController isKindOfClass:[UITabBarController class]])
-//            {
-//                rootViewController = ((UITabBarController *)rootViewController).selectedViewController;
-//            }
-//            [rootViewController presentViewController:alert animated:YES completion:nil];
-            
             if([[element content] isEqualToString:@"Score"])
             {
                 NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
@@ -80,7 +56,6 @@
 
                 return boardDict;
             }
-            
         }
     }
     NSString *chat = @"";
