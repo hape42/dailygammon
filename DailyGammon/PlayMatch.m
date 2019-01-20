@@ -13,6 +13,7 @@
 #import "TFHpple.h"
 #import "Match.h"
 #import "GameLounge.h"
+#import "Rating.h"
 
 @interface PlayMatch ()
 
@@ -68,7 +69,7 @@
 
 @implementation PlayMatch
 
-@synthesize design, match;
+@synthesize design, match, rating;
 @synthesize matchLink;
 @synthesize ratingDict;
 
@@ -97,8 +98,10 @@
     self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
+    rating = [[Rating alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(showMatch) name:@"changeSchemaNotification" object:nil];
@@ -770,6 +773,11 @@
 #pragma mark - opponent / player
     bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
     bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
+
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+    NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
+    
+    ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
 
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     

@@ -157,16 +157,19 @@
 #pragma mark - opponent
     elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[2]/td[17]"];
     elementArray = [[NSMutableArray alloc]init];
-    
+    NSString *opponentID = @"";
     for(TFHppleElement *element in elements)
     {
         for (TFHppleElement *child in element.children)
         {
             [elementArray addObject:[child content]];
+            if([[[child attributes] objectForKey:@"href"] length] > 0)
+                opponentID = [[[child attributes] objectForKey:@"href"]lastPathComponent];
         }
     }
     [boardDict setObject:elementArray forKey:@"opponent"];
-    
+    [boardDict setObject:opponentID forKey:@"opponentID"];
+
 #pragma mark - obere Reihe moveIndicator
     elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[3]/td"];
     elementArray = [[NSMutableArray alloc]init];
