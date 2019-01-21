@@ -141,7 +141,7 @@
     self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
     self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
 
-    [self.view addSubview:[self makeHeader]];
+//    [self.view addSubview:[self makeHeader]];
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
     
@@ -777,7 +777,8 @@
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
     NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
     
-    ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
+    if(showRatings || showWinLoss)
+        ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
 
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     

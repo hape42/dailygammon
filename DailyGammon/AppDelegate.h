@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class Design;
+@class DbConnect;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
+@property (nonatomic, strong) DbConnect *dbConnect;
 
 @property (strong, nonatomic) UIWindow *window;
 

@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "Design.h"
+#import "DBConnect.h"
 
 @interface AppDelegate ()
 
@@ -60,5 +61,16 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (DbConnect *)dbConnect
+{
+    if (!_dbConnect)
+    {
+        _dbConnect = [[DbConnect alloc] init];
+        [_dbConnect openDb];
+        
+    }
+    // [_dbConnect openDb];
+    return _dbConnect;
+}
 
 @end

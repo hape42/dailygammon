@@ -15,6 +15,8 @@
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
 		E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C009021B2FADB0056D2A2 /* XPathQuery.m */; };
+		E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */; };
+		E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0514D21F4FDA100D91857 /* DbConnect.m */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
 		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
 		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
@@ -59,6 +61,10 @@
 		E09C008E21B2FADB0056D2A2 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		E09C008F21B2FADB0056D2A2 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		E09C009021B2FADB0056D2A2 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		E0B0514D21F4FDA100D91857 /* DbConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DbConnect.m; sourceTree = "<group>"; };
+		E0B0514E21F4FDA200D91857 /* DbConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbConnect.h; sourceTree = "<group>"; };
+		E0B0515021F4FECE00D91857 /* rating.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = rating.sqlite; sourceTree = "<group>"; };
 		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
 		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
 		E0BDCC3621BE6AE300E8AF25 /* About.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
@@ -101,6 +107,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +165,24 @@
 			path = Hpple;
 			sourceTree = "<group>";
 		};
+		E0B0514921F4FCE400D91857 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E0B0514C21F4FD3800D91857 /* DB */ = {
+			isa = PBXGroup;
+			children = (
+				E0B0514E21F4FDA200D91857 /* DbConnect.h */,
+				E0B0514D21F4FDA100D91857 /* DbConnect.m */,
+				E0B0515021F4FECE00D91857 /* rating.sqlite */,
+			);
+			path = DB;
+			sourceTree = "<group>";
+		};
 		E0BDCC3121BD13D700E8AF25 /* Boards */ = {
 			isa = PBXGroup;
 			children = (
@@ -174,6 +199,7 @@
 			children = (
 				E0F9588821AD1688003DAC01 /* DailyGammon */,
 				E0F9588721AD1688003DAC01 /* Products */,
+				E0B0514921F4FCE400D91857 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -209,6 +235,7 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E0B0514C21F4FD3800D91857 /* DB */,
 				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0BDCC3621BE6AE300E8AF25 /* About.h */,
 				E0BDCC3721BE6AE300E8AF25 /* About.m */,
@@ -346,6 +373,7 @@
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,
 				E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
+				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
