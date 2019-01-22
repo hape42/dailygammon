@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Rating : NSObject
 
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID;
+- (float)readRatingForUser:(NSString *)userID;
 
 @end
 

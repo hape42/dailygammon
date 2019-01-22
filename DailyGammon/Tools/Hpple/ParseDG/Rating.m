@@ -86,4 +86,22 @@
 
     return ratingDict;
 }
+
+- (float)readRatingForUser:(NSString *)userID
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@", userID]];
+    NSData *htmlData = [NSData dataWithContentsOfURL:url];
+    NSString *ratingPlayer = @"?";
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[2]/tr[1]/td[3]/table[1]/tr[1]/td[2]"];
+    for(TFHppleElement *element in elements)
+    {
+        TFHppleElement *child = [element firstChild];
+        ratingPlayer = [child content];
+    }
+    
+    return [ratingPlayer floatValue];
+}
+
 @end

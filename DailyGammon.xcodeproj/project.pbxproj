@@ -11,6 +11,7 @@
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
 		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
+		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
@@ -324,6 +325,7 @@
 			files = (
 				E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */,
 				E0F9589621AD168B003DAC01 /* LaunchScreen.storyboard in Resources */,
+				E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */,
 				E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */,
 				E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */,
 				E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */,

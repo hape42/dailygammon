@@ -32,6 +32,7 @@
 - (IBAction)MRAboutButtonInfo:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *buttonWeb;
 @property (weak, nonatomic) IBOutlet UIButton *buttonEmail;
+@property (weak, nonatomic) IBOutlet UIButton *buttonPrivacy;
 
 
 @end

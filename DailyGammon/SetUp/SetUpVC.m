@@ -30,9 +30,12 @@
     design = [[Design alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
-//    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-//    UINavigationBar.appearance.tintColor = [schemaDict objectForKey:@"TintColor"];
-//    UIBarButtonItem.appearance.tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    // schieb den preferencesButton aus dem sichtbaren bereich; kommt erst in einer der nächsten versionen
+    CGRect frame = self.preferencesButton.frame;
+    frame.origin.x = 5000;
+    frame.origin.y = 5000;
+    self.preferencesButton.frame = frame;
 
 }
 

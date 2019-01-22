@@ -12,14 +12,9 @@
 - (void) openDb;
 - (void) closeDb;
 
--(void) saveDistance:(NSString *) timeStamp
-            withClub:(int)clubKey
-         vonLatitude:(CLLocationDegrees)latitudeVon vonLongitude:(CLLocationDegrees)LongitudeVon
-         bisLatitude:(CLLocationDegrees)latitudeBis bisLongitude:(CLLocationDegrees)LongitudeBis
-        withdistance:(float)distance;
+-(void) saveRating:(NSString *) datum
+          withRating:(float)rating;
 
-- (NSMutableArray *) readDistanceForKey:(int)key;
-- (void) deleteDistance:(int)ID;
-- (void) deleteAllDistance;
+- (float)readRatingForDatum:(NSString *)datum;
 
 @end

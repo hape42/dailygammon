@@ -435,7 +435,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" id="xQr-ZL-Am7">
-                                <rect key="frame" x="20" y="126" width="360" height="2"/>
+                                <rect key="frame" x="20" y="126" width="360" height="1"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                             </view>
@@ -463,6 +463,14 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Show Win / Loss" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fa4-QV-29p">
                                 <rect key="frame" x="101" y="181" width="126" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pth-pJ-kdC">
+                                <rect key="frame" x="20" y="247" width="360" height="201"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <string key="text">Be careful with this option! In order to receive this information, the program must additionally read and analyze two HTML pages. This will make the app a bit slower.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -646,7 +654,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qZU-HG-va2">
-                                <rect key="frame" x="108" y="237" width="180" height="44"/>
+                                <rect key="frame" x="20" y="238" width="142" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Email to Support">
@@ -750,6 +758,21 @@
                                     <action selector="MRAboutButtonInfo:" destination="UX0-ua-SQF" eventType="touchUpInside" id="aa8-9j-6NU"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="EN6-bO-x0d">
+                                <rect key="frame" x="204" y="238" width="172" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Privacy Policy">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="actionPrivacy:" destination="UX0-ua-SQF" eventType="touchUpInside" id="OJf-jJ-SjI"/>
+                                </connections>
+                            </button>
                         </subviews>
                     </view>
                     <navigationItem key="navigationItem" id="25C-py-AJq"/>
@@ -763,6 +786,7 @@
                         <outlet property="MRAboutOS" destination="57m-Su-3oc" id="cVP-Mg-FcG"/>
                         <outlet property="MrAboutAppname" destination="fjG-Mr-BMV" id="MWF-Mp-UhC"/>
                         <outlet property="buttonEmail" destination="qZU-HG-va2" id="89i-Yt-NfR"/>
+                        <outlet property="buttonPrivacy" destination="EN6-bO-x0d" id="2ze-I8-haR"/>
                         <outlet property="buttonWeb" destination="qwc-Ac-hor" id="HUB-fv-iR9"/>
                     </connections>
                 </viewController>

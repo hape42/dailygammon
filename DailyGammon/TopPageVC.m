@@ -15,6 +15,8 @@
 #import "Rating.h"
 #import "LoginVC.h"
 #import "GameLounge.h"
+#import "DbConnect.h"
+#import "AppDelegate.h"
 
 @interface TopPageVC ()
 
@@ -521,6 +523,19 @@
 - (void)updateTableView
 {
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,(int)self.topPageArray.count];
+    
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+    float ratingUser = [rating readRatingForUser:userID];
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyy-MM-dd"];
+    NSString *dateDB = [format stringFromDate:[NSDate date]];
+    
+    float ratingDB = [app.dbConnect readRatingForDatum:dateDB];
+    if(ratingUser > ratingDB)
+        [app.dbConnect saveRating:dateDB withRating:ratingUser];
+    
     [self.tableView reloadData];
 
 }
@@ -531,15 +546,18 @@
 {
     [self dismissViewControllerAnimated:YES completion:Nil];
     NSArray *zeile = self.topPageArray[indexPath.row];
-    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-    NSDictionary *opponent = zeile[6];
-    NSString *opponentID = [[opponent objectForKey:@"href"] lastPathComponent];
+//    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+//    NSDictionary *opponent = zeile[6];
+//    NSString *opponentID = [[opponent objectForKey:@"href"] lastPathComponent];
+//
+//    NSMutableDictionary *ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
+    
+    
 
-    NSMutableDictionary *ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = zeile[8];
     vc.matchLink = [match objectForKey:@"href"];
-    vc.ratingDict = ratingDict;
+//    vc.ratingDict = ratingDict;
     
     [self.navigationController pushViewController:vc animated:NO];
 

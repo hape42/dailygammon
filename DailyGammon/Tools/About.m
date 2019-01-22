@@ -16,6 +16,8 @@
 
 @synthesize buttonEmail;
 @synthesize buttonWeb;
+@synthesize buttonPrivacy;
+
 
 @synthesize design;
 
@@ -32,8 +34,9 @@
     self.MRAboutOS.text = [NSString stringWithFormat:@"IOS %@", [[UIDevice currentDevice] systemVersion]];
     
     design = [[Design alloc] init];
-    buttonWeb = [design makeNiceButton:buttonWeb];
-    buttonEmail = [design makeNiceButton:buttonEmail];
+    buttonWeb     = [design makeNiceButton:buttonWeb];
+    buttonEmail   = [design makeNiceButton:buttonEmail];
+    buttonPrivacy = [design makeNiceButton:buttonPrivacy];
 
 }
 
@@ -43,6 +46,26 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)actionPrivacy:(id)sender
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Privacy Policy"
+                                 message:@"This application does not process, store, or transmit personal data. "
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    
+    [alert addAction:yesButton];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
+}
 - (IBAction)MRAboutButtonInfo:(id)sender
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
