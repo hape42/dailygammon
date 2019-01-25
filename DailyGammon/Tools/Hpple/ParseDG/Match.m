@@ -453,12 +453,17 @@
     {
         [elementArray addObject:[element content]];
         [attributesArray addObject:[element attributes]];
+        for (TFHppleElement *child in [element children])
+        {
+            NSDictionary *dict = [child attributes];
+            if([dict objectForKey:@"value"])
+                [finishedMatchDict setObject:[dict objectForKey:@"value"] forKey:@"NextButton"];
+        }
 
+        XLog(@"%@",[element content]);
     }
     [finishedMatchDict setObject:elementArray forKey:@"chat"];
     [finishedMatchDict setObject:attributesArray forKey:@"attributes"];
-
-
     return finishedMatchDict;
 }
 @end

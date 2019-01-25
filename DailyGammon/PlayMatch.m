@@ -138,6 +138,7 @@
     frame.origin.x = 5000;
     frame.origin.y = 5000;
     self.chatView.frame = frame;
+    self.infoLabel.frame = frame;
     self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
     self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
 
@@ -885,7 +886,7 @@
             UIButton *buttonDouble = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonDouble = [design makeNiceButton:buttonDouble];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
-            buttonDouble.frame = CGRectMake(10,  buttonRoll.frame.origin.y + 60 , 100, 35);
+            buttonDouble.frame = CGRectMake(10,  buttonRoll.frame.origin.y + 100 , 100, 35);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonDouble];
 
@@ -1670,11 +1671,14 @@
     {
         [removeView removeFromSuperview];
     }
-//    [ self.infoView removeFromSuperview];
+    NSString *nextButtonText = @"Next%%20Game";
+    if( [finishedMatchDict objectForKey:@"NextButton"] != nil)
+        nextButtonText = [finishedMatchDict objectForKey:@"NextButton"];
+    
     if([href isEqualToString:@""])
         matchLink = @"/bg/nextgame";
     else
-        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+        matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1", href, nextButtonText];
     [self showMatch];
 }
 - (void)actionToTopFinishedMatch
