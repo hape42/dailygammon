@@ -16,6 +16,7 @@
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
 		E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C009021B2FADB0056D2A2 /* XPathQuery.m */; };
+		E0AEFC4921FE0CC500CFFB6C /* startscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC4821FE0CC400CFFB6C /* startscreen.png */; };
 		E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */; };
 		E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0514D21F4FDA100D91857 /* DbConnect.m */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
@@ -62,6 +63,7 @@
 		E09C008E21B2FADB0056D2A2 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		E09C008F21B2FADB0056D2A2 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		E09C009021B2FADB0056D2A2 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		E0AEFC4821FE0CC400CFFB6C /* startscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startscreen.png; sourceTree = "<group>"; };
 		E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		E0B0514D21F4FDA100D91857 /* DbConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DbConnect.m; sourceTree = "<group>"; };
 		E0B0514E21F4FDA200D91857 /* DbConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbConnect.h; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E0AEFC4821FE0CC400CFFB6C /* startscreen.png */,
 				E0C1D82F21EB9F5600494A82 /* app_icon.png */,
 				E0BDCC3121BD13D700E8AF25 /* Boards */,
 				E0C1D81B21E7CCE600494A82 /* dice_blau.png */,
@@ -332,6 +335,7 @@
 				E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */,
 				E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */,
 				E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */,
+				E0AEFC4921FE0CC500CFFB6C /* startscreen.png in Resources */,
 				E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */,
 				E0C1D82321E7CCEA00494A82 /* pfeil_rot.png in Resources */,
 				E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */,

@@ -60,7 +60,7 @@
              count =  sqlite3_column_int(statement, 0);
              if(count >0)
              {
-                 sqlite3_finalize(statement);
+//                 sqlite3_finalize(statement);
                  continue;;
              }
          }

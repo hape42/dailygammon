@@ -1196,7 +1196,7 @@
     }
     if(verify)
     {
-        if(self.verifiedPass)
+        if(self.verifiedTake)
         {
             matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
             [self showMatch];
