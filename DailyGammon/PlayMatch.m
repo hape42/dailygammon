@@ -778,9 +778,34 @@
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
     NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
     
-    if(showRatings || showWinLoss)
-        ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
+    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
 
+    if(showRatings || showWinLoss)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            self->ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if(showRatings)
+                {
+                    self.playerRating.text        = [self->ratingDict objectForKey:@"ratingPlayer"];
+                    self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
+                    self.opponentRating.text      = [self->ratingDict objectForKey:@"ratingOpponent"];;
+                    self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                }
+                if(showWinLoss)
+                {
+                    self.playerWinLoss.text        = [self->ratingDict objectForKey:@"wlaPlayer"];
+                    self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
+                    self.opponentWinLoss.text      = [self->ratingDict objectForKey:@"wlaOpponent"];
+                    self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
+                }
+            });
+            
+        });
+
+    }
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
@@ -803,23 +828,6 @@
     self.playerPips.text    = playerArray[2];
     self.playerScore.text   = playerArray[5];
     
-    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
-
-    if(showRatings)
-    {
-        self.playerRating.text        = [ratingDict objectForKey:@"ratingPlayer"];
-        self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
-        self.opponentRating.text      = [ratingDict objectForKey:@"ratingOpponent"];;
-        self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
-    }
-    if(showWinLoss)
-    {
-        self.playerWinLoss.text        = [ratingDict objectForKey:@"wlaPlayer"];
-        self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
-        self.opponentWinLoss.text      = [ratingDict objectForKey:@"wlaOpponent"];
-        self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
-    }
-
 
 //    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
     UIView *removeView;
