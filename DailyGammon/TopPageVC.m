@@ -523,19 +523,22 @@
 - (void)updateTableView
 {
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,(int)self.topPageArray.count];
-    
-    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-    float ratingUser = [rating readRatingForUser:userID];
-
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyy-MM-dd"];
-    NSString *dateDB = [format stringFromDate:[NSDate date]];
-    
-    float ratingDB = [app.dbConnect readRatingForDatum:dateDB];
-    if(ratingUser > ratingDB)
-        [app.dbConnect saveRating:dateDB withRating:ratingUser];
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                   ^{
+
+                        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+                        float ratingUser = [self->rating readRatingForUser:userID];
+
+                        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+                        [format setDateFormat:@"yyy-MM-dd"];
+                        NSString *dateDB = [format stringFromDate:[NSDate date]];
+                       
+                        float ratingDB = [app.dbConnect readRatingForDatum:dateDB];
+                        if(ratingUser > ratingDB)
+                            [app.dbConnect saveRating:dateDB withRating:ratingUser];
+                   });
+
     [self.tableView reloadData];
 
 }

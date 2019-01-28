@@ -775,35 +775,36 @@
     bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
     bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
 
-    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-    NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
-    
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
 
     if(showRatings || showWinLoss)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            self->ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
-
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if(showRatings)
-                {
-                    self.playerRating.text        = [self->ratingDict objectForKey:@"ratingPlayer"];
-                    self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
-                    self.opponentRating.text      = [self->ratingDict objectForKey:@"ratingOpponent"];;
-                    self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
-                }
-                if(showWinLoss)
-                {
-                    self.playerWinLoss.text        = [self->ratingDict objectForKey:@"wlaPlayer"];
-                    self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
-                    self.opponentWinLoss.text      = [self->ratingDict objectForKey:@"wlaOpponent"];
-                    self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
-                }
-            });
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                    ^{
+                        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+                        NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
             
-        });
+                        self->ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
+
+                        dispatch_async(dispatch_get_main_queue(),
+                                       ^{
+                                            if(showRatings)
+                                            {
+                                                self.playerRating.text        = [self->ratingDict objectForKey:@"ratingPlayer"];
+                                                self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                                self.opponentRating.text      = [self->ratingDict objectForKey:@"ratingOpponent"];;
+                                                self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                            }
+                                            if(showWinLoss)
+                                            {
+                                                self.playerWinLoss.text        = [self->ratingDict objectForKey:@"wlaPlayer"];
+                                                self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                                self.opponentWinLoss.text      = [self->ratingDict objectForKey:@"wlaOpponent"];
+                                                self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
+                                            }
+                                       });
+            
+                    });
 
     }
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
