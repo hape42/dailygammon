@@ -42,6 +42,8 @@
     
     xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
 
+    [boardDict setObject:htmlData forKey:@"htmlData"];
+
     NSArray *caption  = [xpathParser searchWithXPathQuery:@"//table/caption"];
     if(caption.count > 0)
     {
@@ -288,20 +290,19 @@
     return boardDict;
 }
 
--(NSMutableDictionary *) readActionForm:(NSString *)matchLink withChat:(NSString *)chat
+-(NSMutableDictionary *) readActionForm:(NSData *)htmlData withChat:(NSString *)chat
 {
     NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
-    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+  //  NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
     
-    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
+//    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     
     // vv nur zum testen um zu sehen, warum es immer wieder unbekannte action gibt
-    NSString *htmlString = [[NSString alloc]
-                  initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
-    [actionDict setObject:htmlString forKey:@"htmlString"];
+//    NSString *htmlString = [[NSString alloc] initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
+//    [actionDict setObject:htmlString forKey:@"htmlString"];
     // ^^
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData];
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
     [actionDict setObject:elements forKey:@"elements"];
 

@@ -165,7 +165,7 @@
                            [self.boardDict objectForKey:@"matchName"],
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
     
-    self.actionDict = [match readActionForm:matchLink withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
+    self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
@@ -862,7 +862,7 @@
         }
         case NEXT__:
         {
-#pragma mark - Button Next
+#pragma mark - Button Next>>
             UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonNext = [design makeNiceButton:buttonNext];
             [buttonNext setTitle:@"Next>>" forState: UIControlStateNormal];
@@ -1340,7 +1340,7 @@
     self.verifiedTake   = FALSE;
     self.verifiedPass   = FALSE;
 
-    if(self.isChat)
+    if([self isChat])
         return CHAT;
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
