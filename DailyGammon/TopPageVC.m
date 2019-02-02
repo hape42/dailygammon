@@ -176,6 +176,16 @@
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
 
+    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
+    self.topPageArray = [[NSMutableArray alloc]init];
+
+    if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
+    {
+        return;
+    }
+
     // Create parser
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
     
@@ -216,11 +226,9 @@
                 else
                 {
                     [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-
                 }
             }
             [topPageZeile addObject:topPageZeileSpalte];
-
         }
 //        XLog(@"%@", topPageZeile);
 

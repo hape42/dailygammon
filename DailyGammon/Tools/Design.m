@@ -15,23 +15,28 @@
 {
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
-    
-    NSMutableDictionary *schemaDict = [self schema:boardSchema];
-
-    UIColor *buttonColor = [schemaDict objectForKey:@"TintColor"];
-    
+        
     button.layer.cornerRadius = 14.0f;
     button.layer.masksToBounds = YES;
-    button.backgroundColor = [UIColor colorWithRed:230.0/255 green:230.0/255 blue:230.0/255 alpha:1];
-    button.backgroundColor = buttonColor;
-    [button setTitleColor:GRAYLIGHT forState:UIControlStateNormal];
     
-    button.imageView.layer.cornerRadius = 14.0f;
-    button.layer.shadowRadius = .0f;
-    button.layer.shadowColor = buttonColor.CGColor;
-    button.layer.shadowOffset = CGSizeMake(5.0f, 5.0f);
-    button.layer.shadowOpacity = 0.5f;
-    button.layer.masksToBounds = NO;
+    switch (boardSchema)
+    {
+        case 1:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
+            break;
+        case 2:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
+            break;
+        case 3:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_blau.png"] forState:UIControlStateNormal];
+            break;
+        case 4:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_rot.png"] forState:UIControlStateNormal];
+            break;
+        default:
+            break;
+    }
+    [button setTitleColor:GRAYLIGHT forState:UIControlStateNormal];
     
     return button;
 }
@@ -130,8 +135,8 @@
         {
             [schemaDict setObject:[UIColor lightGrayColor] forKey:@"BoardSchemaColor"];
             
-            [schemaDict setObject:[UIColor blackColor] forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor grayColor] forKey:@"barMittelstreifenColor"];
+            [schemaDict setObject:[UIColor grayColor] forKey:@"RandSchemaColor"];
+            [schemaDict setObject:[UIColor darkGrayColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
            
             UIColor *schemaColor = [UIColor colorWithRed:165.0/255 green:46.0/255 blue:40.0/255 alpha:1];

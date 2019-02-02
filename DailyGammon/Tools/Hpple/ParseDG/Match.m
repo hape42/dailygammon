@@ -111,7 +111,14 @@
         unexpectedMove = @"Your opponent made an unexpected move, and the game has been rolled back to that point.";
     [boardDict setObject:unexpectedMove forKey:@"unexpectedMove"];
 
+#pragma mark - There are no matches where you can move.
+    if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
+    {
+        [boardDict setObject:@"noMatches" forKey:@"noMatches"];
+        return boardDict;
+    }
 
+    
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[1]/td"];
     NSMutableArray *elementArray = [[NSMutableArray alloc]init];

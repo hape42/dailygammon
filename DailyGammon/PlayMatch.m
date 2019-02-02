@@ -85,6 +85,7 @@
 #define ONLY_MESSAGE 10
 #define NEXT__ 11
 #define ACCEPT_DECLINE 12
+#define SUBMIT_FORCED_MOVE 13
 
 #define FINISHED_MATCH_VIEW 43
 #define CHAT_VIEW 42
@@ -127,6 +128,8 @@
 }
 -(void)showMatch
 {
+    [self.view addSubview:[self makeHeader]];
+
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
@@ -159,6 +162,13 @@
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
     self.boardDict = [match readMatch:matchLink];
+    
+    if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
+    {
+        TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+        return;
+    }
 #warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
@@ -1023,6 +1033,17 @@
 
             break;
         }
+        case SUBMIT_FORCED_MOVE:
+        {
+#pragma mark - Button Submit Forced Move
+            UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
+            buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
+            [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
+            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 75, 50, 150, 35);
+            [buttonSubmitMove addTarget:self action:@selector(actionSubmitForcedMove) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonSubmitMove];
+            break;
+        }
         case CHAT:
         {
 #pragma mark - CHAT
@@ -1109,6 +1130,15 @@
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch];
 }
+- (void)actionSubmitForcedMove
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+    
+    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
+}
+
 - (void)actionGreedy
 {
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1351,6 +1381,8 @@
             return NEXT;
         if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
             return ROLL;
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Forced Move"])
+            return SUBMIT_FORCED_MOVE;
     }
     if(attributesArray.count > 1)
     {
