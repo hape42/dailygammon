@@ -19,7 +19,7 @@
     
 #pragma mark - matchName
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-    XLog(@"%@",urlMatch);
+//    XLog(@"%@",urlMatch);
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     NSError *error = nil;
     NSStringEncoding encoding = 0;
@@ -36,6 +36,23 @@
     htmlString = [[NSString alloc]
               initWithData:data encoding: NSISOLatin1StringEncoding];
     
+    if ([htmlString rangeOfString:@"Next Game>&gt"].location != NSNotFound)
+    {
+        XLog(@"1 Next Game>> %@", urlMatch);
+    }
+    if ([htmlString rangeOfString:@"Next Game>>"].location != NSNotFound)
+    {
+        XLog(@"2 Next Game>> %@", urlMatch);
+    }
+    if ([htmlString rangeOfString:@"Next Game&gt>"].location != NSNotFound)
+    {
+        XLog(@"3 Next Game>> %@", urlMatch);
+    }
+    if ([htmlString rangeOfString:@"Next Game&gt;&gt"].location != NSNotFound)
+    {
+        XLog(@"4 Next Game>> %@", urlMatch);
+        htmlString = [self skipNext:htmlString];
+    }
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData ] ;
@@ -43,6 +60,7 @@
     xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
 
     [boardDict setObject:htmlData forKey:@"htmlData"];
+    [boardDict setObject:htmlString forKey:@"htmlString"];
 
     NSArray *caption  = [xpathParser searchWithXPathQuery:@"//table/caption"];
     if(caption.count > 0)
@@ -296,7 +314,30 @@
     
     return boardDict;
 }
+- (NSString *)skipNext:(NSString *)htmlString
+{
+    NSString *htmlStringNeu = htmlString;
+    NSString *matchLink = @"";
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//a"];
+    for(TFHppleElement *element in elements)
+    {
+        if([[element content] isEqualToString:@"Next Game>&gt"])
+        {
+            XLog(@"%@",[element objectForKey:@"href"]);
+            matchLink = [element objectForKey:@"href"];
+        }
+    }
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+    
+    NSData *data = [NSData dataWithContentsOfURL:urlMatch];
+    htmlStringNeu = [[NSString alloc]
+                  initWithData:data encoding: NSISOLatin1StringEncoding];
 
+    return htmlStringNeu;
+}
 -(NSMutableDictionary *) readActionForm:(NSData *)htmlData withChat:(NSString *)chat
 {
     NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
