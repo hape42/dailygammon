@@ -94,9 +94,6 @@
 {
     [super viewDidLoad];
     
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     
@@ -105,7 +102,7 @@
     rating = [[Rating alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(showMatch) name:@"changeSchemaNotification" object:nil];
+    [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
 
     [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
@@ -124,11 +121,12 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+    [self.view addSubview:[self makeHeader]];
+
     [self showMatch];
 }
 -(void)showMatch
 {
-    [self.view addSubview:[self makeHeader]];
 
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
@@ -141,7 +139,7 @@
     frame.origin.x = 5000;
     frame.origin.y = 5000;
     self.chatView.frame = frame;
-    self.infoLabel.frame = frame;
+//    self.infoLabel.frame = frame;
     self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
     self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
 
@@ -216,20 +214,30 @@
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
     int x = 20;
-    int y = 250;
+    int y = 200;
 
-    int checkerBreite = 40;
-    int offBreite = 70;
-    int barBreite = 80;
+    float zoomFaktor = 1.0;
+    // fixe Höhe war mal 484
+    // fixe Breite war mal 700
+    zoomFaktor = (maxHoehe - y - 50) / 484.0;
+    zoomFaktor *= .98; // damit actionView nicht zu schmal wird
+    
+    int checkerBreite = 40 * zoomFaktor;
+    int offBreite = 70 * zoomFaktor;
+    int barBreite = 80 * zoomFaktor;
     int cubeBreite = offBreite;
-    int zungenHoehe = 200;
-    int nummerHoehe = 15;
-    int indicatorHoehe = 22;
+    int zungenHoehe = 200 * zoomFaktor;
+    int nummerHoehe = 15 * zoomFaktor;
+    int indicatorHoehe = 22 * zoomFaktor;
     
     UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
                                                                  zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
+
+    self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
+
+    self.infoLabel.text = [NSString stringWithFormat:@"%@ %5.0f, %5.0f , %5.2f",self.infoLabel.text, boardView.frame.size.width, boardView.frame.size.height, zoomFaktor];
 
     boardView.backgroundColor = self.boardColor;
     

@@ -369,8 +369,12 @@
     {
         button = [design makeNiceButton:button];
         [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
-        [button sizeToFit];
-        button.frame = CGRectMake((signUpBreite - button.frame.size.width - 25)/2 , 5, button.frame.size.width + 50 , 35);
+//        [button sizeToFit];
+        if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"])
+            button.frame = CGRectMake((signUpBreite - button.frame.size.width - 25)/2 , 5, 100 , 35);
+        else
+            button.frame = CGRectMake((signUpBreite - button.frame.size.width - 25)/2 , 5, 150 , 35);
+
         button.frame = CGRectMake(x + ((signUpBreite - button.frame.size.width -50)/2), 5, button.frame.size.width + 50 , 35);
 
         button.tag = indexPath.row;
