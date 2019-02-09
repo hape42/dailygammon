@@ -216,7 +216,6 @@
     [boardDict setObject:elementArray forKey:@"moveIndicatorOben"];
     
 #pragma mark - Würfel Reihe
-#warning colspan macht evtl. noch Probleme
     elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[4]/td"];
     elementArray = [[NSMutableArray alloc]init];
     NSString *matchLaengeText = @"?";

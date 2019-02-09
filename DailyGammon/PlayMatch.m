@@ -139,7 +139,7 @@
     frame.origin.x = 5000;
     frame.origin.y = 5000;
     self.chatView.frame = frame;
-//    self.infoLabel.frame = frame;
+    self.infoLabel.frame = frame;
     self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
     self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
 
@@ -959,26 +959,26 @@
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
-                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(150, buttonAccept.frame.origin.y + 4, 50, 35)];
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonAccept.frame.origin.y + 4, 50, 35)];
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                            [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [actionView addSubview: verifyAccept];
             
-                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(150 + 60, buttonAccept.frame.origin.y,100, 35)];
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, 35)];
                             verifyAcceptText.text = @"Verify";
                             verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(150, buttonPass.frame.origin.y + 4, 50, 35)];
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonPass.frame.origin.y + 4, 50, 35)];
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [actionView addSubview: verifyDecline];
                             
-                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(150 + 60, buttonPass.frame.origin.y,100, 35)];
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, 35)];
                             verifyDeclineText.text = @"Verify";
                             verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
