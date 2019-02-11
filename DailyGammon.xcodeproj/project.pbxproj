@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
+		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
 		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
@@ -51,6 +52,8 @@
 /* Begin PBXFileReference section */
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
+		E0454ECE22104C9300F10E5A /* PreferencesVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreferencesVC.h; sourceTree = "<group>"; };
+		E0454ECF22104C9300F10E5A /* PreferencesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreferencesVC.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
 		E06E1C5221B717B9003B310F /* SetUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpVC.m; sourceTree = "<group>"; };
 		E06E1C5521B7B468003B310F /* BoardSchemeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardSchemeVC.h; sourceTree = "<group>"; };
@@ -143,6 +146,8 @@
 				E06E1C5221B717B9003B310F /* SetUpVC.m */,
 				E06E1C5521B7B468003B310F /* BoardSchemeVC.h */,
 				E06E1C5621B7B468003B310F /* BoardSchemeVC.m */,
+				E0454ECE22104C9300F10E5A /* PreferencesVC.h */,
+				E0454ECF22104C9300F10E5A /* PreferencesVC.m */,
 			);
 			path = SetUp;
 			sourceTree = "<group>";
@@ -390,6 +395,7 @@
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,
 				E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */,
+				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,

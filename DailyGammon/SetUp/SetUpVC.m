@@ -9,6 +9,7 @@
 #import "SetUpVC.h"
 #import "Design.h"
 #import "BoardSchemeVC.h"
+#import "PreferencesVC.h"
 
 @interface SetUpVC ()
 
@@ -32,10 +33,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
 
     // schieb den preferencesButton aus dem sichtbaren bereich; kommt erst in einer der nächsten versionen
-    CGRect frame = self.preferencesButton.frame;
-    frame.origin.x = 5000;
-    frame.origin.y = 5000;
-    self.preferencesButton.frame = frame;
+//    CGRect frame = self.preferencesButton.frame;
+//    frame.origin.x = 5000;
+//    frame.origin.y = 5000;
+//    self.preferencesButton.frame = frame;
 
 }
 
@@ -100,6 +101,22 @@
 }
 - (IBAction)preferencesAction:(id)sender
 {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
+    
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 
 @end

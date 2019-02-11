@@ -825,6 +825,7 @@
                     });
 
     }
+#warning     - [ ] „Hide pip counts“ führt zum Absturz in PlayMatch
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
