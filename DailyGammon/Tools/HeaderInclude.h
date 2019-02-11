@@ -156,7 +156,7 @@
     
     NSError *error = nil;
     NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+    self.matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                        usedEncoding:&encoding
                                                               error:&error];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];

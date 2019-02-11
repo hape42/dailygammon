@@ -65,6 +65,8 @@
 
 @property (weak, nonatomic) UIView *infoViewX;
 
+@property (readwrite, retain, nonatomic) NSString *matchString;
+
 @end
 
 @implementation PlayMatch
@@ -1158,8 +1160,8 @@
 }
 - (void)actionSubmitForcedMove
 {
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
-    NSMutableDictionary *dict = attributesArray[0];
+    //NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    //NSMutableDictionary *dict = attributesArray[0];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
     [self showMatch];
@@ -1761,7 +1763,7 @@
     
     NSError *error = nil;
     NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+    self.matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                        usedEncoding:&encoding
                                                               error:&error];
     [self topPageVC];

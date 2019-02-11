@@ -32,6 +32,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *sortRecentButton;
 @property (weak, nonatomic) IBOutlet UILabel *header;
 
+@property (readwrite, retain, nonatomic) NSString *matchString;
+
 @end
 
 @implementation TopPageVC
@@ -113,9 +115,9 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-    NSDictionary *fields = [HTTPResponse allHeaderFields];
-    NSString *cookie = [fields valueForKey:@"Set-Cookie"];
+//    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+//    NSDictionary *fields = [HTTPResponse allHeaderFields];
+//    NSString *cookie = [fields valueForKey:@"Set-Cookie"];
 //    XLog(@"Connection begonnen %@", cookie);
     
     self.datenData = [[NSMutableData alloc] init];
@@ -217,7 +219,7 @@
 
                 if ([child.tagName isEqualToString:@"a"])
                 {
-                    NSDictionary *href = [child attributes];
+                   // NSDictionary *href = [child attributes];
                     [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
                     [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
 
@@ -297,7 +299,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
     {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellEditingStyleNone reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
     for (UIView *subview in [cell.contentView subviews])
     {
@@ -575,7 +577,7 @@
 {
     NSString *postString = [NSString stringWithFormat:@"order=%d",typ];
     NSString *preferencesString = @"";
-    NSMutableDictionary *preferencesArray = [preferences readPreferences];
+    NSMutableArray *preferencesArray = [preferences readPreferences];
     for(NSMutableDictionary *preferencesDict in preferencesArray)
     {
         if([preferencesDict objectForKey:@"checked"] != nil)
@@ -593,7 +595,7 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
-    [request setValue:[NSString stringWithFormat:@"%u", [data length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     [NSURLConnection connectionWithRequest:request delegate:self];
 
 }

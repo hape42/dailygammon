@@ -26,6 +26,8 @@
 @property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeHeaderArray;
 @property (weak, nonatomic) IBOutlet UILabel *header;
 
+@property (readwrite, retain, nonatomic) NSString *matchString;
+
 @end
 
 @implementation GameLounge
@@ -102,9 +104,9 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-    NSDictionary *fields = [HTTPResponse allHeaderFields];
-    NSString *cookie = [fields valueForKey:@"Set-Cookie"];
+//    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+//    NSDictionary *fields = [HTTPResponse allHeaderFields];
+ //   NSString *cookie = [fields valueForKey:@"Set-Cookie"];
 //    XLog(@"Connection begonnen %@", cookie);
     
     self.datenData = [[NSMutableData alloc] init];
@@ -201,7 +203,7 @@
 
                 if ([child.tagName isEqualToString:@"a"])
                 {
-                    NSDictionary *href = [child attributes];
+                   // NSDictionary *href = [child attributes];
                     [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
                     [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
 
@@ -500,7 +502,7 @@
     
     NSError *error = nil;
     NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlSignUp
+    self.matchString = [[NSString alloc] initWithContentsOfURL:urlSignUp
                                                        usedEncoding:&encoding
                                                               error:&error];
     if(error)

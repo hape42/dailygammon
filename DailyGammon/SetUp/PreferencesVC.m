@@ -178,7 +178,7 @@
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
-    [request setValue:[NSString stringWithFormat:@"%u", [data length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     [NSURLConnection connectionWithRequest:request delegate:self];
     
 }

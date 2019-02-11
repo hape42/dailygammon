@@ -22,7 +22,7 @@
 //    XLog(@"%@",urlMatch);
     NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
     NSError *error = nil;
-    NSStringEncoding encoding = 0;
+//    NSStringEncoding encoding = 0;
 //    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
 //                                                       usedEncoding:&encoding
 //                                                              error:&error];
@@ -357,7 +357,7 @@
     {
         if([[element raw] rangeOfString:@"textarea"].location != NSNotFound)
         {
-            NSArray *pre  = [xpathParser searchWithXPathQuery:@"//pre"];
+            //NSArray *pre  = [xpathParser searchWithXPathQuery:@"//pre"];
             actionDict = [self analyzeChat:element withChat:chat];
         }
         else

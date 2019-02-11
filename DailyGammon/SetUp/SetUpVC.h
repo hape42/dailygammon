@@ -10,7 +10,7 @@
 
 @class Design;
 
-@interface SetUpVC : UIViewController
+@interface SetUpVC : UIViewController<UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
