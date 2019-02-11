@@ -44,6 +44,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *quoteMessage;
 @property (weak, nonatomic) IBOutlet UILabel *chatHeaderText;
 @property (assign, atomic) CGRect chatViewFrame;
+@property (assign, atomic) CGRect quoteSwitchFrame;
+@property (assign, atomic) CGRect quoteMessageFrame;
 
 
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
@@ -116,6 +118,8 @@
 
     [self.playerChat setDelegate:self];
 
+    self.quoteSwitchFrame = self.quoteSwitch.frame;
+    self.quoteMessageFrame = self.quoteMessage.frame;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1081,7 +1085,9 @@
             frame.origin.y = actionView.frame.origin.y-85;
             self.chatView.frame = frame;
             [self.view bringSubviewToFront:self.chatView ];
-            self.opponentChat.text = [self.actionDict objectForKey:@"content"];
+    //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
+            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
+            self.playerChat.text = @"";
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             BOOL isCheckbox = FALSE;
             for(NSMutableDictionary *dict in attributesArray)
@@ -1099,6 +1105,11 @@
                 frame.origin.y = 9999;
                 self.quoteSwitch.frame = frame;
                 self.quoteMessage.frame = frame;
+            }
+            else
+            {
+                self.quoteSwitch.frame = self.quoteSwitchFrame;
+                self.quoteMessage.frame = self.quoteMessageFrame;
             }
             [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
             [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
