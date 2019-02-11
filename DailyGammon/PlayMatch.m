@@ -825,7 +825,6 @@
                     });
 
     }
-#warning     - [ ] „Hide pip counts“ führt zum Absturz in PlayMatch
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
@@ -835,7 +834,16 @@
     
     self.opponentName.text    = opponentArray[0]; self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
-    self.opponentScore.text   = opponentArray[5];
+    if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    {
+        self.opponentScore.text   = opponentArray[5];
+        self.opponentPips.text    = opponentArray[2];
+    }
+    else
+    {
+        self.opponentScore.text   = opponentArray[3];
+        self.opponentPips.text    = @"";
+   }
 
     NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
     
@@ -846,7 +854,16 @@
     
     self.playerName.text    = playerArray[0];
     self.playerPips.text    = playerArray[2];
-    self.playerScore.text   = playerArray[5];
+    if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    {
+        self.playerPips.text    = playerArray[2];
+        self.playerScore.text   = opponentArray[5];
+    }
+    else
+    {
+        self.playerScore.text   = opponentArray[3];
+        self.playerPips.text    = @"";
+    }
     
 
 //    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
