@@ -66,4 +66,27 @@
     return order;
 }
 
+- (bool)isMiniBoard
+{
+    NSURL *url = [NSURL URLWithString:@"http://dailygammon.com/bg/profile"];
+    NSData *htmlData = [NSData dataWithContentsOfURL:url];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[3]/table[4]/tr"];
+    
+    for(TFHppleElement *element in elements)
+    {
+        TFHppleElement *child = [element firstChild];
+        for (TFHppleElement *enkel in child.children)
+        {
+            NSDictionary *dict = [enkel attributes];
+            //       XLog(@"%@",dict);
+            if([[element content] isEqualToString:@"Mini"])
+                if([[dict objectForKey:@"checked"] isEqualToString:@"checked"])
+                    return TRUE;
+        }
+    }
+    return FALSE;
+}
 @end

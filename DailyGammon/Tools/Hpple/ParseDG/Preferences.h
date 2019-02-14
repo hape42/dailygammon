@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSMutableArray *)readPreferences;
 - (int)readNextMatchOrdering;
+- (bool)isMiniBoard;
 
 @end
 

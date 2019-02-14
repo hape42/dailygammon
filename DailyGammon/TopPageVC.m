@@ -193,7 +193,13 @@
     
     //Get all the cells of the 2nd row of the 3rd table
     //        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[3]/tr[2]/td"];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:@"//table[2]/tr[1]/th"];
+    int tableNo = 1;
+    if([preferences isMiniBoard])
+        tableNo = 1;
+    else
+        tableNo = 2;
+    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
     self.topPageHeaderArray = [[NSMutableArray alloc]init];
 
     for(TFHppleElement *element in elementHeader)
@@ -202,12 +208,13 @@
         [self.topPageHeaderArray addObject:[element text]];
     }
     self.topPageArray = [[NSMutableArray alloc]init];
-    NSArray *zeilen  = [xpathParser searchWithXPathQuery:@"//table[2]/tr"];
+    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+    NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
     for(int zeile = 2; zeile <= zeilen.count; zeile ++)
     {
         NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
-        NSString * searchString = [NSString stringWithFormat:@"//table[2]/tr[%d]/td",zeile];
+        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,zeile];
         NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
         for(TFHppleElement *element in elementZeile)
         {
