@@ -65,9 +65,12 @@
 
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
-@property (weak, nonatomic) UIView *infoViewX;
+@property (readwrite, retain, nonatomic) UIView *finishedMatchView;
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
+
+@property (assign, atomic) BOOL isChatView, isFinishedMatch;
+@property (assign, atomic) CGRect finishedMatchFrame;
 
 @end
 
@@ -120,6 +123,13 @@
 
     self.quoteSwitchFrame = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
+    
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    
+    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 40,  maxHoehe - 160)];
+//    self.finishedMatchView.backgroundColor = [UIColor whiteColor];
+    self.finishedMatchFrame = self.finishedMatchView.frame;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,7 +143,9 @@
 }
 -(void)showMatch
 {
-
+    self.isChatView = FALSE;
+    self.isFinishedMatch = FALSE;
+    
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
@@ -186,6 +198,7 @@
     if( finishedMatchDict != nil)
     {
         XLog(@"%@", finishedMatchDict);
+        self.isFinishedMatch = TRUE;
         [self finishedMatchView:finishedMatchDict];
     }
     else if([[self.boardDict objectForKey:@"message"] length] != 0)
@@ -863,11 +876,11 @@
     if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
         self.playerPips.text    = playerArray[2];
-        self.playerScore.text   = opponentArray[5];
+        self.playerScore.text   = playerArray[5];
     }
     else
     {
-        self.playerScore.text   = opponentArray[3];
+        self.playerScore.text   = playerArray[3];
         self.playerPips.text    = @"";
     }
     
@@ -1462,6 +1475,7 @@
 }
 -(BOOL)isChat
 {
+    self.isChatView = TRUE;
     NSString *chatString = [self.boardDict objectForKey:@"chat"];
     if(chatString.length > 0)
         return TRUE;
@@ -1474,6 +1488,7 @@
         if([contentString rangeOfString:@"says"].location != NSNotFound)
             return TRUE;
     }
+    self.isChatView = FALSE;
     return FALSE;
 }
 - (void)cellTouched:(UIGestureRecognizer *)gesture
@@ -1498,7 +1513,6 @@
 
 }
 
-//Declare a delegate, assign your textField to the delegate and then include these methods
 #pragma mark - textField
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
@@ -1518,18 +1532,32 @@
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
-    CGRect frame = self.chatViewFrame;
-    frame.origin.y -= 330;
-    self.chatView.frame = frame;
-    XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
-    
+    if(self.isChatView)
+    {
+        CGRect frame = self.chatViewFrame;
+        frame.origin.y -= 330;
+        self.chatView.frame = frame;
+        XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
+    }
+    if(self.isFinishedMatch)
+    {
+        CGRect frame = self.finishedMatchFrame;
+        frame.origin.y -= 330;
+        self.finishedMatchView.frame = frame;
+    }
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
-    self.chatView.frame = self.chatViewFrame;
-    XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
-
+    if(self.isChatView)
+    {
+        self.chatView.frame = self.chatViewFrame;
+        XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
+    }
+    if(self.isFinishedMatch)
+    {
+        self.finishedMatchView.frame = self.finishedMatchFrame;
+    }
 }
 
 #pragma mark - Email
@@ -1648,13 +1676,13 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
 
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 40,  maxHoehe - 160)];
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
     infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;
     
-    [self.view addSubview:infoView];
+    [self.view addSubview:self.finishedMatchView];
     
     UILabel * matchName = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 80)];
     matchName.text = [finishedMatchDict objectForKey:@"matchName"];
@@ -1718,7 +1746,9 @@
         chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
     }
     chat.text = chatString;
-    chat.editable = NO;
+    chat.editable = YES;
+    [chat setDelegate:self];
+
     [chat setFont:[UIFont systemFontOfSize:20]];
     [infoView addSubview:chat];
 
@@ -1736,10 +1766,14 @@
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
 
+    [self.finishedMatchView addSubview:infoView];
     return;
 }
 - (void)actionNextFinishedMatch
 {
+
+    self.finishedMatchView.frame = self.finishedMatchFrame;
+
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
     NSString *href = @"";
     for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
@@ -1763,6 +1797,8 @@
 }
 - (void)actionToTopFinishedMatch
 {
+    self.finishedMatchView.frame = self.finishedMatchFrame;
+
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
     NSString *href = @"";
     for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
