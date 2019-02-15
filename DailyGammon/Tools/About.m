@@ -112,7 +112,7 @@
     
     MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
     emailController.mailComposeDelegate = self;
-    NSArray *toSupport = [NSArray arrayWithObjects:@"support@hape42.de",nil];
+    NSArray *toSupport = [NSArray arrayWithObjects:@"dg@hape42.de",nil];
     
     [emailController setToRecipients:toSupport];
     [emailController setSubject:betreff];
