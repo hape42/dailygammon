@@ -541,6 +541,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([preferences isMiniBoard])
+    {
+        [self miniBoardSchemaWarning];
+        return;
+    }
     [self dismissViewControllerAnimated:YES completion:Nil];
     NSArray *zeile = self.topPageArray[indexPath.row];
 //    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
@@ -606,6 +611,126 @@
     [NSURLConnection connectionWithRequest:request delegate:self];
 
 }
+
+
+#pragma mark - finishedMatch
+- (void)miniBoardSchemaWarning
+{
+    int rand = 10;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - (maxBreite / 3)) / 2 ,
+                                                                (maxHoehe - (maxHoehe / 3)) / 2 ,
+                                                                maxBreite / 3,
+                                                                maxHoehe / 3)];
+    
+    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.layer.borderWidth = 1;
+    infoView.tag = 42;
+    [self.view addSubview:infoView];
+    
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 40)];
+    title.text = @"Warning:";
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:@"Warning:"];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:20.0]
+                 range:NSMakeRange(0, [attr length])];
+    [title setAttributedText:attr];
+
+    title.textAlignment = NSTextAlignmentCenter;
+    [infoView addSubview:title];
+    
+    
+    UITextView *message  = [[UITextView alloc] initWithFrame:CGRectMake(rand, 50 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - 50 - rand)];
+    message.textAlignment = NSTextAlignmentCenter;
+    message.text = @"This App doesn’t currently support Board Scheme “Mini” as set in your account preferences. Only “Classic” or “Blue/White” will work. \n\nPlease select:";
+    attr = [[NSMutableAttributedString alloc] initWithString:@"This App doesn’t currently support Board Scheme “Mini” as set in your account preferences. Only “Classic” or “Blue/White” will work. \n\nPlease select:"];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:20.0]
+                 range:NSMakeRange(0, [attr length])];
+    [message setAttributedText:attr];
+    message.textAlignment = NSTextAlignmentCenter;
+
+    [infoView addSubview:message];
+    
+    float r = (infoView.layer.frame.size.width - ( 3 * 100)) / 4;
+    
+    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonNext = [design makeNiceButton:buttonNext];
+    [buttonNext setTitle:@"Fix it for me" forState: UIControlStateNormal];
+    buttonNext.frame = CGRectMake(r, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonNext addTarget:self action:@selector(fixIt) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonNext];
+    
+    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonToTop = [design makeNiceButton:buttonToTop];
+    [buttonToTop setTitle:@"I fix it" forState: UIControlStateNormal];
+    buttonToTop.frame = CGRectMake(r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonToTop addTarget:self action:@selector(gotoWebsite) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonToTop];
+    
+    UIButton *cancel = [UIButton buttonWithType:UIButtonTypeSystem];
+    cancel = [design makeNiceButton:cancel];
+    [cancel setTitle:@"Cancel" forState: UIControlStateNormal];
+    cancel.frame = CGRectMake(r + 100 + r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35);
+    [cancel addTarget:self action:@selector(cancelInfo) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:cancel];
+
+    return;
+}
+
+-(void)cancelInfo
+{
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:42]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+}
+
+-(void)fixIt
+{
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:42]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+    NSString *postString = @"board=0";
+    NSString *preferencesString = @"";
+    NSMutableArray *preferencesArray = [preferences readPreferences];
+    for(NSMutableDictionary *preferencesDict in preferencesArray)
+    {
+        if([preferencesDict objectForKey:@"checked"] != nil)
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=on",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+        else
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=off",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+    }
+    postString = [NSString stringWithFormat:@"%@%@",postString,preferencesString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/profile/pref"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
+    [NSURLConnection connectionWithRequest:request delegate:self];
+
+}
+-(void)gotoWebsite
+{
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:42]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/profile"] options:@{} completionHandler:nil];
+
+}
+
 #pragma mark - Header
 #include "HeaderInclude.h"
 
