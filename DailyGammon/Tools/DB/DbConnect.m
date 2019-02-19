@@ -46,12 +46,33 @@
     NSLog(@"Datenbank erfolgreich geschlossen");
 }
 
+-(BOOL)checkColumnExists
+{
+    BOOL columnExists = NO;
+    
+    sqlite3_stmt *selectStmt;
+    
+    const char *sqlStatement = "select userID from Rating";
+    if(sqlite3_prepare_v2(database, sqlStatement, -1, &selectStmt, NULL) == SQLITE_OK)
+        columnExists = YES;
+    else
+    {
+        NSString *updateSQL = [NSString stringWithFormat: @"ALTER TABLE Rating ADD COLUMN userID VARCHAR"];
+        const char *sql = [updateSQL UTF8String];
+        sqlite3_prepare_v2(database, sql, -1, &statement, NULL);
+        sqlite3_step(statement);
+        sqlite3_finalize(statement);
+
+    }
+    return columnExists;
+}
 
 -(void) saveRating:(NSString *) datum
-            withRating:(float)rating
+        withRating:(float)rating forUser:(NSString*)userID
  {
+     [self checkColumnExists];
      int count = 0;
-     NSString *sqlQuery = [NSString stringWithFormat:@"SELECT COUNT (*) FROM Rating WHERE Datum LIKE '%@' ;", datum];
+     NSString *sqlQuery = [NSString stringWithFormat:@"SELECT COUNT (*) FROM Rating WHERE Datum LIKE '%@' AND userID LIKE '%@';", datum, userID];
      const char *sql = [sqlQuery UTF8String];
      if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
      {
@@ -68,7 +89,7 @@
      }
      if(count > 0)
      {
-         NSString *sqlQuery = [NSString stringWithFormat:@"UPDATE Rating SET Rating = '%f' WHERE Datum LIKE \"%@\" ;",  rating, datum];
+         NSString *sqlQuery = [NSString stringWithFormat:@"UPDATE Rating SET Rating = '%f' WHERE Datum LIKE \"%@\"  AND userID LIKE '%@';",  rating, datum, userID];
          const char *sql = [sqlQuery UTF8String];
          sql = [sqlQuery UTF8String];
          if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
@@ -79,7 +100,7 @@
      }
      else
      {
-         sqlQuery = [NSString stringWithFormat:@"INSERT INTO Rating(Datum, Rating ) VALUES (\"%@\",%f);",datum, rating];
+         sqlQuery = [NSString stringWithFormat:@"INSERT INTO Rating(Datum, Rating, userID ) VALUES (\"%@\",%f, \"%@\");",datum, rating, userID];
          sql = [sqlQuery UTF8String];
          if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
          {
@@ -89,10 +110,12 @@
      }
 }
 
-- (float)readRatingForDatum:(NSString *)datum
+- (float)readRatingForDatum:(NSString *)datum andUser:(NSString*)userID
 {
+    [self checkColumnExists];
+
     float rating = 0.0;
-    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating WHERE Datum = '%@';", datum];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating WHERE Datum = '%@'  AND userID LIKE '%@';", datum, userID];
     const char *sql = [sqlQuery UTF8String];
     if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
     {

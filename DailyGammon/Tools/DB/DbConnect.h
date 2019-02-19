@@ -13,8 +13,8 @@
 - (void) closeDb;
 
 -(void) saveRating:(NSString *) datum
-          withRating:(float)rating;
+          withRating:(float)rating  forUser:(NSString*)userID;
 
-- (float)readRatingForDatum:(NSString *)datum;
+- (float)readRatingForDatum:(NSString *)datum andUser:(NSString*)userID;
 
 @end

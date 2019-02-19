@@ -528,9 +528,9 @@
                         [format setDateFormat:@"yyy-MM-dd"];
                         NSString *dateDB = [format stringFromDate:[NSDate date]];
                        
-                        float ratingDB = [app.dbConnect readRatingForDatum:dateDB];
+                        float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
                         if(ratingUser > ratingDB)
-                            [app.dbConnect saveRating:dateDB withRating:ratingUser];
+                            [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
                    });
 
     [self.tableView reloadData];
