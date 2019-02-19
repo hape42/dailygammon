@@ -9,6 +9,7 @@
 #import "LoginVC.h"
 #import "Design.h"
 #import "TopPageVC.h"
+#import "NSDictionary+PercentEncodeURLQueryValue.h"
 
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
@@ -52,17 +53,22 @@
 {
     NSString *userName = self.usewrnameOutlet.text;
     NSString *userPassword = self.passwordOutlet.text;
+    
+    //https://stackoverflow.com/questions/54741600/how-to-submit-a-password-with-special-characters-from-app-to-a-web-server-by-nsu?noredirect=1#comment96266886_54741600
+    NSDictionary *dictionary = @{@"login": userName, @"password": userPassword};
+    NSData *body = [dictionary percentEncodedData];
+    userPassword = [self percentEscapeString:userPassword];
 
-    //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
     NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+//    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[body length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
+    [request setHTTPBody:body];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     
     
@@ -75,6 +81,16 @@
     {
         NSLog(@"Connection could not be made");
     }
+}
+
+- (NSString *)percentEscapeString:(NSString *)string
+{
+    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+                                                                                 (CFStringRef)string,
+                                                                                 (CFStringRef)@" ",
+                                                                                 (CFStringRef)@":/?@!$&'()*+,;=",
+                                                                                 kCFStringEncodingUTF8));
+    return [result stringByReplacingOccurrencesOfString:@" " withString:@"+"];
 }
 
 #pragma mark NSURLConnection Delegate Methods

@@ -38,6 +38,8 @@
 		E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C1D82921E900D100494A82 /* GameLounge.m */; };
 		E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82B21EB99C400494A82 /* classicHD.png */; };
 		E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82F21EB9F5600494A82 /* app_icon.png */; };
+		E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */; };
+		E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589121AD1688003DAC01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0F9588F21AD1688003DAC01 /* Main.storyboard */; };
@@ -96,6 +98,10 @@
 		E0C1D82921E900D100494A82 /* GameLounge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLounge.m; sourceTree = "<group>"; };
 		E0C1D82B21EB99C400494A82 /* classicHD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = classicHD.png; sourceTree = "<group>"; };
 		E0C1D82F21EB9F5600494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
+		E0EC955A221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+URLQueryValueAllowed.h"; sourceTree = "<group>"; };
+		E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+URLQueryValueAllowed.m"; sourceTree = "<group>"; };
+		E0EC955D221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PercentEncodeURLQueryValue.h"; sourceTree = "<group>"; };
+		E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+PercentEncodeURLQueryValue.m"; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -208,6 +214,17 @@
 			path = Boards;
 			sourceTree = "<group>";
 		};
+		E0EC9559221A9CAB00E31CA0 /* Encode */ = {
+			isa = PBXGroup;
+			children = (
+				E0EC955A221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.h */,
+				E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */,
+				E0EC955D221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.h */,
+				E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */,
+			);
+			path = Encode;
+			sourceTree = "<group>";
+		};
 		E0F9587D21AD1687003DAC01 = {
 			isa = PBXGroup;
 			children = (
@@ -249,6 +266,7 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
 				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0BDCC3621BE6AE300E8AF25 /* About.h */,
@@ -390,6 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */,
 				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
 				E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */,
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
@@ -397,6 +416,7 @@
 				E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */,
 				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
+				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
