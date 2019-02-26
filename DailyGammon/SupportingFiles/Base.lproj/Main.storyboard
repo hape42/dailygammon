@@ -56,8 +56,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(27/34)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kuh-a6-uIh">
-                                        <rect key="frame" x="75" y="31" width="150" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active games: 6" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kuh-a6-uIh">
+                                        <rect key="frame" x="90" y="31" width="136" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="won: 176" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8gQ-VI-nbQ">
+                                        <rect key="frame" x="90" y="54" width="136" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lost: 235" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ikh-DU-kzz">
+                                        <rect key="frame" x="90" y="77" width="136" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -78,7 +92,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g7H-l2-UdX">
-                                        <rect key="frame" x="56" y="77" width="50" height="21"/>
+                                        <rect key="frame" x="56" y="77" width="40" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -104,15 +118,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(27/34)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XxM-aG-ccN">
-                                        <rect key="frame" x="75" y="31" width="150" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active games: 6" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XxM-aG-ccN">
+                                        <rect key="frame" x="90" y="31" width="136" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lost: 235" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Hou-pd-c9Z">
+                                        <rect key="frame" x="90" y="76" width="136" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="102 pips" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="tJ2-g8-DSU">
-                                        <rect key="frame" x="0.0" y="54" width="100" height="21"/>
+                                        <rect key="frame" x="0.0" y="54" width="82" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
@@ -126,9 +147,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="56" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RHs-Ye-dOZ">
-                                        <rect key="frame" x="56" y="77" width="50" height="21"/>
+                                        <rect key="frame" x="56" y="77" width="40" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="won: 176" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3s1-fV-FBH">
+                                        <rect key="frame" x="90" y="54" width="136" height="21"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -213,20 +241,24 @@
                         <outlet property="chatView" destination="Blz-DR-iBs" id="3cw-Vv-Ozp"/>
                         <outlet property="infoLabel" destination="wOG-gN-yFy" id="IDd-ye-C4E"/>
                         <outlet property="matchName" destination="hxE-0z-UNT" id="gw6-sf-wYC"/>
+                        <outlet property="opponentActive" destination="kuh-a6-uIh" id="KOe-C1-jwU"/>
                         <outlet property="opponentChat" destination="tU9-zq-D7B" id="NWX-nZ-0js"/>
+                        <outlet property="opponentLost" destination="ikh-DU-kzz" id="41j-co-Tj6"/>
                         <outlet property="opponentName" destination="2cc-TP-Ecq" id="cjf-np-DUC"/>
                         <outlet property="opponentPips" destination="Ka8-S9-cJQ" id="qvy-op-fNQ"/>
                         <outlet property="opponentRating" destination="U2e-wm-0rn" id="ypz-o5-IKA"/>
                         <outlet property="opponentScore" destination="g7H-l2-UdX" id="Ugr-6y-JlH"/>
                         <outlet property="opponentView" destination="mAm-PO-WQn" id="OZs-7U-7gj"/>
-                        <outlet property="opponentWinLoss" destination="kuh-a6-uIh" id="Gmc-J7-Igv"/>
+                        <outlet property="opponentWon" destination="8gQ-VI-nbQ" id="i3o-y3-Hnf"/>
+                        <outlet property="playerActive" destination="XxM-aG-ccN" id="mdq-F3-hMH"/>
                         <outlet property="playerChat" destination="iEr-Dz-bJe" id="WfQ-Bh-D1Z"/>
+                        <outlet property="playerLost" destination="Hou-pd-c9Z" id="TE4-di-DVm"/>
                         <outlet property="playerName" destination="k0U-Vc-Wfa" id="Afk-B9-qg9"/>
                         <outlet property="playerPips" destination="tJ2-g8-DSU" id="d3j-Rd-PHE"/>
                         <outlet property="playerRating" destination="nge-UO-Le6" id="J67-Qe-fvh"/>
                         <outlet property="playerScore" destination="RHs-Ye-dOZ" id="oe4-Fo-ob2"/>
                         <outlet property="playerView" destination="DJV-LH-bvg" id="1qW-cy-dNS"/>
-                        <outlet property="playerWinLoss" destination="XxM-aG-ccN" id="OMJ-q7-tS4"/>
+                        <outlet property="playerWon" destination="3s1-fV-FBH" id="Ld8-se-0fu"/>
                         <outlet property="quoteMessage" destination="PvK-DZ-o41" id="Gxy-p6-UUa"/>
                         <outlet property="quoteSwitch" destination="54j-eS-0Zg" id="7BM-U4-Wpk"/>
                         <outlet property="unexpectedMove" destination="Z2q-aE-oJC" id="6Dn-Nd-GKb"/>

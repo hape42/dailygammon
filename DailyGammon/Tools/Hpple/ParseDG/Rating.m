@@ -62,7 +62,14 @@
     wonMatches = MAX(0, wonMatches);
     lostMatches = MAX(0, lostMatches);
     NSString *wlaOpponent = [NSString stringWithFormat:@" w=%d l=%d a=%ld ", wonMatches,lostMatches, active.count-1]; // Überschrift abziehen
+    NSString *activeOpponent = [NSString stringWithFormat:@"Active games %ld ", active.count-1]; // Überschrift abziehen
+    NSString *wonOpponent = [NSString stringWithFormat:@"won %d", wonMatches];
+    NSString *lostOpponent = [NSString stringWithFormat:@"lost %d",lostMatches];
+    
     NSString *wlaPlayer = [NSString stringWithFormat:@" w=%d l=%d a=%ld ", lostMatches, wonMatches, active.count-1]; // Überschrift abziehen
+    NSString *activePlayer = [NSString stringWithFormat:@"Active games %ld ", active.count-1]; // Überschrift abziehen
+    NSString *wonPlayer = [NSString stringWithFormat:@"won %d", lostMatches];
+    NSString *lostPlayer = [NSString stringWithFormat:@"lost %d", wonMatches];
 
 #pragma mark - rating player holen
 
@@ -81,8 +88,14 @@
     }
     [ratingDict setObject:ratingOpponent forKey:@"ratingOpponent"];
     [ratingDict setObject:wlaOpponent forKey:@"wlaOpponent"];
+    [ratingDict setObject:activeOpponent forKey:@"activeOpponent"];
+    [ratingDict setObject:wonOpponent forKey:@"wonOpponent"];
+    [ratingDict setObject:lostOpponent forKey:@"lostOpponent"];
     [ratingDict setObject:ratingPlayer forKey:@"ratingPlayer"];
     [ratingDict setObject:wlaPlayer forKey:@"wlaPlayer"];
+    [ratingDict setObject:activePlayer forKey:@"activePlayer"];
+    [ratingDict setObject:wonPlayer forKey:@"wonPlayer"];
+    [ratingDict setObject:lostPlayer forKey:@"lostPlayer"];
 
     return ratingDict;
 }

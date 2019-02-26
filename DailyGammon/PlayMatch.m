@@ -24,14 +24,18 @@
 @property (weak, nonatomic) IBOutlet UIView  *opponentView;
 @property (weak, nonatomic) IBOutlet UILabel *opponentName;
 @property (weak, nonatomic) IBOutlet UILabel *opponentRating;
-@property (weak, nonatomic) IBOutlet UILabel *opponentWinLoss;
+@property (weak, nonatomic) IBOutlet UILabel *opponentActive;
+@property (weak, nonatomic) IBOutlet UILabel *opponentWon;
+@property (weak, nonatomic) IBOutlet UILabel *opponentLost;
 @property (weak, nonatomic) IBOutlet UILabel *opponentPips;
 @property (weak, nonatomic) IBOutlet UILabel *opponentScore;
 
 @property (weak, nonatomic) IBOutlet UIView *playerView;
 @property (weak, nonatomic) IBOutlet UILabel *playerName;
 @property (weak, nonatomic) IBOutlet UILabel *playerRating;
-@property (weak, nonatomic) IBOutlet UILabel *playerWinLoss;
+@property (weak, nonatomic) IBOutlet UILabel *playerActive;
+@property (weak, nonatomic) IBOutlet UILabel *playerWon;
+@property (weak, nonatomic) IBOutlet UILabel *playerLost;
 @property (weak, nonatomic) IBOutlet UILabel *playerPips;
 @property (weak, nonatomic) IBOutlet UILabel *playerScore;
 
@@ -171,10 +175,14 @@
     
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
 
-    self.opponentRating.text  = @"";
-    self.opponentWinLoss.text = @"";
-    self.playerRating.text    = @"";
-    self.playerWinLoss.text   = @"";
+    self.opponentRating.text = @"";
+    self.opponentActive.text = @"";
+    self.opponentWon.text    = @"";
+    self.opponentLost.text   = @"";
+    self.playerRating.text   = @"";
+    self.playerActive.text   = @"";
+    self.playerWon.text      = @"";
+    self.playerLost.text     = @"";
 
     self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     self.randColor              = [schemaDict objectForKey:@"RandSchemaColor"];
@@ -838,11 +846,20 @@
                                             }
                                             if(showWinLoss)
                                             {
-                                                self.playerWinLoss.text        = [self->ratingDict objectForKey:@"wlaPlayer"];
-                                                self.playerWinLoss.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                self.opponentWinLoss.text      = [self->ratingDict objectForKey:@"wlaOpponent"];
-                                                self.opponentWinLoss.textColor = [schemaDict objectForKey:@"TintColor"];
-                                            }
+                                                self.playerActive.text        = [self->ratingDict objectForKey:@"activePlayer"];
+                                                self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                                self.playerWon.text        = [self->ratingDict objectForKey:@"wonPlayer"];
+                                                self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                                self.playerLost.text        = [self->ratingDict objectForKey:@"lostPlayer"];
+                                                self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
+
+                                                self.opponentActive.text      = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
+                                                self.opponentWon.text      = [self->ratingDict objectForKey:@"wonOpponent"];
+                                                self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
+                                                self.opponentLost.text      = [self->ratingDict objectForKey:@"lostOpponent"];
+                                                self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           }
                                        });
             
                     });
