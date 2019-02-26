@@ -104,6 +104,10 @@
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     
+    self.chatView.layer.borderWidth = 1.0f;
+    self.opponentChat.layer.borderWidth = 1.0f;
+    self.playerChat.layer.borderWidth = 1.0f;
+
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
