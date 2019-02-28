@@ -268,7 +268,7 @@
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
                                                                  zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
-
+    boardView.tag = 999;
     self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
 
     self.infoLabel.text = [NSString stringWithFormat:@"%@ %5.0f, %5.0f , %5.2f",self.infoLabel.text, boardView.frame.size.width, boardView.frame.size.height, zoomFaktor];
@@ -820,6 +820,8 @@
     }
     x += checkerBreite;
     
+    UIView *removeBoardView = [self.view viewWithTag:999];
+    [removeBoardView removeFromSuperview];
 
     [self.view addSubview:boardView];
     
