@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Preferences;
 @class Rating;
 
-@interface RatingVC : UIViewController<CPTPlotDataSource, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface RatingVC : UIViewController<CPTPlotDataSource>
 {
     CPTGraphHostingView *hostingView;
     CPTXYGraph *barLineChart;

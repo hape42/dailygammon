@@ -153,6 +153,9 @@
 
 - (NSMutableArray *) readAlleRatingForUser:(NSString*)userID
 {
+    float min = 9999.0;
+    float max = -1.0;
+    
     NSMutableArray *alleRating = [NSMutableArray arrayWithCapacity:20];
     NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating ORDER BY Datum ASC ;"];
     const char *sql = [sqlQuery UTF8String];
@@ -162,11 +165,16 @@
         {
             NSString *datum = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
             float rating    = sqlite3_column_double(statement, 2);
-            
+            if(rating > max)
+                max = rating;
+            if(rating < min)
+                min = rating;
             NSDictionary *ratingDict = @{
-                                          @"datum"      : datum,
-                                          @"rating"     : [NSNumber numberWithDouble: rating]
-                                          };
+                                          @"datum"   : datum,
+                                          @"min"     : [NSNumber numberWithDouble: min],
+                                          @"max"     : [NSNumber numberWithDouble: max],
+                                          @"rating"  : [NSNumber numberWithDouble: rating]
+                                         };
             [alleRating addObject:ratingDict];
         }
         sqlite3_finalize(statement);

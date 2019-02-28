@@ -37,11 +37,8 @@
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     //    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
     
-    design = [[Design alloc] init];
-    preferences = [[Preferences alloc] init];
-    rating = [[Rating alloc] init];
     
     [self.view addSubview:[self makeHeader]];
 
@@ -54,22 +51,31 @@
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
     self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
-    
+    design = [[Design alloc] init];
+    preferences = [[Preferences alloc] init];
+    rating = [[Rating alloc] init];
+
     [self initGraph];
 }
 
 #pragma mark CorePlot
 - (void) initGraph
 {
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSMutableDictionary *schemaDict = [design schema:boardSchema];
+    CPTColor *tintColor = [CPTColor colorWithCGColor:[[schemaDict objectForKey:@"TintColor"] CGColor]];
+    
     int maxWidth = self.view.bounds.size.width;
     int maxHeight = self.view.bounds.size.height;
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"dd. MMMM yyyy"];
+    [format setDateFormat:@"yyy-MM-dd"];
     NSString *heute = [format stringFromDate:[NSDate date]];
+    NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
 
-    barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight)];
-    barLineChart.title = [NSString stringWithFormat:@"Rating vom 01. Januar 2018 bis %@ ",heute] ;
+    barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight-200)];
+    barLineChart.title = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
     barLineChart.plotAreaFrame.borderLineStyle = nil;
     barLineChart.plotAreaFrame.cornerRadius = 0.0f;
     
@@ -84,7 +90,7 @@
     barLineChart.plotAreaFrame.paddingBottom = 100.0;
     
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
-#warning    textStyle.color = COLORBALKEN;
+    textStyle.color = tintColor;
     textStyle.fontSize = 16.0f;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     barLineChart.titleTextStyle = textStyle;
@@ -136,7 +142,7 @@
     y.axisLineStyle = nil;
     y.majorTickLineStyle = nil;
     y.minorTickLineStyle = nil;
-    y.majorIntervalLength = CPTDecimalFromString(@"100");
+    y.majorIntervalLength = CPTDecimalFromString(@"10");
     y.orthogonalCoordinateDecimal = CPTDecimalFromString(@"0");
     //    y.title = @"Kontostand";
     y.titleOffset = 40.0f;
@@ -153,8 +159,10 @@
     CPTGraph *graph = hostingView.hostedGraph;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     
-    float min = 1564;
-    float max = 2070;
+    dict = [self.ratingArray lastObject];
+
+    float min = [[dict objectForKey:@"min"]floatValue] - 20.0;
+    float max = [[dict objectForKey:@"max"]floatValue] + 20.0;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(0.0f) length:CPTDecimalFromInt((int)[self.ratingArray count])];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(min) length:CPTDecimalFromDouble(max - min)];
     
@@ -164,7 +172,7 @@
     [graph addPlot:kontoPlot toPlotSpace:plotSpace];
     CPTMutableLineStyle *kontoLineStyle = [kontoPlot.dataLineStyle mutableCopy];
     kontoLineStyle.lineWidth = 3.0;
-#warning    kontoLineStyle.lineColor = COLORKURVE;
+    kontoLineStyle.lineColor = tintColor;
     kontoPlot.dataLineStyle = kontoLineStyle;
     
     graph.legend = [CPTLegend legendWithGraph:graph];
