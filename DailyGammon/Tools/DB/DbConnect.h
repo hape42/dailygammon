@@ -17,4 +17,7 @@
 
 - (float)readRatingForDatum:(NSString *)datum andUser:(NSString*)userID;
 
+- (int)countRating;
+- (NSMutableArray *) readAlleRatingForUser:(NSString*)userID;
+
 @end

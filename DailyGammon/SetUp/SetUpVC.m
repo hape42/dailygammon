@@ -10,6 +10,8 @@
 #import "Design.h"
 #import "BoardSchemeVC.h"
 #import "PreferencesVC.h"
+#import "AppDelegate.h"
+#import "DbConnect.h"
 
 @interface SetUpVC ()
 

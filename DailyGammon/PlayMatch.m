@@ -14,6 +14,9 @@
 #import "Match.h"
 #import "GameLounge.h"
 #import "Rating.h"
+#import "AppDelegate.h"
+#import "DbConnect.h"
+#import "RatingVC.h"
 
 @interface PlayMatch ()
 

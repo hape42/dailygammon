@@ -130,4 +130,48 @@
 
 }
 
+- (int)countRating
+{
+    int count = 0;
+    
+    const char *sql = "select count(*) from Rating";
+    if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+    {
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            count =  sqlite3_column_int(statement, 0);
+            if(count > 0)
+            {
+                return count;
+            }
+        }
+        sqlite3_finalize(statement);
+    }
+
+    return count;
+}
+
+- (NSMutableArray *) readAlleRatingForUser:(NSString*)userID
+{
+    NSMutableArray *alleRating = [NSMutableArray arrayWithCapacity:20];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating ORDER BY Datum ASC ;"];
+    const char *sql = [sqlQuery UTF8String];
+    if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+    {
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            NSString *datum = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+            float rating    = sqlite3_column_double(statement, 2);
+            
+            NSDictionary *ratingDict = @{
+                                          @"datum"      : datum,
+                                          @"rating"     : [NSNumber numberWithDouble: rating]
+                                          };
+            [alleRating addObject:ratingDict];
+        }
+        sqlite3_finalize(statement);
+    }
+    return alleRating;
+}
+
 @end

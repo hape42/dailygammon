@@ -17,6 +17,7 @@
 #import "GameLounge.h"
 #import "DbConnect.h"
 #import "AppDelegate.h"
+#import "RatingVC.h"
 
 @interface TopPageVC ()
 

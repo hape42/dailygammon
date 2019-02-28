@@ -20,10 +20,16 @@
     int diceBreite = 40;
     int luecke = 10;
     
-    int anzalButtons = 6;
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    int countDB = [app.dbConnect countRating];
+    int minDB = 3;
+    int anzahlButtons = 6;
+    if(countDB > minDB)
+        anzahlButtons = 7;
     int headerBreite = headerView.frame.size.width;
 
-    int buttonBreite = (headerBreite - diceBreite - (anzalButtons * luecke) ) / anzalButtons;
+    int buttonBreite = (headerBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1)
@@ -102,7 +108,15 @@
 
     x += buttonBreite + luecke;
     
+    UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
+    button7 = [design makeNiceButton:button7];
+    [button7 setTitle:@"Rating" forState: UIControlStateNormal];
+    button7.frame = CGRectMake(x, 5, buttonBreite - 10, 40);
+    button7.tag = 7;
+    [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
     
+    x += buttonBreite + luecke;
+
     [headerView addSubview:diceView];
     
     [headerView addSubview:button1];
@@ -111,8 +125,16 @@
     [headerView addSubview:button4];
     [headerView addSubview:button5];
     [headerView addSubview:button6];
+    if(countDB > minDB)
+        [headerView addSubview:button7];
 
     return headerView;
+}
+-(void) ratingVC
+{
+    RatingVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RatingVC"];
+    
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) topPageVC
@@ -156,7 +178,7 @@
     
     NSError *error = nil;
     NSStringEncoding encoding = 0;
-    self.matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
+    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                        usedEncoding:&encoding
                                                               error:&error];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];

@@ -118,6 +118,18 @@
     [emailController setSubject:betreff];
     [emailController setMessageBody:emailText isHTML:YES];
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"userdefaults.plist"];
+
+    NSString *dbPath = [documentsDirectory stringByAppendingPathComponent:@"rating.sqlite"];
+    
+    NSData *myData = [NSData dataWithContentsOfFile:dbPath];
+    
+    [emailController addAttachmentData:myData mimeType:@"image/sqlite" fileName:@"rating.sqlite"];
+//    myData = [NSData dataWithContentsOfFile:plistPath];
+//    [emailController addAttachmentData:myData mimeType:@"image/plist" fileName:@"userdefaults.plist"];
+
     [self presentViewController:emailController animated:YES completion:NULL];
 }
 
