@@ -132,30 +132,36 @@
 }
 -(void) ratingVC
 {
-    RatingVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"RatingVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    RatingVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"RatingVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) topPageVC
 {
-    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) GameLoungeVC
 {
-    GameLounge *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"GameLoungeVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLoungeVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (IBAction)popoverSetUp:(id)sender
 {
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"SetUpVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
     
     // present the controller
     // on iPad, this will be a Popover
@@ -185,16 +191,18 @@
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
 
     [self.navigationController pushViewController:vc animated:NO];
 
 }
 - (IBAction)showPopOverAbout:(id)sender
 {
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"About"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
     
     controller.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:controller animated:YES completion:nil];

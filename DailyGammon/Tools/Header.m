@@ -9,6 +9,7 @@
 #import "Header.h"
 #import "Design.h"
 #import "TopPageVC.h"
+#import "AppDelegate.h"
 
 @implementation Header
 
@@ -109,12 +110,11 @@
 
 -(void) topPageVC
 {
-    
-    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
    
     [self.navigationController pushViewController:vc animated:YES];
-
-    
 
 }
 @end

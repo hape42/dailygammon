@@ -196,7 +196,9 @@
     
     if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
     {
-        TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -1436,7 +1438,9 @@
 }
 - (IBAction)chatTopButton:(id)sender
 {
-    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
@@ -1624,7 +1628,9 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                                    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+                                    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
 
                                     [self.navigationController pushViewController:vc animated:NO];
                                 }];

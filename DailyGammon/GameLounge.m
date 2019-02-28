@@ -144,7 +144,9 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         if([[cookie value] isEqualToString:@"N/A"])
         {
-            LoginVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }
         else
@@ -155,7 +157,9 @@
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
     {
-        LoginVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
     

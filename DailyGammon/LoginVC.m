@@ -10,6 +10,7 @@
 #import "Design.h"
 #import "TopPageVC.h"
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
+#import "AppDelegate.h"
 
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
@@ -148,7 +149,9 @@
             [[NSUserDefaults standardUserDefaults] setValue:self.passwordOutlet.text forKey:@"password"];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
-            TopPageVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }
     }

@@ -65,8 +65,9 @@
 
 - (IBAction)boardSchemeAction:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
     
     // present the controller
     // on iPad, this will be a Popover
@@ -103,8 +104,9 @@
 }
 - (IBAction)preferencesAction:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UIViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
     
     // present the controller
     // on iPad, this will be a Popover
