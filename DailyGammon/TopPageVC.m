@@ -164,7 +164,9 @@
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
     {
-        LoginVC *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
     
@@ -556,8 +558,9 @@
 //    NSMutableDictionary *ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
     
     
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = zeile[8];
     vc.matchLink = [match objectForKey:@"href"];
 //    vc.ratingDict = ratingDict;

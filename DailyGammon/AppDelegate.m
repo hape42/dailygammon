@@ -16,11 +16,22 @@
 
 @implementation AppDelegate
 
-@synthesize design;
+@synthesize design, activeStoryBoard;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    activeStoryBoard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
+
+    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
+        activeStoryBoard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
+
+    UIViewController *rootController = [activeStoryBoard instantiateInitialViewController];
+    self.window.rootViewController = rootController;
+    [self.window makeKeyAndVisible];
+
     design = [[Design alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
