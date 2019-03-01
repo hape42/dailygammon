@@ -151,7 +151,9 @@
 
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
