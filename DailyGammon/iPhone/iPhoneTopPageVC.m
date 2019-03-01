@@ -71,12 +71,38 @@
 
 -(void) reDrawHeader
 {
-    self.sortGraceButton     = [design makeNiceButton:self.sortGraceButton];
-    self.sortPoolButton      = [design makeNiceButton:self.sortPoolButton];
-    self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
-    self.sortRecentButton    = [design makeNiceButton:self.sortRecentButton];
-    
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    self.sortGraceButton = [design makeNiceFlatButton:self.sortGraceButton];
+    self.sortPoolButton = [design makeNiceFlatButton:self.sortPoolButton];
+    self.sortGracePoolButton = [design makeNiceFlatButton:self.sortGracePoolButton];
+    self.sortRecentButton = [design makeNiceFlatButton:self.sortRecentButton];
+
+    /*
+    self.sortGraceButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.sortGraceButton.layer.cornerRadius = 14.0f;
+    self.sortGraceButton.layer.masksToBounds = YES;
+    self.sortGraceButton.layer.borderWidth = 1;
+    self.sortGraceButton.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]cgColor];
+
+    self.sortPoolButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.sortPoolButton.layer.cornerRadius = 14.0f;
+    self.sortPoolButton.layer.masksToBounds = YES;
+    self.sortPoolButton.layer.borderWidth = 1;
+    self.sortPoolButton.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]cgColor];
+    
+    self.sortGracePoolButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.sortGracePoolButton.layer.cornerRadius = 14.0f;
+    self.sortGracePoolButton.layer.masksToBounds = YES;
+    self.sortGracePoolButton.layer.borderWidth = 1;
+    self.sortGracePoolButton.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]cgColor];
+    
+    self.sortRecentButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.sortRecentButton.layer.cornerRadius = 14.0f;
+    self.sortRecentButton.layer.masksToBounds = YES;
+    self.sortRecentButton.layer.borderWidth = 1;
+    self.sortRecentButton.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]cgColor];
+*/
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
@@ -752,7 +778,7 @@
 }
 - (IBAction)refreshAction:(id)sender
 {
-    [ self readTopPage];
+    [self readTopPage];
     [self reDrawHeader];
 }
 

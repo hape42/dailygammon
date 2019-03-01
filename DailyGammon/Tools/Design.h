@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(UIButton *) makeNiceButton: (UIButton *)button;
 -(UIBarButtonItem *) makeNiceBarButton: (UIBarButtonItem *)button;
+-(UIButton *) makeNiceFlatButton: (UIButton *)button;
 
 - (UITableViewCell *) makeNiceCell: (UITableViewCell*)cell;
 - (UILabel *) makeNiceLabel: (UILabel*)label;

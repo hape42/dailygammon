@@ -41,6 +41,22 @@
     return button;
 }
 
+-(UIButton *) makeNiceFlatButton: (UIButton *)button
+{
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    button.layer.cornerRadius = 14.0f;
+    button.layer.masksToBounds = YES;
+    
+    button.layer.borderWidth = 1;
+    button.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]CGColor];
+    button.tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    return button;
+}
+
 -(UIBarButtonItem *) makeNiceBarButton: (UIBarButtonItem *)button
 {
     button.customView.layer.cornerRadius = 14.0f;

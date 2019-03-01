@@ -83,7 +83,7 @@
     y = 5;
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button1 = [design makeNiceButton:button1];
+    button1 = [design makeNiceFlatButton:button1];
     [button1 setTitle:@"Top Page" forState: UIControlStateNormal];
     button1.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button1.tag = 1;
@@ -92,7 +92,7 @@
     x += buttonBreite + luecke;
     
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button2 = [design makeNiceButton:button2];
+    button2 = [design makeNiceFlatButton:button2];
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
     button2.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button2.tag = 2;
@@ -101,7 +101,7 @@
     x += buttonBreite + luecke;
     
     UIButton *button3 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button3 = [design makeNiceButton:button3];
+    button3 = [design makeNiceFlatButton:button3];
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
     button3.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button3.tag = 3;
@@ -111,7 +111,7 @@
     y = 100;
     
     UIButton *button4 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button4 = [design makeNiceButton:button4];
+    button4 = [design makeNiceFlatButton:button4];
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
     button4.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button4.tag = 4;
@@ -120,7 +120,7 @@
     x += buttonBreite + luecke;
     
     UIButton *button5 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button5 = [design makeNiceButton:button5];
+    button5 = [design makeNiceFlatButton:button5];
     [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
     button5.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button5.tag = 5;
@@ -129,7 +129,7 @@
     x += buttonBreite + luecke;
     
     UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button6 = [design makeNiceButton:button6];
+    button6 = [design makeNiceFlatButton:button6];
     [button6 setTitle:@"About" forState: UIControlStateNormal];
     button6.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button6.tag = 6;
@@ -140,7 +140,7 @@
     
 
     UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button7 = [design makeNiceButton:button7];
+    button7 = [design makeNiceFlatButton:button7];
     [button7 setTitle:@"Rating" forState: UIControlStateNormal];
     button7.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button7.tag = 7;

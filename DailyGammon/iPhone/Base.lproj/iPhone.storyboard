@@ -308,7 +308,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="RgT-ED-vF7">
-                                <rect key="frame" x="20" y="63" width="696" height="341"/>
+                                <rect key="frame" x="20" y="91" width="696" height="285"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
@@ -317,7 +317,7 @@
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="NHZ-tL-QaY">
-                                <rect key="frame" x="15" y="35" width="130" height="25"/>
+                                <rect key="frame" x="15" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Grace"/>
                                 <connections>
@@ -325,7 +325,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1yw-ON-hkZ">
-                                <rect key="frame" x="205" y="35" width="130" height="25"/>
+                                <rect key="frame" x="205" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Pool"/>
                                 <connections>
@@ -333,7 +333,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CSg-VK-I7k">
-                                <rect key="frame" x="395" y="35" width="130" height="25"/>
+                                <rect key="frame" x="395" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Grace+Pool"/>
                                 <connections>
@@ -341,7 +341,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="pyB-ln-XaD">
-                                <rect key="frame" x="591" y="35" width="130" height="25"/>
+                                <rect key="frame" x="591" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Recent"/>
                                 <connections>
