@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *SkipAutomatic;
 @property (weak, nonatomic) IBOutlet UISwitch *HidePipCount;
 @property (weak, nonatomic) IBOutlet UISwitch *HomeBoardleftSide;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end
 
@@ -45,6 +46,9 @@
 {
     [super viewWillAppear:animated];
     
+    self.scrollView.delegate = self;
+    self.scrollView.scrollEnabled = YES;
+
     [self initSwitches];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];

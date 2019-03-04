@@ -51,8 +51,8 @@
     int countDB = [app.dbConnect countRating];
     int minDB = 3;
     int anzahlButtons = 3;
-    if(countDB > minDB)
-        anzahlButtons = 7;
+//    if(countDB > minDB)
+//        anzahlButtons = 7;
     
     int buttonBreite = (maxBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
     
@@ -139,7 +139,7 @@
     [button6 addTarget:self action:@selector(showPopOverAbout:) forControlEvents:UIControlEventTouchUpInside];
     
     x =  diceBreite + luecke;
-    y = 200;
+    y += 100;
     
 
     UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];

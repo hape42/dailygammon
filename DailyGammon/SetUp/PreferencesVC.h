@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Preferences;
 
-@interface PreferencesVC : UIViewController
+@interface PreferencesVC : UIViewController<UIScrollViewDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Preferences *preferences;
