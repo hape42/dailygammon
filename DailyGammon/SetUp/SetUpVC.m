@@ -115,23 +115,34 @@
 }
 - (IBAction)preferencesAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
 
-    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
-    
-    // present the controller
-    // on iPad, this will be a Popover
-    // on iPhone, this will be an action sheet
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
-    popController.delegate = self;
-    
-    UIButton *button = (UIButton *)sender;
-    popController.sourceView = button;
-    popController.sourceRect = button.bounds;
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
+        
+        // present the controller
+        // on iPad, this will be a Popover
+        // on iPhone, this will be an action sheet
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        popController.delegate = self;
+        
+        UIButton *button = (UIButton *)sender;
+        popController.sourceView = button;
+        popController.sourceRect = button.bounds;
+    }
+    else
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        PreferencesVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PreferencesVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+
 }
 
 @end
