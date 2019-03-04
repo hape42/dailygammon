@@ -60,29 +60,40 @@
 }
 - (IBAction)doneAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self dismissViewControllerAnimated:YES completion:nil];
+    else
+        [self.navigationController popViewControllerAnimated:TRUE];
 }
 
 - (IBAction)boardSchemeAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
-    
-    // present the controller
-    // on iPad, this will be a Popover
-    // on iPhone, this will be an action sheet
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    popController.delegate = self;
-    
-    UIButton *button = (UIButton *)sender;
-    popController.sourceView = button;
-    popController.sourceRect = button.bounds;
-
+        UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
+        
+        // present the controller
+        // on iPad, this will be a Popover
+        // on iPhone, this will be an action sheet
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        popController.delegate = self;
+        
+        UIButton *button = (UIButton *)sender;
+        popController.sourceView = button;
+        popController.sourceRect = button.bounds;
+    }
+    else
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        BoardSchemeVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
 }
 - (IBAction)showRatingsAction:(id)sender
 {

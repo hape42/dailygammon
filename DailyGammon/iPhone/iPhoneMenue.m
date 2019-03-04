@@ -13,7 +13,7 @@
 #import "RatingVC.h"
 #import "iPhoneTopPageVC.h"
 #import "LoginVC.h"
-
+#import "SetupVC.h"
 #import "GameLounge.h"
 
 @interface iPhoneMenue ()
@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view addSubview:[self makeHeader] ];
+    [self makeButtons] ;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -36,14 +36,13 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
 }
--(UIView *)makeHeader
+- (void) makeButtons
 {
     design = [[Design alloc] init];
     
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(20, 20, maxBreite - 40, 50)];
     
-    int x = 0, y = 0;
+    int x = 0, y = 50;
     int diceBreite = 40;
     int luecke = 10;
     
@@ -54,9 +53,8 @@
     int anzahlButtons = 3;
     if(countDB > minDB)
         anzahlButtons = 7;
-    int headerBreite = headerView.frame.size.width;
     
-    int buttonBreite = (headerBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
+    int buttonBreite = (maxBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1)
@@ -77,13 +75,13 @@
             
     }
     UIImageView *diceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-    diceView.frame = CGRectMake(0, 5, diceBreite, diceBreite);
+    diceView.frame = CGRectMake(0, y, diceBreite, diceBreite);
     
     x +=  diceBreite + luecke;
-    y = 5;
     
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
     button1 = [design makeNiceFlatButton:button1];
+    button1.layer.cornerRadius = 14.0f;
     [button1 setTitle:@"Top Page" forState: UIControlStateNormal];
     button1.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button1.tag = 1;
@@ -93,6 +91,7 @@
     
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeSystem];
     button2 = [design makeNiceFlatButton:button2];
+    button2.layer.cornerRadius = 14.0f;
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
     button2.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button2.tag = 2;
@@ -102,26 +101,29 @@
     
     UIButton *button3 = [UIButton buttonWithType:UIButtonTypeSystem];
     button3 = [design makeNiceFlatButton:button3];
+    button3.layer.cornerRadius = 14.0f;
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
     button3.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button3.tag = 3;
     [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
     
     x =  diceBreite + luecke;
-    y = 100;
+    y += 100;
     
     UIButton *button4 = [UIButton buttonWithType:UIButtonTypeSystem];
     button4 = [design makeNiceFlatButton:button4];
+    button4.layer.cornerRadius = 14.0f;
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
     button4.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button4.tag = 4;
-    [button4 addTarget:self action:@selector(popoverSetUp:) forControlEvents:UIControlEventTouchUpInside];
+    [button4 addTarget:self action:@selector(SetUpVC) forControlEvents:UIControlEventTouchUpInside];
     
     x += buttonBreite + luecke;
     
     UIButton *button5 = [UIButton buttonWithType:UIButtonTypeSystem];
     button5 = [design makeNiceFlatButton:button5];
-    [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
+    button5.layer.cornerRadius = 14.0f;
+   [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
     button5.frame = CGRectMake(x, y, buttonBreite - 10, 35);
     button5.tag = 5;
     [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
@@ -130,6 +132,7 @@
     
     UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
     button6 = [design makeNiceFlatButton:button6];
+    button6.layer.cornerRadius = 14.0f;
     [button6 setTitle:@"About" forState: UIControlStateNormal];
     button6.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button6.tag = 6;
@@ -141,25 +144,25 @@
 
     UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
     button7 = [design makeNiceFlatButton:button7];
-    [button7 setTitle:@"Rating" forState: UIControlStateNormal];
+    button7.layer.cornerRadius = 14.0f;
+   [button7 setTitle:@"Rating" forState: UIControlStateNormal];
     button7.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button7.tag = 7;
     [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
     
     x += buttonBreite + luecke;
     
-    [headerView addSubview:diceView];
+    [self.view addSubview:diceView];
     
-    [headerView addSubview:button1];
-    [headerView addSubview:button2];
-    [headerView addSubview:button3];
-    [headerView addSubview:button4];
-    [headerView addSubview:button5];
-    [headerView addSubview:button6];
+    [self.view addSubview:button1];
+    [self.view addSubview:button2];
+    [self.view addSubview:button3];
+    [self.view addSubview:button4];
+    [self.view addSubview:button5];
+    [self.view addSubview:button6];
     if(countDB > minDB)
-        [headerView addSubview:button7];
+        [self.view addSubview:button7];
     
-    return headerView;
 }
 -(void) ratingVC
 {
@@ -184,6 +187,15 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLoungeVC"];
+    
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+-(void) SetUpVC
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    SetUpVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

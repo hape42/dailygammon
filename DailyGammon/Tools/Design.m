@@ -13,6 +13,8 @@
 
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
+    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
+        return [self makeNiceFlatButton:button];
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
         
@@ -47,7 +49,7 @@
     if(boardSchema < 1) boardSchema = 4;
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
-    button.layer.cornerRadius = 14.0f;
+    button.layer.cornerRadius = 10.0f;
     button.layer.masksToBounds = YES;
     
     button.layer.borderWidth = 1;
