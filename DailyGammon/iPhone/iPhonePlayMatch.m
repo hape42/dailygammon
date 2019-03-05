@@ -159,6 +159,11 @@
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
+
         [removeView removeFromSuperview];
     }
     
@@ -276,7 +281,7 @@
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
                                                                  zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
-    boardView.tag = 999;
+    boardView.tag = BOARD_VIEW;
     self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
     
     self.infoLabel.text = [NSString stringWithFormat:@"%@ %5.0f, %5.0f , %5.2f",self.infoLabel.text, boardView.frame.size.width, boardView.frame.size.height, zoomFaktor];
@@ -829,9 +834,17 @@
     }
     x += checkerBreite;
     
-    UIView *removeBoardView = [self.view viewWithTag:999];
-    [removeBoardView removeFromSuperview];
-    
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
+    {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
+
+        [removeView removeFromSuperview];
+    }
+
     [self.view addSubview:boardView];
     
 #pragma mark - opponent / player
@@ -919,10 +932,12 @@
         self.playerPips.text    = @"";
     }
     
-    
-    UIView *removeView;
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
         [removeView removeFromSuperview];
     }
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
@@ -947,7 +962,7 @@
             UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonNext = [design makeNiceButton:buttonNext];
             [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
-            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50,
+            buttonNext.frame = CGRectMake((actionViewBreite / 2) - 50,
                                           ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
                                           100,
                                           BUTTONHEIGHT);
@@ -1076,7 +1091,10 @@
             UIButton *buttonSwap = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonSwap = [design makeNiceButton:buttonSwap];
             [buttonSwap setTitle:@"Swap Dice" forState: UIControlStateNormal];
-            buttonSwap.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, BUTTONHEIGHT);
+            buttonSwap.frame = CGRectMake((actionViewBreite / 2) - 50,
+                                          ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                          100,
+                                          BUTTONHEIGHT);
             [buttonSwap addTarget:self action:@selector(actionSwap) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSwap];
             break;
@@ -1098,7 +1116,10 @@
             UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonUndoMove = [design makeNiceButton:buttonUndoMove];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
-            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, BUTTONHEIGHT);
+            buttonUndoMove.frame = CGRectMake((actionViewBreite / 2) - 50,
+                                          ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                          100,
+                                          BUTTONHEIGHT);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
             break;
@@ -1193,13 +1214,15 @@
     
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
     {
-        UILabel *messageText = [[UILabel alloc] initWithFrame:CGRectMake(10,
-                                                                         actionView.frame.size.height - 40 - 10 - 40,
-                                                                         actionView.frame.size.width - 20,
-                                                                         35)];
+        UILabel *messageText = [[UILabel alloc] initWithFrame:CGRectMake(5,
+                                                                         actionViewHoeheOhneSkip - 20,
+                                                                         actionViewBreite - 10,
+                                                                         25)];
         messageText.text = [self.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
+        messageText.adjustsFontSizeToFitWidth = YES;
+
         [actionView addSubview: messageText];
         
     }
@@ -1834,6 +1857,11 @@
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
+
         [removeView removeFromSuperview];
     }
     NSString *nextButtonText = @"Next%%20Game";
