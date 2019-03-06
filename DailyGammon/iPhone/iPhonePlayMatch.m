@@ -1159,8 +1159,8 @@
 #pragma mark - CHAT
             // schieb den chatView in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
-            frame.origin.x = 185;
-            frame.origin.y = actionView.frame.origin.y-85;
+            frame.origin.x = 10;
+            frame.origin.y = 40;
             self.chatView.frame = frame;
             [self.view bringSubviewToFront:self.chatView ];
             //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
@@ -1591,8 +1591,23 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     return YES;
 }
+- (BOOL)textViewShouldReturn:(UITextView *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
 
-
+- (BOOL)textView:(UITextView *)textView
+shouldChangeTextInRange:(NSRange)range
+ replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+    }
+    return YES;
+}
 - (BOOL)textViewShouldEndEditing:(UITextView *)textField
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
@@ -1601,13 +1616,12 @@
     return YES;
 }
 
-
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     if(self.isChatView)
     {
         CGRect frame = self.chatViewFrame;
-        frame.origin.y -= 330;
+        frame.origin.y -= 100;
         self.chatView.frame = frame;
         XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
     }
