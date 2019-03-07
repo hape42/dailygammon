@@ -1543,7 +1543,6 @@
 - (void)cellTouched:(UIGestureRecognizer *)gesture
 {
     CGPoint tapLocation = [gesture locationInView:self.view];
-    //    XLog(@"TapPoint = %@ ", NSStringFromCGPoint(tapLocation));
     for(NSMutableDictionary *dict in self.moveArray)
     {
         CGRect frame = CGRectMake([[dict objectForKey:@"x"] floatValue],
@@ -1555,11 +1554,10 @@
             if([[dict objectForKey:@"href"] length] != 0)
             {
                 matchLink = [dict objectForKey:@"href"];
+                [self showMatch];
             }
         }
     }
-    [self showMatch];
-
 }
 
 #pragma mark - textField

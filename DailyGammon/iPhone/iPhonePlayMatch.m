@@ -343,13 +343,24 @@
                                                                       boardView.frame.size.width,
                                                                       nummerHoehe)];
     nummerObenView.backgroundColor = self.randColor;
-    
+    nummerObenView.tag = 5001;
     UIView *nummerUntenView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                        boardView.frame.origin.y + boardView.frame.size.height,
                                                                        boardView.frame.size.width,
                                                                        nummerHoehe)];
     nummerUntenView.backgroundColor = self.randColor;
-    
+    nummerUntenView.tag = 5002;
+
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:5001]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+    while((removeView = [self.view viewWithTag:5002]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+
     [self.view addSubview:nummerObenView];
     [self.view addSubview:nummerUntenView];
     [boardView addSubview:offView];
@@ -367,6 +378,12 @@
         nummer.text = nummernArray[i];
         nummer.adjustsFontSizeToFitWidth = YES;
         nummer.textColor = self.nummerColor;
+        nummer.tag = i + 1000;
+        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
+        {
+            [removeView removeFromSuperview];
+        }
+
         [self.view addSubview:nummer];
         
         x += checkerBreite;
@@ -379,6 +396,12 @@
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
         nummer.textColor = self.nummerColor;
+        nummer.tag = i + 1000;
+        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
+        {
+            [removeView removeFromSuperview];
+        }
+
         [self.view addSubview:nummer];
         
         x += checkerBreite;
@@ -843,7 +866,6 @@
     }
     x += checkerBreite;
     
-    UIView *removeView;
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
@@ -1598,10 +1620,11 @@
             if([[dict objectForKey:@"href"] length] != 0)
             {
                 matchLink = [dict objectForKey:@"href"];
+                [self showMatch];
             }
         }
     }
-    [self showMatch];
+    
     
 }
 
