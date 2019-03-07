@@ -36,6 +36,7 @@
 		E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */; };
 		E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */; };
 		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
+		E0BE3AFB2231194D003A824D /* menue.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BE3AFA2231194C003A824D /* menue.png */; };
 		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
 		E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81B21E7CCE600494A82 /* dice_blau.png */; };
 		E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81C21E7CCE600494A82 /* dice_gruen.png */; };
@@ -183,6 +184,7 @@
 		E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
 		E0BDCC3F21C185A300E8AF25 /* Rating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
 		E0BDCC4021C185A300E8AF25 /* Rating.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
+		E0BE3AFA2231194C003A824D /* menue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menue.png; sourceTree = "<group>"; };
 		E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_gruen.png; sourceTree = "<group>"; };
 		E0C1D81B21E7CCE600494A82 /* dice_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_blau.png; sourceTree = "<group>"; };
 		E0C1D81C21E7CCE600494A82 /* dice_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_gruen.png; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 				E0C1D81E21E7CCE800494A82 /* pfeil_blau.png */,
 				E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */,
 				E0C1D81D21E7CCE700494A82 /* pfeil_rot.png */,
+				E0BE3AFA2231194C003A824D /* menue.png */,
 				E0F9589221AD168B003DAC01 /* Assets.xcassets */,
 			);
 			path = Bilder;
@@ -589,6 +592,7 @@
 				E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */,
 				E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */,
 				E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */,
+				E0BE3AFB2231194D003A824D /* menue.png in Resources */,
 				E0BDCC3A21BE769A00E8AF25 /* BuildInfo.sh in Resources */,
 				E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */,
 				E0AEFC4921FE0CC500CFFB6C /* startscreen.png in Resources */,
