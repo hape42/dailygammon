@@ -108,6 +108,8 @@
 
 #define FINISHED_MATCH_VIEW 43
 #define CHAT_VIEW 42
+#define ACTION_VIEW 44
+#define BOARD_VIEW 45
 
 - (void)viewDidLoad
 {
@@ -277,7 +279,7 @@
                                                                  y,
                                                                  offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
                                                                  zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
-    boardView.tag = 999;
+    boardView.tag = BOARD_VIEW;
     self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
 
     self.infoLabel.text = [NSString stringWithFormat:@"%@ %5.0f, %5.0f , %5.2f",self.infoLabel.text, boardView.frame.size.width, boardView.frame.size.height, zoomFaktor];
@@ -330,12 +332,23 @@
                                                                       boardView.frame.size.width,
                                                                       nummerHoehe)];
     nummerObenView.backgroundColor = self.randColor;
- 
+    nummerObenView.tag = 5001;
     UIView *nummerUntenView = [[UIView alloc] initWithFrame:CGRectMake(x,
                                                                       boardView.frame.origin.y + boardView.frame.size.height,
                                                                       boardView.frame.size.width,
                                                                       nummerHoehe)];
     nummerUntenView.backgroundColor = self.randColor;
+    nummerUntenView.tag = 5002;
+    
+    UIView *removeView;
+    while((removeView = [self.view viewWithTag:5001]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+    while((removeView = [self.view viewWithTag:5002]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
 
     [self.view addSubview:nummerObenView];
     [self.view addSubview:nummerUntenView];
@@ -353,7 +366,12 @@
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
         nummer.textColor = self.nummerColor;
-        [self.view addSubview:nummer];
+        nummer.tag = i + 1000;
+        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
+        {
+            [removeView removeFromSuperview];
+        }
+       [self.view addSubview:nummer];
 
         x += checkerBreite;
     }
@@ -365,6 +383,12 @@
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
         nummer.textColor = self.nummerColor;
+        nummer.tag = i + 1000;
+        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
+        {
+            [removeView removeFromSuperview];
+        }
+        
         [self.view addSubview:nummer];
         
         x += checkerBreite;
@@ -829,8 +853,15 @@
     }
     x += checkerBreite;
     
-    UIView *removeBoardView = [self.view viewWithTag:999];
-    [removeBoardView removeFromSuperview];
+    while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
+    {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
+        
+        [removeView removeFromSuperview];
+    }
 
     [self.view addSubview:boardView];
     
@@ -919,20 +950,22 @@
         self.playerPips.text    = @"";
     }
     
-
-//    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",self.matchName.text, self.matchLaengeText] ;
-    UIView *removeView;
-    while((removeView = [self.view viewWithTag:CHAT_VIEW]) != nil)
+    while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
         [removeView removeFromSuperview];
     }
+
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
                                                                   maxBreite - self.opponentView.frame.origin.x -5,
                                                                   self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
     
 //    actionView.backgroundColor = [UIColor yellowColor];
-    actionView.tag = CHAT_VIEW;
+    actionView.tag = ACTION_VIEW;
     actionView.layer.borderWidth = 1;
 
     [self.view addSubview:actionView];

@@ -14,7 +14,7 @@
 #import "iPhoneTopPageVC.h"
 #import "LoginVC.h"
 #import "SetupVC.h"
-#import "GameLounge.h"
+#import "iPhoneGameLounge.h"
 
 @interface iPhoneMenue ()
 
@@ -186,7 +186,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLoungeVC"];
+    iPhoneGameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneGameLounge"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
