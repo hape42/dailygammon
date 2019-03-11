@@ -247,6 +247,26 @@
 
         [self presentViewController:alert animated:YES completion:nil];
     }
+    else if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:[self.boardDict objectForKey:@"quickMessage"]
+                                     message:[self.boardDict objectForKey:@"chat"]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"NEXT"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                        [self showMatch];
+                                    }];
+        
+        [alert addAction:yesButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
     else
     {
         [self drawBoard];

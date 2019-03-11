@@ -123,6 +123,23 @@
         return boardDict;
     }
     
+#pragma mark - You have received the following quick message from
+
+    if ([htmlString rangeOfString:@"You have received the following quick message from"].location != NSNotFound)
+    {
+        NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
+        for(TFHppleElement *element in matchHeader)
+        {
+            [boardDict setObject:[element content] forKey:@"quickMessage"];
+        }
+        matchHeader  = [xpathParser searchWithXPathQuery:@"//pre"];
+        for(TFHppleElement *element in matchHeader)
+        {
+            [boardDict setObject:[element content] forKey:@"chat"];
+        }
+        return boardDict;
+    }
+
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
     if ([htmlString rangeOfString:@"unexpected"].location != NSNotFound)
