@@ -891,6 +891,15 @@
 
     [self.view addSubview:boardView];
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                   ^{
+                       dispatch_async(dispatch_get_main_queue(),
+                                      ^{
+                                          [self->rating writeRating];
+                                      });
+                       
+                   });
+
 #pragma mark - opponent / player
     bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
     bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
@@ -1945,8 +1954,8 @@
     /* Stats in bytes */
     natural_t mem_used = (vm_stat.active_count +
                           vm_stat.inactive_count +
-                          vm_stat.wire_count) * pagesize;
-    natural_t mem_free = vm_stat.free_count * pagesize;
+                          vm_stat.wire_count) * (unsigned int)pagesize;
+    natural_t mem_free = vm_stat.free_count * (unsigned int)pagesize;
     natural_t mem_total = mem_used + mem_free;
     NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
     if(self.first)

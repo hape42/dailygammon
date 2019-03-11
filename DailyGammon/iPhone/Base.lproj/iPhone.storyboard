@@ -1042,16 +1042,39 @@
             </objects>
             <point key="canvasLocation" x="1097.9010494752624" y="-799.20000000000005"/>
         </scene>
-        <!--RatingVC-->
+        <!--iPhone RatingVC-->
         <scene sceneID="LnH-WB-cAL">
             <objects>
-                <viewController storyboardIdentifier="RatingVC" id="Twn-Su-RBH" customClass="RatingVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RatingVC" id="Twn-Su-RBH" customClass="iPhoneRatingVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6aH-HK-YiJ">
                         <rect key="frame" x="0.0" y="0.0" width="667" height="375"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating from ... to ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TKn-Eq-Msj">
+                                <rect key="frame" x="20" y="0.0" width="627" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7VE-Um-Ybh">
+                                <rect key="frame" x="622" y="5" width="25" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="DvW-Tf-E0z" eventType="touchUpInside" id="puH-dN-mjz"/>
+                                    <action selector="moreAction:" destination="Twn-Su-RBH" eventType="touchUpInside" id="vFC-ti-HEt"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="a9T-uy-KbR"/>
+                    <connections>
+                        <outlet property="header" destination="TKn-Eq-Msj" id="HSN-Bo-cyT"/>
+                        <outlet property="moreButton" destination="7VE-Um-Ybh" id="ALJ-PU-96a"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cJ6-jL-Efp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

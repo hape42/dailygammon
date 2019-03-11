@@ -49,7 +49,7 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     int countDB = [app.dbConnect countRating];
-    int minDB = 3;
+    int minDB = 5;
     int anzahlButtons = 3;
 //    if(countDB > minDB)
 //        anzahlButtons = 7;

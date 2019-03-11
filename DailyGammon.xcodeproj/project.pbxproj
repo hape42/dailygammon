@@ -38,6 +38,7 @@
 		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
 		E0BE3AFB2231194D003A824D /* menue.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BE3AFA2231194C003A824D /* menue.png */; };
 		E0BE3AFE223170F3003A824D /* iPhoneGameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */; };
+		E0BE3B0122366BC1003A824D /* iPhoneRatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */; };
 		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
 		E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81B21E7CCE600494A82 /* dice_blau.png */; };
 		E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81C21E7CCE600494A82 /* dice_gruen.png */; };
@@ -188,6 +189,8 @@
 		E0BE3AFA2231194C003A824D /* menue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menue.png; sourceTree = "<group>"; };
 		E0BE3AFC223170F3003A824D /* iPhoneGameLounge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneGameLounge.h; sourceTree = "<group>"; };
 		E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneGameLounge.m; sourceTree = "<group>"; };
+		E0BE3AFF22366BC1003A824D /* iPhoneRatingVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneRatingVC.h; sourceTree = "<group>"; };
+		E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneRatingVC.m; sourceTree = "<group>"; };
 		E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_gruen.png; sourceTree = "<group>"; };
 		E0C1D81B21E7CCE600494A82 /* dice_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_blau.png; sourceTree = "<group>"; };
 		E0C1D81C21E7CCE600494A82 /* dice_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_gruen.png; sourceTree = "<group>"; };
@@ -438,6 +441,8 @@
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
 				E0BE3AFC223170F3003A824D /* iPhoneGameLounge.h */,
 				E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */,
+				E0BE3AFF22366BC1003A824D /* iPhoneRatingVC.h */,
+				E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -666,6 +671,7 @@
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
+				E0BE3B0122366BC1003A824D /* iPhoneRatingVC.m in Sources */,
 				E00EB16921C633580088501C /* Match.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

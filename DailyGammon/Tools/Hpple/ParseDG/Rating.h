@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID;
 - (float)readRatingForUser:(NSString *)userID;
+- (void)writeRating;
 
 @end
 

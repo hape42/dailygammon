@@ -8,6 +8,8 @@
 
 #import "Rating.h"
 #import "TFHpple.h"
+#import "AppDelegate.h"
+#import "DbConnect.h"
 
 @implementation Rating
 
@@ -115,6 +117,24 @@
     }
     
     return [ratingPlayer floatValue];
+}
+
+- (void)writeRating
+{
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+    float ratingUser = [self readRatingForUser:userID];
+    
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyy-MM-dd"];
+    NSString *dateDB = [format stringFromDate:[NSDate date]];
+    
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
+    if(ratingUser > ratingDB)
+        [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
+    XLog(@"%@ %5.1f %@", dateDB, ratingUser, userID);
+
 }
 
 @end
