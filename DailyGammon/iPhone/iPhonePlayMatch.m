@@ -391,6 +391,12 @@
     x = boardView.frame.origin.x + offBreite;
     y = boardView.frame.origin.y - nummerHoehe;
     NSMutableArray *nummernArray = [self.boardDict objectForKey:@"nummernOben"];
+    if(nummernArray.count < 17)
+    {
+        // aus irgendwelchen Gründen wurde gar kein Board angezeigt
+        [self errorAction];
+        return;
+    }
     for(int i = 1; i <= 6; i++)
     {
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
@@ -1258,7 +1264,7 @@
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            [self defaultAction];
+            [self errorAction];
             break;
         }
     }
@@ -1722,8 +1728,8 @@ shouldChangeTextInRange:(NSRange)range
     }
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
-
--(void)defaultAction
+#pragma mark - errorAction
+-(void)errorAction
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"oops"
@@ -1732,13 +1738,13 @@ shouldChangeTextInRange:(NSRange)range
     
     NSMutableAttributedString *title = [[NSMutableAttributedString alloc] initWithString:@"Oooops"];
     [title addAttribute:NSFontAttributeName
-                  value:[UIFont systemFontOfSize:30.0]
+                  value:[UIFont systemFontOfSize:20.0]
                   range:NSMakeRange(0, [title length])];
     [alert setValue:title forKey:@"attributedTitle"];
     
     NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"\n\nSomething unexpected happend!  \n\n Please send an Email to support.\n\n\nOr just go to the TopPage."];
     [message addAttribute:NSFontAttributeName
-                    value:[UIFont systemFontOfSize:20.0]
+                    value:[UIFont systemFontOfSize:15.0]
                     range:NSMakeRange(0, [message length])];
     [alert setValue:message forKey:@"attributedMessage"];
     

@@ -380,6 +380,12 @@
     x = boardView.frame.origin.x + offBreite;
     y = boardView.frame.origin.y - nummerHoehe;
     NSMutableArray *nummernArray = [self.boardDict objectForKey:@"nummernOben"];
+    if(nummernArray.count < 17)
+    {
+        // aus irgendwelchen Gründen wurde gar kein Board angezeigt
+        [self errorAction];
+        return;
+    }
     for(int i = 1; i <= 6; i++)
     {
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
@@ -1230,7 +1236,7 @@
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            [self defaultAction];
+            [self errorAction];
             break;
         }
     }
@@ -1674,7 +1680,9 @@
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
 
--(void)defaultAction
+#pragma mark - errorAction
+
+-(void)errorAction
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"oops"
