@@ -15,6 +15,7 @@
 #import "LoginVC.h"
 #import "SetupVC.h"
 #import "iPhoneGameLounge.h"
+#import "About.h"
 
 @interface iPhoneMenue ()
 
@@ -136,7 +137,7 @@
     [button6 setTitle:@"About" forState: UIControlStateNormal];
     button6.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button6.tag = 6;
-    [button6 addTarget:self action:@selector(showPopOverAbout:) forControlEvents:UIControlEventTouchUpInside];
+    [button6 addTarget:self action:@selector(AboutVC) forControlEvents:UIControlEventTouchUpInside];
     
     x =  diceBreite + luecke;
     y += 100;
@@ -239,22 +240,13 @@
     LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
     [self.navigationController pushViewController:vc animated:NO];
 }
-- (IBAction)showPopOverAbout:(id)sender
+- (IBAction)AboutVC
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
+    About *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
+    [self.navigationController pushViewController:vc animated:NO];
     
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    popController.delegate = self;
-    
-    UIButton *button = (UIButton *)sender;
-    popController.sourceView = button;
-    popController.sourceRect = button.bounds;
     
 }
 -(void) help
