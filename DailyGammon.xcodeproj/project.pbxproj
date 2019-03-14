@@ -40,6 +40,7 @@
 		E0BE3AFE223170F3003A824D /* iPhoneGameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */; };
 		E0BE3B0122366BC1003A824D /* iPhoneRatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */; };
 		E0BE3B042236EF08003A824D /* iPhoneAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3B032236EF08003A824D /* iPhoneAbout.m */; };
+		E0BE3B06223A3440003A824D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BE3B05223A3440003A824D /* StoreKit.framework */; };
 		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
 		E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81B21E7CCE600494A82 /* dice_blau.png */; };
 		E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81C21E7CCE600494A82 /* dice_gruen.png */; };
@@ -194,6 +195,7 @@
 		E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneRatingVC.m; sourceTree = "<group>"; };
 		E0BE3B022236EF08003A824D /* iPhoneAbout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneAbout.h; sourceTree = "<group>"; };
 		E0BE3B032236EF08003A824D /* iPhoneAbout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneAbout.m; sourceTree = "<group>"; };
+		E0BE3B05223A3440003A824D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_gruen.png; sourceTree = "<group>"; };
 		E0C1D81B21E7CCE600494A82 /* dice_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_blau.png; sourceTree = "<group>"; };
 		E0C1D81C21E7CCE600494A82 /* dice_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_gruen.png; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0BE3B06223A3440003A824D /* StoreKit.framework in Frameworks */,
 				E0AC594D22270FB200367EE9 /* QuartzCore.framework in Frameworks */,
 				E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */,
 				E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */,
@@ -393,6 +396,7 @@
 		E0B0514921F4FCE400D91857 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E0BE3B05223A3440003A824D /* StoreKit.framework */,
 				E0AC594C22270FB100367EE9 /* QuartzCore.framework */,
 				E0AC594A22270FA800367EE9 /* CoreGraphics.framework */,
 				E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */,
@@ -456,6 +460,14 @@
 			isa = PBXGroup;
 			children = (
 				E0AC59AC22283C8E00367EE9 /* iPad.storyboard */,
+				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
+				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
+				E0C1D82821E900BA00494A82 /* GameLounge.h */,
+				E0C1D82921E900D100494A82 /* GameLounge.m */,
+				E09C007221B042020056D2A2 /* PlayMatch.h */,
+				E09C007321B042020056D2A2 /* PlayMatch.m */,
+				E0AC594722270F5500367EE9 /* RatingVC.h */,
+				E0AC594822270F5500367EE9 /* RatingVC.m */,
 			);
 			path = iPad;
 			sourceTree = "<group>";
@@ -486,16 +498,8 @@
 				E0F9589F21AD185C003DAC01 /* Tools */,
 				E0F9588921AD1688003DAC01 /* AppDelegate.h */,
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
-				E0AC594722270F5500367EE9 /* RatingVC.h */,
-				E0AC594822270F5500367EE9 /* RatingVC.m */,
 				E0F9588C21AD1688003DAC01 /* LoginVC.h */,
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
-				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
-				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
-				E0C1D82821E900BA00494A82 /* GameLounge.h */,
-				E0C1D82921E900D100494A82 /* GameLounge.m */,
-				E09C007221B042020056D2A2 /* PlayMatch.h */,
-				E09C007321B042020056D2A2 /* PlayMatch.m */,
 				E0F9589821AD168B003DAC01 /* main.m */,
 				E09C008821B13D010056D2A2 /* SupportingFiles */,
 			);

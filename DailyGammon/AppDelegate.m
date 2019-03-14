@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Design.h"
 #import "DBConnect.h"
+#import <StoreKit/StoreKit.h>
 
 @interface AppDelegate ()
 
@@ -42,6 +43,11 @@
         schemaDict = [design schema:4];
     }
     [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    
+    long count = [[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"];
+    if(count < 0) count = 0;
+    [[NSUserDefaults standardUserDefaults] setInteger:count+1 forKey:@"LaunchCount"];
+
     return YES;
 }
 
@@ -60,11 +66,22 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    
+    long count = [[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"];
+    if(count < 0) count = 0;
+    [[NSUserDefaults standardUserDefaults] setInteger:count+1 forKey:@"LaunchCount"];
+
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"] == 5)
+    {
+        [SKStoreReviewController requestReview] ;
+    }
+
 }
 
 
