@@ -1192,18 +1192,25 @@
         }
         case SUBMIT_MOVE:
         {
-#pragma mark - Button Submit Move
+#pragma mark - Button Submit Move & Undo
+            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
             UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
             [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
-            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, 10, 100, BUTTONHEIGHT);
+            buttonSubmitMove.frame = CGRectMake((actionViewBreite/2) - 50,
+                                                0 + (platzFuerButton/2),
+                                                100,
+                                                BUTTONHEIGHT);
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSubmitMove];
             
             UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonUndoMove = [design makeNiceButton:buttonUndoMove];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
-            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, BUTTONHEIGHT);
+            buttonUndoMove.frame = CGRectMake((actionViewBreite/2) - 50,
+                                              platzFuerButton + (platzFuerButton / 2),
+                                              100,
+                                              BUTTONHEIGHT);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
             
