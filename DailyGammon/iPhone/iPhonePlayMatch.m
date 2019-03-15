@@ -1102,10 +1102,11 @@
                 [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                 [actionView addSubview: verifyDouble];
                 
-                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 3,
-                                                                                      platzFuerButton + (platzFuerButton / 2),
-                                                                                      100,
-                                                                                      BUTTONHEIGHT)];
+                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:
+                                             CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 3,
+                                                        platzFuerButton + (platzFuerButton / 2),
+                                                        100,
+                                                        BUTTONHEIGHT)];
                 verifyDoubleText.text = @"Verify";
                 verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
@@ -1115,51 +1116,78 @@
         case ACCEPT_DECLINE:
         {
 #pragma mark - Button Accept Pass
+            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
+
             UIButton *buttonAccept = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonAccept = [design makeNiceButton:buttonAccept];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
-            buttonAccept.frame = CGRectMake(10, 20, 100, BUTTONHEIGHT);
+            buttonAccept.frame = CGRectMake((actionViewBreite/2) - 50,
+                                            0 + (platzFuerButton/2),
+                                            100,
+                                            BUTTONHEIGHT);
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonAccept];
             
             UIButton *buttonPass = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonPass = [design makeNiceButton:buttonPass];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
-            buttonPass.frame = CGRectMake(10,  buttonAccept.frame.origin.y + 100 , 100, BUTTONHEIGHT);
+            buttonPass.frame = CGRectMake((actionViewBreite/2) - 50,
+                                          platzFuerButton + (platzFuerButton / 2),
+                                          100,
+                                          BUTTONHEIGHT);
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonPass];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
+                buttonAccept.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
+                                                0 + (platzFuerButton / 2),
+                                                70  ,
+                                                BUTTONHEIGHT);
+                buttonPass.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
+                                                platzFuerButton + (platzFuerButton / 2),
+                                                70  ,
+                                                BUTTONHEIGHT);
+
                 for(NSDictionary * dict in attributesArray)
                 {
                     if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
-                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonAccept.frame.origin.y + 4, 50, BUTTONHEIGHT)];
-                            verifyAccept.transform = CGAffineTransformMakeScale(0.75, 0.75);
-
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:
+                                                      CGRectMake(buttonAccept.frame.origin.x + buttonAccept.frame.size.width ,
+                                                                 buttonAccept.frame.origin.y -5 ,
+                                                                 50,
+                                                                 BUTTONHEIGHT)];
+                            verifyAccept.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [actionView addSubview: verifyAccept];
                             
-                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, BUTTONHEIGHT)];
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:                                             CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + 3, buttonAccept.frame.origin.y, 100, BUTTONHEIGHT)];
+
                             verifyAcceptText.text = @"Verify";
                             verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonPass.frame.origin.y + 4, 50, BUTTONHEIGHT)];
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:
+                                                       CGRectMake(buttonPass.frame.origin.x + buttonPass.frame.size.width ,
+                                                                  buttonPass.frame.origin.y -5 ,
+                                                                  50,
+                                                                  BUTTONHEIGHT)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [actionView addSubview: verifyDecline];
                             
-                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, BUTTONHEIGHT)];
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:
+                                                          CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + 3, buttonPass.frame.origin.y, 100, BUTTONHEIGHT)];
                             verifyDeclineText.text = @"Verify";
                             verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
@@ -1197,7 +1225,7 @@
                                             BUTTONHEIGHT);
             buttonGreedy.titleLabel.numberOfLines = 1;
             buttonGreedy.titleLabel.adjustsFontSizeToFitWidth = YES;
-            buttonGreedy.titleLabel.lineBreakMode = NSLineBreakByClipping; 
+            buttonGreedy.titleLabel.lineBreakMode = NSLineBreakByClipping;
             [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonGreedy];
             break;
@@ -1248,7 +1276,14 @@
             UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
             [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
-            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 75, 50, 150, BUTTONHEIGHT);
+            float buttonBreite = MIN(200, actionViewBreite - 10);
+            buttonSubmitMove.frame = CGRectMake((actionViewBreite / 2) - (buttonBreite / 2),
+                                            ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                            buttonBreite,
+                                            BUTTONHEIGHT);
+            buttonSubmitMove.titleLabel.numberOfLines = 1;
+            buttonSubmitMove.titleLabel.adjustsFontSizeToFitWidth = YES;
+            buttonSubmitMove.titleLabel.lineBreakMode = NSLineBreakByClipping;
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitForcedMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSubmitMove];
             break;
