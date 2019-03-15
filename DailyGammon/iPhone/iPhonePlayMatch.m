@@ -1190,7 +1190,14 @@
             UIButton *buttonGreedy = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonGreedy = [design makeNiceButton:buttonGreedy];
             [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
-            buttonGreedy.frame = CGRectMake((actionView.frame.size.width/2) - 100, (actionView.frame.size.height/2) -40, 200, BUTTONHEIGHT);
+            float buttonBreite = MIN(200, actionViewBreite - 10);
+            buttonGreedy.frame = CGRectMake((actionViewBreite / 2) - (buttonBreite / 2),
+                                            ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                            buttonBreite,
+                                            BUTTONHEIGHT);
+            buttonGreedy.titleLabel.numberOfLines = 1;
+            buttonGreedy.titleLabel.adjustsFontSizeToFitWidth = YES;
+            buttonGreedy.titleLabel.lineBreakMode = NSLineBreakByClipping; 
             [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonGreedy];
             break;
