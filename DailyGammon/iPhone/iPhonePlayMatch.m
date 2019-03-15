@@ -1061,24 +1061,40 @@
         case ROLL_DOUBLE:
         {
 #pragma mark - Button Roll Double
+            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonRoll = [design makeNiceButton:buttonRoll];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
-            buttonRoll.frame = CGRectMake(5, 5, BUTTONWIDTH, BUTTONHEIGHT);
+            buttonRoll.frame = CGRectMake((actionViewBreite/2) - 50,
+                                          0 + (platzFuerButton / 2),
+                                          100,
+                                          BUTTONHEIGHT);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonRoll];
             
             UIButton *buttonDouble = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonDouble = [design makeNiceButton:buttonDouble];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
-            buttonDouble.frame = CGRectMake(5,  buttonRoll.frame.origin.y + BUTTONHEIGHT + 10 , BUTTONWIDTH, BUTTONHEIGHT);
+            buttonDouble.frame = CGRectMake((actionViewBreite/2) - 50,
+                                            platzFuerButton + (platzFuerButton / 2),
+                                            100  ,
+                                            BUTTONHEIGHT);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonDouble];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count == 3)
             {
-                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame: CGRectMake(buttonDouble.frame.origin.x + buttonDouble.frame.size.width + 5, buttonDouble.frame.origin.y -5 , 50, BUTTONHEIGHT)];
+                buttonDouble.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
+                                                platzFuerButton + (platzFuerButton / 2),
+                                                70  ,
+                                                BUTTONHEIGHT);
+
+                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
+                                          CGRectMake(buttonDouble.frame.origin.x + buttonDouble.frame.size.width ,
+                                                                                     buttonDouble.frame.origin.y -5 ,
+                                                                                     50,
+                                                                                     BUTTONHEIGHT)];
                 verifyDouble.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
 
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
@@ -1086,7 +1102,10 @@
                 [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
                 [actionView addSubview: verifyDouble];
                 
-                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 5, buttonDouble.frame.origin.y,100, BUTTONHEIGHT)];
+                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 3,
+                                                                                      platzFuerButton + (platzFuerButton / 2),
+                                                                                      100,
+                                                                                      BUTTONHEIGHT)];
                 verifyDoubleText.text = @"Verify";
                 verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
