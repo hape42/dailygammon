@@ -9,6 +9,7 @@
 #import "LoginVC.h"
 #import "Design.h"
 #import "TopPageVC.h"
+#import "iphoneTopPageVC.h"
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
 
@@ -151,10 +152,16 @@
 
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
             if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-            [self.navigationController pushViewController:vc animated:NO];
+            {
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                [self.navigationController pushViewController:vc animated:NO];
+            }
+            else
+            {
+                iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                [self.navigationController pushViewController:vc animated:NO];
+            }
         }
     }
     NSArray *cookie = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
