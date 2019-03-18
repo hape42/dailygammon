@@ -63,6 +63,8 @@
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
     CPTColor *tintColor = [CPTColor colorWithCGColor:[[schemaDict objectForKey:@"TintColor"] CGColor]];
     
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+
     int maxWidth = self.view.bounds.size.width;
     int maxHeight = self.view.bounds.size.height - self.header.frame.size.height;
     
@@ -249,6 +251,26 @@
     
     iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
     [self.navigationController pushViewController:vc animated:NO];
+}
+- (IBAction)info:(id)sender
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Rating"
+                                 message:@"Every time you play via the app your highest rating for the day will be saved."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    
+    [alert addAction:yesButton];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
 }
 
 @end

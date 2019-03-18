@@ -40,7 +40,7 @@
     self.MRAboutAppVersion.text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
     self.MRAboutBuildInfo.text = [NSString stringWithFormat:@"Build from %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"] ];
     
-    self.MRAboutDevice.text = [NSString stringWithFormat:@"Device %@", [[UIDevice currentDevice] model]];
+    self.MRAboutDevice.text = [NSString stringWithFormat:@"Device %@", [self iPhone]];
     self.MRAboutOS.text = [NSString stringWithFormat:@"IOS %@", [[UIDevice currentDevice] systemVersion]];
     
     design = [[Design alloc] init];
@@ -135,7 +135,7 @@
     
     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
     
-    text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
+    text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [self iPhone], [[UIDevice currentDevice] systemVersion]];
     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
     
     text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
@@ -185,5 +185,43 @@
     iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
     [self.navigationController pushViewController:vc animated:NO];
 }
+- (NSString *)iPhone
+{
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+    {
+        switch ((int)[[UIScreen mainScreen] nativeBounds].size.height)
+            {
+            case 1136:
+                return @"iPhone 5 or 5S or 5C";
+                break;
+                
+            case 1334:
+                return @"iPhone 6/6S/7/8";
+                break;
+                
+            case 1920:
+            case 2208:
+                return @"iPhone 6+/6S+/7+/8+";
+                break;
+                
+            case 2436:
+                return @"iPhone X, XS";
+                break;
+                
+            case 2688:
+                return @"iPhone XS Max";
+                break;
+                
+            case 1792:
+                return @"iPhone XR";
+                break;
+                
+            default:
+                return @"Unknown";
+                break;
+            }
+    }
+    return @"Unknown";
 
+}
 @end

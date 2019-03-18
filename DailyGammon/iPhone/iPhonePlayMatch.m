@@ -148,7 +148,7 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
-    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 40,  maxHoehe - 160)];
+    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 100,  maxHoehe - 160)];
     self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
 }
@@ -1014,7 +1014,7 @@
     float actionViewHoehe  = actionView.layer.frame.size.height;
     float actionViewHoeheOhneSkip = actionViewHoehe - BUTTONHEIGHT - 5 - 5 - 1;
     
-    actionView.backgroundColor = [UIColor yellowColor];
+//    actionView.backgroundColor = [UIColor yellowColor];
     actionView.tag = ACTION_VIEW;
     actionView.layer.borderWidth = 1;
     

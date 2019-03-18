@@ -56,6 +56,13 @@
     rating = [[Rating alloc] init];
 
     [self initGraph];
+    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    infoButton = [design makeNiceButton:infoButton];
+    [infoButton setTitle:@"Info" forState: UIControlStateNormal];
+    infoButton.frame = CGRectMake(50, 100, 80, 35);
+    [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:infoButton];
 }
 
 #pragma mark CorePlot
@@ -245,6 +252,26 @@
     return [NSArray arrayWithArray:labelArray];
 }
 
+- (IBAction)info:(id)sender
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Rating"
+                                 message:@"Every time you play via the app your highest rating for the day will be saved."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    
+    [alert addAction:yesButton];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
 
 #pragma mark - Header
 #include "HeaderInclude.h"

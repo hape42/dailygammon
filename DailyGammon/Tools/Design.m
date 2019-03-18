@@ -169,4 +169,50 @@
     }
     return schemaDict;
 }
+
+- (BOOL)isX
+{
+    if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+    {
+        switch ((int)[[UIScreen mainScreen] nativeBounds].size.height)
+        {
+            case 1136:
+                //return @"iPhone 5 or 5S or 5C";
+                return FALSE;
+                break;
+                
+            case 1334:
+                //return @"iPhone 6/6S/7/8";
+                return FALSE;
+                break;
+                
+            case 1920:
+            case 2208:
+                //return @"iPhone 6+/6S+/7+/8+";
+                return FALSE;
+                break;
+                
+            case 2436:
+                //return @"iPhone X, XS";
+                return TRUE;
+                break;
+                
+            case 2688:
+                //return @"iPhone XS Max";
+                return TRUE;
+                break;
+                
+            case 1792:
+                //return @"iPhone XR";
+                return TRUE;
+                break;
+                
+            default:
+                return FALSE;
+                break;
+        }
+    }
+    return FALSE;
+    
+}
 @end

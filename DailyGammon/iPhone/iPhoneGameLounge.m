@@ -34,6 +34,7 @@
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
+
 @end
 
 @implementation iPhoneGameLounge
@@ -60,6 +61,14 @@
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+
+    
+    if([design isX])
+    {
+        CGRect frame = self.tableView.frame;
+        frame.size.width -= 30;
+        self.tableView.frame = frame;
+    }
     
 }
 
@@ -294,7 +303,7 @@
     
     int maxBreite = tableView.frame.size.width;
     int buttonBreite = 120;
-    maxBreite -= buttonBreite;
+    maxBreite -= (buttonBreite + 5);
     
     float nameBreite = maxBreite * 0.5;
     float lengthBreite = maxBreite * 0.15;
@@ -363,7 +372,7 @@
     {
         XLog(@"kein Button");
     }
-    
+    /*
     [cell.contentView addSubview:nameLabel];
     [cell.contentView addSubview:variantLabel];
     [cell.contentView addSubview:lengthLabel];
@@ -371,7 +380,15 @@
     [cell.contentView addSubview:timeLabel];
     [cell.contentView addSubview:graceLabel];
     [cell.contentView addSubview:button];
-    
+    */
+    [cell addSubview:nameLabel];
+    [cell addSubview:variantLabel];
+    [cell addSubview:lengthLabel];
+    [cell addSubview:roundsLabel];
+    [cell addSubview:timeLabel];
+    [cell addSubview:graceLabel];
+    [cell addSubview:button];
+
     return cell;
 }
 
