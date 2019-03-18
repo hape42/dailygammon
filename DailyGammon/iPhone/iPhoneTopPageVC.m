@@ -66,6 +66,13 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    if([design isX])
+    {
+        CGRect frame = self.tableView.frame;
+        frame.size.width -= 30;
+        self.tableView.frame = frame;
+    }
+
 }
 
 -(void) reDrawHeader

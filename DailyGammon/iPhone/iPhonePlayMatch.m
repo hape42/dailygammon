@@ -290,6 +290,15 @@
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
     int x = 5;
+
+    if([design isX])
+    {
+        maxBreite -= 30;
+        x = 20;
+        CGRect frame = self.matchName.frame;
+        frame.origin.x += 20;
+        self.matchName.frame = frame;
+    }
     int y = 40;
     
     float zoomFaktor = 1.0;

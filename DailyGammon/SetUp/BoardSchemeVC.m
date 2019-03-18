@@ -33,6 +33,14 @@
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:oneFingerTap];
+    
+    if([design isX])
+    {
+        CGRect frame = self.waehleSchemaOutlet.frame;
+        frame.size.width -= 30;
+        self.waehleSchemaOutlet.frame = frame;
+    }
+
 }
 - (void)viewWillAppear:(BOOL)animated
 {

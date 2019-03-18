@@ -42,6 +42,8 @@
     design = [[Design alloc] init];
     
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    if([design isX]) //Notch
+        maxBreite -= 30;
     
     int x = 0, y = 50;
     int diceBreite = 40;
@@ -76,7 +78,7 @@
             
     }
     UIImageView *diceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-    diceView.frame = CGRectMake(0, y, diceBreite, diceBreite);
+    diceView.frame = CGRectMake(x, y, diceBreite, diceBreite);
     
     x +=  diceBreite + luecke;
     
@@ -253,5 +255,6 @@
 {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
 }
+
 
 @end

@@ -49,6 +49,13 @@
     buttonPrivacy = [design makeNiceButton:buttonPrivacy];
     self.creditButton = [design makeNiceButton:self.creditButton];
 
+    if([design isX])
+    {
+        CGRect frame = self.view.frame;
+        frame.size.width -= 30;
+        self.view.frame = frame;
+    }
+
 }
 
 - (void)didReceiveMemoryWarning
