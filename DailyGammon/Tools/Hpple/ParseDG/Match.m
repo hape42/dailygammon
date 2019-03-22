@@ -29,12 +29,12 @@
     if(error)
         XLog(@"error %@ %@",error ,urlMatch);
     
-    NSData *data = [NSData dataWithContentsOfURL:urlMatch];
+//    NSData *data = [NSData dataWithContentsOfURL:urlMatch];
     
     // wie bekomme ich nur sauber die Sonderzeichen gelesen???
-    NSString *htmlString = [NSString stringWithUTF8String:[data bytes]];
-    htmlString = [[NSString alloc]
-              initWithData:data encoding: NSISOLatin1StringEncoding];
+//    NSString *htmlString = [NSString stringWithUTF8String:[data bytes]];
+    NSString *htmlString = [[NSString alloc]
+              initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
     
     if ([htmlString rangeOfString:@"Next Game>&gt"].location != NSNotFound)
     {

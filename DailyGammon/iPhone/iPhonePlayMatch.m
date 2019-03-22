@@ -18,7 +18,7 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 
-@interface iPhonePlayMatch ()
+@interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
@@ -1622,13 +1622,68 @@
                 checkbox = @"&quote=off";
         }
     }
-    NSString *escapedString = [self.playerChat.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-    
+    __block NSString *str = @"";
+    [self.playerChat.text enumerateSubstringsInRange:NSMakeRange(0, self.playerChat.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+    {
+        
+        NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+        if([substring isEqualToString:@"‘"])
+            str = [NSString stringWithFormat:@"%@%@",str, @"'"];
+        else if([substring isEqualToString:@"„"])
+            str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+        else if([substring isEqualToString:@"“"])
+            str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+        else
+            str = [NSString stringWithFormat:@"%@%@",str, substring];
+
+    }];
+
+
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  escapedString];
+
+    /*
+    NSURLComponents *components = [[NSURLComponents alloc] init];
+    components.scheme = @"http";
+    components.host = @"www.dailygammon.com";
+    components.path = [self.actionDict objectForKey:@"action"];
+    components.query = [NSString stringWithFormat:@"submit=Next Game&commit=1%@&chat=%@",
+                        checkbox,
+                        escapedString3];
+    NSURL *url = components.URL;
     
+    NSString *urlString = [NSString stringWithFormat:@"http://dailygammon.com%@",[self.actionDict objectForKey:@"action"]];
+    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
+
+    NSDictionary *headers = @{ @"cache-control": @"no-cache",
+                               @"content-type": @"application/x-www-form-urlencoded"};
+    NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"submit=Next Game" dataUsingEncoding:NSUTF8StringEncoding]];
+                               [postData appendData:[@"&chat=Über can't" dataUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
+                                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                            timeoutInterval:10.0];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                               completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                   if (error) {
+                                                       NSLog(@"%@", error);
+                                                   } else {
+                                                       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                                                       NSLog(@"%@", httpResponse);
+                                                   }
+                                               }];
+    session = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
+
+    [dataTask resume];
+     
+     */
     [self showMatch];
     
 }
@@ -2109,4 +2164,24 @@ shouldChangeTextInRange:(NSRange)range
             [NSByteCountFormatter stringFromByteCount:mem_free countStyle:NSByteCountFormatterCountStyleMemory]];
 }
 
+- (NSString *)urlencode:(NSString *)string
+{
+    NSMutableString *output = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)[string UTF8String];
+    int sourceLen = strlen((const char *)source);
+    for (int i = 0; i < sourceLen; ++i) {
+        const unsigned char thisChar = source[i];
+        if (thisChar == ' '){
+            [output appendString:@"+"];
+        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
+                   (thisChar >= 'a' && thisChar <= 'z') ||
+                   (thisChar >= 'A' && thisChar <= 'Z') ||
+                   (thisChar >= '0' && thisChar <= '9')) {
+            [output appendFormat:@"%c", thisChar];
+        } else {
+            [output appendFormat:@"%%%02X", thisChar];
+        }
+    }
+    return output;
+}
 @end
