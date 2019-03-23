@@ -148,9 +148,18 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
-    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 80, maxBreite - 100,  maxHoehe - 160)];
+    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(10, 40, maxBreite - 20,  maxHoehe - 50)];
     self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
+    
+    if([design isX])
+    {
+        self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 40, maxBreite - 100,  maxHoehe - 50)];
+        CGRect frame = self.matchName.frame;
+        frame.origin.x += 20;
+        self.matchName.frame = frame;
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -293,11 +302,8 @@
 
     if([design isX])
     {
-        maxBreite -= 30;
+        maxBreite = [UIScreen mainScreen].bounds.size.width - 30;
         x = 20;
-        CGRect frame = self.matchName.frame;
-        frame.origin.x += 20;
-        self.matchName.frame = frame;
     }
     int y = 40;
     
@@ -1838,7 +1844,7 @@ shouldChangeTextInRange:(NSRange)range
     if(self.isFinishedMatch)
     {
         CGRect frame = self.finishedMatchFrame;
-        frame.origin.y -= 330;
+        frame.origin.y -= 100;
         self.finishedMatchView.frame = frame;
     }
 }
@@ -1970,24 +1976,30 @@ shouldChangeTextInRange:(NSRange)range
 #pragma mark - finishedMatch
 - (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
 {
-    int rand = 10;
+    self.matchName.text = @"";
+    
+    int rand = 5;
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
     infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;
     
     [self.view addSubview:self.finishedMatchView];
     
-    UILabel * matchNameFinished = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 80)];
+    UILabel * matchNameFinished = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                            rand,
+                                                                            infoView.layer.frame.size.width - (2 * rand),
+                                                                            30)];
     matchNameFinished.text = [finishedMatchDict objectForKey:@"matchName"];
     matchNameFinished.textAlignment = NSTextAlignmentCenter;
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
     [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:40.0]
+                 value:[UIFont systemFontOfSize:20.0]
                  range:NSMakeRange(0, [attr length])];
     [matchNameFinished setAttributedText:attr];
     matchNameFinished.adjustsFontSizeToFitWidth = YES;
@@ -1996,20 +2008,28 @@ shouldChangeTextInRange:(NSRange)range
     matchNameFinished.adjustsFontSizeToFitWidth = YES;
     [infoView addSubview:matchNameFinished];
     
-    UILabel * winner = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand, infoView.layer.frame.size.width - (2 * rand), 60)];
+    UILabel *winner = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                 matchNameFinished.frame.origin.y + matchNameFinished.frame.size.height + 5,
+                                                                 infoView.layer.frame.size.width - (2 * rand),
+                                                                 30)];
+//    winner.backgroundColor = [UIColor yellowColor];
+
     winner.textAlignment = NSTextAlignmentLeft;
-    attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"winnerName"]];
-    [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:30.0]
-                 range:NSMakeRange(0, [attr length])];
-    [winner setAttributedText:attr];
+    winner.text = [finishedMatchDict objectForKey:@"winnerName"];
+    [winner setFont:[UIFont boldSystemFontOfSize: winner.font.pointSize]];
     winner.adjustsFontSizeToFitWidth = YES;
     winner.numberOfLines = 0;
     winner.minimumScaleFactor = 0.5;
     winner.adjustsFontSizeToFitWidth = YES;
     [infoView addSubview:winner];
     
-    UILabel * length = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand, infoView.layer.frame.size.width - (2 * rand), 30)];
+    int labelHoehe = 25;
+    UILabel *length = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                winner.frame.origin.y + winner.frame.size.height,
+                                                                100,
+                                                                labelHoehe)];
+//    length.backgroundColor = [UIColor redColor];
+
     length.textAlignment = NSTextAlignmentLeft;
     NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
     length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
@@ -2017,8 +2037,15 @@ shouldChangeTextInRange:(NSRange)range
     
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
     
-    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand , 150, 30)];
-    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player1Name.layer.frame.size.width, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(length.frame.origin.x + length.frame.size.width + 5,
+                                                                       length.frame.origin.y ,
+                                                                       150,
+                                                                       labelHoehe)];
+    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.size.width + 5,
+                                                                       player1Name.layer.frame.origin.y,
+                                                                       100,
+                                                                       labelHoehe)];
+//    player1Name.backgroundColor = [UIColor yellowColor];
     player1Name.textAlignment = NSTextAlignmentLeft;
     player1Name.text = playerArray[0];
     [infoView addSubview:player1Name];
@@ -2026,8 +2053,16 @@ shouldChangeTextInRange:(NSRange)range
     player1Score.text = playerArray[1];
     [infoView addSubview:player1Score];
     
-    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand + 30 , 150, 30)];
-    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player2Name.layer.frame.size.width, player2Name.layer.frame.origin.y, 100, 30)];
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.origin.x,
+                                                                       player1Name.frame.origin.y + player1Name.frame.size.height
+                                                                       ,
+                                                                       150,
+                                                                       labelHoehe)];
+    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.size.width + 5,
+                                                                       player2Name.layer.frame.origin.y,
+                                                                       100,
+                                                                       labelHoehe)];
+//    player2Name.backgroundColor = [UIColor redColor];
     player2Name.textAlignment = NSTextAlignmentLeft;
     player2Name.text = playerArray[2];
     [infoView addSubview:player2Name];
@@ -2035,7 +2070,10 @@ shouldChangeTextInRange:(NSRange)range
     player2Score.text = playerArray[3];
     [infoView addSubview:player2Score];
     
-    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
+    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand,
+                                                                     player2Name.layer.frame.origin.y + player2Name.frame.size.height ,
+                                                                     infoView.layer.frame.size.width - (2 * rand),
+                                                                     infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 70 ))];
     chat.textAlignment = NSTextAlignmentLeft;
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     NSString *chatString = @"";
@@ -2053,14 +2091,14 @@ shouldChangeTextInRange:(NSRange)range
     UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonNext = [design makeNiceButton:buttonNext];
     [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35);
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
     
     UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonToTop = [design makeNiceButton:buttonToTop];
     [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35);
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
     
@@ -2152,7 +2190,7 @@ shouldChangeTextInRange:(NSRange)range
                           vm_stat.wire_count) * (unsigned int)pagesize;
     natural_t mem_free = vm_stat.free_count * (unsigned int)pagesize;
     natural_t mem_total = mem_used + mem_free;
-    NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
+//    NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
     if(self.first)
     {
         self.memory_start = mem_free;

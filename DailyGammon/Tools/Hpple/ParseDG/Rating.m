@@ -133,7 +133,7 @@
     float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
     if(ratingUser > ratingDB)
         [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
-    XLog(@"%@ %5.1f %@", dateDB, ratingUser, userID);
+//    XLog(@"%@ %5.1f %@", dateDB, ratingUser, userID);
 
 }
 
