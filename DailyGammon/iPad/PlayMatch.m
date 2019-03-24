@@ -203,7 +203,7 @@
 
     self.boardDict = [match readMatch:matchLink];
     
-    if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
+    if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
@@ -211,6 +211,53 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
+    if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+        return;
+    }
+    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Somebody invites you to a match"
+                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"OK"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                     }];
+ 
+        UIAlertAction* webButton = [UIAlertAction
+                                     actionWithTitle:@"Go to Website"
+                                     style:UIAlertActionStyleDefault
+                                     handler:^(UIAlertAction * action)
+                                     {
+                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
+                                         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                         
+                                         TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                                         [self.navigationController pushViewController:vc animated:NO];
+
+                                     }];
+
+        [alert addAction:okButton];
+        [alert addAction:webButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+
 #warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
@@ -289,7 +336,7 @@
     
     int checkerBreite = 40 * zoomFaktor;
     int offBreite = 70 * zoomFaktor;
-    int barBreite = 80 * zoomFaktor;
+    int barBreite = 40 * zoomFaktor;
     int cubeBreite = offBreite;
     int zungenHoehe = 200 * zoomFaktor;
     int nummerHoehe = 15 * zoomFaktor;
@@ -1513,7 +1560,26 @@
                 checkbox = @"&quote=off";
        }
     }
-    NSString *escapedString = [self.playerChat.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+//    NSString *escapedString = [self.playerChat.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+
+    __block NSString *str = @"";
+    [self.playerChat.text enumerateSubstringsInRange:NSMakeRange(0, self.playerChat.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
+         else if([substring isEqualToString:@"„"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else if([substring isEqualToString:@"“"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else
+             str = [NSString stringWithFormat:@"%@%@",str, substring];
+         
+     }];
+    
+    
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],

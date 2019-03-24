@@ -53,6 +53,19 @@
         XLog(@"4 Next Game>> %@", urlMatch);
         htmlString = [self skipNext:htmlString];
     }
+    if ([htmlString rangeOfString:@"Welcome to DailyGammon"].location != NSNotFound)
+    {
+        XLog(@"Welcome to DailyGammon %@", urlMatch);
+        [boardDict setObject:@"TopPage" forKey:@"TopPage"];
+        return boardDict;
+    }
+    if ([htmlString rangeOfString:@"invites you to play"].location != NSNotFound)
+    {
+        XLog(@"invites you to play %@", urlMatch);
+        [boardDict setObject:@"Invite" forKey:@"Invite"];
+        return boardDict;
+    }
+
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:matchHtmlData ] ;
@@ -96,7 +109,7 @@
         [boardDict setObject:errorText forKey:@"error"];
 //        return boardDict;
     }
-
+//
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
     NSMutableString *matchName = [[NSMutableString alloc]init];
     for(TFHppleElement *element in matchHeader)

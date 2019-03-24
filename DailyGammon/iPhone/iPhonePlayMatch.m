@@ -224,6 +224,45 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
+    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Somebody invites you to a match"
+                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                   }];
+        
+        UIAlertAction* webButton = [UIAlertAction
+                                    actionWithTitle:@"Go to Website"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
+                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                        
+                                        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                                        [self.navigationController pushViewController:vc animated:NO];
+                                        
+                                    }];
+        
+        [alert addAction:okButton];
+        [alert addAction:webButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
+
 #warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
@@ -315,7 +354,7 @@
     
     int checkerBreite = 40 * zoomFaktor;
     int offBreite = 70 * zoomFaktor;
-    int barBreite = 80 * zoomFaktor;
+    int barBreite = 40 * zoomFaktor;
     int cubeBreite = offBreite;
     int zungenHoehe = 200 * zoomFaktor;
     int nummerHoehe = 15 * zoomFaktor;
@@ -418,6 +457,10 @@
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
         nummer.adjustsFontSizeToFitWidth = YES;
+        nummer.numberOfLines = 0;
+        nummer.minimumScaleFactor = 0.5;
+        nummer.adjustsFontSizeToFitWidth = YES;
+
         nummer.textColor = self.nummerColor;
         nummer.tag = i + 1000;
         while((removeView = [self.view viewWithTag:i + 1000]) != nil)
@@ -436,6 +479,9 @@
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.numberOfLines = 0;
+        nummer.minimumScaleFactor = 0.5;
+        nummer.adjustsFontSizeToFitWidth = YES;
         nummer.textColor = self.nummerColor;
         nummer.tag = i + 1000;
         while((removeView = [self.view viewWithTag:i + 1000]) != nil)
@@ -457,6 +503,9 @@
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.numberOfLines = 0;
+        nummer.minimumScaleFactor = 0.5;
+        nummer.adjustsFontSizeToFitWidth = YES;
         nummer.textColor = self.nummerColor;
         [self.view addSubview:nummer];
         
@@ -469,6 +518,9 @@
         UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
         nummer.textAlignment = NSTextAlignmentCenter;
         nummer.text = nummernArray[i];
+        nummer.numberOfLines = 0;
+        nummer.minimumScaleFactor = 0.5;
+        nummer.adjustsFontSizeToFitWidth = YES;
         nummer.textColor = self.nummerColor;
         [self.view addSubview:nummer];
         
@@ -1643,7 +1695,6 @@
             str = [NSString stringWithFormat:@"%@%@",str, substring];
 
     }];
-
 
     NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
 
