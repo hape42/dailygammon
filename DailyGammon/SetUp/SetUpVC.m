@@ -34,12 +34,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
 
-    // schieb den preferencesButton aus dem sichtbaren bereich; kommt erst in einer der nächsten versionen
-//    CGRect frame = self.preferencesButton.frame;
-//    frame.origin.x = 5000;
-//    frame.origin.y = 5000;
-//    self.preferencesButton.frame = frame;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated

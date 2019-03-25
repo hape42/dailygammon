@@ -81,6 +81,7 @@
     {
         [SKStoreReviewController requestReview] ;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
 
 }
 

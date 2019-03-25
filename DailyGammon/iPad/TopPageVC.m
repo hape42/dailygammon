@@ -49,6 +49,7 @@
 //    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
 
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];

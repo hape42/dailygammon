@@ -58,7 +58,8 @@
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
+
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
@@ -72,7 +73,6 @@
         frame.size.width -= 30;
         self.tableView.frame = frame;
     }
-
 }
 
 -(void) reDrawHeader
