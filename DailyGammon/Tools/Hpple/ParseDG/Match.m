@@ -107,7 +107,7 @@
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:errorText forKey:@"error"];
-//        return boardDict;
+        return boardDict;
     }
 //
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
@@ -166,7 +166,14 @@
         return boardDict;
     }
 
-    
+    // prüfen ob jetzt tatsächlich ein Board abgearbeitet wird, oder ob noch etwas unvorhergesehenes passiert
+#pragma mark - unbekanntes HTML.
+    if ([htmlString rangeOfString:@"Review Game"].location == NSNotFound)
+    {
+        [boardDict setObject:htmlString forKey:@"unknown"];
+        return boardDict;
+    }
+
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[1]/td"];
     NSMutableArray *elementArray = [[NSMutableArray alloc]init];

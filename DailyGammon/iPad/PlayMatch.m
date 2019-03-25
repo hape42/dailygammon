@@ -211,6 +211,10 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
+    
+    if([[self.boardDict objectForKey:@"unknown"] length] != 0)
+        [self errorAction:1];
+
     if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -430,7 +434,7 @@
     if(nummernArray.count < 17)
     {
         // aus irgendwelchen Gründen wurde gar kein Board angezeigt
-        [self errorAction];
+        [self errorAction:0];
         return;
     }
     for(int i = 1; i <= 6; i++)
@@ -1292,7 +1296,7 @@
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            [self errorAction];
+            [self errorAction:0];
             break;
         }
     }
@@ -1757,7 +1761,7 @@
 
 #pragma mark - errorAction
 
--(void)errorAction
+-(void)errorAction:(int)typ
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"oops"
@@ -1837,8 +1841,23 @@
                                                                                           NSUserDomainMask, YES);
                                      if([paths count] > 0)
                                      {
-                                         dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
-                                         [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
+                                         switch (typ)
+                                         {
+                                             case 0:
+                                             {
+                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
+                                                 [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
+                                                 NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
+                                             }
+                                             case 1:
+                                             {
+                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"html.txt"];
+                                                 [[self.boardDict objectForKey:@"unknown"] writeToFile:dictPath atomically:YES];
+                                                 NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"html.txt"];
+                                             }
+                                         }
                                      }
                                      NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                      [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
