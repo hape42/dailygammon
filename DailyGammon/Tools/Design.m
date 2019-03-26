@@ -55,7 +55,12 @@
     button.layer.borderWidth = 1;
     button.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]CGColor];
     button.tintColor = [schemaDict objectForKey:@"TintColor"];
-
+    
+    if([button.titleLabel.text isEqualToString:@"Cancel"])
+    {
+        button.backgroundColor = [schemaDict objectForKey:@"TintColor"];
+        button.tintColor = [UIColor whiteColor];
+    }
     return button;
 }
 

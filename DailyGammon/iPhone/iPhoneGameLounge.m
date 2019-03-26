@@ -281,7 +281,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    for (UIView *subview in [cell.contentView subviews])
+    for (UIView *subview in [cell subviews])
     {
         if ([subview isKindOfClass:[UILabel class]])
         {
@@ -355,7 +355,6 @@
     
     if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"] || [[signUp objectForKey:@"Text"] isEqualToString:@"Cancel Signup\n"])
     {
-        button = [design makeNiceButton:button];
         [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
         //        [button sizeToFit];
         if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"])
@@ -364,7 +363,8 @@
             [button setTitle:@"Cancel" forState: UIControlStateNormal];
 
         button.frame = CGRectMake(maxBreite  , 5, buttonBreite , 35);
-        
+        button = [design makeNiceButton:button];
+
         button.tag = indexPath.row;
         [button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
     }

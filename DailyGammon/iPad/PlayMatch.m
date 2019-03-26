@@ -565,17 +565,13 @@
                 }
                 break;
             case 14:
-                //cube
-            {
-                float cubeHoehe = cubeBreite * (39.0/29.0);
-                
+                // linke Seite
                 y = 0;
-                if(bilder.count > 0)
+                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, cubeBreite, cubeHoehe);
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
                     // ist es ein cube? dann besorge breite und höhe vom img für den view
                     if ([imgName containsString:@"cube"])
@@ -588,13 +584,13 @@
                         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
                         
                     }
-
+                    
                     [boardView addSubview:zungeView];
+                    y += zungenHoehe/3;
                 }
-                y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
-                x += cubeBreite;
+                y = 0;
+                x += offBreite;
                 
-            }
                 break;
             default:
                 // zungen
@@ -1774,7 +1770,7 @@
                   range:NSMakeRange(0, [title length])];
     [alert setValue:title forKey:@"attributedTitle"];
 
-    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:@"\n\nSomething unexpected happend!  \n\n Please send an Email to support.\n\n\nOr just go to the TopPage."];
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"-%d-\n\nSomething unexpected happend!  \n\n Please send an Email to support.\n\n\nOr just go to the TopPage.", typ]];
     [message addAttribute:NSFontAttributeName
                     value:[UIFont systemFontOfSize:20.0]
                     range:NSMakeRange(0, [message length])];
@@ -1802,7 +1798,7 @@
                                          XLog(@"Fehler: Mail kann nicht versendet werden");
                                          return;
                                      }
-                                     NSString *betreff = [NSString stringWithFormat:@"Something unexpected happend!"];
+                                     NSString *betreff = [NSString stringWithFormat:@"-%d- Something unexpected happend!", typ];
 
                                      NSString *text = @"";
                                      NSString *emailText = @"";
@@ -1849,13 +1845,16 @@
                                                  [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                                  [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
+                                                 break;
                                              }
                                              case 1:
+                                             case 2:
                                              {
-                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"html.txt"];
-                                                 [[self.boardDict objectForKey:@"unknown"] writeToFile:dictPath atomically:YES];
+                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
+                                                 [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
-                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"html.txt"];
+                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
+                                                 break;
                                              }
                                          }
                                      }
