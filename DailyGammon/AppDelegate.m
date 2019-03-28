@@ -76,12 +76,14 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
     if ([[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"] == 5)
     {
         [SKStoreReviewController requestReview] ;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
+    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count > 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
+    }
 
 }
 

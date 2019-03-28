@@ -16,6 +16,7 @@
 #import "SetupVC.h"
 #import "iPhoneGameLounge.h"
 #import "About.h"
+#import <SafariServices/SafariServices.h>
 
 @interface iPhoneMenue ()
 
@@ -253,7 +254,13 @@
 }
 -(void) help
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
+    if ([SFSafariViewController class] != nil) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:URL];
+    }
 }
 
 

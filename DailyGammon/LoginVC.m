@@ -12,6 +12,7 @@
 #import "iphoneTopPageVC.h"
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
+#import <SafariServices/SafariServices.h>
 
 @interface LoginVC ()
 @property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
@@ -238,19 +239,34 @@
 }
 - (IBAction)createAccountAction:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/create"] options:@{} completionHandler:nil];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/create"]];
+    if ([SFSafariViewController class] != nil) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:URL];
     }
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/create"] options:@{} completionHandler:nil];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        [self.presentingPopoverController dismissPopoverAnimated:YES];
+//    }
 }
 - (IBAction)faqAction:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
+    if ([SFSafariViewController class] != nil) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:URL];
     }
+
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        [self.presentingPopoverController dismissPopoverAnimated:YES];
+//    }
 }
 
 #pragma mark - Email

@@ -10,7 +10,8 @@
 #import "Design.h"
 #import "iPhoneMenue.h"
 #import "AppDelegate.h"
-
+#import <SafariServices/SafariServices.h>
+#import <SafariServices/SafariServices.h>
 
 @interface iPhoneAbout ()
 
@@ -107,11 +108,20 @@
 }
 - (IBAction)MRAboutButtonInfo:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
+
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.hape42.de"]];
+    if ([SFSafariViewController class] != nil) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:URL];
     }
+
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
+//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+//    {
+//        [self.presentingPopoverController dismissPopoverAnimated:YES];
+//    }
 }
 
 #pragma mark - Support Email

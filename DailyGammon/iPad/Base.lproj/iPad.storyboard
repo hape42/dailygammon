@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="mzp-6b-xVH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" colorMatched="YES" initialViewController="mzp-6b-xVH">
     <device id="ipad9_7" orientation="landscape">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -425,7 +425,6 @@
                         <outlet property="schema2" destination="v1K-JX-yex" id="z25-Gv-f3P"/>
                         <outlet property="schema3" destination="Mfv-r1-EpE" id="Zpj-n2-zm6"/>
                         <outlet property="schema4" destination="aHU-bm-fe8" id="dJ0-iO-nUW"/>
-                        <outlet property="schemaWaehlenOutlet" destination="uka-UM-KzC" id="wGw-su-UKG"/>
                         <outlet property="waehleSchemaOutlet" destination="uka-UM-KzC" id="auH-z5-l0E"/>
                     </connections>
                 </viewController>
@@ -1046,10 +1045,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BlueWhite.png" width="1226" height="910"/>
-        <image name="GrayRed.png" width="1232" height="914"/>
+        <image name="BlueWhite.png" width="613" height="455"/>
+        <image name="GrayRed.png" width="616" height="457"/>
         <image name="app_icon.png" width="1024" height="1024"/>
-        <image name="classic.png" width="1226" height="912"/>
-        <image name="classicHD.png" width="1228" height="910"/>
+        <image name="classic.png" width="613" height="456"/>
+        <image name="classicHD.png" width="614" height="455"/>
     </resources>
 </document>

@@ -8,6 +8,8 @@
 
 #import "About.h"
 #import "Design.h"
+#import <SafariServices/SafariServices.h>
+
 @interface About ()
 
 @end
@@ -68,11 +70,14 @@
 }
 - (IBAction)MRAboutButtonInfo:(id)sender
 {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.hape42.de"]];
+    if ([SFSafariViewController class] != nil) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        [[UIApplication sharedApplication] openURL:URL];
     }
+
 }
 
 #pragma mark - Support Email
