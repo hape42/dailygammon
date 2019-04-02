@@ -98,6 +98,30 @@
     
     return label;
 }
+
+- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color
+{
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    if([color isEqualToString:@"#3399CC"] || [color isEqualToString:@"#9999FF"])
+    {
+        label.backgroundColor = [schemaDict objectForKey:@"labelColor1"];
+        label.textColor = [schemaDict objectForKey:@"labelTextColor1"];
+    }
+    if([color isEqualToString:@"#FFFFFF"] || [color isEqualToString:@"#FFFF66"])
+    {
+        label.backgroundColor = [schemaDict objectForKey:@"labelColor2"];
+        label.textColor = [schemaDict objectForKey:@"labelTextColor2"];
+    }
+
+    label.layer.borderWidth = 1;
+    label.layer.borderColor = [label.textColor CGColor];
+    
+    return label;
+}
 - (UILabel *) makeNiceTextField: (UILabel*)text
 {
     text.font = [UIFont fontWithName:@"Helvetica" size:12];
@@ -124,6 +148,13 @@
             [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
             [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"TintColor"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:0.0/255 green:33.0/255 blue:188.0/255 alpha:1] forKey:@"labelColor1"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:248.0/255 green:195.0/255 blue:69.0/255 alpha:1] forKey:@"labelColor2"];
+            [schemaDict setObject:[UIColor blackColor] forKey:@"labelTextColor2"];
+
         }
             break;
         case 2:
@@ -136,6 +167,13 @@
             [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
             [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
             [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"TintColor"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:0.0/255 green:33.0/255 blue:188.0/255 alpha:1] forKey:@"labelColor1"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:248.0/255 green:195.0/255 blue:69.0/255 alpha:1] forKey:@"labelColor2"];
+            [schemaDict setObject:[UIColor blackColor] forKey:@"labelTextColor2"];
+
         }
             break;
         case 3:
@@ -152,6 +190,12 @@
             schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
             [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
 
+            [schemaDict setObject:[UIColor colorWithRed:32.0/255 green:104.0/255 blue:197.0/255 alpha:1] forKey:@"labelColor1"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
+            
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelColor2"];
+            [schemaDict setObject:[UIColor colorWithRed:32.0/255 green:104.0/255 blue:197.0/255 alpha:1] forKey:@"labelTextColor2"];
+
         }
             break;
       case 4:
@@ -166,6 +210,12 @@
             [schemaDict setObject:schemaColor forKey:@"TintColor"];
             schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
             [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:43.0/255 green:43.0/255 blue:43.0/255 alpha:1] forKey:@"labelColor1"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:166.0/255 green:46.0/255 blue:40.0/255 alpha:1] forKey:@"labelColor2"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor2"];
        }
             break;
 

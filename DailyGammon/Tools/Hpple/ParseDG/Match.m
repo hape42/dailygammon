@@ -63,6 +63,7 @@
     {
         XLog(@"invites you to play %@", urlMatch);
         [boardDict setObject:@"Invite" forKey:@"Invite"];
+        [boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
         return boardDict;
     }
 
@@ -224,6 +225,8 @@
     NSString *opponentID = @"";
     for(TFHppleElement *element in elements)
     {
+        [boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"opponentColor"];
+
         for (TFHppleElement *child in element.children)
         {
             [elementArray addObject:[child content]];
@@ -330,6 +333,8 @@
     
     for(TFHppleElement *element in elements)
     {
+        [boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"playerColor"];
+
         for (TFHppleElement *child in element.children)
         {
             [elementArray addObject:[child content]];
@@ -475,18 +480,6 @@
 
 - (NSMutableDictionary*) analyzeFinishedMatch: (TFHpple *)xpathParser
 {
-    //
-//    <center><h3><a href=/bg/event/74878>November 18 Championship</a>, Round 2</h3></center>
-//    <h4>hape42 wins 1 point and the match.</h4>
-    // <table><caption><u>Score</u></caption>
-//    <tr><th>Length<th>11
-//    <tr><td><b><a href=/bg/user/13014>hape42</a></b><td>11
-//    <tr><td><b><a href=/bg/user/21153>upton girl</a></b><td>1
-//    </table>
-//    <form method=post action=/bg/move/3959519/1916><input type=hidden name=commit value=1>
-//    <b><i>upton girl says:</i></b>
-//    <PRE>Congrats
-//    <p><input type=submit name=submit value="Next Game"> <input type=submit name=submit value="To Top"></form>
     
     NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
     
@@ -551,4 +544,65 @@
     [finishedMatchDict setObject:attributesArray forKey:@"attributes"];
     return finishedMatchDict;
 }
+
+
+- (NSMutableDictionary*) analyzeInvite: (NSString *)htmlString
+{
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
+    NSMutableDictionary *inviteDict = [[NSMutableDictionary alloc]init];
+    
+    NSArray *inviteHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
+    
+    NSMutableString *inviteName = [[NSMutableString alloc]init];
+    for(TFHppleElement *element in inviteHeader)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            [inviteName appendString:[child content]];
+        }
+    }
+    [inviteDict setObject:inviteName forKey:@"inviteheader"];
+    
+    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//body"];
+
+    NSMutableArray *inviteDetails = [[NSMutableArray alloc]init ];
+    for(TFHppleElement *element in elements)
+    {
+        for (TFHppleElement *child in [element children])
+        {
+            NSString *text = [child content];
+            if(text.length > 1)
+                [inviteDetails addObject:text];
+        }
+    }
+    [inviteDict setObject:inviteDetails forKey:@"inviteDetails"];
+    
+    elements  = [xpathParser searchWithXPathQuery:@"//pre"];
+    for(TFHppleElement *element in elements)
+    {
+        [inviteDict setObject:[element content] forKey:@"inviteComment"];
+    }
+
+    elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+    NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+
+    for(TFHppleElement *element in elements)
+    {
+        [attributesArray addObject:[element attributes]];
+    }
+    [inviteDict setObject:attributesArray forKey:@"AcceptButton"];
+
+    elements  = [xpathParser searchWithXPathQuery:@"//form[2]"];
+    attributesArray = [[NSMutableArray alloc]init ];
+    
+    for(TFHppleElement *element in elements)
+    {
+        [attributesArray addObject:[element attributes]];
+    }
+    [inviteDict setObject:attributesArray forKey:@"DeclineButton"];
+
+    return inviteDict;
+}
+
 @end

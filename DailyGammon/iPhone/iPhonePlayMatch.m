@@ -1039,7 +1039,9 @@
     frame.origin.y = boardView.frame.origin.y - nummerHoehe;
     self.opponentView.frame = frame;
     
-    self.opponentName.text    = opponentArray[0]; self.opponentName.adjustsFontSizeToFitWidth = YES;
+    self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
+    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]];
+    self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
@@ -1059,7 +1061,9 @@
     frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height + nummerHoehe;
     self.playerView.frame = frame;
     
-    self.playerName.text    = playerArray[0];
+    self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
+    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]];
+    self.playerName.adjustsFontSizeToFitWidth = YES;
     self.playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
@@ -1457,7 +1461,7 @@
                                                                          25)];
         free_memoryText.adjustsFontSizeToFitWidth = YES;
         free_memoryText.text = [self free_memory];
-        [actionView addSubview: free_memoryText];
+//        [actionView addSubview: free_memoryText];
 
     }
 }

@@ -262,7 +262,6 @@
         
     }
 
-#warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
                            [self.boardDict objectForKey:@"matchName"],
@@ -999,7 +998,9 @@
     frame.origin.y = boardView.frame.origin.y - nummerHoehe;
     self.opponentView.frame = frame;
     
-    self.opponentName.text    = opponentArray[0]; self.opponentName.adjustsFontSizeToFitWidth = YES;
+    self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
+    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]];
+    self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
@@ -1019,7 +1020,9 @@
     frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height + nummerHoehe;
     self.playerView.frame = frame;
     
-    self.playerName.text    = playerArray[0];
+    self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
+    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]];
+    self.playerName.adjustsFontSizeToFitWidth = YES;
     self.playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
@@ -2017,6 +2020,107 @@
                                                        usedEncoding:&encoding
                                                               error:&error];
     [self topPageVC];
+}
+
+#pragma mark - invite Match
+- (void)inviteMatchView:(NSMutableDictionary *)finishedMatchDict
+{
+    int rand = 10;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
+    
+    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.tag = FINISHED_MATCH_VIEW;
+    infoView.layer.borderWidth = 1;
+    
+    [self.view addSubview:self.finishedMatchView];
+    
+    UILabel * matchName = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 80)];
+    matchName.text = [finishedMatchDict objectForKey:@"matchName"];
+    matchName.textAlignment = NSTextAlignmentCenter;
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:40.0]
+                 range:NSMakeRange(0, [attr length])];
+    [matchName setAttributedText:attr];
+    matchName.adjustsFontSizeToFitWidth = YES;
+    matchName.numberOfLines = 0;
+    matchName.minimumScaleFactor = 0.5;
+    matchName.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:matchName];
+    
+    UILabel * winner = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand, infoView.layer.frame.size.width - (2 * rand), 60)];
+    winner.textAlignment = NSTextAlignmentLeft;
+    attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"winnerName"]];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:30.0]
+                 range:NSMakeRange(0, [attr length])];
+    [winner setAttributedText:attr];
+    winner.adjustsFontSizeToFitWidth = YES;
+    winner.numberOfLines = 0;
+    winner.minimumScaleFactor = 0.5;
+    winner.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:winner];
+    
+    UILabel * length = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand, infoView.layer.frame.size.width - (2 * rand), 30)];
+    length.textAlignment = NSTextAlignmentLeft;
+    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
+    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
+    [infoView addSubview:length];
+    
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+    
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand , 150, 30)];
+    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player1Name.layer.frame.size.width, rand + 80 + rand + 60 + rand + 30 + rand , 100, 30)];
+    player1Name.textAlignment = NSTextAlignmentLeft;
+    player1Name.text = playerArray[0];
+    [infoView addSubview:player1Name];
+    player1Score.textAlignment = NSTextAlignmentRight;
+    player1Score.text = playerArray[1];
+    [infoView addSubview:player1Score];
+    
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand + 80 + rand + 60 + rand + 30 + rand + 30 , 150, 30)];
+    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(rand + player2Name.layer.frame.size.width, player2Name.layer.frame.origin.y, 100, 30)];
+    player2Name.textAlignment = NSTextAlignmentLeft;
+    player2Name.text = playerArray[2];
+    [infoView addSubview:player2Name];
+    player2Score.textAlignment = NSTextAlignmentRight;
+    player2Score.text = playerArray[3];
+    [infoView addSubview:player2Score];
+    
+    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
+    chat.textAlignment = NSTextAlignmentLeft;
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    NSString *chatString = @"";
+    for( NSString *chatZeile in chatArray)
+    {
+        chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
+    }
+    chat.text = chatString;
+    chat.editable = YES;
+    [chat setDelegate:self];
+    
+    [chat setFont:[UIFont systemFontOfSize:20]];
+    [infoView addSubview:chat];
+    
+    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonNext = [design makeNiceButton:buttonNext];
+    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonNext];
+    
+    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonToTop = [design makeNiceButton:buttonToTop];
+    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35);
+    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonToTop];
+    
+    [self.finishedMatchView addSubview:infoView];
+    return;
 }
 
 - (NSString *) free_memory
