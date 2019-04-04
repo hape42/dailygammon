@@ -275,11 +275,18 @@
         
     }
 
-#warning error abfangen
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
-    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
-                           [self.boardDict objectForKey:@"matchName"],
-                           [self.boardDict objectForKey:@"matchLaengeText"]] ;
+    if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
+    {
+        self.matchName.text = @"";
+    }
+    else
+    {
+        self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
+                               [self.boardDict objectForKey:@"matchName"],
+                               [self.boardDict objectForKey:@"matchLaengeText"]] ;
+    }
+
     self.matchName.adjustsFontSizeToFitWidth = YES;
     
     self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
@@ -471,7 +478,6 @@
         nummer.adjustsFontSizeToFitWidth = YES;
         nummer.numberOfLines = 0;
         nummer.minimumScaleFactor = 0.5;
-        nummer.adjustsFontSizeToFitWidth = YES;
 
         nummer.textColor = self.nummerColor;
         nummer.tag = i + 1000;
@@ -1032,47 +1038,172 @@
                        });
         
     }
+    // berechnen der actionView Elemente (Position & Dimension)
+    
+    float actionViewHoehe  = 130.0;
+    float platzGesamt = boardView.frame.size.height + nummerHoehe + nummerHoehe;
+    float opponentViewHoehe = (platzGesamt  - actionViewHoehe) / 2;
+    int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
+    int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
+    
+    self.opponentView.backgroundColor =  self.boardColor;
+    self.playerView.backgroundColor   =  self.boardColor;
+
+    float labelHoeheName    = opponentViewHoehe / 9 * 3;
+    float labelHoeheDetails = opponentViewHoehe / 9 * 2;
+
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
     frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = boardView.frame.origin.y - nummerHoehe;
+    frame.origin.y = opponentViewY;
+    frame.size.height = opponentViewHoehe;
+    frame.size.width =  maxBreite - opponentViewX - 5;
+
     self.opponentView.frame = frame;
+    
+    float spalte1 = self.opponentView.frame.size.width * 0.4;
+    float spalte2 = self.opponentView.frame.size.width * 0.55;
+    float luecke = self.opponentView.frame.size.width * 0.05;
+    
+    frame = self.opponentName.frame;
+    frame.size.height = labelHoeheName;
+    self.opponentName.frame = frame;
     
     self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
     self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]];
-    self.opponentName.adjustsFontSizeToFitWidth = YES;
+    self.opponentName = [design makeNiceLabel:self.opponentName];
+
+    // alle Detail Labels size & position & fontsize berechnen
+    frame = self.opponentRating.frame;
+    frame.origin.y = self.opponentName.frame.origin.y + self.opponentName.frame.size.height;
+    frame.size.width = spalte1;
+    frame.size.height = labelHoeheDetails;
+    self.opponentRating.frame = frame;
+    self.opponentRating = [design makeNiceLabel:self.opponentRating];
+ 
+    frame = self.opponentActive.frame;
+    frame.origin.y = self.opponentRating.frame.origin.y;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    frame.size.height = labelHoeheDetails;
+    self.opponentActive.frame = frame;
+    self.opponentActive = [design makeNiceLabel:self.opponentActive];
+
+    frame = self.opponentScore.frame;
+    frame.origin.y = self.opponentRating.frame.origin.y + self.opponentRating.frame.size.height;
+    frame.size.width = spalte1;
+    frame.size.height = labelHoeheDetails;
+    self.opponentScore.frame = frame;
+    self.opponentScore = [design makeNiceLabel:self.opponentScore];
+
+    frame = self.opponentWon.frame;
+    frame.origin.y = self.opponentScore.frame.origin.y;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    frame.size.height = labelHoeheDetails;
+    self.opponentWon.frame = frame;
+    self.opponentWon = [design makeNiceLabel:self.opponentWon];
+
+    frame = self.opponentPips.frame;
+    frame.origin.y = self.opponentScore.frame.origin.y + self.opponentScore.frame.size.height;
+    frame.size.height = labelHoeheDetails;
+    frame.size.width = spalte1;
+    self.opponentPips.frame = frame;
+    self.opponentPips = [design makeNiceLabel:self.opponentPips];
+
+    frame = self.opponentLost.frame;
+    frame.origin.y = self.opponentPips.frame.origin.y;
+    frame.size.height = labelHoeheDetails;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    self.opponentLost.frame = frame;
+    self.opponentLost = [design makeNiceLabel:self.opponentLost];
+
     self.opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
-        self.opponentScore.text   = opponentArray[5];
+        self.opponentScore.text   = [NSString stringWithFormat:@"score: %@", opponentArray[5]];
         self.opponentPips.text    = opponentArray[2];
     }
     else
     {
-        self.opponentScore.text   = opponentArray[3];
+        self.opponentScore.text   = [NSString stringWithFormat:@"score: %@", opponentArray[3]];
         self.opponentPips.text    = @"";
     }
     
     NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
     
     frame = self.playerView.frame;
+    frame.size.height = opponentViewHoehe;
     frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height + nummerHoehe;
+    frame.origin.y = opponentViewY + opponentViewHoehe + actionViewHoehe;
+    frame.size.width =  maxBreite - opponentViewX - 5;
+
     self.playerView.frame = frame;
     
     self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
     self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]];
-    self.playerName.adjustsFontSizeToFitWidth = YES;
+    frame = self.opponentName.frame;
+    frame.size.height = labelHoeheName;
+    self.playerName.frame = frame;
+    self.playerName = [design makeNiceLabel:self.playerName];
+
+    // alle Detail Labels size & position & fontsize berechnen
+    frame = self.playerRating.frame;
+    frame.origin.y = self.playerName.frame.origin.y + self.playerName.frame.size.height;
+    frame.size.height = labelHoeheDetails;
+    frame.size.width = spalte1;
+    self.playerRating.frame = frame;
+    self.playerRating = [design makeNiceLabel:self.playerRating];
+    
+    frame = self.playerActive.frame;
+    frame.origin.y = self.playerRating.frame.origin.y;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    frame.size.height = labelHoeheDetails;
+    self.playerActive.frame = frame;
+    self.playerActive = [design makeNiceLabel:self.playerActive];
+    
+    frame = self.playerScore.frame;
+    frame.origin.y = self.playerRating.frame.origin.y + self.playerRating.frame.size.height;
+    frame.size.height = labelHoeheDetails;
+    frame.size.width = spalte1;
+    self.playerScore.frame = frame;
+    self.playerScore = [design makeNiceLabel:self.playerScore];
+    
+    frame = self.playerWon.frame;
+    frame.origin.y = self.playerScore.frame.origin.y;
+    frame.size.height = labelHoeheDetails;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    self.playerWon.frame = frame;
+    self.playerWon = [design makeNiceLabel:self.playerWon];
+    
+    frame = self.playerPips.frame;
+    frame.origin.y = self.playerScore.frame.origin.y + self.playerScore.frame.size.height;
+    frame.size.height = labelHoeheDetails;
+    frame.size.width = spalte1;
+    self.playerPips.frame = frame;
+    self.playerPips = [design makeNiceLabel:self.playerPips];
+    
+    frame = self.playerLost.frame;
+    frame.origin.y = self.playerPips.frame.origin.y;
+    frame.size.height = labelHoeheDetails;
+    frame.origin.x = spalte1 + luecke;
+    frame.size.width = spalte2;
+    self.playerLost.frame = frame;
+    self.playerLost = [design makeNiceLabel:self.playerLost];
+
     self.playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
     {
         self.playerPips.text    = playerArray[2];
-        self.playerScore.text   = playerArray[5];
+        self.playerScore.text   = [NSString stringWithFormat:@"score: %@", playerArray[5]];
     }
     else
     {
-        self.playerScore.text   = playerArray[3];
+        self.playerScore.text   = [NSString stringWithFormat:@"score: %@", playerArray[3]];
         self.playerPips.text    = @"";
     }
     
@@ -1084,17 +1215,21 @@
         }
         [removeView removeFromSuperview];
     }
+//    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
+//                                                                  self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
+//                                                                  maxBreite - self.opponentView.frame.origin.x -5,
+//                                                                  self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
-                                                                  maxBreite - self.opponentView.frame.origin.x -5,
-                                                                  self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
+                                                                  maxBreite - self.opponentView.frame.origin.x - 5,
+                                                                  130)];
     float actionViewBreite = actionView.layer.frame.size.width;
-    float actionViewHoehe  = actionView.layer.frame.size.height;
+//    float actionViewHoehe  = actionView.layer.frame.size.height;
     float actionViewHoeheOhneSkip = actionViewHoehe - BUTTONHEIGHT - 5 - 5 - 1;
     
-//    actionView.backgroundColor = [UIColor yellowColor];
+//    actionView.backgroundColor = GRAYLIGHT;
     actionView.tag = ACTION_VIEW;
-    actionView.layer.borderWidth = 1;
+//    actionView.layer.borderWidth = 1;
     
     [self.view addSubview:actionView];
     
@@ -1714,44 +1849,6 @@
                  checkbox,
                  escapedString];
 
-    /*
-    NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = @"http";
-    components.host = @"www.dailygammon.com";
-    components.path = [self.actionDict objectForKey:@"action"];
-    components.query = [NSString stringWithFormat:@"submit=Next Game&commit=1%@&chat=%@",
-                        checkbox,
-                        escapedString3];
-    NSURL *url = components.URL;
-    
-    NSString *urlString = [NSString stringWithFormat:@"http://dailygammon.com%@",[self.actionDict objectForKey:@"action"]];
-    NSURLSessionConfiguration *sessionConfig = [NSURLSessionConfiguration defaultSessionConfiguration];
-
-    NSDictionary *headers = @{ @"cache-control": @"no-cache",
-                               @"content-type": @"application/x-www-form-urlencoded"};
-    NSMutableData *postData = [[NSMutableData alloc] initWithData:[@"submit=Next Game" dataUsingEncoding:NSUTF8StringEncoding]];
-                               [postData appendData:[@"&chat=Über can't" dataUsingEncoding:NSUTF8StringEncoding]];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]
-                                                                                cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                                            timeoutInterval:10.0];
-    [request setHTTPMethod:@"POST"];
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:postData];
-    NSURLSession *session = [NSURLSession sharedSession];
-    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
-                                               completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                                                   if (error) {
-                                                       NSLog(@"%@", error);
-                                                   } else {
-                                                       NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
-                                                       NSLog(@"%@", httpResponse);
-                                                   }
-                                               }];
-    session = [NSURLSession sessionWithConfiguration:sessionConfig delegate:self delegateQueue:nil];
-
-    [dataTask resume];
-     
-     */
     [self showMatch];
     
 }
@@ -1859,8 +1956,6 @@
             }
         }
     }
-    
-    
 }
 
 #pragma mark - textField
@@ -2280,24 +2375,24 @@ shouldChangeTextInRange:(NSRange)range
             [NSByteCountFormatter stringFromByteCount:mem_free countStyle:NSByteCountFormatterCountStyleMemory]];
 }
 
-- (NSString *)urlencode:(NSString *)string
-{
-    NSMutableString *output = [NSMutableString string];
-    const unsigned char *source = (const unsigned char *)[string UTF8String];
-    int sourceLen = strlen((const char *)source);
-    for (int i = 0; i < sourceLen; ++i) {
-        const unsigned char thisChar = source[i];
-        if (thisChar == ' '){
-            [output appendString:@"+"];
-        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
-                   (thisChar >= 'a' && thisChar <= 'z') ||
-                   (thisChar >= 'A' && thisChar <= 'Z') ||
-                   (thisChar >= '0' && thisChar <= '9')) {
-            [output appendFormat:@"%c", thisChar];
-        } else {
-            [output appendFormat:@"%%%02X", thisChar];
-        }
-    }
-    return output;
-}
+//- (NSString *)urlencode:(NSString *)string
+//{
+//    NSMutableString *output = [NSMutableString string];
+//    const unsigned char *source = (const unsigned char *)[string UTF8String];
+//    int sourceLen = strlen((const char *)source);
+//    for (int i = 0; i < sourceLen; ++i) {
+//        const unsigned char thisChar = source[i];
+//        if (thisChar == ' '){
+//            [output appendString:@"+"];
+//        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
+//                   (thisChar >= 'a' && thisChar <= 'z') ||
+//                   (thisChar >= 'A' && thisChar <= 'Z') ||
+//                   (thisChar >= '0' && thisChar <= '9')) {
+//            [output appendFormat:@"%c", thisChar];
+//        } else {
+//            [output appendFormat:@"%%%02X", thisChar];
+//        }
+//    }
+//    return output;
+//}
 @end

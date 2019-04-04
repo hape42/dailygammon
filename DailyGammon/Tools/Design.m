@@ -92,10 +92,11 @@
 
 - (UILabel *) makeNiceLabel: (UILabel*)label
 {
-    label.font = [UIFont fontWithName:@"System Bold" size:14];
-    //    label.textColor = WEBSITEGREEN;
-    label.textAlignment = NSTextAlignmentLeft;
-    
+    [label setFont:[label.font fontWithSize: 50]];
+    label.adjustsFontSizeToFitWidth = YES;
+    label.numberOfLines = 0;
+    label.minimumScaleFactor = 0.1;
+
     return label;
 }
 

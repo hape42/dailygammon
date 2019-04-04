@@ -263,10 +263,16 @@
     }
 
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
-    self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
+    if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
+    {
+        self.matchName.text = @"";
+    }
+    else
+    {
+        self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
                            [self.boardDict objectForKey:@"matchName"],
                            [self.boardDict objectForKey:@"matchLaengeText"]] ;
-    
+    }
     self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
