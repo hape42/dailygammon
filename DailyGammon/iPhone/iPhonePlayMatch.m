@@ -111,7 +111,7 @@
 #define ACTION_VIEW 44
 #define BOARD_VIEW 45
 
-#define BUTTONHEIGHT 20
+#define BUTTONHEIGHT 30
 #define BUTTONWIDTH 80
 
 - (void)viewDidLoad
@@ -1041,6 +1041,8 @@
     // berechnen der actionView Elemente (Position & Dimension)
     
     float actionViewHoehe  = 130.0;
+    float rand = 7;
+    actionViewHoehe = rand + BUTTONHEIGHT + rand + BUTTONHEIGHT + rand + 20 + rand + rand + rand + BUTTONHEIGHT + rand;
     float platzGesamt = boardView.frame.size.height + nummerHoehe + nummerHoehe;
     float opponentViewHoehe = (platzGesamt  - actionViewHoehe) / 2;
     int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
@@ -1222,7 +1224,7 @@
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
                                                                   self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
                                                                   maxBreite - self.opponentView.frame.origin.x - 5,
-                                                                  130)];
+                                                                  actionViewHoehe)];
     float actionViewBreite = actionView.layer.frame.size.width;
 //    float actionViewHoehe  = actionView.layer.frame.size.height;
     float actionViewHoeheOhneSkip = actionViewHoehe - BUTTONHEIGHT - 5 - 5 - 1;
@@ -1274,12 +1276,24 @@
         case ROLL_DOUBLE:
         {
 #pragma mark - Button Roll Double
-            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
+            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 0;// minus textzeile für Message
+//            UIView *button1 = [[UIView alloc] initWithFrame:CGRectMake(0,0,
+//                                                                          maxBreite - self.opponentView.frame.origin.x - 5,
+//                                                                          platzFuerButton)];
+//            UIView *button2 = [[UIView alloc] initWithFrame:CGRectMake(0,platzFuerButton,
+//                                                                       maxBreite - self.opponentView.frame.origin.x - 5,
+//                                                                       platzFuerButton)];
+//            button1.backgroundColor = [UIColor redColor];
+//            button2.backgroundColor = [UIColor yellowColor];
+//
+//            [actionView addSubview:button1];
+//            [actionView addSubview:button2];
+
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonRoll = [design makeNiceButton:buttonRoll];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             buttonRoll.frame = CGRectMake((actionViewBreite/2) - 50,
-                                          0 + (platzFuerButton / 2),
+                                          0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                           100,
                                           BUTTONHEIGHT);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
@@ -1289,7 +1303,7 @@
             buttonDouble = [design makeNiceButton:buttonDouble];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
             buttonDouble.frame = CGRectMake((actionViewBreite/2) - 50,
-                                            platzFuerButton + (platzFuerButton / 2),
+                                            platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                             100  ,
                                             BUTTONHEIGHT);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
@@ -1298,18 +1312,21 @@
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count == 3)
             {
-                buttonDouble.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
-                                                platzFuerButton + (platzFuerButton / 2),
+                buttonDouble.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
+                                                platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                                 70  ,
                                                 BUTTONHEIGHT);
 
                 UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
-                                          CGRectMake(buttonDouble.frame.origin.x + buttonDouble.frame.size.width ,
-                                                                                     buttonDouble.frame.origin.y -5 ,
+                                          CGRectMake(buttonDouble.frame.origin.x + buttonDouble.frame.size.width + 10,
+                                                                                     buttonDouble.frame.origin.y  ,
                                                                                      50,
                                                                                      BUTTONHEIGHT)];
-                verifyDouble.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
-
+                verifyDouble.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0); // größe genau wie Doubel Button
+                frame = verifyDouble.frame;
+                frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
+                verifyDouble.frame = frame;
+                
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
                 [verifyDouble setTintColor:[schemaDict objectForKey:@"TintColor"]];
                 [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
@@ -1317,7 +1334,7 @@
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:
                                              CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 3,
-                                                        platzFuerButton + (platzFuerButton / 2),
+                                                        platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                                         100,
                                                         BUTTONHEIGHT)];
                 verifyDoubleText.text = @"Verify";
@@ -1329,13 +1346,13 @@
         case ACCEPT_DECLINE:
         {
 #pragma mark - Button Accept Pass
-            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
+            float platzFuerButton = (actionViewHoeheOhneSkip -20) / 2;// minus textzeile für Message
 
             UIButton *buttonAccept = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonAccept = [design makeNiceButton:buttonAccept];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
             buttonAccept.frame = CGRectMake((actionViewBreite/2) - 50,
-                                            0 + (platzFuerButton/2),
+                                            0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                             100,
                                             BUTTONHEIGHT);
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
@@ -1354,12 +1371,12 @@
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
-                buttonAccept.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
-                                                0 + (platzFuerButton / 2),
+                buttonAccept.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
+                                                0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                                 70  ,
                                                 BUTTONHEIGHT);
-                buttonPass.frame = CGRectMake(((actionViewBreite - 50 - 100)/2),
-                                                platzFuerButton + (platzFuerButton / 2),
+                buttonPass.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
+                                                platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                                 70  ,
                                                 BUTTONHEIGHT);
 
@@ -1370,11 +1387,15 @@
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
                             UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:
-                                                      CGRectMake(buttonAccept.frame.origin.x + buttonAccept.frame.size.width ,
+                                                      CGRectMake(buttonAccept.frame.origin.x + buttonAccept.frame.size.width + 10,
                                                                  buttonAccept.frame.origin.y -5 ,
                                                                  50,
                                                                  BUTTONHEIGHT)];
                             verifyAccept.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
+                            frame = verifyAccept.frame;
+                            frame.origin.y = buttonAccept.frame.origin.y; // Yposition wie double Button
+                            verifyAccept.frame = frame;
+
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
@@ -1389,11 +1410,15 @@
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
                             UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:
-                                                       CGRectMake(buttonPass.frame.origin.x + buttonPass.frame.size.width ,
+                                                       CGRectMake(buttonPass.frame.origin.x + buttonPass.frame.size.width + 10,
                                                                   buttonPass.frame.origin.y -5 ,
                                                                   50,
                                                                   BUTTONHEIGHT)];
                             verifyDecline.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
+
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
                             [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
@@ -1460,12 +1485,12 @@
         case SUBMIT_MOVE:
         {
 #pragma mark - Button Submit Move & Undo
-            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 20;// minus textzeile für Message
+            float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 0;// minus textzeile für Message
             UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
             [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
             buttonSubmitMove.frame = CGRectMake((actionViewBreite/2) - 50,
-                                                0 + (platzFuerButton/2),
+                                                0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                                 100,
                                                 BUTTONHEIGHT);
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
@@ -1475,7 +1500,7 @@
             buttonUndoMove = [design makeNiceButton:buttonUndoMove];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
             buttonUndoMove.frame = CGRectMake((actionViewBreite/2) - 50,
-                                              platzFuerButton + (platzFuerButton / 2),
+                                              platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
                                               100,
                                               BUTTONHEIGHT);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
@@ -1579,14 +1604,14 @@
     buttonSkipGame = [design makeNiceButton:buttonSkipGame];
     [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
     buttonSkipGame.frame = CGRectMake((actionViewBreite / 2) - 50,
-                                      actionViewHoehe - BUTTONHEIGHT - 5 ,
+                                      actionViewHoehe - BUTTONHEIGHT - rand ,
                                       100,
                                       BUTTONHEIGHT);
     [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
     [actionView addSubview:buttonSkipGame];
-    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, buttonSkipGame.frame.origin.y - 5, actionView.frame.size.width - 10, 1)];
-    linie.backgroundColor = [UIColor blackColor];
-    [actionView addSubview:linie];
+//    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, buttonSkipGame.frame.origin.y - 5, actionView.frame.size.width - 10, 1)];
+//    linie.backgroundColor = [UIColor blackColor];
+//    [actionView addSubview:linie];
     
     if([@"13014" isEqualToString: [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"]])
     {
