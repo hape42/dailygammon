@@ -69,8 +69,11 @@
     
     if([design isX])
     {
+        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+
         CGRect frame = self.tableView.frame;
-        frame.size.width -= 30;
+        frame.origin.x = safeArea.left ;
+        frame.size.width = self.tableView.frame.size.width - safeArea.left ;
         self.tableView.frame = frame;
     }
 }

@@ -361,7 +361,7 @@
     if([design isX])
     {
         maxBreite = [UIScreen mainScreen].bounds.size.width - 30;
-        x = 20;
+        x = 30;
     }
     int y = 40;
     
