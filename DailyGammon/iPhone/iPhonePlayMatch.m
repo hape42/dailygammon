@@ -1882,11 +1882,48 @@
 }
 - (IBAction)chatTopButton:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSString *checkbox = @"";
+    for(NSMutableDictionary *dict in attributesArray)
+    {
+        if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
+        {
+            if([self.quoteSwitch isOn])
+                checkbox = @"&quote=on";
+            else
+                checkbox = @"&quote=off";
+        }
+    }
+    __block NSString *str = @"";
+    [self.playerChat.text enumerateSubstringsInRange:NSMakeRange(0, self.playerChat.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
+         else if([substring isEqualToString:@"„"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else if([substring isEqualToString:@"“"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else
+             str = [NSString stringWithFormat:@"%@%@",str, substring];
+         
+     }];
     
-    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
     
-    [self.navigationController pushViewController:vc animated:NO];
+    matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
+                 [self.actionDict objectForKey:@"action"],
+                 checkbox,
+                 escapedString];
+    
+    [self showMatch];
+
+//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+//
+//    [self.navigationController pushViewController:vc animated:NO];
 }
 
 #pragma mark - analyzeAction
