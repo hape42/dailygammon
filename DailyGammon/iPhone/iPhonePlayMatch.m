@@ -1532,15 +1532,45 @@
         case CHAT:
         {
 #pragma mark - CHAT
-            // schieb den chatView in den sichtbaren Bereich
+            // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
-            frame.origin.x = 10;
-            frame.origin.y = 40;
-            self.chatView.frame = frame;
-            [self.view bringSubviewToFront:self.chatView ];
+
+             [self.view bringSubviewToFront:self.chatView ];
             //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
             self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
-            self.playerChat.text = @"";
+            if([self.opponentChat.text length] == 0)
+            {
+                // opponentChat nicht anzeigen
+                frame = self.opponentChat.frame;
+                float opponentChatHoehe = self.opponentChat.frame.size.height;
+                frame.size.height = 0;
+                self.opponentChat.frame = frame;
+                frame = self.chatView.frame;
+                frame.origin.y += opponentChatHoehe;
+                frame.size.height -= opponentChatHoehe;
+                self.chatView.frame = frame;
+                frame = self.playerChat.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.playerChat.frame = frame;
+                
+                frame = self.NextButtonOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.NextButtonOutlet.frame = frame;
+                
+                frame = self.ToTopOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.ToTopOutlet.frame = frame;
+                
+            }
+            frame = self.chatView.frame;
+            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
+            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
+            self.chatView.frame = frame;
+
+            self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
+            self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
+            
+            self.playerChat.text = @"you may chat here";
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             BOOL isCheckbox = FALSE;
             for(NSMutableDictionary *dict in attributesArray)
@@ -1919,11 +1949,6 @@
     
     [self showMatch];
 
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-//    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-//
-//    [self.navigationController pushViewController:vc animated:NO];
 }
 
 #pragma mark - analyzeAction
@@ -2027,6 +2052,8 @@
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    self.playerChat.text = @"";
+
     return YES;
 }
 - (BOOL)textViewShouldReturn:(UITextView *)textField
