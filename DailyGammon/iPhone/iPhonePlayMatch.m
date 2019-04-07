@@ -362,6 +362,9 @@
     {
         maxBreite = [UIScreen mainScreen].bounds.size.width - 30;
         x = 30;
+        
+        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+        maxHoehe  = [UIScreen mainScreen].bounds.size.height - safeArea.bottom;
     }
     int y = 40;
     
