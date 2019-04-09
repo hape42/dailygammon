@@ -55,6 +55,11 @@
 @property (assign, atomic) CGRect chatViewFrame;
 @property (assign, atomic) CGRect quoteSwitchFrame;
 @property (assign, atomic) CGRect quoteMessageFrame;
+@property (assign, atomic) CGRect chatNextButtonFrame;
+@property (assign, atomic) CGRect chatTopPageButtonFrame;
+@property (assign, atomic) CGRect opponentChatViewFrame;
+@property (assign, atomic) CGRect playerChatViewFrame;
+@property (assign, atomic) CGRect chatViewFrameSave;
 
 
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
@@ -142,6 +147,12 @@
     self.quoteSwitchFrame = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
     
+    self.chatNextButtonFrame    = self.NextButtonOutlet.frame;
+    self.chatTopPageButtonFrame = self.ToTopOutlet.frame;
+    self.opponentChatViewFrame  = self.opponentChat.frame;
+    self.playerChatViewFrame    = self.playerChat.frame;
+    self.chatViewFrameSave      = self.chatView.frame;
+
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
@@ -1280,7 +1291,15 @@
                 frame = self.ToTopOutlet.frame;
                 frame.origin.y -= opponentChatHoehe;
                 self.ToTopOutlet.frame = frame;
-
+            }
+            else
+            {
+                // opponentChat anzeigen
+                self.NextButtonOutlet.frame = self.chatNextButtonFrame;
+                self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
+                self.opponentChat.frame     = self.opponentChatViewFrame;
+                self.chatView.frame         = self.chatViewFrameSave;
+                self.playerChat.frame       = self.playerChatViewFrame;
             }
 
             frame = self.chatView.frame;
@@ -1586,6 +1605,9 @@
 - (IBAction)chatNextButton:(id)sender
 {
     
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+        self.playerChat.text = @"";
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
@@ -1629,7 +1651,9 @@
 }
 - (IBAction)chatTopButton:(id)sender
 {
-    
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+        self.playerChat.text = @"";
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)

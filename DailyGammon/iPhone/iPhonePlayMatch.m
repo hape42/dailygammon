@@ -54,6 +54,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *chatHeaderText;
 @property (assign, atomic) CGRect chatViewFrame;
 @property (assign, atomic) CGRect quoteSwitchFrame;
+@property (assign, atomic) CGRect chatNextButtonFrame;
+@property (assign, atomic) CGRect chatTopPageButtonFrame;
+@property (assign, atomic) CGRect opponentChatViewFrame;
+@property (assign, atomic) CGRect playerChatViewFrame;
+@property (assign, atomic) CGRect chatViewFrameSave;
+
 @property (assign, atomic) CGRect quoteMessageFrame;
 
 
@@ -142,9 +148,15 @@
     
     [self.playerChat setDelegate:self];
     
-    self.quoteSwitchFrame = self.quoteSwitch.frame;
+    self.quoteSwitchFrame  = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
     
+    self.chatNextButtonFrame    = self.NextButtonOutlet.frame;
+    self.chatTopPageButtonFrame = self.ToTopOutlet.frame;
+    self.opponentChatViewFrame  = self.opponentChat.frame;
+    self.playerChatViewFrame    = self.playerChat.frame;
+    self.chatViewFrameSave      = self.chatView.frame;
+
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
@@ -1537,41 +1549,8 @@
 
              [self.view bringSubviewToFront:self.chatView ];
             //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
-            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
-            if([self.opponentChat.text length] == 0)
-            {
-                // opponentChat nicht anzeigen
-                frame = self.opponentChat.frame;
-                float opponentChatHoehe = self.opponentChat.frame.size.height;
-                frame.size.height = 0;
-                self.opponentChat.frame = frame;
-                frame = self.chatView.frame;
-                frame.origin.y += opponentChatHoehe;
-                frame.size.height -= opponentChatHoehe;
-                self.chatView.frame = frame;
-                frame = self.playerChat.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.playerChat.frame = frame;
-                
-                frame = self.NextButtonOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.NextButtonOutlet.frame = frame;
-                
-                frame = self.ToTopOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.ToTopOutlet.frame = frame;
-                
-            }
-            frame = self.chatView.frame;
-            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
-            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
-            self.chatView.frame = frame;
-
-            self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
-            self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
-            
-            self.playerChat.text = @"you may chat here";
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+
             BOOL isCheckbox = FALSE;
             for(NSMutableDictionary *dict in attributesArray)
             {
@@ -1597,6 +1576,52 @@
             [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
             [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
             self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
+
+            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
+            if(([self.opponentChat.text length] == 0) && (isCheckbox == FALSE))
+            {
+                // opponentChat nicht anzeigen
+                frame = self.opponentChat.frame;
+                float opponentChatHoehe = self.opponentChat.frame.size.height;
+                frame.size.height = 0;
+                self.opponentChat.frame = frame;
+                
+                frame = self.chatView.frame;
+                frame.origin.y += opponentChatHoehe;
+                frame.size.height -= opponentChatHoehe;
+                self.chatView.frame = frame;
+
+                frame = self.playerChat.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.playerChat.frame = frame;
+                
+                frame = self.NextButtonOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.NextButtonOutlet.frame = frame;
+                
+                frame = self.ToTopOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.ToTopOutlet.frame = frame;
+            }
+            else
+            {
+                // opponentChat anzeigen
+                self.NextButtonOutlet.frame = self.chatNextButtonFrame;
+                self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
+                self.opponentChat.frame     = self.opponentChatViewFrame;
+                self.chatView.frame         = self.chatViewFrameSave;
+                self.playerChat.frame       = self.playerChatViewFrame;
+
+            }
+            frame = self.chatView.frame;
+            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
+            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
+            self.chatView.frame = frame;
+
+            self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
+            self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
+            
+            self.playerChat.text = @"you may chat here";
             self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
@@ -1871,7 +1896,8 @@
 
 - (IBAction)chatNextButton:(id)sender
 {
-    
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+        self.playerChat.text = @"";
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
@@ -1912,6 +1938,9 @@
 }
 - (IBAction)chatTopButton:(id)sender
 {
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+        self.playerChat.text = @"";
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
