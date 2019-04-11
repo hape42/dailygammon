@@ -562,7 +562,7 @@
             [inviteName appendString:[child content]];
         }
     }
-    [inviteDict setObject:inviteName forKey:@"inviteheader"];
+    [inviteDict setObject:inviteName forKey:@"inviteHeader"];
     
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//body"];
 
@@ -587,20 +587,22 @@
     elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
 
+    NSDictionary *dict = [[NSDictionary alloc]init];
+
     for(TFHppleElement *element in elements)
     {
-        [attributesArray addObject:[element attributes]];
+        dict = [element attributes];
     }
-    [inviteDict setObject:attributesArray forKey:@"AcceptButton"];
+    [inviteDict setObject:dict forKey:@"AcceptButton"];
 
     elements  = [xpathParser searchWithXPathQuery:@"//form[2]"];
     attributesArray = [[NSMutableArray alloc]init ];
     
     for(TFHppleElement *element in elements)
     {
-        [attributesArray addObject:[element attributes]];
+        dict = [element attributes];
     }
-    [inviteDict setObject:attributesArray forKey:@"DeclineButton"];
+    [inviteDict setObject:dict forKey:@"DeclineButton"];
 
     return inviteDict;
 }

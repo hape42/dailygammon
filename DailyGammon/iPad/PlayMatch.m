@@ -19,6 +19,7 @@
 #import "RatingVC.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
+#import <SafariServices/SafariServices.h>
 
 @interface PlayMatch ()
 
@@ -234,44 +235,44 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-        [self.navigationController pushViewController:vc animated:NO];
-
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Somebody invites you to a match"
-                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"OK"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                     }];
- 
-        UIAlertAction* webButton = [UIAlertAction
-                                     actionWithTitle:@"Go to Website"
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action)
-                                     {
-                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
-                                         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                         
-                                         TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-                                         [self.navigationController pushViewController:vc animated:NO];
-
-                                     }];
-
-        [alert addAction:okButton];
-        [alert addAction:webButton];
-
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
+//    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+//    {
+//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//        
+//        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//        [self.navigationController pushViewController:vc animated:NO];
+//
+//        UIAlertController * alert = [UIAlertController
+//                                     alertControllerWithTitle:@"Somebody invites you to a match"
+//                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
+//                                     preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction* okButton = [UIAlertAction
+//                                    actionWithTitle:@"OK"
+//                                    style:UIAlertActionStyleDefault
+//                                    handler:^(UIAlertAction * action)
+//                                    {
+//                                     }];
+// 
+//        UIAlertAction* webButton = [UIAlertAction
+//                                     actionWithTitle:@"Go to Website"
+//                                     style:UIAlertActionStyleDefault
+//                                     handler:^(UIAlertAction * action)
+//                                     {
+//                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
+//                                         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//                                         
+//                                         TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//                                         [self.navigationController pushViewController:vc animated:NO];
+//
+//                                     }];
+//
+//        [alert addAction:okButton];
+//        [alert addAction:webButton];
+//
+//        [self presentViewController:alert animated:YES completion:nil];
+//        
+//    }
 
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
@@ -331,6 +332,86 @@
                                     }];
         
         [alert addAction:yesButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+    {
+        NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
+        NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Message"
+                                     message:inviteArray[1]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",inviteArray[0],inviteArray[1]]];
+        [message addAttribute:NSFontAttributeName
+                        value:[UIFont systemFontOfSize:15.0]
+                        range:NSMakeRange(0, [message length])];
+        [alert setValue:message forKey:@"attributedMessage"];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                   actionWithTitle:@"Accept"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"AcceptButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Accept%%20Invitation&action=accept",
+                                                                               [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                           usedEncoding:&encoding
+                                                                                                  error:&error];
+                                       XLog(@"matchString:%@",returnString);
+                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                       [self showMatch];
+                                       
+                                   }];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"Decline"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"DeclineButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Decline%%20Invitation&action=decline",
+                                                                               [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                           usedEncoding:&encoding
+                                                                                                  error:&error];
+                                       XLog(@"matchString:%@",returnString);
+                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                       [self showMatch];
+                                   }];
+        
+        UIAlertAction* webButton = [UIAlertAction
+                                    actionWithTitle:@"Go to Website"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/nextgame"]];
+                                        if ([SFSafariViewController class] != nil) {
+                                            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+                                            [self presentViewController:sfvc animated:YES completion:nil];
+                                        } else {
+                                            [[UIApplication sharedApplication] openURL:URL];
+                                        }
+                                        
+                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                        
+                                        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                                        [self.navigationController pushViewController:vc animated:NO];
+                                        
+                                    }];
+        
+        [alert addAction:okButton];
+        [alert addAction:noButton];
+        [alert addAction:webButton];
         
         [self presentViewController:alert animated:YES completion:nil];
     }
@@ -566,7 +647,8 @@
                         int imgHoehe = zungeView.frame.size.height;
                         float faktor = imgHoehe / imgBreite;
                         zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
-                        
+                        zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y + zungenHoehe - (checkerBreite * faktor), checkerBreite, checkerBreite * faktor);
+
                         [boardView addSubview:zungeView];
                         NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
                         [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];

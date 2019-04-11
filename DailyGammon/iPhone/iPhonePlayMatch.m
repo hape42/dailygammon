@@ -17,6 +17,7 @@
 #import "iPhoneMenue.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
+#import <SafariServices/SafariServices.h>
 
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
@@ -248,44 +249,47 @@
     if([[self.boardDict objectForKey:@"unknown"] length] != 0)
         [self errorAction:1];
     
-    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-        [self.navigationController pushViewController:vc animated:NO];
-        
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Somebody invites you to a match"
-                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action)
-                                   {
-                                   }];
-        
-        UIAlertAction* webButton = [UIAlertAction
-                                    actionWithTitle:@"Go to Website"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
-                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                        
-                                        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-                                        [self.navigationController pushViewController:vc animated:NO];
-                                        
-                                    }];
-        
-        [alert addAction:okButton];
-        [alert addAction:webButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
+//    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+//    {
+//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+//        [self.navigationController pushViewController:vc animated:NO];
+//
+//        NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
+//        NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
+//
+//        UIAlertController * alert = [UIAlertController
+//                                     alertControllerWithTitle:@"Somebody invites you to a match"
+//                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
+//                                     preferredStyle:UIAlertControllerStyleAlert];
+//
+//        UIAlertAction* okButton = [UIAlertAction
+//                                   actionWithTitle:@"OK"
+//                                   style:UIAlertActionStyleDefault
+//                                   handler:^(UIAlertAction * action)
+//                                   {
+//                                   }];
+//
+//        UIAlertAction* webButton = [UIAlertAction
+//                                    actionWithTitle:@"Go to Website"
+//                                    style:UIAlertActionStyleDefault
+//                                    handler:^(UIAlertAction * action)
+//                                    {
+//                                        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
+//                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//                                        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+//                                        [self.navigationController pushViewController:vc animated:NO];
+//
+//                                    }];
+//
+//        [alert addAction:okButton];
+//        [alert addAction:webButton];
+//
+//        [self presentViewController:alert animated:YES completion:nil];
+//
+//    }
 
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
@@ -354,6 +358,86 @@
                                     }];
         
         [alert addAction:yesButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    else if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+    {
+        NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
+        NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Message"
+                                     message:inviteArray[1]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",inviteArray[0],inviteArray[1]]];
+        [message addAttribute:NSFontAttributeName
+                        value:[UIFont systemFontOfSize:15.0]
+                        range:NSMakeRange(0, [message length])];
+        [alert setValue:message forKey:@"attributedMessage"];
+
+        UIAlertAction* okButton = [UIAlertAction
+                                   actionWithTitle:@"Accept"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"AcceptButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Accept%%20Invitation&action=accept",
+                                                          [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                          usedEncoding:&encoding
+                                                                                                 error:&error];
+                                       XLog(@"matchString:%@",returnString);
+                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                       [self showMatch];
+
+                                   }];
+ 
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"Decline"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"DeclineButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Decline%%20Invitation&action=decline",
+                                                                               [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                           usedEncoding:&encoding
+                                                                                                  error:&error];
+                                       XLog(@"matchString:%@",returnString);
+                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+                                       [self showMatch];
+                                }];
+
+        UIAlertAction* webButton = [UIAlertAction
+                                    actionWithTitle:@"Go to Website"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/nextgame"]];
+                                        if ([SFSafariViewController class] != nil) {
+                                            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+                                            [self presentViewController:sfvc animated:YES completion:nil];
+                                        } else {
+                                            [[UIApplication sharedApplication] openURL:URL];
+                                        }
+                                        
+                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+                                        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                                        [self.navigationController pushViewController:vc animated:NO];
+                                        
+                                    }];
+        
+        [alert addAction:okButton];
+        [alert addAction:noButton];
+        [alert addAction:webButton];
         
         [self presentViewController:alert animated:YES completion:nil];
     }
@@ -611,8 +695,8 @@
                     int imgBreite = MAX(zungeView.frame.size.width,1);
                     int imgHoehe = zungeView.frame.size.height;
                     float faktor = imgHoehe / imgBreite;
-                    zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
-                    
+                    zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y + zungenHoehe - (checkerBreite * faktor), checkerBreite, checkerBreite * faktor);
+//                    zungeView.backgroundColor = [UIColor yellowColor];
                     [boardView addSubview:zungeView];
                     NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
                     [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
@@ -2496,24 +2580,134 @@ shouldChangeTextInRange:(NSRange)range
             [NSByteCountFormatter stringFromByteCount:mem_free countStyle:NSByteCountFormatterCountStyleMemory]];
 }
 
-//- (NSString *)urlencode:(NSString *)string
-//{
-//    NSMutableString *output = [NSMutableString string];
-//    const unsigned char *source = (const unsigned char *)[string UTF8String];
-//    int sourceLen = strlen((const char *)source);
-//    for (int i = 0; i < sourceLen; ++i) {
-//        const unsigned char thisChar = source[i];
-//        if (thisChar == ' '){
-//            [output appendString:@"+"];
-//        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
-//                   (thisChar >= 'a' && thisChar <= 'z') ||
-//                   (thisChar >= 'A' && thisChar <= 'Z') ||
-//                   (thisChar >= '0' && thisChar <= '9')) {
-//            [output appendFormat:@"%c", thisChar];
-//        } else {
-//            [output appendFormat:@"%%%02X", thisChar];
-//        }
-//    }
-//    return output;
-//}
+#pragma mark - invite
+- (void)inviteMatchView:(NSMutableDictionary *)inviteDict
+{
+    self.matchName.text = @"";
+
+    int rand = 5;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
+    
+    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    
+    infoView.tag = FINISHED_MATCH_VIEW;
+    infoView.layer.borderWidth = 1;
+    
+    [self.view addSubview:self.finishedMatchView];
+    NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
+    UILabel * inviteHeader = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                            rand,
+                                                                            infoView.layer.frame.size.width - (2 * rand),
+                                                                            30)];
+    inviteHeader.textAlignment = NSTextAlignmentCenter;
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:inviteArray[0]];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:20.0]
+                 range:NSMakeRange(0, [attr length])];
+    [inviteHeader setAttributedText:attr];
+    inviteHeader.adjustsFontSizeToFitWidth = YES;
+    inviteHeader.numberOfLines = 0;
+    inviteHeader.minimumScaleFactor = 0.5;
+    [infoView addSubview:inviteHeader];
+    
+    
+    UILabel *inviteDetails = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                inviteHeader.frame.origin.y + inviteHeader.frame.size.height + 5,
+                                                                infoView.layer.frame.size.width - (2 * rand),
+                                                                30)];
+    //    winner.backgroundColor = [UIColor yellowColor];
+    
+    inviteDetails.textAlignment = NSTextAlignmentLeft;
+    inviteDetails.text = inviteArray[1];
+    [inviteDetails setFont:[UIFont boldSystemFontOfSize: inviteDetails.font.pointSize]];
+    inviteDetails.numberOfLines = 0;
+    inviteDetails.minimumScaleFactor = 0.5;
+    inviteDetails.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:inviteDetails];
+    /*
+    int labelHoehe = 25;
+    UILabel *length = [[UILabel alloc] initWithFrame:CGRectMake(rand,
+                                                                winner.frame.origin.y + winner.frame.size.height,
+                                                                100,
+                                                                labelHoehe)];
+    //    length.backgroundColor = [UIColor redColor];
+    
+    length.textAlignment = NSTextAlignmentLeft;
+    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
+    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
+    [infoView addSubview:length];
+    
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+    
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(length.frame.origin.x + length.frame.size.width + 5,
+                                                                       length.frame.origin.y ,
+                                                                       150,
+                                                                       labelHoehe)];
+    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.size.width + 5,
+                                                                       player1Name.layer.frame.origin.y,
+                                                                       100,
+                                                                       labelHoehe)];
+    //    player1Name.backgroundColor = [UIColor yellowColor];
+    player1Name.textAlignment = NSTextAlignmentLeft;
+    player1Name.text = playerArray[0];
+    [infoView addSubview:player1Name];
+    player1Score.textAlignment = NSTextAlignmentRight;
+    player1Score.text = playerArray[1];
+    [infoView addSubview:player1Score];
+    
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.origin.x,
+                                                                       player1Name.frame.origin.y + player1Name.frame.size.height
+                                                                       ,
+                                                                       150,
+                                                                       labelHoehe)];
+    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.size.width + 5,
+                                                                       player2Name.layer.frame.origin.y,
+                                                                       100,
+                                                                       labelHoehe)];
+    //    player2Name.backgroundColor = [UIColor redColor];
+    player2Name.textAlignment = NSTextAlignmentLeft;
+    player2Name.text = playerArray[2];
+    [infoView addSubview:player2Name];
+    player2Score.textAlignment = NSTextAlignmentRight;
+    player2Score.text = playerArray[3];
+    [infoView addSubview:player2Score];
+    
+    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand,
+                                                                     player2Name.layer.frame.origin.y + player2Name.frame.size.height ,
+                                                                     infoView.layer.frame.size.width - (2 * rand),
+                                                                     infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 70 ))];
+    chat.textAlignment = NSTextAlignmentLeft;
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    NSString *chatString = @"";
+    for( NSString *chatZeile in chatArray)
+    {
+        chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
+    }
+    chat.text = chatString;
+    chat.editable = YES;
+    [chat setDelegate:self];
+    
+    [chat setFont:[UIFont systemFontOfSize:20]];
+    [infoView addSubview:chat];
+    
+    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonNext = [design makeNiceButton:buttonNext];
+    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonNext];
+    
+    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonToTop = [design makeNiceButton:buttonToTop];
+    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonToTop];
+    */
+    [self.finishedMatchView addSubview:infoView];
+    return;
+}
 @end
