@@ -11,7 +11,7 @@
 
 @class Design;
 
-@interface LoginVC : UIViewController<UIPopoverPresentationControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface LoginVC : UIViewController<UIPopoverPresentationControllerDelegate, MFMailComposeViewControllerDelegate, UITextFieldDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

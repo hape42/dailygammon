@@ -45,6 +45,9 @@
     
     self.logo.layer.cornerRadius = 14.0f;
     self.logo.layer.masksToBounds = YES;
+    [self.usewrnameOutlet setDelegate:self];
+    [self.passwordOutlet  setDelegate:self];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -52,6 +55,14 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
  }
+
+- (BOOL)textFieldShouldReturn:(UITextView *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
 - (IBAction)loginAction:(id)sender
 {
     NSString *userName = self.usewrnameOutlet.text;
