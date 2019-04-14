@@ -255,7 +255,7 @@
         SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
         [self presentViewController:sfvc animated:YES completion:nil];
     } else {
-        [[UIApplication sharedApplication] openURL:URL];
+        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
     }
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/create"] options:@{} completionHandler:nil];
 //    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -270,7 +270,7 @@
         SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
         [self presentViewController:sfvc animated:YES completion:nil];
     } else {
-        [[UIApplication sharedApplication] openURL:URL];
+        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
     }
 
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];

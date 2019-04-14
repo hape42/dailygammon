@@ -114,7 +114,7 @@
         SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
         [self presentViewController:sfvc animated:YES completion:nil];
     } else {
-        [[UIApplication sharedApplication] openURL:URL];
+        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
     }
 
 //    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.hape42.de"] options:@{} completionHandler:nil];
@@ -169,7 +169,6 @@
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"userdefaults.plist"];
     
     NSString *dbPath = [documentsDirectory stringByAppendingPathComponent:@"rating.sqlite"];
     
