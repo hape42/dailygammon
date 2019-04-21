@@ -642,11 +642,18 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - (maxBreite / 3)) / 2 ,
-                                                                (maxHoehe - (maxHoehe / 3)) / 2 ,
-                                                                maxBreite / 3,
-                                                                maxHoehe / 3)];
-    
+    if([design isX])
+    {
+        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+        maxBreite -= (safeArea.left + safeArea.right);
+        rand += safeArea.left;
+    }
+
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(rand ,
+                                                                50 ,
+                                                                maxBreite - 20,
+                                                                MIN(maxHoehe - 80, 250))];
+    rand = 10;
     infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
     infoView.layer.borderWidth = 1;
     infoView.tag = 42;
