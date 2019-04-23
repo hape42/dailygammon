@@ -100,22 +100,66 @@
     return label;
 }
 
-- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color
+- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color forPlayer:(BOOL)player
 {
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
 
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
+    int sameColor = [[[NSUserDefaults standardUserDefaults] valueForKey:@"sameColor"]intValue];
+    bool myColorB = FALSE;
+    
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"myColorB"])
+        myColorB = TRUE;
+    
     if([color isEqualToString:@"#3399CC"] || [color isEqualToString:@"#9999FF"])
     {
         label.backgroundColor = [schemaDict objectForKey:@"labelColor1"];
         label.textColor = [schemaDict objectForKey:@"labelTextColor1"];
+        if(sameColor)
+        {
+            if(player)
+            {
+                if(!myColorB)
+                {
+                    label.backgroundColor = [schemaDict objectForKey:@"labelColor2"];
+                    label.textColor = [schemaDict objectForKey:@"labelTextColor2"];
+                }
+            }
+            else
+            {
+                if(myColorB)
+                {
+                    label.backgroundColor = [schemaDict objectForKey:@"labelColor2"];
+                    label.textColor = [schemaDict objectForKey:@"labelTextColor2"];
+                }
+            }
+        }
     }
     if([color isEqualToString:@"#FFFFFF"] || [color isEqualToString:@"#FFFF66"])
     {
         label.backgroundColor = [schemaDict objectForKey:@"labelColor2"];
         label.textColor = [schemaDict objectForKey:@"labelTextColor2"];
+        if(sameColor)
+        {
+            if(player)
+            {
+                if(myColorB)
+                {
+                    label.backgroundColor = [schemaDict objectForKey:@"labelColor1"];
+                    label.textColor = [schemaDict objectForKey:@"labelTextColor1"];
+                }
+            }
+            else
+            {
+                if(!myColorB)
+                {
+                    label.backgroundColor = [schemaDict objectForKey:@"labelColor1"];
+                    label.textColor = [schemaDict objectForKey:@"labelTextColor1"];
+                }
+            }
+        }
     }
 
     label.layer.borderWidth = 1;
@@ -226,6 +270,68 @@
     return schemaDict;
 }
 
+- (NSString *)changeCheckerColor:(NSString *)imgName forColor: (NSString *)color
+{
+    int sameColor = [[[NSUserDefaults standardUserDefaults] valueForKey:@"sameColor"]intValue];
+    if(!sameColor)
+        return imgName;
+
+    bool myColorB = FALSE;
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"myColorB"])
+        myColorB = TRUE;
+    
+    if([color isEqualToString:@"#3399CC"] || [color isEqualToString:@"#9999FF"])
+    {
+        // dailygammon liefert mir B als color
+        if(myColorB)
+        {
+            return imgName;
+        }
+        else
+        {
+            // _b muss zu _y und umgekehrt
+            if([imgName rangeOfString:@"_b"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_b" withString:@"_y"];
+                return imgName;
+            }
+            if([imgName rangeOfString:@"_y"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_y" withString:@"_b"];
+                return imgName;
+            }
+        }
+        return imgName;
+        XLog(@"b %@ %@",imgName, color);
+    } else
+    if([color isEqualToString:@"#FFFFFF"] || [color isEqualToString:@"#FFFF66"])
+    {
+        // dailygammon liefert mir Y als color
+        if(!myColorB)
+        {
+            return imgName;
+        }
+        else
+        {
+            // _b muss zu _y und umgekehrt
+            if([imgName rangeOfString:@"_b"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_b" withString:@"_y"];
+                return imgName;
+            }
+            if([imgName rangeOfString:@"_y"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_y" withString:@"_b"];
+                return imgName;
+            }
+        }
+        XLog(@"y %@ %@",imgName, color);
+    } else
+    {
+    XLog(@"? %@ %@",imgName, color);
+    }
+    return imgName;
+}
 - (BOOL)isX
 {
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)

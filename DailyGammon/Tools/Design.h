@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UILabel *) makeNiceLabel: (UILabel*)label;
 - (UILabel *) makeNiceTextField: (UILabel*)text;
 
-- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color;
+- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color forPlayer:(BOOL)player;
 
 - (BOOL)isX;
 
@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 #define GRAYDARK [UIColor colorWithRed:214.0/255 green:214.0/255 blue:214.0/255 alpha:1]
 
 -(NSMutableDictionary *)schema:(int)nummer;
+
+- (NSString *)changeCheckerColor:(NSString *)imgName forColor: (NSString *)color;
 
 @end
 

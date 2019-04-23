@@ -531,7 +531,7 @@
     if(nummernArray.count < 17)
     {
         // aus irgendwelchen Gründen wurde gar kein Board angezeigt
-        [self errorAction:0];
+        [self errorAction:2];
         return;
     }
     for(int i = 1; i <= 6; i++)
@@ -612,6 +612,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -640,6 +641,7 @@
                     if(bilder.count > 0)
                     {
                         NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                         //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -668,6 +670,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -695,6 +698,7 @@
                 if(bilder.count > 0)
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -763,6 +767,7 @@
     if(diceArray.count < 8)
     {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
         NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
+        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -788,6 +793,7 @@
                 case 0:
                 {// off board
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -799,6 +805,7 @@
                 {
                     x += offBreite + (checkerBreite / 2) + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -811,6 +818,7 @@
                 {
                     x += checkerBreite + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -823,6 +831,7 @@
                 {
                     x += checkerBreite + checkerBreite + barBreite + checkerBreite + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -835,6 +844,7 @@
                 {
                     x += checkerBreite + checkerBreite ;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -848,6 +858,7 @@
                     x += (checkerBreite * 2.5);
                     
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -916,6 +927,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -943,6 +955,7 @@
                     if(bilder.count > 0)
                     {
                         NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                       //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -973,6 +986,7 @@
                     for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                     {
                         NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -1002,6 +1016,7 @@
                 if(bilder.count > 0)
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
 
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -1098,7 +1113,7 @@
     self.opponentView.frame = frame;
     
     self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
-    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]];
+    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
     self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
@@ -1120,7 +1135,7 @@
     self.playerView.frame = frame;
     
     self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
-    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]];
+    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]  forPlayer:YES];
     self.playerName.adjustsFontSizeToFitWidth = YES;
     self.playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)

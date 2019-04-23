@@ -661,6 +661,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -690,6 +691,8 @@
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
                     //  img = @"bar_b5";
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
+
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     int imgBreite = MAX(zungeView.frame.size.width,1);
@@ -742,8 +745,9 @@
                 if(bilder.count > 0)
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
+
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x, y, checkerBreite, zungenHoehe);
                     
@@ -810,6 +814,7 @@
     if(diceArray.count < 8)
     {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
         NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
+        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -819,6 +824,7 @@
         x = offBreite + (6 * checkerBreite) + barBreite  + (6 * checkerBreite) ;
         
         img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
+        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
         imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
         zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -835,6 +841,7 @@
                 case 0:
                 {// off board
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -846,6 +853,7 @@
                 {
                     x += offBreite + (checkerBreite / 2) + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -858,6 +866,7 @@
                 {
                     x += checkerBreite + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -870,6 +879,7 @@
                 {
                     x += checkerBreite + checkerBreite + barBreite + checkerBreite + checkerBreite;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -882,6 +892,7 @@
                 {
                     x += checkerBreite + checkerBreite ;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -895,6 +906,7 @@
                     x += (checkerBreite * 2.5);
                     
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
@@ -963,6 +975,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -991,6 +1004,7 @@
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
                     //  img = @"bar_b5";
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     int imgBreite = MAX(zungeView.frame.size.width,1);
@@ -1020,6 +1034,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -1049,6 +1064,7 @@
                 if(bilder.count > 0)
                 {
                     NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
@@ -1066,7 +1082,6 @@
                     
                 }
                 break;
-                
         }
     }
     x += checkerBreite;
@@ -1172,7 +1187,7 @@
     self.opponentName.frame = frame;
     
     self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
-    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]];
+    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"] forPlayer:NO];
     self.opponentName = [design makeNiceLabel:self.opponentName];
 
     // alle Detail Labels size & position & fontsize berechnen
@@ -1244,7 +1259,7 @@
     self.playerView.frame = frame;
     
     self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
-    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]];
+    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"] forPlayer:YES];
     frame = self.opponentName.frame;
     frame.size.height = labelHoeheName;
     self.playerName.frame = frame;
@@ -1627,7 +1642,7 @@
         }
         case CHAT:
         {
-#pragma mark - CHAT
+#pragma mark - Chat
             // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
 
@@ -1695,6 +1710,9 @@
                 self.opponentChat.frame     = self.opponentChatViewFrame;
                 self.chatView.frame         = self.chatViewFrameSave;
                 self.playerChat.frame       = self.playerChatViewFrame;
+                [self.opponentChat flashScrollIndicators];
+                [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(flashIndicator) userInfo:nil repeats:YES]; // set time interval as per your requirement.
+
 
             }
             frame = self.chatView.frame;
@@ -1767,7 +1785,10 @@
 
     }
 }
-
+-(void)flashIndicator
+{
+    [self.opponentChat flashScrollIndicators];
+}
 #pragma mark - actions
 - (void)actionSubmitMove
 {
