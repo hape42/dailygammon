@@ -13,7 +13,6 @@
 
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
-    return [self makeNiceFlatButton:button];
 
     if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
         return [self makeNiceFlatButton:button];
@@ -166,8 +165,8 @@
         }
     }
 
-    label.layer.borderWidth = 1;
-    label.layer.borderColor = [label.textColor CGColor];
+//    label.layer.borderWidth = 1;
+//    label.layer.borderColor = [label.textColor CGColor];
     
     return label;
 }

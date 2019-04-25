@@ -117,6 +117,9 @@
 #define ACTION_VIEW 44
 #define BOARD_VIEW 45
 
+#define BUTTONHEIGHT 35
+#define BUTTONWIDTH 80
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -1105,11 +1108,28 @@
                     });
 
     }
+    
+    float actionViewHoehe  = 130.0;
+    float rand = 7;
+    actionViewHoehe = rand + BUTTONHEIGHT + rand + BUTTONHEIGHT + rand + 20 + rand + rand + rand + BUTTONHEIGHT + rand;
+    float platzGesamt = boardView.frame.size.height + nummerHoehe + nummerHoehe;
+    float opponentViewHoehe = (platzGesamt  - actionViewHoehe) / 2;
+    int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
+    int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
+    
+    self.opponentView.backgroundColor =  self.boardColor;
+    self.playerView.backgroundColor   =  self.boardColor;
+    
+    float labelHoeheName    = opponentViewHoehe / 9 * 3;
+    float labelHoeheDetails = opponentViewHoehe / 9 * 2;
+
     NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
     
     CGRect frame = self.opponentView.frame;
     frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
     frame.origin.y = boardView.frame.origin.y - nummerHoehe;
+    frame.size.width = maxBreite - frame.origin.x - 5;
+
     self.opponentView.frame = frame;
     
     self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
@@ -1132,6 +1152,7 @@
     frame = self.playerView.frame;
     frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
     frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height + nummerHoehe;
+    frame.size.width = maxBreite - frame.origin.x - 5;
     self.playerView.frame = frame;
     
     self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
@@ -1165,7 +1186,7 @@
     
 //    actionView.backgroundColor = [UIColor yellowColor];
     actionView.tag = ACTION_VIEW;
-    actionView.layer.borderWidth = 1;
+    //actionView.layer.borderWidth = 1;
 
     [self.view addSubview:actionView];
     
