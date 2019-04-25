@@ -13,6 +13,8 @@
 
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
+    return [self makeNiceFlatButton:button];
+
     if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
         return [self makeNiceFlatButton:button];
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
@@ -110,9 +112,11 @@
     int sameColor = [[[NSUserDefaults standardUserDefaults] valueForKey:@"sameColor"]intValue];
     bool myColorB = FALSE;
     
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"myColorB"])
+    if(sameColor == 1)
         myColorB = TRUE;
-    
+    else
+        myColorB = FALSE;
+
     if([color isEqualToString:@"#3399CC"] || [color isEqualToString:@"#9999FF"])
     {
         label.backgroundColor = [schemaDict objectForKey:@"labelColor1"];
@@ -277,9 +281,12 @@
         return imgName;
 
     bool myColorB = FALSE;
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"myColorB"])
-        myColorB = TRUE;
     
+    if(sameColor == 1)
+        myColorB = TRUE;
+    else
+        myColorB = FALSE;
+
     if([color isEqualToString:@"#3399CC"] || [color isEqualToString:@"#9999FF"])
     {
         // dailygammon liefert mir B als color

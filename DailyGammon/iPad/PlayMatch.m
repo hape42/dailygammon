@@ -1125,7 +1125,7 @@
     {
         self.opponentScore.text   = opponentArray[3];
         self.opponentPips.text    = @"";
-   }
+    }
 
     NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
     

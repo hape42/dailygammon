@@ -173,133 +173,52 @@
 
 - (void) makeColorAuswahl
 {
-    UIView *removeView;
-    while((removeView = [self.view viewWithTag:42]) != nil)
-    {
-        for (UIView *subUIView in removeView.subviews)
-        {
-            [subUIView removeFromSuperview];
-        }
-        [removeView removeFromSuperview];
-    }
-
+    
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
     
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
 
-    int sameColor = [[[NSUserDefaults standardUserDefaults] valueForKey:@"sameColor"]intValue];
-    if(!sameColor)
-        return;
+    switch (boardSchema) {
+        case 1:
+            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
+            [self.myColor setTitle:@"Always Yellow" forSegmentAtIndex:2];
+            break;
+        case 2:
+            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
+            [self.myColor setTitle:@"Always Yellow" forSegmentAtIndex:2];
+            break;
+        case 3:
+            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
+            [self.myColor setTitle:@"Always White" forSegmentAtIndex:2];
+            break;
+        case 4:
+            [self.myColor setTitle:@"Always Black" forSegmentAtIndex:1];
+            [self.myColor setTitle:@"Always Red" forSegmentAtIndex:2];
+            break;
+        default:
+            break;
+    }
     UIView * rahmen =  [[UIView alloc] initWithFrame:CGRectMake(self.myColor.frame.origin.x,
                                                                 self.myColor.frame.origin.y + self.myColor.frame.size.height,
                                                                 self.myColor.frame.size.width,
-                                                                70)];
+                                                                50)];
     rahmen.layer.borderWidth = 1;
     rahmen.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     [self.view addSubview:rahmen];
     
-    self.myColorView = [[UIView alloc]init];
-    self.myColorView.tag = 42;
-    self.myColorView.frame = CGRectMake(self.myColor.frame.origin.x + (self.myColor.frame.size.width / 2) + 10,
-                                        self.myColor.frame.origin.y + self.myColor.frame.size.height + 10,
-                                        (self.myColor.frame.size.width / 2) - 20,
-                                        50);
-
-    self.myColorView.backgroundColor = [schemaDict objectForKey:@"RandSchemaColor"];
-    [self.view addSubview:self.myColorView];
-
-    int x,y;
-    float checkerBreite = 25.0;
-    x = 5;
-    y = 5;
-    // Rahmen berechnen
-    float rahmenBreite = 50 + 10 + checkerBreite;
-    float rahmenLuecke = ((self.myColorView.frame.size.width ) - rahmenBreite - rahmenBreite) / 3;
-    UIView *color1Rahmen = [[UIView alloc] initWithFrame:CGRectMake(rahmenLuecke,
-                                                                    5,
-                                                                    rahmenBreite,
-                                                                    40)];
-    color1Rahmen.layer.borderWidth = 1;
-    [self.myColorView addSubview:color1Rahmen];
-    
-    UIView *color2Rahmen = [[UIView alloc] initWithFrame:CGRectMake(rahmenLuecke + rahmenBreite + rahmenLuecke,
-                                                                    5,
-                                                                    rahmenBreite,
-                                                                    40)];
-    color2Rahmen.layer.borderWidth = 1;
-    [self.myColorView addSubview:color2Rahmen];
-
-
-    self.switchColor1 = [[UISwitch alloc] initWithFrame:
-                              CGRectMake(x,
-                                         y,
-                                         50,
-                                         30)];
-    self.switchColor1.transform = CGAffineTransformMakeScale(checkerBreite / 31.0, checkerBreite / 31.0);
-    
-    [self.switchColor1 addTarget: self action: @selector(actionColor1:) forControlEvents:UIControlEventValueChanged];
-    [self.switchColor1 setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.switchColor1 setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [color1Rahmen addSubview: self.switchColor1];
-
-    x += self.switchColor1.frame.size.width + 10;
-    
-    NSString *imgName = [NSString stringWithFormat:@"%d/bar_b1",boardSchema] ;
-    self.color1 =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-    self.color1.frame = CGRectMake(x,
-                                   self.switchColor1.frame.origin.y + ( (self.switchColor1.frame.size.height - checkerBreite) / 2),
-                                   checkerBreite,
-                                   checkerBreite);
-    [color1Rahmen addSubview:self.color1];
-    
-    imgName = [NSString stringWithFormat:@"%d/bar_y1",boardSchema] ;
-    self.color2 =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-    
-    x = 5;
-
-    self.switchColor2 = [[UISwitch alloc] initWithFrame:
-                         CGRectMake(x,
-                                    y,
-                                    50,
-                                    30)];
-    self.switchColor2.transform = CGAffineTransformMakeScale(checkerBreite / 31.0, checkerBreite / 31.0);
-    
-    [self.switchColor2 addTarget: self action: @selector(actionColor2:) forControlEvents:UIControlEventValueChanged];
-    [self.switchColor2 setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.switchColor2 setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [color2Rahmen addSubview: self.switchColor2];
-    
-    x += self.switchColor2.frame.size.width + 10;
-
-    self.color2.frame = CGRectMake(x, self.switchColor2.frame.origin.y + ( (self.switchColor2.frame.size.height - checkerBreite) / 2), checkerBreite, checkerBreite);
-    [color2Rahmen addSubview:self.color2];
     
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
     infoButton = [design makeNiceFlatButton:infoButton];
     infoButton.layer.cornerRadius = 14.0f;
     [infoButton setTitle:@"Info" forState: UIControlStateNormal];
-    infoButton.frame = CGRectMake(self.myColor.frame.origin.x + (self.myColor.frame.size.width / 4) - 25,
-                                  self.myColor.frame.origin.y + self.myColor.frame.size.height + 10 + 10,
+    infoButton.frame = CGRectMake(self.myColor.frame.origin.x + (self.myColor.frame.size.width / 2) - 25,
+                                  self.myColor.frame.origin.y + self.myColor.frame.size.height + 10,
                                   50,
                                   30);
     [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:infoButton];
-
-    if([[NSUserDefaults standardUserDefaults] boolForKey:@"myColorB"])
-    {
-        [self.switchColor1 setOn:YES animated:YES];
-        [self.switchColor2 setOn:NO animated:YES];
-    }
-    else
-    {
-        [self.switchColor2 setOn:YES animated:YES];
-        [self.switchColor1 setOn:NO animated:YES];
-        [[NSUserDefaults standardUserDefaults] setBool:NO  forKey:@"myColorB"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    //XLog(@"%@",  [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]);
 
 }
 - (IBAction)info:(id)sender
