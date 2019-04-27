@@ -295,21 +295,30 @@
         }
         else
         {
+            // ausgespielte checker haben auch ein _b, das verkompliziert alles. kurz umbenennen
+            if([imgName rangeOfString:@"_bot"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_bot" withString:@"_unten"];
+            }
+
             // _b muss zu _y und umgekehrt
             if([imgName rangeOfString:@"_b"].location != NSNotFound)
             {
                 imgName = [imgName stringByReplacingOccurrencesOfString:@"_b" withString:@"_y"];
-                return imgName;
-            }
+            } else
             if([imgName rangeOfString:@"_y"].location != NSNotFound)
             {
                 imgName = [imgName stringByReplacingOccurrencesOfString:@"_y" withString:@"_b"];
-                return imgName;
             }
+            if([imgName rangeOfString:@"_unten"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_unten" withString:@"_bot"];
+            }
+
         }
         return imgName;
-        XLog(@"b %@ %@",imgName, color);
-    } else
+        //XLog(@"b %@ %@",imgName, color);
+    }
     if([color isEqualToString:@"#FFFFFF"] || [color isEqualToString:@"#FFFF66"])
     {
         // dailygammon liefert mir Y als color
@@ -319,23 +328,31 @@
         }
         else
         {
+            // ausgespielte checker haben auch ein _b, das verkompliziert alles. kurz umbenennen
+            if([imgName rangeOfString:@"_bot"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_bot" withString:@"_unten"];
+            }
+
             // _b muss zu _y und umgekehrt
             if([imgName rangeOfString:@"_b"].location != NSNotFound)
             {
                 imgName = [imgName stringByReplacingOccurrencesOfString:@"_b" withString:@"_y"];
-                return imgName;
-            }
+            } else
             if([imgName rangeOfString:@"_y"].location != NSNotFound)
             {
                 imgName = [imgName stringByReplacingOccurrencesOfString:@"_y" withString:@"_b"];
-                return imgName;
             }
+            if([imgName rangeOfString:@"_unten"].location != NSNotFound)
+            {
+                imgName = [imgName stringByReplacingOccurrencesOfString:@"_unten" withString:@"_bot"];
+            }
+
+            return imgName;
         }
-        XLog(@"y %@ %@",imgName, color);
-    } else
-    {
-    XLog(@"? %@ %@",imgName, color);
+        //XLog(@"y %@ %@",imgName, color);
     }
+    //XLog(@"? %@ %@",imgName, color);
     return imgName;
 }
 - (BOOL)isX

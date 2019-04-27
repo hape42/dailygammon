@@ -975,8 +975,9 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    XLog(@"vorher->%@",img);
                     img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
+                    XLog(@"nachher->%@",img);                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
                     // ist es ein cube? dann besorge breite und höhe vom img für den view

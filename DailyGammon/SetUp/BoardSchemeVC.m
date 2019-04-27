@@ -225,7 +225,7 @@
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Info"
-                                 message:@"Hier kann ein ausführlicher Erklärungstext stehen damit auch Backgammon Spieler, die mit IT nicht so fit sind, eine Chance haben zu verstehen, was hier machen können \n \bI accept changing colors \n und \n I want to play my Color   \n sind niur eine erste Idee und sehr einfach durch \"bessere\" Texte ersetzbar "
+                                 message:@"On DailyGammon your checker color is determined at the start of each match. \n\nDepending on the draw, or whether you sent or accepted an invitation, you get one color or the other. \n\n\nThis option allows you to override this and choose the same color for all your matches instead. "
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* yesButton = [UIAlertAction

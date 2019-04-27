@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
+		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
 		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
@@ -69,6 +70,8 @@
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E0454ECE22104C9300F10E5A /* PreferencesVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreferencesVC.h; sourceTree = "<group>"; };
 		E0454ECF22104C9300F10E5A /* PreferencesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreferencesVC.m; sourceTree = "<group>"; };
+		E05324FF2271D40C0080D504 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
+		E05325002271D42A0080D504 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
 		E06E1C5221B717B9003B310F /* SetUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpVC.m; sourceTree = "<group>"; };
 		E06E1C5521B7B468003B310F /* BoardSchemeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardSchemeVC.h; sourceTree = "<group>"; };
@@ -520,6 +523,8 @@
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E0F958A321AD4CCE003DAC01 /* Header.h */,
 				E0F958A421AD4CCE003DAC01 /* Header.m */,
+				E05324FF2271D40C0080D504 /* Tools.h */,
+				E05325002271D42A0080D504 /* Tools.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -657,6 +662,7 @@
 			files = (
 				E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */,
 				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
+				E05325012271D42A0080D504 /* Tools.m in Sources */,
 				E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */,
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,

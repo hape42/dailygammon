@@ -615,7 +615,9 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    XLog(@"vorher->%@",img);
                     img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
+                    XLog(@"nachher->%@",img);
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -668,12 +670,14 @@
                 }
                 break;
             case 14:
-                // linke Seite
+                // rechte Seite
                 y = 0;
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    XLog(@"vorher->%@",img);
                     img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
+                    XLog(@"nachher->%@",img);
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -930,7 +934,9 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    XLog(@"vorher->%@",img);
                     img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
+                    XLog(@"nachher->%@",img);
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -989,7 +995,9 @@
                     for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                     {
                         NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                        XLog(@"vorher->%@",img);
                         img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
+                        XLog(@"nachher->%@",img);
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                         UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                         zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -1504,7 +1512,7 @@
                                                                              25)];
         free_memoryText.adjustsFontSizeToFitWidth = YES;
         free_memoryText.text = [self free_memory];
-        [actionView addSubview: free_memoryText];
+//        [actionView addSubview: free_memoryText];
         
     }
 
@@ -2356,7 +2364,7 @@
                           vm_stat.wire_count) * (unsigned int)pagesize;
     natural_t mem_free = vm_stat.free_count * (unsigned int)pagesize;
     natural_t mem_total = mem_used + mem_free;
-    NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
+//    NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
     if(self.first)
     {
         self.memory_start = mem_free;

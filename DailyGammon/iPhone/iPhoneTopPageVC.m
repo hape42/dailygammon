@@ -18,6 +18,7 @@
 #import "AppDelegate.h"
 #import "RatingVC.h"
 #import "iPhoneMenue.h"
+#import "Tools.h"
 
 @interface iPhoneTopPageVC ()
 
@@ -43,7 +44,7 @@
 
 @implementation iPhoneTopPageVC
 
-@synthesize design, preferences, rating;
+@synthesize design, preferences, rating, tools;
 
 #define NUMMERBREITE 30
 #define GRACEBREITE 70
@@ -60,10 +61,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
 
-    design = [[Design alloc] init];
+    design      = [[Design alloc]      init];
     preferences = [[Preferences alloc] init];
-    rating = [[Rating alloc] init];
-    
+    rating      = [[Rating alloc]      init];
+    tools       = [[Tools alloc]       init];
+
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -117,7 +119,11 @@
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
     
     self.loginOk = FALSE;
-    
+    if(![tools hasConnectivity])
+    {
+        
+        return;
+    }
     //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
     NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
     NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
