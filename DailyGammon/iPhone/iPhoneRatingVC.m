@@ -39,7 +39,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
     
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated

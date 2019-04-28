@@ -164,6 +164,8 @@
         while (sqlite3_step(statement) == SQLITE_ROW)
         {
             NSString *datum = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+            if(datum.length != 10)
+                continue;
             float rating    = sqlite3_column_double(statement, 2);
             if(rating > max)
                 max = rating;
@@ -175,7 +177,7 @@
                                           @"max"     : [NSNumber numberWithDouble: max],
                                           @"rating"  : [NSNumber numberWithDouble: rating]
                                          };
-            [alleRating addObject:ratingDict];
+                [alleRating addObject:ratingDict];
         }
         sqlite3_finalize(statement);
     }
