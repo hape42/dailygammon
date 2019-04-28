@@ -454,6 +454,37 @@
     
     int x = 5;
 
+    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
+    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
+
+    static NSString *opponentRatingText = @"";
+    static NSString *playerRatingText   = @"";
+
+    if(showRatings)
+    {
+        self.playerRating.text  = playerRatingText;
+        self.opponentRating.text = opponentRatingText;
+    }
+    
+    static NSString *playerActiveText = @"";
+    static NSString *playerWonText    = @"";
+    static NSString *playerLostText   = @"";
+    
+    static NSString *opponentActiveText = @"";
+    static NSString *opponentWonText    = @"";
+    static NSString *opponentLostText   = @"";
+
+    if(showWinLoss)
+    {
+        self.playerActive.text = playerActiveText;
+        self.playerWon.text    = playerWonText;
+        self.playerLost.text   = playerLostText;
+        
+        self.opponentActive.text = opponentActiveText;
+        self.opponentWon.text    = opponentWonText;
+        self.opponentLost.text   = opponentLostText;
+    }
+
     if([design isX])
     {
         maxBreite = [UIScreen mainScreen].bounds.size.width - 30;
@@ -1109,8 +1140,6 @@
                    });
 
 #pragma mark - opponent / player
-    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
-    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
     
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
     
@@ -1127,25 +1156,62 @@
                                           ^{
                                               if(showRatings)
                                               {
-                                                  self.playerRating.text        = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                                  self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  self.opponentRating.text      = [self->ratingDict objectForKey:@"ratingOpponent"];;
+                                                  if(![playerRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingPlayer"]])
+                                                  {
+                                                      playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
+                                                      self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
+                                                  }
+                                                  self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                                  
+                                                  if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
+                                                  {
+                                                      opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
+                                                      self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
+                                                  }
                                                   self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
                                               }
                                               if(showWinLoss)
                                               {
-                                                  self.playerActive.text        = [self->ratingDict objectForKey:@"activePlayer"];
+                                                  if(![playerActiveText isEqualToString:[self->ratingDict objectForKey:@"activePlayer"]])
+                                                  {
+                                                      playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
+                                                      self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
+                                                  }
                                                   self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  self.playerWon.text        = [self->ratingDict objectForKey:@"wonPlayer"];
+                                                  
+                                                  if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
+                                                  {
+                                                      playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
+                                                      self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
+                                                  }
                                                   self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  self.playerLost.text        = [self->ratingDict objectForKey:@"lostPlayer"];
+                                                  
+                                                  if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
+                                                  {
+                                                      playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
+                                                      self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
+                                                  }
                                                   self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                   
-                                                  self.opponentActive.text      = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                  if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
+                                                  {
+                                                      opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                      self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                  }
                                                   self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                  self.opponentWon.text      = [self->ratingDict objectForKey:@"wonOpponent"];
+                                                  
+                                                  if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
+                                                  {
+                                                      opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
+                                                      self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
+                                                  }
                                                   self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                  self.opponentLost.text      = [self->ratingDict objectForKey:@"lostOpponent"];
+
+                                                  if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
+                                                  {
+                                                      opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
+                                                      self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
+                                                  }
                                                   self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
                                               }
                                           });

@@ -432,6 +432,37 @@
     int x = 20;
     int y = 200;
 
+    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
+    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
+    
+    static NSString *opponentRatingText = @"";
+    static NSString *playerRatingText   = @"";
+    
+    if(showRatings)
+    {
+        self.playerRating.text  = playerRatingText;
+        self.opponentRating.text = opponentRatingText;
+    }
+    
+    static NSString *playerActiveText = @"";
+    static NSString *playerWonText    = @"";
+    static NSString *playerLostText   = @"";
+    
+    static NSString *opponentActiveText = @"";
+    static NSString *opponentWonText    = @"";
+    static NSString *opponentLostText   = @"";
+    
+    if(showWinLoss)
+    {
+        self.playerActive.text = playerActiveText;
+        self.playerWon.text    = playerWonText;
+        self.playerLost.text   = playerLostText;
+        
+        self.opponentActive.text = opponentActiveText;
+        self.opponentWon.text    = opponentWonText;
+        self.opponentLost.text   = opponentLostText;
+    }
+
     float zoomFaktor = 1.0;
     // fixe Höhe war mal 484
     // fixe Breite war mal 700
@@ -675,9 +706,7 @@
                 for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
                 {
                     NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
-                    XLog(@"vorher->%@",img);
                     img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    XLog(@"nachher->%@",img);
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
                     UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
@@ -1072,8 +1101,6 @@
                    });
 
 #pragma mark - opponent / player
-    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
-    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
 
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
 
@@ -1088,28 +1115,65 @@
 
                         dispatch_async(dispatch_get_main_queue(),
                                        ^{
-                                            if(showRatings)
-                                            {
-                                                self.playerRating.text        = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                                self.playerRating.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                self.opponentRating.text      = [self->ratingDict objectForKey:@"ratingOpponent"];;
-                                                self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
-                                            }
-                                            if(showWinLoss)
-                                            {
-                                                self.playerActive.text        = [self->ratingDict objectForKey:@"activePlayer"];
-                                                self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                self.playerWon.text        = [self->ratingDict objectForKey:@"wonPlayer"];
-                                                self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                self.playerLost.text        = [self->ratingDict objectForKey:@"lostPlayer"];
-                                                self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
-
-                                                self.opponentActive.text      = [self->ratingDict objectForKey:@"activeOpponent"];
-                                                self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                self.opponentWon.text      = [self->ratingDict objectForKey:@"wonOpponent"];
-                                                self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                self.opponentLost.text      = [self->ratingDict objectForKey:@"lostOpponent"];
-                                                self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           if(showRatings)
+                                           {
+                                               if(![playerRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingPlayer"]])
+                                               {
+                                                   playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
+                                                   self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
+                                               }
+                                               self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
+                                               {
+                                                   opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
+                                                   self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
+                                               }
+                                               self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           }
+                                           if(showWinLoss)
+                                           {
+                                               if(![playerActiveText isEqualToString:[self->ratingDict objectForKey:@"activePlayer"]])
+                                               {
+                                                   playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
+                                                   self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
+                                               }
+                                               self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
+                                               {
+                                                   playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
+                                                   self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
+                                               }
+                                               self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
+                                               {
+                                                   playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
+                                                   self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
+                                               }
+                                               self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
+                                               {
+                                                   opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                   self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
+                                               }
+                                               self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
+                                               {
+                                                   opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
+                                                   self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
+                                               }
+                                               self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
+                                               
+                                               if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
+                                               {
+                                                   opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
+                                                   self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
+                                               }
+                                               self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
                                            }
                                        });
             
