@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
+		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
@@ -68,6 +69,7 @@
 /* Begin PBXFileReference section */
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
+		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
 		E0454ECE22104C9300F10E5A /* PreferencesVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PreferencesVC.h; sourceTree = "<group>"; };
 		E0454ECF22104C9300F10E5A /* PreferencesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreferencesVC.m; sourceTree = "<group>"; };
 		E05324FF2271D40C0080D504 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
@@ -532,6 +534,7 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E01E9DE122761964000399EA /* button_grau.png */,
 				E0AEFC50220578BA00CFFB6C /* button_blau.png */,
 				E0AEFC4F220578B900CFFB6C /* button_gruen.png */,
 				E0AEFC4D220420D200CFFB6C /* button_rot.png */,
@@ -626,6 +629,7 @@
 				E0AEFC4E220420D300CFFB6C /* button_rot.png in Resources */,
 				E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */,
 				E0AC59B022283C9000367EE9 /* iPad.storyboard in Resources */,
+				E01E9DE222761964000399EA /* button_grau.png in Resources */,
 				E0AEFC52220578BB00CFFB6C /* button_blau.png in Resources */,
 				E0AC59B122283C9000367EE9 /* iPhone.storyboard in Resources */,
 				E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */,

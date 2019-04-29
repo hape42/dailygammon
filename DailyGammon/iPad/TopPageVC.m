@@ -195,8 +195,13 @@
     }
 
     // Create parser
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
     
+    //    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
+    
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
     //Get all the cells of the 2nd row of the 3rd table
     //        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[3]/tr[2]/td"];
     int tableNo = 1;

@@ -39,7 +39,11 @@
         default:
             break;
     }
-    [button setTitleColor:GRAYLIGHT forState:UIControlStateNormal];
+    [button setBackgroundImage:[UIImage imageNamed:@"button_grau.png"] forState:UIControlStateNormal];
+
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
     
     return button;
 }

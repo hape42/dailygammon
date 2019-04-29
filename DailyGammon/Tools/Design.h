@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 #define GRAYLIGHT [UIColor colorWithRed:235.0/255 green:235.0/255 blue:235.0/255 alpha:1]
 #define GRAYDARK [UIColor colorWithRed:214.0/255 green:214.0/255 blue:214.0/255 alpha:1]
-
+#define DARK [UIColor colorWithRed:0.0/255 green:0.0/255 blue:0.0/255 alpha:1]
 -(NSMutableDictionary *)schema:(int)nummer;
 
 - (NSString *)changeCheckerColor:(NSString *)imgName forColor: (NSString *)color;

@@ -31,6 +31,8 @@
 
     int buttonBreite = (headerBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
     
+    int buttonHoehe = 35;
+        
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1)
         boardSchema = 4;
@@ -57,7 +59,7 @@
     UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
     button1 = [design makeNiceButton:button1];
     [button1 setTitle:@"Top Page" forState: UIControlStateNormal];
-    button1.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
+    button1.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button1.tag = 1;
     [button1 addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     
@@ -66,7 +68,7 @@
     UIButton *button2 = [UIButton buttonWithType:UIButtonTypeSystem];
     button2 = [design makeNiceButton:button2];
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
-    button2.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
+    button2.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button2.tag = 2;
     [button2 addTarget:self action:@selector(GameLoungeVC) forControlEvents:UIControlEventTouchUpInside];
 
@@ -75,7 +77,7 @@
     UIButton *button3 = [UIButton buttonWithType:UIButtonTypeSystem];
     button3 = [design makeNiceButton:button3];
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
-    button3.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
+    button3.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button3.tag = 3;
     [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
 
@@ -84,7 +86,7 @@
     UIButton *button4 = [UIButton buttonWithType:UIButtonTypeSystem];
     button4 = [design makeNiceButton:button4];
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
-    button4.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
+    button4.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button4.tag = 4;
     [button4 addTarget:self action:@selector(popoverSetUp:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -93,7 +95,7 @@
     UIButton *button5 = [UIButton buttonWithType:UIButtonTypeSystem];
     button5 = [design makeNiceButton:button5];
     [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
-    button5.frame = CGRectMake(x, 5, buttonBreite - 10, 35);
+    button5.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button5.tag = 5;
     [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
 
@@ -102,7 +104,7 @@
     UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
     button6 = [design makeNiceButton:button6];
     [button6 setTitle:@"About" forState: UIControlStateNormal];
-    button6.frame = CGRectMake(x, 5, buttonBreite - 10, 40);
+    button6.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button6.tag = 6;
     [button6 addTarget:self action:@selector(showPopOverAbout:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -111,7 +113,7 @@
     UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
     button7 = [design makeNiceButton:button7];
     [button7 setTitle:@"Rating" forState: UIControlStateNormal];
-    button7.frame = CGRectMake(x, 5, buttonBreite - 10, 40);
+    button7.frame = CGRectMake(x, 5, buttonBreite - 10, buttonHoehe);
     button7.tag = 7;
     [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
     
