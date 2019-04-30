@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *waehleSchemaOutlet;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *myColor;
+@property (weak, nonatomic) IBOutlet UILabel *titleCheckerColor;
 @property (readwrite, retain, nonatomic) UIView *myColorView;
 @property (readwrite, retain, nonatomic) UISwitch *switchColor1;
 @property (readwrite, retain, nonatomic) UISwitch *switchColor2;
@@ -98,6 +99,10 @@
         frame.origin.y = self.schema4.frame.origin.y + self.schema4.frame.size.height + 10;
         self.myColor.frame = frame;
     }
+    CGRect frame = self.titleCheckerColor.frame;
+    frame.origin.y = self.schema1.frame.origin.y + self.schema1.frame.size.height + 10;
+    self.titleCheckerColor.frame = frame;
+    
     [self makeColorAuswahl];
 
 }
@@ -199,10 +204,15 @@
         default:
             break;
     }
+    
+    CGRect frame = self.myColor.frame;
+    frame.origin.y = self.titleCheckerColor.frame.origin.y + self.titleCheckerColor.frame.size.height + 10;
+    self.myColor.frame = frame;
+
     UIView * rahmen =  [[UIView alloc] initWithFrame:CGRectMake(self.myColor.frame.origin.x,
                                                                 self.myColor.frame.origin.y + self.myColor.frame.size.height,
                                                                 self.myColor.frame.size.width,
-                                                                50)];
+                                                                45)];
     rahmen.layer.borderWidth = 1;
     rahmen.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     [self.view addSubview:rahmen];

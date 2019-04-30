@@ -393,7 +393,7 @@
                                 </connections>
                             </segmentedControl>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="classic.png" id="Z6O-lX-qLo">
-                                <rect key="frame" x="33" y="114" width="150" height="120"/>
+                                <rect key="frame" x="35" y="114" width="150" height="120"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="classicHD.png" id="v1K-JX-yex">
@@ -409,7 +409,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="Nwf-aY-NgG">
-                                <rect key="frame" x="35" y="242" width="528" height="29"/>
+                                <rect key="frame" x="35" y="260" width="528" height="29"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Changing Colors"/>
@@ -420,6 +420,20 @@
                                     <action selector="myColorAction:" destination="JeN-h0-CmY" eventType="valueChanged" id="v43-cJ-ac5"/>
                                 </connections>
                             </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Board Style" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UI8-dY-fua">
+                                <rect key="frame" x="35" y="49" width="209" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Your Checker Coloring" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="atj-Th-iOQ">
+                                <rect key="frame" x="35" y="236" width="429" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -431,6 +445,7 @@
                         <outlet property="schema2" destination="v1K-JX-yex" id="z25-Gv-f3P"/>
                         <outlet property="schema3" destination="Mfv-r1-EpE" id="Zpj-n2-zm6"/>
                         <outlet property="schema4" destination="aHU-bm-fe8" id="dJ0-iO-nUW"/>
+                        <outlet property="titleCheckerColor" destination="atj-Th-iOQ" id="YCJ-76-56T"/>
                         <outlet property="waehleSchemaOutlet" destination="uka-UM-KzC" id="auH-z5-l0E"/>
                     </connections>
                 </viewController>
