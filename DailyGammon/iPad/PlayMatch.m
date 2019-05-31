@@ -238,44 +238,27 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-//    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
-//    {
-//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//        
-//        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//        [self.navigationController pushViewController:vc animated:NO];
-//
-//        UIAlertController * alert = [UIAlertController
-//                                     alertControllerWithTitle:@"Somebody invites you to a match"
-//                                     message:@"Unfortunately I can not work this out right now. I'm working on it, but it may take a few more weeks."
-//                                     preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction* okButton = [UIAlertAction
-//                                    actionWithTitle:@"OK"
-//                                    style:UIAlertActionStyleDefault
-//                                    handler:^(UIAlertAction * action)
-//                                    {
-//                                     }];
-// 
-//        UIAlertAction* webButton = [UIAlertAction
-//                                     actionWithTitle:@"Go to Website"
-//                                     style:UIAlertActionStyleDefault
-//                                     handler:^(UIAlertAction * action)
-//                                     {
-//                                         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://www.dailygammon.com/bg/nextgame"] options:@{} completionHandler:nil];
-//                                         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//                                         
-//                                         TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//                                         [self.navigationController pushViewController:vc animated:NO];
-//
-//                                     }];
-//
-//        [alert addAction:okButton];
-//        [alert addAction:webButton];
-//
-//        [self presentViewController:alert animated:YES completion:nil];
-//        
-//    }
+    if([[self.boardDict objectForKey:@"Backups"] length] != 0)
+    {
+
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"DailyGammon Backups"
+                                     message:@"DailyGammon is sleeping -- SHH!!\n\nCome back in half an hour or so when the daily backups are done, and your games will be here waiting. Gwan! Scoot!"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"OK"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        exit(0);
+                                     }];
+ 
+        [alert addAction:okButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+        
+    }
 
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])

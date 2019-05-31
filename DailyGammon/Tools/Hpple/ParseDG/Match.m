@@ -66,6 +66,13 @@
         [boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
         return boardDict;
     }
+//    htmlString = @"DailyGammon Backups";
+    if ([htmlString rangeOfString:@"DailyGammon Backups"].location != NSNotFound)
+    {
+        XLog(@"invites you to play %@", urlMatch);
+        [boardDict setObject:@"Backups" forKey:@"Backups"];
+        return boardDict;
+    }
 
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
