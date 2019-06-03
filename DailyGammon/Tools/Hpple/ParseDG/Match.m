@@ -158,9 +158,42 @@
         {
             [boardDict setObject:[element content] forKey:@"chat"];
         }
+
+        NSMutableDictionary *messageDict = [[NSMutableDictionary alloc]init];
+
+        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+        NSMutableArray *elementArray = [[NSMutableArray alloc]init];
+        NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+        
+        for(TFHppleElement *element in elements)
+        {
+            [elementArray addObject:[element content]];
+            [attributesArray addObject:[element attributes]];
+            NSString *href = @"";
+            href = [element objectForKey:@"href"];
+
+            for (TFHppleElement *child in [element children])
+            {
+                NSDictionary *dict = [child attributes];
+                if([dict objectForKey:@"value"])
+                    [messageDict setObject:[dict objectForKey:@"value"] forKey:@"Button"];
+            }
+            [messageDict setValue:href forKey:@"href"];
+
+            XLog(@"%@",[element content]);
+        }
+        [messageDict setObject:elementArray forKey:@"chat"];
+        [messageDict setObject:attributesArray forKey:@"attributes"];
+
+        [boardDict setObject:messageDict forKey:@"messageDict"];
+        
         return boardDict;
     }
-
+    if ([htmlString rangeOfString:@"Your message has been sent"].location != NSNotFound)
+    {
+        [boardDict setObject:@"sent" forKey:@"messageSent"];
+        return boardDict;
+    }
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
     if ([htmlString rangeOfString:@"unexpected"].location != NSNotFound)

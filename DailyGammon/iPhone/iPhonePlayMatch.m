@@ -90,6 +90,12 @@
 
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
+
+@property (readwrite, retain, nonatomic) UIView *messageAnswerView;
+@property (readwrite, retain, nonatomic) UITextView *answerMessage;
+@property (assign, atomic) CGRect answerMessageFrameSave;
+@property (assign, atomic) BOOL isMessageAnswerView;
+
 @end
 
 
@@ -117,6 +123,7 @@
 #define CHAT_VIEW 42
 #define ACTION_VIEW 44
 #define BOARD_VIEW 45
+#define ANSWERREPLY_VIEW 46
 
 #define BUTTONHEIGHT 30
 #define BUTTONWIDTH 80
@@ -148,7 +155,8 @@
     [self.view addGestureRecognizer:oneFingerTap];
     
     [self.playerChat setDelegate:self];
-    
+    [self.answerMessage setDelegate:self];
+
     self.quoteSwitchFrame  = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
     
@@ -161,6 +169,16 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
+    float breite = maxBreite * 0.6;
+    float hoehe = 5+50+5+50+5+50+5+50;
+    self.messageAnswerView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
+                                                                      (maxHoehe - hoehe)/2,
+                                                                      breite,
+                                                                      hoehe)];
+    
+    self.answerMessageFrameSave = self.messageAnswerView.frame;
+    
+
     self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(10, 40, maxBreite - 20,  maxHoehe - 50)];
     self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
@@ -186,7 +204,8 @@
 {
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
-    
+    self.isMessageAnswerView = FALSE;
+
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
@@ -194,10 +213,17 @@
         {
             [subUIView removeFromSuperview];
         }
-
         [removeView removeFromSuperview];
     }
-    
+    while((removeView = [self.view viewWithTag:ANSWERREPLY_VIEW]) != nil)
+    {
+        for (UIView *subUIView in removeView.subviews)
+        {
+            [subUIView removeFromSuperview];
+        }
+        [removeView removeFromSuperview];
+    }
+
     // schieb den chatView aus dem sichtbaren bereich
     CGRect frame = self.chatView.frame;
     frame.origin.x = 5000;
@@ -321,6 +347,11 @@
         
         [self presentViewController:alert animated:YES completion:nil];
     }
+    else if([[self.boardDict objectForKey:@"messageSent"] length] != 0)
+    {
+        self.matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+        [self showMatch];
+    }
     else if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
     {
         UIAlertController * alert = [UIAlertController
@@ -336,8 +367,87 @@
                                         self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
                                         [self showMatch];
                                     }];
+ 
+        UIAlertAction* answerButton = [UIAlertAction
+                                       actionWithTitle:@"Answer"
+                                       style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action)
+                                       {
+                                           self.isMessageAnswerView = TRUE;
+                                           //hier muss ein ChatWindow erscheinen
+                                           int maxBreite = [UIScreen mainScreen].bounds.size.width;
+                                           int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+                                           float breite = maxBreite * 0.6;
+                                           float hoehe = 5+50+5+50+5+50+5+50;
+                                           self.messageAnswerView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
+                                                                                                             (maxHoehe - hoehe)/2,
+                                                                                                             breite,
+                                                                                                             hoehe)];
+                                           self.messageAnswerView.tag = ANSWERREPLY_VIEW;
+                                           self.messageAnswerView.backgroundColor = GRAYLIGHT;
+                                           UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
+                                                                                                      0,
+                                                                                                      breite - 10,
+                                                                                                      50)];
+                                           NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[self.boardDict objectForKey:@"quickMessage"]];
+                                           [attr addAttribute:NSFontAttributeName
+                                                        value:[UIFont systemFontOfSize:30.0]
+                                                        range:NSMakeRange(0, [attr length])];
+                                           [title setAttributedText:attr];
+                                           
+                                           title.adjustsFontSizeToFitWidth = YES;
+                                           title.numberOfLines = 0;
+                                           title.minimumScaleFactor = 0.5;
+                                           title.backgroundColor = [UIColor whiteColor];
+                                           title.textAlignment = NSTextAlignmentCenter;
+                                           
+                                           UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(5,
+                                                                                                        55,
+                                                                                                        breite - 10,
+                                                                                                        50)];
+                                           attr = [[NSMutableAttributedString alloc] initWithString:[self.boardDict objectForKey:@"chat"]];
+                                           [attr addAttribute:NSFontAttributeName
+                                                        value:[UIFont systemFontOfSize:20.0]
+                                                        range:NSMakeRange(0, [attr length])];
+                                           [message setAttributedText:attr];
+                                           message.textColor = [UIColor darkTextColor];
+                                           message.adjustsFontSizeToFitWidth = YES;
+                                           message.numberOfLines = 0;
+                                           message.minimumScaleFactor = 0.5;
+                                           message.textAlignment = NSTextAlignmentCenter;
+                                           
+                                           self.answerMessage = [[UITextView alloc] initWithFrame:CGRectMake(5,
+                                                                                                             110,
+                                                                                                             breite - 10,
+                                                                                                             50)];
+                                           [self.answerMessage setFont:[UIFont systemFontOfSize:20]];
+                                           self.answerMessage.text = @"you may chat here";
+                                           self.answerMessage.delegate = self;
+                                           
+                                           UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
+                                           buttonNext = [self->design makeNiceButton:buttonNext];
+                                           [buttonNext setTitle:@"Send Reply" forState: UIControlStateNormal];
+                                           buttonNext.frame = CGRectMake(self.messageAnswerView.frame.size.width - 150, 170, 120, 35);
+                                           [buttonNext addTarget:self action:@selector(actionSendReplay) forControlEvents:UIControlEventTouchUpInside];
+                                           
+                                           UIButton *buttonCancel = [UIButton buttonWithType:UIButtonTypeSystem];
+                                           buttonCancel = [self->design makeNiceButton:buttonCancel];
+                                           [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
+                                           buttonCancel.frame = CGRectMake(10, 170, 120, 35);
+                                           [buttonCancel addTarget:self action:@selector(actionCancelReplay) forControlEvents:UIControlEventTouchUpInside];
+                                           
+                                           [self.messageAnswerView addSubview:buttonCancel];
+                                           [self.messageAnswerView addSubview:buttonNext];
+                                           [self.messageAnswerView addSubview:title];
+                                           [self.messageAnswerView addSubview:message];
+                                           [self.messageAnswerView addSubview:self.answerMessage];
+                                           self.messageAnswerView.layer.borderWidth = 1.0;
+                                           
+                                           [self.view addSubview:self.messageAnswerView];
+                                       }];
         
         [alert addAction:yesButton];
+        [alert addAction:answerButton];
         
         [self presentViewController:alert animated:YES completion:nil];
     }
@@ -2233,6 +2343,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     self.playerChat.text = @"";
+    self.answerMessage.text = @"";
 
     return YES;
 }
@@ -2258,6 +2369,8 @@ shouldChangeTextInRange:(NSRange)range
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
     [self.playerChat endEditing:YES];
+    [self.answerMessage endEditing:YES];
+
     return YES;
 }
 
@@ -2276,6 +2389,13 @@ shouldChangeTextInRange:(NSRange)range
         frame.origin.y -= 100;
         self.finishedMatchView.frame = frame;
     }
+    if(self.isMessageAnswerView)
+    {
+        CGRect frame = self.answerMessageFrameSave;
+        frame.origin.y = 10;
+        self.messageAnswerView.frame = frame;
+    }
+
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
@@ -2288,6 +2408,10 @@ shouldChangeTextInRange:(NSRange)range
     if(self.isFinishedMatch)
     {
         self.finishedMatchView.frame = self.finishedMatchFrame;
+    }
+    if(self.isMessageAnswerView)
+    {
+        self.messageAnswerView.frame = self.answerMessageFrameSave;
     }
 }
 
@@ -2613,6 +2737,47 @@ shouldChangeTextInRange:(NSRange)range
     [self.navigationController pushViewController:vc animated:NO];
 }
 
+#pragma mark - reply message
+
+- (void) actionSendReplay
+{
+    if([self.answerMessage.text isEqualToString:@"you may chat here"])
+        self.answerMessage.text = @"";
+    
+    NSMutableDictionary *actionDict = [self.boardDict objectForKey:@"messageDict"];
+    NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+    
+    __block NSString *str = @"";
+    [self.answerMessage.text enumerateSubstringsInRange:NSMakeRange(0, self.answerMessage.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
+         else if([substring isEqualToString:@"„"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else if([substring isEqualToString:@"“"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else
+             str = [NSString stringWithFormat:@"%@%@",str, substring];
+         
+     }];
+    
+    
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    
+    matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
+                 [dict objectForKey:@"action"],
+                 escapedString];
+    XLog(@"matchLink %@", matchLink);
+    [self showMatch];
+}
+- (void) actionCancelReplay
+{
+    self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+    [self showMatch];
+}
 - (NSString *) free_memory
 {
     mach_port_t host_port;
