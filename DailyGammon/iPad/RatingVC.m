@@ -18,6 +18,7 @@
 #import "GameLounge.h"
 #import "DbConnect.h"
 #import "AppDelegate.h"
+#import "Player.h"
 
 @interface RatingVC ()
 

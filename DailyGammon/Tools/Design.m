@@ -45,6 +45,10 @@
 
     [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
     
+    button.titleLabel.numberOfLines = 1;
+    button.titleLabel.adjustsFontSizeToFitWidth = YES;
+    button.titleLabel.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
+
     return button;
 }
 

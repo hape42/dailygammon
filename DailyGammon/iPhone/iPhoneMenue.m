@@ -17,6 +17,7 @@
 #import "iPhoneGameLounge.h"
 #import "About.h"
 #import <SafariServices/SafariServices.h>
+#import "Player.h"
 
 @interface iPhoneMenue ()
 
@@ -149,13 +150,23 @@
     UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
     button7 = [design makeNiceFlatButton:button7];
     button7.layer.cornerRadius = 14.0f;
-   [button7 setTitle:@"Rating" forState: UIControlStateNormal];
+    [button7 setTitle:@"Rating" forState: UIControlStateNormal];
     button7.frame = CGRectMake(x, y, buttonBreite - 10, 40);
     button7.tag = 7;
     [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
     
     x += buttonBreite + luecke;
     
+    UIButton *button8 = [UIButton buttonWithType:UIButtonTypeSystem];
+    button8 = [design makeNiceFlatButton:button8];
+    button8.layer.cornerRadius = 14.0f;
+    [button8 setTitle:@"Player" forState: UIControlStateNormal];
+    button8.frame = CGRectMake(x, y, buttonBreite - 10, 40);
+    button8.tag = 8;
+    [button8 addTarget:self action:@selector(playerVC) forControlEvents:UIControlEventTouchUpInside];
+    
+    x += buttonBreite + luecke;
+
     [self.view addSubview:diceView];
     
     [self.view addSubview:button1];
@@ -166,7 +177,8 @@
     [self.view addSubview:button6];
     if(countDB > minDB)
         [self.view addSubview:button7];
-    
+    [self.view addSubview:button8];
+
 }
 -(void) ratingVC
 {
@@ -191,6 +203,15 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     iPhoneGameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneGameLounge"];
+    
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+-(void) playerVC
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

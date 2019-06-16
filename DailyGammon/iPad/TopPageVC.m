@@ -18,6 +18,7 @@
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "RatingVC.h"
+#import "Player.h"
 
 @interface TopPageVC ()
 

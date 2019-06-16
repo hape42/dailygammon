@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E00654D722A6784000194435 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* Player.m */; };
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
+		E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E060AC9B22A8E2A700D60C39 /* InviteDetail.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
 		E06E1C5921B7BD94003B310F /* classic.png in Resources */ = {isa = PBXBuildFile; fileRef = E06E1C5821B7BD94003B310F /* classic.png */; };
@@ -67,6 +69,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E00654D522A6784000194435 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
+		E00654D622A6784000194435 /* Player.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
@@ -74,6 +78,8 @@
 		E0454ECF22104C9300F10E5A /* PreferencesVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PreferencesVC.m; sourceTree = "<group>"; };
 		E05324FF2271D40C0080D504 /* Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tools.h; sourceTree = "<group>"; };
 		E05325002271D42A0080D504 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
+		E060AC9A22A8E2A700D60C39 /* InviteDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InviteDetail.h; sourceTree = "<group>"; };
+		E060AC9B22A8E2A700D60C39 /* InviteDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteDetail.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
 		E06E1C5221B717B9003B310F /* SetUpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SetUpVC.m; sourceTree = "<group>"; };
 		E06E1C5521B7B468003B310F /* BoardSchemeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardSchemeVC.h; sourceTree = "<group>"; };
@@ -276,6 +282,17 @@
 				E0454ECF22104C9300F10E5A /* PreferencesVC.m */,
 			);
 			path = SetUp;
+			sourceTree = "<group>";
+		};
+		E083BAE822B3A2E50035A71E /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				E00654D522A6784000194435 /* Player.h */,
+				E00654D622A6784000194435 /* Player.m */,
+				E060AC9A22A8E2A700D60C39 /* InviteDetail.h */,
+				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		E09C008821B13D010056D2A2 /* SupportingFiles */ = {
@@ -499,6 +516,7 @@
 		E0F9588821AD1688003DAC01 /* DailyGammon */ = {
 			isa = PBXGroup;
 			children = (
+				E083BAE822B3A2E50035A71E /* Player */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
@@ -684,11 +702,13 @@
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
+				E00654D722A6784000194435 /* Player.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */,
 				E0F958A521AD4CCE003DAC01 /* Header.m in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
+				E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */,
 				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
 				E0BE3B0122366BC1003A824D /* iPhoneRatingVC.m in Sources */,
 				E0BE3B042236EF08003A824D /* iPhoneAbout.m in Sources */,

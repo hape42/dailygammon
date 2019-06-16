@@ -20,6 +20,7 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
+#import "Player.h"
 
 @interface PlayMatch ()
 
