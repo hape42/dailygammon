@@ -41,7 +41,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendMessage;
 @property (weak, nonatomic) IBOutlet UIButton *ignorePlayer;
 
-@property (weak, nonatomic) IBOutlet UIView *inviteView;
 @property (weak, nonatomic) IBOutlet UIView *messageView;
 @property (weak, nonatomic) IBOutlet UILabel *inviteText;
 @property (weak, nonatomic) IBOutlet UILabel *messageTextTitle;
@@ -49,6 +48,7 @@
 
 @property (assign, atomic) BOOL isMessageText;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UIView *inviteView;
 
 @end
 
@@ -99,9 +99,6 @@
     self.named.delegate = self;
     self.messageText.delegate = self;
 
-    self.inviteView.layer.cornerRadius = 14.0f;
-    self.inviteView.layer.borderWidth = 1.0f;
-
     self.messageView.layer.cornerRadius = 14.0f;
     self.messageView.layer.borderWidth = 1.0f;
 
@@ -132,15 +129,19 @@
     [self.privateMatch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
 
     self.messageText.tag = 42;
-    [self.moreButton addTarget:self action:@selector(moreAction)forControlEvents:UIControlEventTouchUpInside];
+    
+    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
+    {
+        int maxBreite = [UIScreen mainScreen].bounds.size.width;
+        frame = self.inviteView.frame;
+        frame.origin.x = (maxBreite - self.inviteView.frame.size.width)/2;
+        self.inviteView.frame = frame;
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-//        [self.view addSubview:[self makeHeader]];
     
 }
 
@@ -193,6 +194,9 @@
     [lblRow setTextColor: [UIColor darkTextColor]];
 
     [lblRow setText:title];
+    lblRow.adjustsFontSizeToFitWidth = YES;
+    lblRow.numberOfLines = 0;
+    lblRow.minimumScaleFactor = 0.5;
 
     // Clear the background color to avoid problems with the display.
     [lblRow setBackgroundColor:[UIColor clearColor]];
@@ -227,10 +231,21 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
 
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
-                                                                     self.matchLengthButton.frame.origin.y + 40,
-                                                                      breite,
-                                                                      hoehe)];
+    float x = 0,y = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        x = (maxBreite - breite)/2;
+        y = self.matchLengthButton.frame.origin.y + 40;
+    }
+    else
+    {
+        x = 10;
+        y = 50;
+        hoehe = 250;
+        breite = 250;
+    }
+    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(x,y,breite,hoehe)];
+
     self.pickerSammelView.backgroundColor = [UIColor whiteColor];
     self.pickerSammelView.layer.borderWidth = 1.0f;
     self.pickerSammelView.layer.cornerRadius = 14.0f;
@@ -240,7 +255,7 @@
     self.picker.dataSource = self;
     [self.picker selectRow:self.matchLengthSelected inComponent:0 animated:YES];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button addTarget:self
                action:@selector(closePickerView)
      forControlEvents:UIControlEventTouchUpInside];
@@ -280,10 +295,23 @@
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
     
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
-                                                                     self.timeControlButton.frame.origin.y + 40,
-                                                                     breite,
-                                                                     hoehe)];
+    float x = 0,y = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        x = (maxBreite - breite)/2;
+        y = self.timeControlButton.frame.origin.y + 40;
+    }
+    else
+    {
+        x = 10;
+        y = 50;
+        hoehe = 250;
+        breite = 250;
+    }
+    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(x,y,breite,hoehe)];
+
+    self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
+    
     self.pickerSammelView.backgroundColor = [UIColor whiteColor];
     self.pickerSammelView.layer.borderWidth = 1.0f;
     self.pickerSammelView.layer.cornerRadius = 14.0f;
@@ -293,7 +321,7 @@
     self.picker.dataSource = self;
     [self.picker selectRow:self.timeControlSelected inComponent:0 animated:YES];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button addTarget:self
                action:@selector(closePickerView)
      forControlEvents:UIControlEventTouchUpInside];
@@ -307,6 +335,7 @@
     UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(10.0, 40.0, self.picker.frame.size.width - 20, 30.0)];
     text.text = @"Select time control";
     [text setTextAlignment:NSTextAlignmentCenter];
+
     [self.pickerSammelView addSubview:text];
     
     [self.pickerSammelView addSubview:self.picker];
@@ -325,7 +354,12 @@
     [UIView commitAnimations];
 }
 
-- (IBAction)inviteAction:(id)sender {
+- (IBAction)inviteAction:(id)sender
+{
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self dismissViewControllerAnimated:YES completion:nil];
+    else
+        [self.navigationController popViewControllerAnimated:TRUE];
 }
 
 #pragma mark - textField
@@ -369,44 +403,19 @@ shouldChangeTextInRange:(NSRange)range
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
-//    if(self.isMessageText)
-    {
-        UIView *mainView = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-
-        CGRect frame = mainView.frame;
+        CGRect frame = self.inviteView.frame;
         frame.origin.y = -100;
-        mainView.frame = frame;
+        self.inviteView.frame = frame;
         XLog(@"keyboardDidShow %f",self.view.frame.origin.y );
-    }
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
-//    if(self.isMessageText)
-    {
-        UIView *mainView = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
-
-        CGRect frame = mainView.frame;
+        CGRect frame = self.inviteView.frame;
         frame.origin.y = 0;
-        mainView.frame = frame;
+        self.inviteView.frame = frame;
         XLog(@"keyboardDidHide %f",self.view.frame.origin.y );
         self.isMessageText = FALSE;
-
-    }
-
-//    if(self.isChatView)
-//    {
-//        self.chatView.frame = self.chatViewFrame;
-//        XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
-//    }
-//    if(self.isFinishedMatch)
-//    {
-//        self.finishedMatchView.frame = self.finishedMatchFrame;
-//    }
-//    if(self.isMessageAnswerView)
-//    {
-//        self.messageAnswerView.frame = self.answerMessageFrameSave;
-//    }
 }
 
 - (IBAction)cancelAction:(id)sender

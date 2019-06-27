@@ -18,7 +18,6 @@
 #import "TopPageVC.h"
 #import "DbConnect.h"
 
-
 @interface Player ()
 
 @property (readwrite, retain, nonatomic) NSMutableArray *playerArray;
@@ -27,6 +26,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UISearchBar *suche;
+
+@property (readwrite, retain, nonatomic) UIView *messageView;
+@property (readwrite, retain, nonatomic) UITextField *message;
+@property (assign, atomic) CGRect messageFrameSave;
+@property (assign, atomic) BOOL isMessageView;
+
+@property (readwrite, retain, nonatomic) NSMutableData *datenData;
+@property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
+@property (assign, atomic) BOOL loginOk;
 
 @end
 
@@ -81,6 +89,19 @@
         
     }
     
+    self.isMessageView = FALSE;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    float breite = maxBreite * 0.6;
+    float hoehe = 5+50+5+50+5+50;
+    self.messageView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
+                                                                (maxHoehe - hoehe)/2,
+                                                                breite,
+                                                                hoehe)];
+    self.messageFrameSave = self.messageView.frame;
+    self.messageView.layer.cornerRadius = 14.0f;
+    self.messageView.layer.borderWidth = 1.0f;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -335,7 +356,7 @@
     
     NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
 
-    NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@",
+    NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
                  escapedString];
 
     [self readPlayerArray:searchLink];
@@ -418,6 +439,7 @@
     [self updateTableView];
 }
 
+#pragma mark - Invite
 - (IBAction)inviteAction:(UIButton*)button
 {
     [self dismissKeyboard];
@@ -434,9 +456,6 @@
         controller.playerName = [dict objectForKey:@"Text"];
         controller.playerNummer = [[dict objectForKey:@"href"] lastPathComponent];
 
-        // present the controller
-        // on iPad, this will be a Popover
-        // on iPhone, this will be an action sheet
         controller.modalPresentationStyle = UIModalPresentationPopover;
         [self presentViewController:controller animated:YES completion:nil];
         
@@ -449,7 +468,7 @@
         rect.origin.y = 0;
         rect.size.width = 0;
         rect.size.height = 50;
-       popController.sourceRect = rect;
+        popController.sourceRect = rect;
 
     }
     else
@@ -461,19 +480,172 @@
         [self.navigationController pushViewController:vc animated:NO];
     }
 }
-
+#pragma mark - Quick message
 - (IBAction)messageAction:(UIButton*)button
 {
+    [self dismissKeyboard];
     
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    UIView *removeView = [self.view viewWithTag:42+1];
+    for (UIView *subUIView in removeView.subviews)
     {
-        
+        [subUIView removeFromSuperview];
     }
-    else
-    {
-        
-    }
+    
+    NSArray *zeile = self.playerArray[button.tag];
+    
+    NSMutableDictionary *dict = zeile[3];
+
+    self.isMessageView = TRUE;
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    float breite = maxBreite * 0.6;
+    float hoehe = 5+50+5+50+5+50;
+    CGRect frame = CGRectMake((maxBreite - breite)/2,
+                              (maxHoehe - hoehe)/2,
+                              breite,
+                              hoehe);
+    self.messageView.frame = frame;
+
+    self.messageView.tag = 42+1;
+    self.messageView.backgroundColor = GRAYLIGHT;
+    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
+                                                               0,
+                                                               breite - 10,
+                                                               50)];
+
+    [title setText:[NSString stringWithFormat:@"Quick message to %@",[dict objectForKey:@"Text"]]];
+    title.adjustsFontSizeToFitWidth = YES;
+    title.numberOfLines = 0;
+    title.minimumScaleFactor = 0.1;
+    title.textAlignment = NSTextAlignmentCenter;
+    
+    
+    self.message = [[UITextField alloc] initWithFrame:CGRectMake(5,
+                                                                      55,
+                                                                      breite - 10,
+                                                                      50)];
+    [self.message setFont:[UIFont systemFontOfSize:20]];
+    self.message.backgroundColor = [UIColor whiteColor];
+    self.message.delegate = self;
+    
+    UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonSend = [self->design makeNiceButton:buttonSend];
+    [buttonSend setTitle:@"Send Reply" forState: UIControlStateNormal];
+    buttonSend.frame = CGRectMake(self.messageView.frame.size.width - 150, 115, 120, 35);
+    buttonSend.tag = button.tag;
+    [buttonSend addTarget:self action:@selector(actionSend:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *buttonCancel = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonCancel = [self->design makeNiceButton:buttonCancel];
+    [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
+    buttonCancel.frame = CGRectMake(10, 115, 120, 35);
+    [buttonCancel addTarget:self action:@selector(actionCancelSend) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.messageView addSubview:buttonCancel];
+    [self.messageView addSubview:buttonSend];
+    [self.messageView addSubview:title];
+    [self.messageView addSubview:self.message];
+    self.messageView.layer.borderWidth = 1.0;
+    
+    [self.view addSubview:self.messageView];
 }
+
+-(void)actionSend:(UIButton*)button
+{
+    
+    
+    NSArray *zeile = self.playerArray[button.tag];
+    
+    NSMutableDictionary *dict = zeile[3];
+    
+    __block NSString *str = @"";
+    [self.message.text enumerateSubstringsInRange:NSMakeRange(0, self.message.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
+         else if([substring isEqualToString:@"„"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else if([substring isEqualToString:@"“"])
+             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+         else
+             str = [NSString stringWithFormat:@"%@%@",str, substring];
+         
+     }];
+    
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+
+   NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/bg/sendmsg/%@?submit=Send&text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
+    
+    /*
+    NSString *postString = [NSString stringWithFormat:@"text=%@",escapedString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/bg/sendmsg/%@",[[dict objectForKey:@"href"] lastPathComponent]]]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
+    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
+*/
+    NSData *htmlData = [NSData dataWithContentsOfURL:urlSendQuickMessage];
+    
+    NSString *htmlString = [NSString stringWithUTF8String:[htmlData bytes]];
+    XLog(@"%@",htmlString);
+    
+    CGRect frame = CGRectMake(999,999,5,5);
+    self.messageView.frame = frame;
+
+}
+
+-(void)actionCancelSend
+{
+    CGRect frame = CGRectMake(999,999,5,5);
+    self.messageView.frame = frame;
+}
+
+
+#pragma mark - textField
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    self.isMessageView = TRUE;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    
+    return YES;
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    [self.message endEditing:YES];
+    
+    return YES;
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    CGRect frame = self.messageView.frame;
+    frame.origin.y = 10;
+    self.messageView.frame = frame;
+    XLog(@"keyboardDidShow %f",self.view.frame.origin.y );
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+    CGRect frame = self.messageFrameSave;
+    self.messageView.frame = frame;
+    XLog(@"keyboardDidHide %f",self.view.frame.origin.y );
+    self.isMessageView = FALSE;
+}
+
 #pragma mark - Header
 #include "HeaderInclude.h"
 

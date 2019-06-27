@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Player : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate>
+@interface Player : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UIPopoverPresentationControllerDelegate, UITextFieldDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
