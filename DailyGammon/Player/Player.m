@@ -338,7 +338,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    XLog(@"Text change - %@",searchText);
+//    XLog(@"Text change - %@",searchText);
     
     __block NSString *str = @"";
     [searchText enumerateSubstringsInRange:NSMakeRange(0, searchText.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
@@ -530,7 +530,7 @@
     
     UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonSend = [self->design makeNiceButton:buttonSend];
-    [buttonSend setTitle:@"Send Reply" forState: UIControlStateNormal];
+    [buttonSend setTitle:@"Send" forState: UIControlStateNormal];
     buttonSend.frame = CGRectMake(self.messageView.frame.size.width - 150, 115, 120, 35);
     buttonSend.tag = button.tag;
     [buttonSend addTarget:self action:@selector(actionSend:) forControlEvents:UIControlEventTouchUpInside];
@@ -552,8 +552,6 @@
 
 -(void)actionSend:(UIButton*)button
 {
-    
-    
     NSArray *zeile = self.playerArray[button.tag];
     
     NSMutableDictionary *dict = zeile[3];
@@ -576,20 +574,30 @@
     
     NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
 
-   NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/bg/sendmsg/%@?submit=Send&text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
+    NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
+
+    NSError *error = nil;
+    NSData *htmlData = [NSData dataWithContentsOfURL:urlSendQuickMessage options:NSDataReadingUncached error:&error];
+    XLog(@"Error: %@", error);
     
-    /*
-    NSString *postString = [NSString stringWithFormat:@"text=%@",escapedString];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/bg/sendmsg/%@",[[dict objectForKey:@"href"] lastPathComponent]]]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
-    [request setHTTPBody:data];
-    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    NSURLConnection *connection = [NSURLConnection connectionWithRequest:request delegate:self];
-*/
-    NSData *htmlData = [NSData dataWithContentsOfURL:urlSendQuickMessage];
-    
+    if(!error)
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Quick message"
+                                     message:[NSString stringWithFormat:@"Your message has been sent to %@",[dict objectForKey:@"Text"]]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                   }];
+        
+        [alert addAction:okButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
     NSString *htmlString = [NSString stringWithUTF8String:[htmlData bytes]];
     XLog(@"%@",htmlString);
     
@@ -635,14 +643,12 @@
     CGRect frame = self.messageView.frame;
     frame.origin.y = 10;
     self.messageView.frame = frame;
-    XLog(@"keyboardDidShow %f",self.view.frame.origin.y );
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     CGRect frame = self.messageFrameSave;
     self.messageView.frame = frame;
-    XLog(@"keyboardDidHide %f",self.view.frame.origin.y );
     self.isMessageView = FALSE;
 }
 
