@@ -131,27 +131,8 @@
 {
     return self.playerArray.count;
 }
-//This function is where all the magic happens
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
-    UIView *cellContentView = [cell contentView];
-    CGFloat rotationAngleDegrees = -30;
-    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
-    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
-    CATransform3D transform = CATransform3DIdentity;
-    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
-    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
-    cellContentView.layer.transform = transform;
-    cellContentView.layer.opacity = 0.8;
-    
-    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
-        cellContentView.layer.transform = CATransform3DIdentity;
-        cellContentView.layer.opacity = 1;
-    } completion:^(BOOL finished) {}];
-    
-    return;
-}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"cell";
@@ -527,6 +508,7 @@
     [self.message setFont:[UIFont systemFontOfSize:20]];
     self.message.backgroundColor = [UIColor whiteColor];
     self.message.delegate = self;
+    self.message.text = @"";
     
     UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonSend = [self->design makeNiceButton:buttonSend];
@@ -577,11 +559,17 @@
     NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
 
     NSError *error = nil;
-    NSData *htmlData = [NSData dataWithContentsOfURL:urlSendQuickMessage options:NSDataReadingUncached error:&error];
+    [NSData dataWithContentsOfURL:urlSendQuickMessage options:NSDataReadingUncached error:&error];
     XLog(@"Error: %@", error);
-    
+    CGRect frame = CGRectMake(9999,9999,5,5);
+    self.messageView.frame = frame;
+
     if(!error)
     {
+        CGRect frame = CGRectMake(9999,9999,5,5);
+        self.messageView.frame = frame;
+        [self dismissKeyboard];
+
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Quick message"
                                      message:[NSString stringWithFormat:@"Your message has been sent to %@",[dict objectForKey:@"Text"]]
@@ -592,23 +580,24 @@
                                    style:UIAlertActionStyleDefault
                                    handler:^(UIAlertAction * action)
                                    {
+                                       CGRect frame = CGRectMake(9999,9999,5,5);
+                                       self.messageView.frame = frame;
+                                       [self dismissKeyboard];
+
                                    }];
         
         [alert addAction:okButton];
         
         [self presentViewController:alert animated:YES completion:nil];
     }
-    NSString *htmlString = [NSString stringWithUTF8String:[htmlData bytes]];
-    XLog(@"%@",htmlString);
     
-    CGRect frame = CGRectMake(999,999,5,5);
-    self.messageView.frame = frame;
+    [self dismissKeyboard];
 
 }
 
 -(void)actionCancelSend
 {
-    CGRect frame = CGRectMake(999,999,5,5);
+    CGRect frame = CGRectMake(9999,9999,5,5);
     self.messageView.frame = frame;
 }
 
