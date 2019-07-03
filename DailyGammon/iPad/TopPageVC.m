@@ -69,7 +69,6 @@
     self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
     self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
 
-    [self updateTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -256,6 +255,7 @@
         [self.topPageArray addObject:topPageZeile];
     }
     [self updateTableView];
+    
 }
 
 
@@ -271,28 +271,6 @@
 }
 //This function is where all the magic happens
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-//    UIView.animate(
-//                   withDuration: duration,
-//                   delay: delayFactor * Double(indexPath.row),
-//                   options: [.curveEaseInOut],
-//                   animations: {
-//                       cell.transform = CGAffineTransform(translationX: 0, y: 0)
-//                   })
-
-//    //1. Define the initial state (Before the animation)
-//    cell.transform = CGAffineTransformMakeTranslation(0.f, 100);
-//    cell.layer.shadowColor = [[UIColor greenColor]CGColor];
-//    cell.layer.shadowOffset = CGSizeMake(10, 10);
-//    cell.alpha = 0;
-//
-//    //2. Define the final state (After the animation) and commit the animation
-//    [UIView beginAnimations:@"rotation" context:NULL];
-//    [UIView setAnimationDuration:0.5];
-//    cell.transform = CGAffineTransformMakeTranslation(0.f, 0);
-//    cell.alpha = 1;
-//    cell.layer.shadowOffset = CGSizeMake(0, 0);
-//    [UIView commitAnimations];
     
     //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
     UIView *cellContentView = [cell contentView];
@@ -464,6 +442,9 @@
     graceLabel.textAlignment = NSTextAlignmentCenter;
     graceLabel.text = self.topPageHeaderArray[2];
     graceLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonGrace = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonGrace.frame = graceLabel.frame;
+    [buttonGrace addTarget:self action:@selector(sortGrace:) forControlEvents:UIControlEventTouchUpInside];
 
     x += graceBreite;
     
@@ -471,6 +452,9 @@
     poolLabel.textAlignment = NSTextAlignmentCenter;
     poolLabel.text = self.topPageHeaderArray[3];
     poolLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonPool = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonPool.frame = poolLabel.frame;
+    [buttonPool addTarget:self action:@selector(sortPool:) forControlEvents:UIControlEventTouchUpInside];
 
     x += poolBreite;
     
@@ -478,6 +462,9 @@
     roundLabel.textAlignment = NSTextAlignmentCenter;
     roundLabel.text = self.topPageHeaderArray[4];
     roundLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonRound = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonRound.frame = roundLabel.frame;
+    [buttonRound addTarget:self action:@selector(sortRound) forControlEvents:UIControlEventTouchUpInside];
 
     x += roundBreite;
     
@@ -485,6 +472,9 @@
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     lengthLabel.text = self.topPageHeaderArray[5];
     lengthLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonLength = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonLength.frame = lengthLabel.frame;
+    [buttonLength addTarget:self action:@selector(sortLength) forControlEvents:UIControlEventTouchUpInside];
 
     x += lengthBreite;
     
@@ -492,9 +482,24 @@
     opponentLabel.textAlignment = NSTextAlignmentLeft;
     opponentLabel.text = self.topPageHeaderArray[6];
     opponentLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonOpponent.frame = opponentLabel.frame;
+    [buttonOpponent addTarget:self action:@selector(sortRecent:) forControlEvents:UIControlEventTouchUpInside];
 
     int order = [preferences readNextMatchOrdering];
-
+                 
+    
+    switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
+    {
+        case 4:
+            order = 4;
+            break;
+        case 5:
+            order = 5;
+            break;
+    }
+    
+    
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     switch (order)
@@ -512,15 +517,31 @@
         case 3:
             opponentLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
-    }
+        case 4:
+            roundLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            break;
+        case 5:
+            lengthLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            break;
+   }
 
     [headerView addSubview:nummerLabel];
     [headerView addSubview:eventLabel];
+    
     [headerView addSubview:graceLabel];
+    [headerView addSubview:buttonGrace];
+    
     [headerView addSubview:poolLabel];
+    [headerView addSubview:buttonPool];
+
     [headerView addSubview:roundLabel];
+    [headerView addSubview:buttonRound];
+    
     [headerView addSubview:lengthLabel];
+    [headerView addSubview:buttonLength];
+    
     [headerView addSubview:opponentLabel];
+    [headerView addSubview:buttonOpponent];
 
     return headerView;
     
@@ -546,6 +567,10 @@
                    });
 
     [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
 
 }
 
@@ -560,19 +585,12 @@
     }
     [self dismissViewControllerAnimated:YES completion:Nil];
     NSArray *zeile = self.topPageArray[indexPath.row];
-//    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-//    NSDictionary *opponent = zeile[6];
-//    NSString *opponentID = [[opponent objectForKey:@"href"] lastPathComponent];
-//
-//    NSMutableDictionary *ratingDict = [rating readRatingForPlayer:userID andOpponent:opponentID];
-    
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = zeile[8];
     vc.matchLink = [match objectForKey:@"href"];
-//    vc.ratingDict = ratingDict;
     
     [self.navigationController pushViewController:vc animated:NO];
 
@@ -583,7 +601,6 @@
 - (IBAction)sortGrace:(id)sender
 {
     [self matchOrdering:0];
-
 }
 - (IBAction)sortPool:(id)sender
 {
@@ -622,9 +639,73 @@
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     [NSURLConnection connectionWithRequest:request delegate:self];
+ 
+    [[NSUserDefaults standardUserDefaults] setInteger:typ forKey:@"orderTyp"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    
+}
+-(void)sortLength
+{
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:5];
+        id secondObject = [second objectAtIndex:5];
+        int erstes = [[firstObject objectForKey:@"Text"]intValue];
+        int zweites = [[secondObject objectForKey:@"Text"]intValue];
+
+        if(erstes < zweites)
+            return NSOrderedAscending;
+        if(erstes > zweites)
+            return NSOrderedDescending;
+        if(erstes == zweites)
+            return NSOrderedSame;
+        return NSOrderedSame;
+    }];
+    [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self updateTableView];
 
 }
 
+-(void)sortRound
+{
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:4];
+        id secondObject = [second objectAtIndex:4];
+        
+        float erstes = .0001;
+        float zweites = .0001;
+        NSString *vorne = @"";
+        NSString *hinten = @"";
+
+        NSArray *Array = [[firstObject objectForKey:@"Text"] componentsSeparatedByString:@"/"];
+        if(Array.count == 2)
+        {
+            vorne = [Array objectAtIndex:0];
+            hinten = [Array objectAtIndex:1];
+            erstes = [vorne floatValue] / [hinten floatValue];
+        }
+        Array = [[secondObject objectForKey:@"Text"] componentsSeparatedByString:@"/"];
+        if(Array.count == 2)
+        {
+            vorne = [Array objectAtIndex:0];
+            hinten = [Array objectAtIndex:1];
+            zweites = [vorne floatValue] / [hinten floatValue];
+        }
+        if(erstes > zweites)
+            return NSOrderedAscending;
+        if(erstes < zweites)
+            return NSOrderedDescending;
+        if(erstes == zweites)
+            return NSOrderedSame;
+        return NSOrderedSame;
+    }];
+    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateTableView];
+}
 
 #pragma mark - finishedMatch
 - (void)miniBoardSchemaWarning
