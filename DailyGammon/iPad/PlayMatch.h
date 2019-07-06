@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Rating *rating;
 
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *ratingDict;
+@property (strong, readwrite, retain, atomic) NSMutableArray *topPageArray;
 
 @property (strong, readwrite, retain, atomic) NSString *matchLink;
 

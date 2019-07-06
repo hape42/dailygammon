@@ -566,11 +566,24 @@
                             [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
                    });
 
-    [self.tableView reloadData];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
-                                                inSection:0];
-    [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
+    {
+        case 4:
+            [self sortRound];
+            break;
+        case 5:
+            [self sortLength];
+            break;
+        default:
+            [self.tableView reloadData];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                        inSection:0];
+            [self.tableView scrollToRowAtIndexPath:indexPath
+                                  atScrollPosition:UITableViewScrollPositionTop animated:NO];
+
+            break;
+    }
+
 
 }
 
@@ -591,7 +604,7 @@
     PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = zeile[8];
     vc.matchLink = [match objectForKey:@"href"];
-    
+    vc.topPageArray = self.topPageArray;
     [self.navigationController pushViewController:vc animated:NO];
 
     
@@ -664,7 +677,11 @@
     [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    [self updateTableView];
+    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
 
 }
 
@@ -704,7 +721,11 @@
     [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [self updateTableView];
+    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 #pragma mark - finishedMatch
