@@ -17,6 +17,9 @@ NS_ASSUME_NONNULL_BEGIN
 -(UIButton *) makeNiceFlatButton: (UIButton *)button;
 
 - (UITableViewCell *) makeNiceCell: (UITableViewCell*)cell;
+
+- (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down;
+
 - (UILabel *) makeNiceLabel: (UILabel*)label;
 - (UILabel *) makeNiceTextField: (UILabel*)text;
 

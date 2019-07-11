@@ -98,6 +98,46 @@
     
     return cell;
 }
+#pragma mark - label
+
+- (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down
+{
+    if(label.text == nil) return label;
+
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    //https://stackoverflow.com/questions/28427935/how-can-i-change-image-tintcolor
+    NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];
+    UIImage *pfeil = (down) ? [UIImage imageNamed:@"PfeilDown.png"] : [UIImage imageNamed:@"PfeilUp.png"];
+    UIImage *newImage = [pfeil imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIGraphicsBeginImageContextWithOptions(pfeil.size, NO, newImage.scale);
+    UIColor *myTintColor = [schemaDict objectForKey:@"TintColor"];
+    [myTintColor set];
+    [newImage drawInRect:CGRectMake(0, 0, pfeil.size.width, newImage.size.height)];
+    newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    imageAttachment.image = newImage;
+    CGFloat imageOffsetY = 0.0;
+    CGFloat imageOffsetX = -3.0;
+
+    imageAttachment.bounds = CGRectMake(imageOffsetX, imageOffsetY, imageAttachment.image.size.width, imageAttachment.image.size.height);
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:imageAttachment];
+    NSMutableAttributedString *completeText= [[NSMutableAttributedString alloc] initWithString:@""];
+    [completeText appendAttributedString:attachmentString];
+    if(label.text == nil) label.text = @"?";
+    NSMutableAttributedString *textAfterIcon= [[NSMutableAttributedString alloc] initWithString:label.text];
+    [completeText appendAttributedString:textAfterIcon];
+//    label.textAlignment = NSTextAlignmentCenter;
+    label.attributedText = completeText;
+    label.textColor = [schemaDict objectForKey:@"TintColor"];
+    label.tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    return label;
+}
 
 - (UILabel *) makeNiceLabel: (UILabel*)label
 {

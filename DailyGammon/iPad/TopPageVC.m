@@ -107,7 +107,6 @@
     {
         self.datenData = [[NSMutableData alloc] init];
     }
-    
     [self reDrawHeader];
 
 }
@@ -117,13 +116,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-//    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-//    NSDictionary *fields = [HTTPResponse allHeaderFields];
-//    NSString *cookie = [fields valueForKey:@"Set-Cookie"];
-//    XLog(@"Connection begonnen %@", cookie);
-    
     self.datenData = [[NSMutableData alloc] init];
-
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -132,12 +125,11 @@
         [self.datenData appendData:data];
     else
         self.loginOk = TRUE;
-//    XLog(@"Connection didReceiveData");
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-//    XLog(@"Connection didFailWithError");
+    XLog(@"Connection didFailWithError");
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
@@ -428,13 +420,15 @@
     nummerLabel.textAlignment = NSTextAlignmentCenter;
     nummerLabel.text = self.topPageHeaderArray[0];
     nummerLabel.textColor = [UIColor whiteColor];
-    
     x += nummerBreite;
     
     UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventBreite,30)];
-    eventLabel.textAlignment = NSTextAlignmentLeft;
+    eventLabel.textAlignment = NSTextAlignmentCenter;
     eventLabel.text = self.topPageHeaderArray[1];
     eventLabel.textColor = [UIColor whiteColor];
+    UIButton *buttonEvent = [UIButton buttonWithType:UIButtonTypeSystem];
+    buttonEvent.frame = eventLabel.frame;
+    [buttonEvent addTarget:self action:@selector(sortEvent) forControlEvents:UIControlEventTouchUpInside];
 
     x += eventBreite;
 
@@ -494,8 +488,20 @@
         case 4:
             order = 4;
             break;
-        case 5:
+        case 41:
+            order = 41;
+            break;
+       case 5:
             order = 5;
+            break;
+        case 51:
+            order = 51;
+            break;
+       case 6:
+            order = 6;
+           break;
+        case 61:
+            order = 61;
             break;
     }
     
@@ -518,16 +524,30 @@
             opponentLabel.textColor = [schemaDict objectForKey:@"TintColor"];
             break;
         case 4:
-            roundLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            roundLabel = [design makeSortLabel:roundLabel sortOrderDown:YES];
+            break;
+        case 41:
+            roundLabel = [design makeSortLabel:roundLabel sortOrderDown:NO];
             break;
         case 5:
-            lengthLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            lengthLabel = [design makeSortLabel:lengthLabel sortOrderDown:YES];
             break;
-   }
+        case 51:
+            lengthLabel = [design makeSortLabel:lengthLabel sortOrderDown:NO];
+            break;
+       case 6:
+            eventLabel = [design makeSortLabel:eventLabel sortOrderDown:YES];
+           break;
+        case 61:
+            eventLabel = [design makeSortLabel:eventLabel sortOrderDown:NO];
+            break;
+  }
 
     [headerView addSubview:nummerLabel];
-    [headerView addSubview:eventLabel];
     
+    [headerView addSubview:eventLabel];
+    [headerView addSubview:buttonEvent];
+
     [headerView addSubview:graceLabel];
     [headerView addSubview:buttonGrace];
     
@@ -569,12 +589,18 @@
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
         case 4:
+        case 41:
             [self sortRound];
             break;
         case 5:
+        case 51:
             [self sortLength];
             break;
-        default:
+        case 6:
+        case 61:
+            [self sortEvent];
+            break;
+      default:
             [self.tableView reloadData];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
                                                         inSection:0];
@@ -583,8 +609,6 @@
 
             break;
     }
-
-
 }
 
 #pragma mark - Table view delegate
@@ -658,6 +682,44 @@
 
     
 }
+
+-(void)sortEvent
+{
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:1];
+        id secondObject = [second objectAtIndex:1];
+        NSString *erstes = [[firstObject objectForKey:@"Text"]lastPathComponent];
+        NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
+
+        NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
+        {
+            if( result == NSOrderedAscending)
+                return NSOrderedDescending;
+            if( result == NSOrderedDescending)
+                return NSOrderedAscending;
+        }
+        else
+            return result;
+
+        return NSOrderedSame;
+    }];
+
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
+        [[NSUserDefaults standardUserDefaults] setInteger:6 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:61 forKey:@"orderTyp"];
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+}
+
 -(void)sortLength
 {
     [self.topPageArray sortUsingComparator:^(id first, id second){
@@ -665,16 +727,32 @@
         id secondObject = [second objectAtIndex:5];
         int erstes = [[firstObject objectForKey:@"Text"]intValue];
         int zweites = [[secondObject objectForKey:@"Text"]intValue];
-
-        if(erstes < zweites)
-            return NSOrderedAscending;
-        if(erstes > zweites)
-            return NSOrderedDescending;
-        if(erstes == zweites)
-            return NSOrderedSame;
-        return NSOrderedSame;
+        
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 5)
+        {
+            if(erstes < zweites)
+                return NSOrderedAscending;
+            if(erstes > zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
+        {
+            if(erstes > zweites)
+                return NSOrderedAscending;
+            if(erstes < zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+       return NSOrderedSame;
     }];
-    [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
+        [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:51 forKey:@"orderTyp"];
+    
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self.tableView reloadData];
@@ -710,15 +788,31 @@
             hinten = [Array objectAtIndex:1];
             zweites = [vorne floatValue] / [hinten floatValue];
         }
-        if(erstes > zweites)
-            return NSOrderedAscending;
-        if(erstes < zweites)
-            return NSOrderedDescending;
-        if(erstes == zweites)
-            return NSOrderedSame;
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
+        {
+            if(erstes > zweites)
+                return NSOrderedAscending;
+            if(erstes < zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 4)
+        {
+            if(erstes < zweites)
+                return NSOrderedAscending;
+            if(erstes > zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
         return NSOrderedSame;
     }];
-    [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
+        [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:41 forKey:@"orderTyp"];
+
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     [self.tableView reloadData];
