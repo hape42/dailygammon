@@ -286,7 +286,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Matches where you can move:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bZE-yF-iqC">
-                                <rect key="frame" x="20" y="97" width="591" height="32"/>
+                                <rect key="frame" x="120" y="97" width="591" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <nil key="textColor"/>
@@ -324,6 +324,16 @@
                                     <action selector="sortRecent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="GrQ-Fu-H1w"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gdB-Wj-Zs5">
+                                <rect key="frame" x="20" y="96" width="90" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Refresh">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="refreshAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LJS-5w-Ckq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -331,6 +341,7 @@
                     <navigationItem key="navigationItem" id="Iof-ad-s2w"/>
                     <connections>
                         <outlet property="header" destination="bZE-yF-iqC" id="AEH-jd-EIq"/>
+                        <outlet property="refreshButtonIPAD" destination="gdB-Wj-Zs5" id="Rxd-0W-1x5"/>
                         <outlet property="sortGraceButton" destination="NHZ-tL-QaY" id="gaK-E9-YUI"/>
                         <outlet property="sortGracePoolButton" destination="CSg-VK-I7k" id="5Nt-8B-IgK"/>
                         <outlet property="sortPoolButton" destination="1yw-ON-hkZ" id="ksm-za-ArE"/>

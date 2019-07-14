@@ -105,6 +105,8 @@
 @synthesize matchLink;
 @synthesize ratingDict;
 
+@synthesize topPageArray;
+
 #define NEXT 1
 #define ROLL 2
 #define ROLL_DOUBLE 3
@@ -2194,6 +2196,27 @@
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  escapedString];
+    //    schicke matchlink hier schon ab, wenn sort = round oder length
+    //    hole erstes element aus dem Array
+    //    baue daraus matchLink
+    //    lösche erstes elemnt aus dem array
+    
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > 3)
+    {
+        NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+        //    XLog(@"%@",urlMatch);
+        NSError *error = nil;
+        [NSData dataWithContentsOfURL:urlMatch options:NSDataReadingUncached error:&error];
+        if(error)
+            XLog(@"error %@ %@",error ,urlMatch);
+        if(topPageArray.count > 1)
+        {
+            [topPageArray removeObjectAtIndex:0];
+            NSArray *zeile = topPageArray[0];
+            NSDictionary *match = zeile[8];
+            matchLink = [match objectForKey:@"href"];
+        }
+    }
 
     [self showMatch];
     

@@ -19,6 +19,8 @@
 #import "AppDelegate.h"
 #import "RatingVC.h"
 #import "Player.h"
+#import "iPhoneMenue.h"
+#import "iPhonePlayMatch.h"
 
 @interface TopPageVC ()
 
@@ -35,6 +37,20 @@
 @property (weak, nonatomic) IBOutlet UILabel *header;
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
+
+@property (weak, nonatomic) IBOutlet UIButton *refreshButtonIPAD;
+
+@property (assign, atomic) float nummerBreite;
+@property (assign, atomic) float graceBreite;
+@property (assign, atomic) float poolBreite;
+@property (assign, atomic) float roundBreite;
+@property (assign, atomic) float lengthBreite;
+@property (assign, atomic) float opponentBreite;
+@property (assign, atomic) float eventBreite;
 
 @end
 
@@ -59,22 +75,85 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    if([design isX])
+    {
+        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
+        
+        CGRect frame = self.tableView.frame;
+        frame.origin.x = safeArea.left ;
+        frame.size.width = self.tableView.frame.size.width - safeArea.left ;
+        self.tableView.frame = frame;
+    }
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        self.nummerBreite = 40;
+        self.graceBreite  = 80;
+        self.poolBreite   = 120;
+        self.roundBreite  = 80;
+        self.lengthBreite = 80;
+    }
+    else
+    {
+        self.nummerBreite = 30;
+        self.graceBreite  = 70;
+        self.poolBreite   = 86;
+        self.roundBreite  = 70;
+        self.lengthBreite = 70;
+    }
+    self.opponentBreite = (self.tableView.frame.size.width - self.nummerBreite - self.graceBreite - self.poolBreite - self.roundBreite - self.lengthBreite)/2 ;
+    self.eventBreite = self.opponentBreite;
+
 }
 
 -(void) reDrawHeader
 {
-    [self.view addSubview:[self makeHeader]];
+//    [self.view addSubview:[self makeHeader]];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.view addSubview:[self makeHeader]];
+    else
+    {
+        int maxBreite = [UIScreen mainScreen].bounds.size.width;
+        int rand = 20;
+        float luecke = (maxBreite - rand - rand - self.sortGraceButton.frame.size.width - self.sortPoolButton.frame.size.width - self.sortGracePoolButton.frame.size.width - self.sortRecentButton.frame.size.width) / 3;
+        CGRect buttonFrame;
+        buttonFrame = self.sortPoolButton.frame;
+        buttonFrame.origin.x = self.sortGraceButton.frame.origin.x + self.sortGraceButton.frame.size.width + luecke;
+        self.sortPoolButton.frame = buttonFrame;
+        
+        buttonFrame = self.sortGracePoolButton.frame;
+        buttonFrame.origin.x = self.sortPoolButton.frame.origin.x + self.sortPoolButton.frame.size.width + luecke;
+        self.sortGracePoolButton.frame = buttonFrame;
+        
+        buttonFrame = self.sortRecentButton.frame;
+        buttonFrame.origin.x = self.sortGracePoolButton.frame.origin.x + self.sortGracePoolButton.frame.size.width + luecke;
+        self.sortRecentButton.frame = buttonFrame;
+
+    }
+    
     self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
     self.sortPoolButton = [design makeNiceButton:self.sortPoolButton];
     self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
     self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
 
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    
+    self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];
+    self.refreshButtonIPAD.tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    [self.navigationController.navigationBar setTitleTextAttributes:
+     @{NSForegroundColorAttributeName:[schemaDict objectForKey:@"TintColor"]}];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    else
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -323,8 +402,8 @@
 
     UIImageView *checkmark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
     CGRect frame = checkmark.frame;
-    frame.size.height = 20;
-    frame.size.width = 20;
+    frame.size.height = 10;
+    frame.size.width = 10;
 
     checkmark.frame = frame;
     cell.accessoryView = checkmark;
@@ -334,62 +413,68 @@
     
     int x = 0;
     int labelHoehe = cell.frame.size.height;
-    int nummerBreite = 40;
-    int graceBreite = 80;
-    int poolBreite = 120;
-    int roundBreite = 80;
-    int lengthBreite = 80;
-    int opponentBreite = (tableView.frame.size.width - nummerBreite - graceBreite - poolBreite - roundBreite - lengthBreite)/2 ;
-    int eventBreite = opponentBreite;
+//    int nummerBreite = 40;
+//    int graceBreite = 80;
+//    int poolBreite = 120;
+//    int roundBreite = 80;
+//    int lengthBreite = 80;
+//    int opponentBreite = (tableView.frame.size.width - nummerBreite - graceBreite - poolBreite - roundBreite - lengthBreite)/2 ;
+//    int eventBreite = opponentBreite;
     
-    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nummerBreite,labelHoehe)];
+    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.nummerBreite,labelHoehe)];
     nummerLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *nummer = zeile[0];
     nummerLabel.text = [nummer objectForKey:@"Text"];
     
-    x += nummerBreite;
+    x += self.nummerBreite;
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventBreite,labelHoehe)];
+    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventBreite,labelHoehe)];
     eventLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *event = zeile[1];
     eventLabel.text = [event objectForKey:@"Text"];
+    eventLabel.adjustsFontSizeToFitWidth = YES;
+
+    x += self.eventBreite;
     
-    x += eventBreite;
-    
-    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,graceBreite,labelHoehe)];
+    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.graceBreite,labelHoehe)];
     graceLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *grace = zeile[2];
     graceLabel.text = [grace objectForKey:@"Text"];
+    graceLabel.adjustsFontSizeToFitWidth = YES;
+
+    x += self.graceBreite;
     
-    x += graceBreite;
-    
-    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,poolBreite,labelHoehe)];
+    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.poolBreite,labelHoehe)];
     poolLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *pool = zeile[3];
     poolLabel.text = [pool objectForKey:@"Text"];
+    poolLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += poolBreite;
+    x += self.poolBreite;
     
-    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundBreite,labelHoehe)];
+    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.roundBreite,labelHoehe)];
     roundLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *round = zeile[4];
     roundLabel.text = [round objectForKey:@"Text"];
+    roundLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += roundBreite;
+    x += self.roundBreite;
     
-    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthBreite,labelHoehe)];
+    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.lengthBreite,labelHoehe)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *length = zeile[5];
     lengthLabel.text = [length objectForKey:@"Text"];
+    lengthLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += lengthBreite;
+    x += self.lengthBreite;
     
-    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,opponentBreite,labelHoehe)];
+    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.opponentBreite,labelHoehe)];
     opponentLabel.textAlignment = NSTextAlignmentLeft;
     opponentLabel.text = self.topPageHeaderArray[6];
     NSDictionary *opponent = zeile[6];
     opponentLabel.text = [opponent objectForKey:@"Text"];
-    
+    opponentLabel.adjustsFontSizeToFitWidth = YES;
+
     [cell.contentView addSubview:nummerLabel];
     [cell.contentView addSubview:eventLabel];
     [cell.contentView addSubview:graceLabel];
@@ -408,21 +493,13 @@
 
     int x = 0;
 
-    int nummerBreite = 40;
-    int graceBreite = 80;
-    int poolBreite = 120;
-    int roundBreite = 80;
-    int lengthBreite = 80;
-    int opponentBreite = (tableView.frame.size.width - nummerBreite - graceBreite - poolBreite - roundBreite - lengthBreite)/2 ;
-    int eventBreite = opponentBreite;
-
-    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nummerBreite,30)];
+    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.nummerBreite,30)];
     nummerLabel.textAlignment = NSTextAlignmentCenter;
     nummerLabel.text = self.topPageHeaderArray[0];
     nummerLabel.textColor = [UIColor whiteColor];
-    x += nummerBreite;
+    x += self.nummerBreite;
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventBreite,30)];
+    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventBreite,30)];
     eventLabel.textAlignment = NSTextAlignmentCenter;
     eventLabel.text = self.topPageHeaderArray[1];
     eventLabel.textColor = [UIColor whiteColor];
@@ -430,9 +507,9 @@
     buttonEvent.frame = eventLabel.frame;
     [buttonEvent addTarget:self action:@selector(sortEvent) forControlEvents:UIControlEventTouchUpInside];
 
-    x += eventBreite;
+    x += self.eventBreite;
 
-    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,graceBreite,30)];
+    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.graceBreite, 30)];
     graceLabel.textAlignment = NSTextAlignmentCenter;
     graceLabel.text = self.topPageHeaderArray[2];
     graceLabel.textColor = [UIColor whiteColor];
@@ -440,9 +517,9 @@
     buttonGrace.frame = graceLabel.frame;
     [buttonGrace addTarget:self action:@selector(sortGrace:) forControlEvents:UIControlEventTouchUpInside];
 
-    x += graceBreite;
+    x += self.graceBreite;
     
-    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,poolBreite,30)];
+    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.poolBreite,30)];
     poolLabel.textAlignment = NSTextAlignmentCenter;
     poolLabel.text = self.topPageHeaderArray[3];
     poolLabel.textColor = [UIColor whiteColor];
@@ -450,9 +527,9 @@
     buttonPool.frame = poolLabel.frame;
     [buttonPool addTarget:self action:@selector(sortPool:) forControlEvents:UIControlEventTouchUpInside];
 
-    x += poolBreite;
+    x += self.poolBreite;
     
-    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundBreite,30)];
+    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.roundBreite,30)];
     roundLabel.textAlignment = NSTextAlignmentCenter;
     roundLabel.text = self.topPageHeaderArray[4];
     roundLabel.textColor = [UIColor whiteColor];
@@ -460,9 +537,9 @@
     buttonRound.frame = roundLabel.frame;
     [buttonRound addTarget:self action:@selector(sortRound) forControlEvents:UIControlEventTouchUpInside];
 
-    x += roundBreite;
+    x += self.roundBreite;
     
-    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthBreite,30)];
+    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.lengthBreite,30)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     lengthLabel.text = self.topPageHeaderArray[5];
     lengthLabel.textColor = [UIColor whiteColor];
@@ -470,9 +547,9 @@
     buttonLength.frame = lengthLabel.frame;
     [buttonLength addTarget:self action:@selector(sortLength) forControlEvents:UIControlEventTouchUpInside];
 
-    x += lengthBreite;
+    x += self.lengthBreite;
     
-    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,opponentBreite,30)];
+    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.opponentBreite,30)];
     opponentLabel.textAlignment = NSTextAlignmentLeft;
     opponentLabel.text = self.topPageHeaderArray[6];
     opponentLabel.textColor = [UIColor whiteColor];
@@ -569,7 +646,10 @@
 
 - (void)updateTableView
 {
-    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:" ,(int)self.topPageArray.count];
+    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
+                        ,(int)self.topPageArray.count];
+    self.navigationBar.title = [NSString stringWithFormat:@"%d Matches where you can move" ,(int)self.topPageArray.count];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                    ^{
@@ -625,13 +705,24 @@
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-    NSDictionary *match = zeile[8];
-    vc.matchLink = [match objectForKey:@"href"];
-    vc.topPageArray = self.topPageArray;
-    [self.navigationController pushViewController:vc animated:NO];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+        NSDictionary *match = zeile[8];
+        vc.matchLink = [match objectForKey:@"href"];
+        vc.topPageArray = self.topPageArray;
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    else
+    {
+        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
+        NSDictionary *match = zeile[8];
+        vc.matchLink = [match objectForKey:@"href"];
+        vc.topPageArray = self.topPageArray;
 
-    
+        [self.navigationController pushViewController:vc animated:NO];
+
+    }
 }
 #pragma mark - Sort
 
@@ -940,6 +1031,19 @@
 
 }
 
+- (IBAction)moreAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+}
+- (IBAction)refreshAction:(id)sender
+{
+    [self readTopPage];
+    [self reDrawHeader];
+}
 #pragma mark - Header
 #include "HeaderInclude.h"
 

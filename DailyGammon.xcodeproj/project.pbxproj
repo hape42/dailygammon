@@ -22,6 +22,9 @@
 		E0763D2C22D62DE300EDA562 /* pfeil_down.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D2822D62DE300EDA562 /* pfeil_down.png */; };
 		E0763D2F22D6506200EDA562 /* PfeilDown.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D2D22D6506100EDA562 /* PfeilDown.png */; };
 		E0763D3022D6506200EDA562 /* PfeilUp.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D2E22D6506200EDA562 /* PfeilUp.png */; };
+		E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */; };
+		E0763D3522DB0E9600EDA562 /* 01-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3322DB0E9500EDA562 /* 01-refresh.png */; };
+		E0763D3822DB210100EDA562 /* info in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3722DB210100EDA562 /* info */; };
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
@@ -97,6 +100,9 @@
 		E0763D2822D62DE300EDA562 /* pfeil_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_down.png; sourceTree = "<group>"; };
 		E0763D2D22D6506100EDA562 /* PfeilDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PfeilDown.png; sourceTree = "<group>"; };
 		E0763D2E22D6506200EDA562 /* PfeilUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PfeilUp.png; sourceTree = "<group>"; };
+		E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh@2x.png"; sourceTree = "<group>"; };
+		E0763D3322DB0E9500EDA562 /* 01-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh.png"; sourceTree = "<group>"; };
+		E0763D3722DB210100EDA562 /* info */ = {isa = PBXFileReference; lastKnownFileType = text; path = info; sourceTree = "<group>"; };
 		E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhonePlayMatch.h; sourceTree = "<group>"; };
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
@@ -296,6 +302,25 @@
 			path = SetUp;
 			sourceTree = "<group>";
 		};
+		E0763D3122D7658700EDA562 /* TopPage */ = {
+			isa = PBXGroup;
+			children = (
+				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
+				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
+			);
+			path = TopPage;
+			sourceTree = "<group>";
+		};
+		E0763D3622DB204B00EDA562 /* alterScheiss */ = {
+			isa = PBXGroup;
+			children = (
+				E0763D3722DB210100EDA562 /* info */,
+				E0F1E3FC2229075B00494918 /* iPhoneTopPageVC.h */,
+				E0F1E3FD2229075B00494918 /* iPhoneTopPageVC.m */,
+			);
+			path = alterScheiss;
+			sourceTree = "<group>";
+		};
 		E083BAE822B3A2E50035A71E /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -474,8 +499,6 @@
 			isa = PBXGroup;
 			children = (
 				E0AC59AE22283C8F00367EE9 /* iPhone.storyboard */,
-				E0F1E3FC2229075B00494918 /* iPhoneTopPageVC.h */,
-				E0F1E3FD2229075B00494918 /* iPhoneTopPageVC.m */,
 				E0F1E3FF2229353C00494918 /* iPhoneMenue.h */,
 				E0F1E4002229353C00494918 /* iPhoneMenue.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
@@ -494,8 +517,6 @@
 			isa = PBXGroup;
 			children = (
 				E0AC59AC22283C8E00367EE9 /* iPad.storyboard */,
-				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
-				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
 				E0C1D82821E900BA00494A82 /* GameLounge.h */,
 				E0C1D82921E900D100494A82 /* GameLounge.m */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
@@ -528,6 +549,8 @@
 		E0F9588821AD1688003DAC01 /* DailyGammon */ = {
 			isa = PBXGroup;
 			children = (
+				E0763D3622DB204B00EDA562 /* alterScheiss */,
+				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
@@ -564,6 +587,8 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E0763D3322DB0E9500EDA562 /* 01-refresh.png */,
+				E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */,
 				E0763D2622D62DE200EDA562 /* pfeil_down_kreis.png */,
 				E0763D2822D62DE300EDA562 /* pfeil_down.png */,
 				E0763D2522D62DE100EDA562 /* pfeil_up_kreis.png */,
@@ -663,9 +688,12 @@
 				E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */,
 				E0C1D82321E7CCEA00494A82 /* pfeil_rot.png in Resources */,
 				E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */,
+				E0763D3822DB210100EDA562 /* info in Resources */,
 				E0AEFC4E220420D300CFFB6C /* button_rot.png in Resources */,
+				E0763D3522DB0E9600EDA562 /* 01-refresh.png in Resources */,
 				E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */,
 				E0763D2A22D62DE300EDA562 /* pfeil_down_kreis.png in Resources */,
+				E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */,
 				E0AC59B022283C9000367EE9 /* iPad.storyboard in Resources */,
 				E0763D2C22D62DE300EDA562 /* pfeil_down.png in Resources */,
 				E01E9DE222761964000399EA /* button_grau.png in Resources */,
