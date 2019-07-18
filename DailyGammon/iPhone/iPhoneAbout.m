@@ -87,7 +87,7 @@
 }
 - (IBAction)actionCredits:(id)sender
 {
-    NSString *message = @"Jutta Schneider\nHeather123 at DailyGammon\nGraphics & Design\n\nPeter Schneider\nhape42 at DailyGammon\nIdea & Coding";
+    NSString *message = @"\n\nMany thanks to Jordan Lampe and team, imagineers, creators and maintainers of the DailyGammon.com site.\n\n";
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Credits"
                                  message:message
