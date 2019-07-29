@@ -20,4 +20,6 @@
 - (int)countRating;
 - (NSMutableArray *) readAlleRatingForUser:(NSString*)userID;
 
+- (NSMutableArray *) readAlleRatingForUserAufgefuellt:(NSString*)userID;
+
 @end

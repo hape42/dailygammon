@@ -19,6 +19,7 @@
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "Player.h"
+#import "iPhoneMenue.h"
 
 @interface RatingVC ()
 
@@ -54,7 +55,10 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
+//    self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
+ 
+    self.ratingArray = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
+
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
@@ -340,6 +344,14 @@
     }
 }
 
+- (IBAction)moreAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+}
 #pragma mark - Header
 #include "HeaderInclude.h"
 

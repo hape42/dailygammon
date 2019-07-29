@@ -1022,7 +1022,6 @@
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                                 <connections>
-                                    <action selector="moreAction:" destination="DvW-Tf-E0z" eventType="touchUpInside" id="puH-dN-mjz"/>
                                     <action selector="moreAction:" destination="Twn-Su-RBH" eventType="touchUpInside" id="vFC-ti-HEt"/>
                                 </connections>
                             </button>

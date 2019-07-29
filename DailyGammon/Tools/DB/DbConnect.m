@@ -115,7 +115,7 @@
     [self checkColumnExists];
 
     float rating = 0.0;
-    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating WHERE Datum = '%@'  AND userID LIKE '%@';", datum, userID];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating WHERE Datum = '%@' ", datum];
     const char *sql = [sqlQuery UTF8String];
     if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
     {
@@ -181,7 +181,70 @@
         }
         sqlite3_finalize(statement);
     }
+    
+
     return alleRating;
 }
+
+- (NSMutableArray *) readAlleRatingForUserAufgefuellt:(NSString*)userID
+{
+    NSString *datum = @"2019-01-01";
+    
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating ORDER BY Datum ASC LIMIT 1;"];
+    const char *sql = [sqlQuery UTF8String];
+    if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+    {
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            datum = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+        }
+        sqlite3_finalize(statement);
+    }
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSDate *startDate = [df dateFromString:datum];
+    
+    NSDate *endDate = [NSDate date];
+    NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+    
+    float ratingVorher = 0.0;
+    float min = 9999.0;
+    float max = -1.0;
+
+    for (NSDate *date = startDate;                    // initialisation
+         [date compare:endDate] == NSOrderedAscending; // compare
+         date = [date dateByAddingTimeInterval:60*60*24])    // increment
+    {
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        [format setDateFormat:@"yyy-MM-dd"];
+        NSString *dateDB = [format stringFromDate:date];
+
+        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+        float rating = [self readRatingForDatum:dateDB andUser:userID];
+        if (rating < 1.0)
+            rating = ratingVorher;
+        else
+            ratingVorher = rating;
+        
+//        XLog(@"%3.1f %3.1f", rating, ratingVorher);
+        if(rating > max)
+            max = rating;
+        if(rating < min)
+            min = rating;
+
+        NSDictionary *ratingDict = @{
+                                     @"datum"   : dateDB,
+                                     @"min"     : [NSNumber numberWithDouble: min],
+                                     @"max"     : [NSNumber numberWithDouble: max],
+                                     @"rating"  : [NSNumber numberWithDouble: rating]
+                                     };
+
+        [tmpArray addObject:ratingDict];
+    }
+    return tmpArray;
+}
+
 
 @end
