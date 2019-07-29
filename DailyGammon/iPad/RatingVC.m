@@ -64,6 +64,15 @@
     [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:infoButton];
+    
+    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    shareButton = [design makeNiceButton:shareButton];
+    [shareButton setTitle:@"Share" forState: UIControlStateNormal];
+    shareButton.frame = CGRectMake(150, 100, 80, 35);
+    [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:shareButton];
+
 }
 
 #pragma mark CorePlot
@@ -111,13 +120,20 @@
     x.majorTickLineStyle = nil;
     x.minorTickLineStyle = nil;
     x.majorIntervalLength = CPTDecimalFromString(@"7.0");
-    x.orthogonalCoordinateDecimal = CPTDecimalFromString(@"0");
+
+    NSDictionary *dict = [self.ratingArray lastObject];
+
+    float min = [[dict objectForKey:@"min"]floatValue] - 20.0;
+    float max = [[dict objectForKey:@"max"]floatValue] + 20.0;
+
+    x.orthogonalCoordinateDecimal = CPTDecimalFromFloat(min);
+
     //x.title = @"Names";
     x.titleLocation = CPTDecimalFromFloat(7.5f);
     x.titleOffset = 25.0f;
     NSMutableSet *xMajorLocations = [NSMutableSet set];
     
-    NSDictionary *dict = [self.ratingArray objectAtIndex:0];
+    dict = [self.ratingArray objectAtIndex:0];
     NSString *oldMonth = [[dict objectForKey:@"datum"] substringWithRange:NSMakeRange(5, 2)];
 
     float tag = 0;
@@ -167,10 +183,7 @@
     CPTGraph *graph = hostingView.hostedGraph;
     CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) graph.defaultPlotSpace;
     
-    dict = [self.ratingArray lastObject];
 
-    float min = [[dict objectForKey:@"min"]floatValue] - 20.0;
-    float max = [[dict objectForKey:@"max"]floatValue] + 20.0;
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(0.0f) length:CPTDecimalFromInt((int)[self.ratingArray count])];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(min) length:CPTDecimalFromDouble(max - min)];
     
@@ -272,6 +285,34 @@
     
     [self presentViewController:alert animated:YES completion:nil];
     
+}
+
+- (IBAction)share:(id)sender
+{
+
+    CGSize size = [hostingView bounds].size;
+    UIGraphicsBeginImageContext(size);
+    [[hostingView layer] renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *ratingImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    NSString *str = [NSString stringWithFormat:@"My Name on DailyGammon %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
+    NSArray *postItems=@[str, ratingImage];
+    
+    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:postItems applicationActivities:nil];
+    
+    //if iPhone
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+    //if iPad
+    else
+    {
+        // Change Rect to position Popover
+        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:controller];
+        [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/4, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
 
 #pragma mark - Header
