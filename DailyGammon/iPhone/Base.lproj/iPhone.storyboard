@@ -1001,10 +1001,10 @@
             </objects>
             <point key="canvasLocation" x="1097.9010494752624" y="-799.20000000000005"/>
         </scene>
-        <!--iPhone RatingVC-->
+        <!--RatingVC-->
         <scene sceneID="LnH-WB-cAL">
             <objects>
-                <viewController storyboardIdentifier="RatingVC" id="Twn-Su-RBH" customClass="iPhoneRatingVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="RatingVC" id="Twn-Su-RBH" customClass="RatingVC" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6aH-HK-YiJ">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1032,6 +1032,14 @@
                                 <state key="normal" title="Info"/>
                                 <connections>
                                     <action selector="info:" destination="Twn-Su-RBH" eventType="touchUpInside" id="9sD-6Q-9wS"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="fBo-Zx-mBk">
+                                <rect key="frame" x="60" y="5" width="40" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Share"/>
+                                <connections>
+                                    <action selector="share:" destination="Twn-Su-RBH" eventType="touchUpInside" id="x33-1R-OdA"/>
                                 </connections>
                             </button>
                         </subviews>

@@ -25,6 +25,9 @@
 @property (strong, nonatomic) NSMutableArray *ratingArray;
 @property (strong, nonatomic) NSMutableArray *monatArray;
 
+@property (weak, nonatomic) IBOutlet UILabel *header;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+
 @end
 
 @implementation RatingVC
@@ -40,8 +43,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
     
-    
-    [self.view addSubview:[self makeHeader]];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.view addSubview:[self makeHeader]];
 
 }
 
@@ -57,22 +60,25 @@
     rating = [[Rating alloc] init];
 
     [self initGraph];
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    infoButton = [design makeNiceButton:infoButton];
-    [infoButton setTitle:@"Info" forState: UIControlStateNormal];
-    infoButton.frame = CGRectMake(50, 100, 80, 35);
-    [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.view addSubview:infoButton];
     
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    shareButton = [design makeNiceButton:shareButton];
-    [shareButton setTitle:@"Share" forState: UIControlStateNormal];
-    shareButton.frame = CGRectMake(150, 100, 80, 35);
-    [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.view addSubview:shareButton];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        infoButton = [design makeNiceButton:infoButton];
+        [infoButton setTitle:@"Info" forState: UIControlStateNormal];
+        infoButton.frame = CGRectMake(50, 100, 80, 35);
+        [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
 
+        [self.view addSubview:infoButton];
+        
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        shareButton = [design makeNiceButton:shareButton];
+        [shareButton setTitle:@"Share" forState: UIControlStateNormal];
+        shareButton.frame = CGRectMake(150, 100, 80, 35);
+        [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
+        
+        [self.view addSubview:shareButton];
+    }
 }
 
 #pragma mark CorePlot
@@ -91,8 +97,18 @@
     NSString *heute = [format stringFromDate:[NSDate date]];
     NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
 
-    barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight-200)];
-    barLineChart.title = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight-200)];
+        barLineChart.title = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+    }
+    else
+    {
+        barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight)];
+        self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+    }
+
+        
     barLineChart.plotAreaFrame.borderLineStyle = nil;
     barLineChart.plotAreaFrame.cornerRadius = 0.0f;
     
@@ -102,7 +118,12 @@
     barLineChart.paddingBottom = 0.0f;
     
     barLineChart.plotAreaFrame.paddingLeft = 50.0;
-    barLineChart.plotAreaFrame.paddingTop = 50.0;
+
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        barLineChart.plotAreaFrame.paddingTop = 50.0;
+    else
+        barLineChart.plotAreaFrame.paddingTop = 0.0;
+
     barLineChart.plotAreaFrame.paddingRight = 50.0;
     barLineChart.plotAreaFrame.paddingBottom = 100.0;
     
@@ -175,7 +196,11 @@
     
     y.majorGridLineStyle = gridLineStyle;
     
-    hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 100, maxWidth, maxHeight-100)];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 100, maxWidth, maxHeight-100)];
+    else
+        hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-20)];
+    
     hostingView.hostedGraph = barLineChart;
     hostingView.tag = 1;
     [self.view addSubview:hostingView];
@@ -297,7 +322,7 @@
     UIGraphicsEndImageContext();
 
     NSString *str = [NSString stringWithFormat:@"My Name on DailyGammon %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
-    NSArray *postItems=@[str, ratingImage];
+    NSArray *postItems=@[ratingImage];
     
     UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:postItems applicationActivities:nil];
     

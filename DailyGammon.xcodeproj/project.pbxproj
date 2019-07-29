@@ -315,10 +315,21 @@
 			isa = PBXGroup;
 			children = (
 				E0763D3722DB210100EDA562 /* info */,
+				E0BE3AFF22366BC1003A824D /* iPhoneRatingVC.h */,
+				E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */,
 				E0F1E3FC2229075B00494918 /* iPhoneTopPageVC.h */,
 				E0F1E3FD2229075B00494918 /* iPhoneTopPageVC.m */,
 			);
 			path = alterScheiss;
+			sourceTree = "<group>";
+		};
+		E07F021722EED0870065546C /* Rating */ = {
+			isa = PBXGroup;
+			children = (
+				E0AC594722270F5500367EE9 /* RatingVC.h */,
+				E0AC594822270F5500367EE9 /* RatingVC.m */,
+			);
+			path = Rating;
 			sourceTree = "<group>";
 		};
 		E083BAE822B3A2E50035A71E /* Player */ = {
@@ -505,8 +516,6 @@
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
 				E0BE3AFC223170F3003A824D /* iPhoneGameLounge.h */,
 				E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */,
-				E0BE3AFF22366BC1003A824D /* iPhoneRatingVC.h */,
-				E0BE3B0022366BC1003A824D /* iPhoneRatingVC.m */,
 				E0BE3B022236EF08003A824D /* iPhoneAbout.h */,
 				E0BE3B032236EF08003A824D /* iPhoneAbout.m */,
 			);
@@ -521,8 +530,6 @@
 				E0C1D82921E900D100494A82 /* GameLounge.m */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
-				E0AC594722270F5500367EE9 /* RatingVC.h */,
-				E0AC594822270F5500367EE9 /* RatingVC.m */,
 				E0BDCC3621BE6AE300E8AF25 /* About.h */,
 				E0BDCC3721BE6AE300E8AF25 /* About.m */,
 			);
@@ -549,6 +556,7 @@
 		E0F9588821AD1688003DAC01 /* DailyGammon */ = {
 			isa = PBXGroup;
 			children = (
+				E07F021722EED0870065546C /* Rating */,
 				E0763D3622DB204B00EDA562 /* alterScheiss */,
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
