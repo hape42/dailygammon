@@ -200,7 +200,27 @@
         }
         sqlite3_finalize(statement);
     }
-    
+    while(datum.length != 10)
+    {
+        NSString *sqlQuery = [NSString stringWithFormat:@"DELETE FROM Rating WHERE Datum LIKE %@ ", datum];
+        const char *sql = [sqlQuery UTF8String];
+        if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+        {
+            sqlite3_step(statement);
+            sqlite3_finalize(statement);
+        }
+        sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating ORDER BY Datum ASC LIMIT 1;"];
+        sql = [sqlQuery UTF8String];
+        if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+        {
+            while (sqlite3_step(statement) == SQLITE_ROW)
+            {
+                datum = [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)];
+            }
+            sqlite3_finalize(statement);
+        }
+
+    }
     NSDateFormatter *df = [[NSDateFormatter alloc] init];
     [df setDateFormat:@"yyyy-MM-dd"];
     NSDate *startDate = [df dateFromString:datum];
