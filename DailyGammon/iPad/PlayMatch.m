@@ -1291,7 +1291,7 @@
     self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
     self.opponentName.adjustsFontSizeToFitWidth = YES;
     self.opponentPips.text    = opponentArray[2];
-    if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
         self.opponentScore.text   = opponentArray[5];
         self.opponentPips.text    = opponentArray[2];
@@ -1314,7 +1314,7 @@
     self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]  forPlayer:YES];
     self.playerName.adjustsFontSizeToFitWidth = YES;
     self.playerPips.text    = playerArray[2];
-    if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
         self.playerPips.text    = playerArray[2];
         self.playerScore.text   = playerArray[5];

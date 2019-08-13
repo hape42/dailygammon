@@ -1396,7 +1396,7 @@
     self.opponentLost = [design makeNiceLabel:self.opponentLost];
 
     self.opponentPips.text    = opponentArray[2];
-    if([opponentArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
         self.opponentScore.text   = [NSString stringWithFormat:@"score: %@", opponentArray[5]];
         self.opponentPips.text    = opponentArray[2];
@@ -1471,7 +1471,7 @@
     self.playerLost = [design makeNiceLabel:self.playerLost];
 
     self.playerPips.text    = playerArray[2];
-    if([playerArray[2] rangeOfString:@"pips"].location != NSNotFound)
+    if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
         self.playerPips.text    = playerArray[2];
         self.playerScore.text   = [NSString stringWithFormat:@"score: %@", playerArray[5]];
