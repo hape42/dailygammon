@@ -101,6 +101,7 @@
     int maxWidth = self.view.bounds.size.width;
     int maxHeight = self.view.bounds.size.height;
     
+
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyy-MM-dd"];
     NSString *heute = [format stringFromDate:[NSDate date]];
@@ -113,7 +114,10 @@
     }
     else
     {
-        barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight)];
+        if([design isX]) //Notch
+            barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(30, 0, maxWidth - 30, maxHeight)];
+        else
+            barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight)];
         self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
     }
 
@@ -208,8 +212,12 @@
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 100, maxWidth, maxHeight-100)];
     else
-        hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-20)];
-    
+    {
+        if([design isX]) //Notch
+            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(30, 40, maxWidth - 30, maxHeight-50)];
+        else
+            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-20)];
+    }
     hostingView.hostedGraph = barLineChart;
     hostingView.tag = 1;
     [self.view addSubview:hostingView];
