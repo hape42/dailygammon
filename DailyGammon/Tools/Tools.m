@@ -8,15 +8,19 @@
 
 #import "Tools.h"
 #import "Design.h"
+#import "TFHpple.h"
 
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+#import "Preferences.h"
 
 @interface Tools ()
 @end
 
 @implementation Tools
+
+@synthesize preferences;
 
 typedef void(^connection)(BOOL);
 
@@ -160,5 +164,37 @@ typedef void(^connection)(BOOL);
     }
 }
 */
+
+-(int)matchCount
+{
+    NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
+    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
+    
+    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
+    
+    if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
+    {
+        return 0;
+    }
+    
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+    
+    int tableNo = 1;
+    preferences = [[Preferences alloc] init];
+
+    if([preferences isMiniBoard])
+        tableNo = 1;
+    else
+        tableNo = 2;
+    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+    
+    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+    NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
+    return (int)zeilen.count - 1;
+    }
 @end
 

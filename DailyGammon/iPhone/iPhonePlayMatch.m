@@ -18,6 +18,7 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
+#import "Tools.h"
 
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
@@ -96,12 +97,14 @@
 @property (assign, atomic) CGRect answerMessageFrameSave;
 @property (assign, atomic) BOOL isMessageAnswerView;
 
+@property (readwrite, retain, nonatomic) UILabel *matchCount;
+
 @end
 
 
 @implementation iPhonePlayMatch
 
-@synthesize design, match, rating;
+@synthesize design, match, rating, tools;
 @synthesize matchLink;
 @synthesize ratingDict;
 
@@ -145,7 +148,8 @@
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
-    
+    tools = [[Tools alloc] init];
+
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
     
@@ -193,6 +197,15 @@
         self.matchName.frame = frame;
     }
 
+    self.matchCount = [[UILabel alloc]init];
+    CGRect frame = self.moreButton.frame;
+    frame.origin.x  -= 85;
+    frame.size.width = 80;
+    self.matchCount.frame = frame;
+    self.matchCount.text = @"---";
+    self.matchCount.textAlignment = NSTextAlignmentRight;
+
+    [self.view addSubview:self.matchCount];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -204,6 +217,9 @@
 }
 -(void)showMatch
 {
+    
+    [self.matchCount setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
+
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
     self.isMessageAnswerView = FALSE;
@@ -316,6 +332,8 @@
     self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     [self.moreButton setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
+
+    self.matchCount.textColor = [schemaDict objectForKey:@"TintColor"];
 
 //    self.moreButton = [design makeNiceButton:self.moreButton];
 

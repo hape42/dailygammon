@@ -13,12 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Match;
 @class Rating;
+@class Tools;
 
 @interface PlayMatch : UIViewController<UIPopoverPresentationControllerDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate >
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Match *match;
 @property (strong, readwrite, retain, atomic) Rating *rating;
+@property (strong, readwrite, retain, atomic) Tools *tools;
 
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *ratingDict;
 @property (strong, readwrite, retain, atomic) NSMutableArray *topPageArray;

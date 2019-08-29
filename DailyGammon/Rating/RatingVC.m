@@ -20,6 +20,7 @@
 #import "AppDelegate.h"
 #import "Player.h"
 #import "iPhoneMenue.h"
+#import "Tools.h"
 
 @interface RatingVC ()
 
@@ -29,11 +30,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation RatingVC
 
-@synthesize design, preferences, rating;
+@synthesize design, preferences, rating, tools;
 
 - (void)viewDidLoad
 {
@@ -47,6 +50,7 @@
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
 
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -62,6 +66,7 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
+    tools = [[Tools alloc] init];
 
     [self initGraph];
     

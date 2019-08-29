@@ -21,6 +21,7 @@
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
+#import "Tools.h"
 
 @interface PlayMatch ()
 
@@ -95,11 +96,13 @@
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation PlayMatch
 
-@synthesize design, match, rating;
+@synthesize design, match, rating, tools;
 @synthesize matchLink;
 @synthesize ratingDict;
 
@@ -142,6 +145,7 @@
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
+    tools = [[Tools alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
@@ -196,6 +200,15 @@
 }
 -(void)showMatch
 {
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+//                   ^{
+//                       int matchCount = [self->tools matchCount];
+//                       XLog(@"matchCount %d", matchCount);
+    
+                       [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+//                       self.topPageButton.titleLabel.text = [NSString stringWithFormat:@"%d Top Page", matchCount];
+//                   });
+
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
     self.isMessageAnswerView = FALSE;

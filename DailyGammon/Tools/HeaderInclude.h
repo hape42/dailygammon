@@ -9,10 +9,12 @@
 #ifndef HeaderTest_h
 #define HeaderTest_h
 
+
 -(UIView *)makeHeader
 {
     design = [[Design alloc] init];
-    
+    tools = [[Tools alloc] init];
+
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(20, 20, maxBreite - 40, 50)];
     
@@ -57,12 +59,13 @@
     
     x +=  diceBreite + luecke;
     
-    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button1 = [design makeNiceButton:button1];
-    [button1 setTitle:@"Top Page" forState: UIControlStateNormal];
-    button1.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
-    button1.tag = 1;
-    [button1 addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.topPageButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.topPageButton = [design makeNiceButton:self.topPageButton];
+    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+    self.topPageButton.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
+    self.topPageButton.tag = 1;
+    [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     
     x += buttonBreite + luecke;
     
@@ -130,7 +133,7 @@
 
     [headerView addSubview:diceView];
     
-    [headerView addSubview:button1];
+    [headerView addSubview:self.topPageButton];
     [headerView addSubview:button2];
     [headerView addSubview:button3];
     [headerView addSubview:button4];

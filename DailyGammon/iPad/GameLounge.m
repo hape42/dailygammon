@@ -19,6 +19,7 @@
 #import "DbConnect.h"
 #import "RatingVC.h"
 #import "Player.h"
+#import "Tools.h"
 
 @interface GameLounge ()
 
@@ -32,11 +33,13 @@
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation GameLounge
 
-@synthesize design, preferences, rating;
+@synthesize design, preferences, rating, tools;
 
 - (void)viewDidLoad
 {
@@ -49,6 +52,7 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
+    tools = [[Tools alloc] init];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

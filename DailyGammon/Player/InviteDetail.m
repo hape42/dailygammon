@@ -50,6 +50,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIView *inviteView;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation InviteDetail
@@ -356,6 +358,49 @@
 
 - (IBAction)inviteAction:(id)sender
 {
+    
+    __block NSString *strComment = @"";
+    [self.comment.text enumerateSubstringsInRange:NSMakeRange(0, self.comment.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             strComment = [NSString stringWithFormat:@"%@%@",strComment, @"'"];
+         else if([substring isEqualToString:@"„"])
+             strComment = [NSString stringWithFormat:@"%@%@",strComment, @"?"];
+         else if([substring isEqualToString:@"“"])
+             strComment = [NSString stringWithFormat:@"%@%@",strComment, @"?"];
+         else
+             strComment = [NSString stringWithFormat:@"%@%@",strComment, substring];
+         
+     }];
+    
+    NSString *commentString = [strComment stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+
+    __block NSString *strNamend = @"";
+    [self.comment.text enumerateSubstringsInRange:NSMakeRange(0, self.comment.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+     {
+         
+         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+         if([substring isEqualToString:@"‘"])
+             strNamend = [NSString stringWithFormat:@"%@%@",strNamend, @"'"];
+         else if([substring isEqualToString:@"„"])
+             strNamend = [NSString stringWithFormat:@"%@%@",strNamend, @"?"];
+         else if([substring isEqualToString:@"“"])
+             strNamend = [NSString stringWithFormat:@"%@%@",strNamend, @"?"];
+         else
+             strNamend = [NSString stringWithFormat:@"%@%@",strNamend, substring];
+         
+     }];
+    
+//    NSString *namedString = [strNamend stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+//
+//    NSURL *urlInvite = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
+//
+//    NSError *error = nil;
+//    [NSData dataWithContentsOfURL:urlInvite options:NSDataReadingUncached error:&error];
+//    XLog(@"Error: %@", error);
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self dismissViewControllerAnimated:YES completion:nil];
     else

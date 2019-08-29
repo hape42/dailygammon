@@ -17,7 +17,7 @@
 #import "GameLounge.h"
 #import "TopPageVC.h"
 #import "DbConnect.h"
-
+#import "Tools.h"
 @interface Player ()
 
 @property (readwrite, retain, nonatomic) NSMutableArray *playerArray;
@@ -36,11 +36,13 @@
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 @property (assign, atomic) BOOL loginOk;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation Player
 
-@synthesize design;
+@synthesize design, tools;
 
 #define PLAYER_BREITE .6
 #define RATING_BREITE .19
@@ -56,7 +58,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     
     design = [[Design alloc] init];
-    
+    tools = [[Tools alloc] init];
+
     UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.moreButton setImage:image forState:UIControlStateNormal];
     

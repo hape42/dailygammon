@@ -9,10 +9,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class Preferences;
 
 @interface Tools: NSObject <NSURLSessionDelegate>
 
+@property (strong, readwrite, retain, atomic) Preferences *preferences;
+
 -(BOOL)hasConnectivity;
+-(int)matchCount;
 
 @end
 

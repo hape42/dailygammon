@@ -21,6 +21,7 @@
 #import "Player.h"
 #import "iPhoneMenue.h"
 #import "iPhonePlayMatch.h"
+#import "Tools.h"
 
 @interface TopPageVC ()
 
@@ -52,11 +53,13 @@
 @property (assign, atomic) float opponentBreite;
 @property (assign, atomic) float eventBreite;
 
+@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+
 @end
 
 @implementation TopPageVC
 
-@synthesize design, preferences, rating;
+@synthesize design, preferences, rating, tools;
 
 - (void)viewDidLoad
 {
@@ -71,6 +74,7 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
+    tools = [[Tools alloc] init];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -550,12 +554,12 @@
     x += self.lengthBreite;
     
     UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.opponentBreite,30)];
-    opponentLabel.textAlignment = NSTextAlignmentLeft;
+    opponentLabel.textAlignment = NSTextAlignmentCenter;
     opponentLabel.text = self.topPageHeaderArray[6];
     opponentLabel.textColor = [UIColor whiteColor];
     UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonOpponent.frame = opponentLabel.frame;
-    [buttonOpponent addTarget:self action:@selector(sortRecent:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonOpponent addTarget:self action:@selector(sortOpponent) forControlEvents:UIControlEventTouchUpInside];
 
     int order = [preferences readNextMatchOrdering];
                  
@@ -580,7 +584,13 @@
         case 61:
             order = 61;
             break;
-    }
+        case 7:
+            order = 7;
+            break;
+        case 71:
+            order = 71;
+            break;
+   }
     
     
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
@@ -618,7 +628,12 @@
         case 61:
             eventLabel = [design makeSortLabel:eventLabel sortOrderDown:NO];
             break;
-  }
+        case 7:
+            opponentLabel = [design makeSortLabel:opponentLabel sortOrderDown:YES];
+            break;
+        case 71:
+            opponentLabel = [design makeSortLabel:opponentLabel sortOrderDown:NO];
+        break;  }
 
     [headerView addSubview:nummerLabel];
     
@@ -649,6 +664,7 @@
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
     self.navigationBar.title = [NSString stringWithFormat:@"%d Matches where you can move" ,(int)self.topPageArray.count];
+    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", (int)self.topPageArray.count] forState: UIControlStateNormal];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
@@ -680,7 +696,11 @@
         case 61:
             [self sortEvent];
             break;
-      default:
+        case 7:
+        case 71:
+            [self sortOpponent];
+            break;
+     default:
             [self.tableView reloadData];
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
                                                         inSection:0];
@@ -771,6 +791,43 @@
     [[NSUserDefaults standardUserDefaults] setInteger:typ forKey:@"orderTyp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    
+}
+
+-(void)sortOpponent
+{
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:6];
+        id secondObject = [second objectAtIndex:6];
+        NSString *erstes = [[firstObject objectForKey:@"Text"]lastPathComponent];
+        NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
+        
+        NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
+        {
+            if( result == NSOrderedAscending)
+                return NSOrderedDescending;
+            if( result == NSOrderedDescending)
+                return NSOrderedAscending;
+        }
+        else
+            return result;
+        
+        return NSOrderedSame;
+    }];
+    
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
+        [[NSUserDefaults standardUserDefaults] setInteger:7 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:71 forKey:@"orderTyp"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
 }
 
