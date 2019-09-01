@@ -97,7 +97,9 @@
 @property (assign, atomic) CGRect answerMessageFrameSave;
 @property (assign, atomic) BOOL isMessageAnswerView;
 
-@property (readwrite, retain, nonatomic) UILabel *matchCount;
+@property (readwrite, retain, nonatomic) UILabel *matchCountLabel;
+
+@property (assign, atomic) int matchCount;
 
 @end
 
@@ -152,7 +154,8 @@
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
-    
+    [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
+
 //    [self.view addSubview:self.matchName];
     
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
@@ -197,15 +200,18 @@
         self.matchName.frame = frame;
     }
 
-    self.matchCount = [[UILabel alloc]init];
+    self.matchCount = [tools matchCount];
+
+    self.matchCountLabel = [[UILabel alloc]init];
     CGRect frame = self.moreButton.frame;
     frame.origin.x  -= 85;
     frame.size.width = 80;
-    self.matchCount.frame = frame;
-    self.matchCount.text = @"---";
-    self.matchCount.textAlignment = NSTextAlignmentRight;
+    self.matchCountLabel.frame = frame;
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
 
-    [self.view addSubview:self.matchCount];
+    self.matchCountLabel.textAlignment = NSTextAlignmentRight;
+
+    [self.view addSubview:self.matchCountLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -215,10 +221,25 @@
     
     [self showMatch];
 }
+
+- (void) showMatchCount
+{
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
+//    XLog(@"matchCount %d  ",  self.matchCount);
+}
 -(void)showMatch
 {
     
-    [self.matchCount setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       int matchCount = [self->tools matchCount];
+                       if(matchCount != self.matchCount)
+                       {
+                           self.matchCount = matchCount;
+                           [[NSNotificationCenter defaultCenter] postNotificationName:@"changeMatchCount" object:self];
+                       }
+                       //                       XLog(@"matchCount %d %d ", matchCount, self.matchCount);
+                   });
 
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
@@ -333,7 +354,7 @@
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     [self.moreButton setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
 
-    self.matchCount.textColor = [schemaDict objectForKey:@"TintColor"];
+    self.matchCountLabel.textColor = [schemaDict objectForKey:@"TintColor"];
 
 //    self.moreButton = [design makeNiceButton:self.moreButton];
 

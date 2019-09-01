@@ -98,6 +98,8 @@
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
+@property (assign, atomic) int matchCount;
+
 @end
 
 @implementation PlayMatch
@@ -149,6 +151,7 @@
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+    [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
 
     [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
@@ -187,6 +190,7 @@
     self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
 
+    self.matchCount = [tools matchCount];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -198,16 +202,24 @@
 
     [self showMatch];
 }
+
+- (void) showMatchCount
+{
+    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", self.matchCount] forState: UIControlStateNormal];
+//    XLog(@"matchCount %d  ",  self.matchCount);
+}
 -(void)showMatch
 {
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-//                   ^{
-//                       int matchCount = [self->tools matchCount];
-//                       XLog(@"matchCount %d", matchCount);
-    
-                       [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
-//                       self.topPageButton.titleLabel.text = [NSString stringWithFormat:@"%d Top Page", matchCount];
-//                   });
+    dispatch_async(dispatch_get_main_queue(),
+                   ^{
+                       int matchCount = [self->tools matchCount];
+                       if(matchCount != self.matchCount)
+                       {
+                           self.matchCount = matchCount;
+                           [[NSNotificationCenter defaultCenter] postNotificationName:@"changeMatchCount" object:self];
+                       }
+//                       XLog(@"matchCount %d %d ", matchCount, self.matchCount);
+                   });
 
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
