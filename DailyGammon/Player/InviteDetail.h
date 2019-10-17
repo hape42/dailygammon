@@ -11,7 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 
-@interface InviteDetail : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate>
+@interface InviteDetail : UIViewController <UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (strong, readwrite, retain, atomic)    NSString *playerName;
 @property (strong, readwrite, retain, atomic)    NSString *playerNummer;

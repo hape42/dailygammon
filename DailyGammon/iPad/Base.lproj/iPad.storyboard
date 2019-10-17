@@ -1193,6 +1193,7 @@
                         <outlet property="named" destination="p4K-sT-JRZ" id="ryC-B8-MwJ"/>
                         <outlet property="privateMatch" destination="e0p-uP-E6K" id="wde-Pa-Fs7"/>
                         <outlet property="timeControlButton" destination="i3V-rR-fQR" id="8nv-G9-duS"/>
+                        <outlet property="variant" destination="hKC-fG-3ca" id="P1n-iX-AWs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xcY-Pw-RdB" userLabel="First Responder" sceneMemberID="firstResponder"/>

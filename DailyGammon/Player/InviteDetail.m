@@ -30,6 +30,7 @@
 @property (assign, atomic) int timeControlSelected;
 @property (assign, atomic) int matchLengthSelected;
 
+@property (weak, nonatomic) IBOutlet UISegmentedControl *variant;
 @property (weak, nonatomic) IBOutlet UIButton *matchLengthButton;
 @property (weak, nonatomic) IBOutlet UIButton *timeControlButton;
 @property (weak, nonatomic) IBOutlet UIButton *inviteButton;
@@ -51,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIView *inviteView;
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (assign, atomic) BOOL loginOk;
 
 @end
 
@@ -64,11 +66,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.matchlength = [NSArray arrayWithObjects:@"1", @"3", @"5", @"7", @"9", @"11",
-                        @"13", @"15", @"17", @"19", @"21", @"23", @"25",
-                        @"Cubeless Money", @"Money",
-                       nil];
-    
+    self.matchlength = @[
+                         @{@"name": @"1", @"key": @"1"},
+                         @{@"name": @"3", @"key": @"3"},
+                         @{@"name": @"5", @"key": @"5"},
+                         @{@"name": @"7", @"key": @"7"},
+                         @{@"name": @"9", @"key": @"9"},
+                         @{@"name": @"11", @"key": @"11"},
+                         @{@"name": @"13", @"key": @"13"},
+                         @{@"name": @"15", @"key": @"15"},
+                         @{@"name": @"17", @"key": @"17"},
+                         @{@"name": @"19", @"key": @"19"},
+                         @{@"name": @"21", @"key": @"21"},
+                         @{@"name": @"23", @"key": @"23"},
+                         @{@"name": @"25", @"key": @"25"},
+                         @{@"name": @"Cubeless Money", @"key": @"-1"},
+                         @{@"name": @"Money", @"key": @"-2"}
+                         ];
+  
     self.timeControl = [NSArray arrayWithObjects:@"Never",
                         @"Twice a Day (100/+2/15)",
                         @"Once a Day (200/+4/24)",
@@ -116,7 +131,7 @@
 
     [self.ignorePlayer setTitle:[NSString stringWithFormat:@"Ignore %@", playerName] forState:UIControlStateNormal];
 
-    self.matchLengthSelected = 2;
+    self.matchLengthSelected = 3;
     self.timeControlSelected = 0;
     
     CGRect frame = CGRectMake(self.privateMatch.frame.origin.x,
@@ -145,6 +160,7 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+
 }
 
 - (void)moreAction
@@ -174,8 +190,10 @@
     }
     if(self.isMatchLength)
     {
-        [self.matchLengthButton setTitle:self.matchlength[row] forState:UIControlStateNormal];
-        self.matchLengthSelected = (int)row;
+        NSDictionary *dict = self.matchlength[row];
+
+        [self.matchLengthButton setTitle:[dict objectForKey:@"name"] forState:UIControlStateNormal];
+        self.matchLengthSelected = [[dict objectForKey:@"key"]intValue];
     }
 }
 
@@ -191,7 +209,10 @@
     if(self.isTimeControl)
         title = self.timeControl[row];
     if(self.isMatchLength)
-        title = self.matchlength[row];
+    {
+        NSDictionary *dict = self.matchlength[row];
+        title = [dict objectForKey:@"name"];
+    }
 
     [lblRow setTextColor: [UIColor darkTextColor]];
 
@@ -358,7 +379,33 @@
 
 - (IBAction)inviteAction:(id)sender
 {
+    self.loginOk = FALSE;
     
+    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
+    NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
+    
+    NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
+    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    
+    if(conn)
+    {
+        XLog(@"Connection Successful");
+    } else
+    {
+        XLog(@"Connection could not be made");
+    }
+
+}
+-(void)doInvite
+{
     __block NSString *strComment = @"";
     [self.comment.text enumerateSubstringsInRange:NSMakeRange(0, self.comment.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
      {
@@ -393,20 +440,70 @@
          
      }];
     
-//    NSString *namedString = [strNamend stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-//
-//    NSURL *urlInvite = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
+    NSString *namedString = [strNamend stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+
+    NSString *postString = [NSString stringWithFormat:@"player=%@&variant=%ld&length=%d&comment=%@&name=%@&time_control=%d&private=%@",
+                            playerNummer,
+                            self.variant.selectedSegmentIndex + 1,
+                            self.matchLengthSelected,
+                            @"comment",
+                            @"name",
+                            3,
+                            @"on"];
+
+//    NSURL *urlInvite = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/invite/new/?submit=Invite&%@",postString]];
 //
 //    NSError *error = nil;
-//    [NSData dataWithContentsOfURL:urlInvite options:NSDataReadingUncached error:&error];
+//    NSData *inviteHtmlData = [NSData dataWithContentsOfURL:urlInvite options:NSDataReadingUncached error:&error];
 //    XLog(@"Error: %@", error);
+//    NSString *htmlString = [NSString stringWithUTF8String:[inviteHtmlData bytes]];
+//    htmlString = [[NSString alloc]
+//                  initWithData:inviteHtmlData encoding: NSISOLatin1StringEncoding];
 
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/invite/new"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
+    NSURLConnection *conn = [NSURLConnection connectionWithRequest:request delegate:self];
+//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+
+    if(conn)
+    {
+        XLog(@"Connection Successful");
+    } else
+    {
+        XLog(@"Connection could not be made");
+    }
+
+//    NSURLSession *session = [NSURLSession sharedSession];
+//    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+//                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
+//                                      {
+//                                           XLog(@"Error: %@", error);
+//                                          // do something with the data
+//                                      }];
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self dismissViewControllerAnimated:YES completion:nil];
     else
         [self.navigationController popViewControllerAnimated:TRUE];
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+        
+        if (statusCode == 200) {
+            NSLog(@"received successful (200) response ");
+        } else {
+            NSLog(@"whoops, something wrong, received status code of %d", statusCode);
+        }
+    } else {
+        NSLog(@"Not a HTTP response");
+    }
+}
 #pragma mark - textField
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -471,5 +568,57 @@ shouldChangeTextInRange:(NSRange)range
         [self.navigationController popViewControllerAnimated:TRUE];
 }
 
+#pragma mark NSURLConnection Delegate Methods
+
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    if(self.loginOk)
+        ;
+//        [self.datenData appendData:data];
+    else
+        self.loginOk = TRUE;
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    XLog(@"Connection didFailWithError");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
+    {
+        //        XLog(@"name: '%@'\n",   [cookie name]);
+        //        XLog(@"value: '%@'\n",  [cookie value]);
+        //        XLog(@"domain: '%@'\n", [cookie domain]);
+        //        XLog(@"path: '%@'\n",   [cookie path]);
+        if([[cookie name] isEqualToString:@"USERID"])
+            [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
+        
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        if([[cookie value] isEqualToString:@"N/A"])
+        {
+//            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//            LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
+//            [self.navigationController pushViewController:vc animated:NO];
+        }
+        else
+        {
+            [ self doInvite];
+        }
+    }
+    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
+    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
+    {
+//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
+//        [self.navigationController pushViewController:vc animated:NO];
+    }
+    
+    return;
+}
 
 @end

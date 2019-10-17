@@ -55,6 +55,8 @@
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
+@property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
+
 @end
 
 @implementation TopPageVC
@@ -64,6 +66,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    self.indicator.color = [schemaDict objectForKey:@"TintColor"];
+    self.indicator.center = self.view.center;
+    [self.view addSubview:self.indicator];
 
     self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
 //    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
@@ -108,7 +116,14 @@
     self.eventBreite = self.opponentBreite;
 
 }
-
+- (UIActivityIndicatorView *)indicator
+{
+    if (!_indicator)
+    {
+        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    }
+    return _indicator;
+}
 -(void) reDrawHeader
 {
 //    [self.view addSubview:[self makeHeader]];
@@ -154,6 +169,8 @@
 {
     [super viewWillAppear:animated];
 
+    [self.indicator startAnimating];
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     else
@@ -194,7 +211,7 @@
 
 }
 
-
+/**/
 #pragma mark NSURLConnection Delegate Methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -250,11 +267,13 @@
     
     return;
 }
-
+/**/
 #pragma mark - Hpple
 
 -(void)readTopPage
 {
+
+    [self.indicator startAnimating];
 
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
@@ -709,6 +728,7 @@
 
             break;
     }
+    [self.indicator stopAnimating];
 }
 
 #pragma mark - Table view delegate

@@ -1244,6 +1244,7 @@
                         <outlet property="named" destination="tSn-B5-ycj" id="aaU-0D-kUQ"/>
                         <outlet property="privateMatch" destination="Na2-2t-hhI" id="Cmk-tX-8ze"/>
                         <outlet property="timeControlButton" destination="BVB-nP-rcI" id="euU-kv-AHs"/>
+                        <outlet property="variant" destination="1JB-4D-zQA" id="1Yk-No-Kh9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2CR-AY-jsU" userLabel="First Responder" sceneMemberID="firstResponder"/>
