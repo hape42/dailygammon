@@ -136,7 +136,7 @@
     
     NSString *text = @"";
     NSString *emailText = @"";
-    text = [NSString stringWithFormat:@"Hallo Support-Team of %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
+    text = [NSString stringWithFormat:@"Hallo Support-Team of the %@ App for %@, <br><br> ", [[UIDevice currentDevice] model],[[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
     
     text = [NSString stringWithFormat:@"my Data: <br> "];
