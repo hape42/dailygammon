@@ -123,6 +123,7 @@
 #define NEXT__ 11
 #define ACCEPT_DECLINE 12
 #define SUBMIT_FORCED_MOVE 13
+#define NEXTGAME 14
 
 #define FINISHED_MATCH_VIEW 43
 #define CHAT_VIEW 42
@@ -1394,6 +1395,24 @@
             [actionView addSubview:buttonNext];
             break;
         }
+#pragma mark - Button NextGame
+        case NEXTGAME:
+        {
+                // seltsamer -0- Something unexpected happend!
+
+                matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
+                NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+                //    XLog(@"%@",urlMatch);
+                NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
+
+            //    [match readMatch:matchLink];
+                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                [self.navigationController pushViewController:vc animated:NO];
+                return;
+
+        }
        case ROLL:
         {
 #pragma mark - Button Roll
@@ -2027,6 +2046,8 @@
         NSMutableDictionary *dict = attributesArray[0];
         if([[dict objectForKey:@"value"] isEqualToString:@"Next"])
             return NEXT;
+        if([[dict objectForKey:@"value"] isEqualToString:@"1"])
+            return NEXTGAME;
         if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
             return ROLL;
         if([[dict objectForKey:@"value"] isEqualToString:@"Submit Forced Move"])

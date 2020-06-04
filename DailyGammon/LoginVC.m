@@ -150,8 +150,24 @@
                                         handler:^(UIAlertAction * action)
                                         {
                                         }];
+            UIAlertAction* helpButton = [UIAlertAction
+                                         actionWithTitle:@"Need help"
+                                         style:UIAlertActionStyleDefault
+                                         handler:^(UIAlertAction * action)
+                                         {
+                                              NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/help/index.html#pw"]];
+                                              if ([SFSafariViewController class] != nil) {
+                                                  SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+                                                  [self presentViewController:sfvc animated:YES completion:nil];
+                                              } else {
+                                                  [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+                                              }
+
+                                         }];
+
             [alert addAction:yesButton];
-            
+            [alert addAction:helpButton];
+
             [self presentViewController:alert animated:YES completion:nil];
 
         }
@@ -191,57 +207,23 @@
                                     {
                                     }];
         
-        UIAlertAction* mailButton = [UIAlertAction
-                                     actionWithTitle:@"Mail to Support"
+        UIAlertAction* helpButton = [UIAlertAction
+                                     actionWithTitle:@"Need help"
                                      style:UIAlertActionStyleDefault
                                      handler:^(UIAlertAction * action)
                                      {
-                                         if (![MFMailComposeViewController canSendMail])
-                                         {
-                                             XLog(@"Fehler: Mail kann nicht versendet werden");
-                                             return;
-                                         }
-                                         NSString *betreff = [NSString stringWithFormat:@"An error has occured processing your login"];
-                                         
-                                         NSString *text = @"";
-                                         NSString *emailText = @"";
-                                         text = [NSString stringWithFormat:@"Hallo Support-Team of %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"my Data: <br> "];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"] ];
-                                         
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
-                                         emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                         
-                                         
-                                         MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
-                                         emailController.mailComposeDelegate = self;
-                                         NSArray *toSupport = [NSArray arrayWithObjects:@"dg@hape42.de",nil];
-                                         
-                                         [emailController setToRecipients:toSupport];
-                                         [emailController setSubject:betreff];
-                                         [emailController setMessageBody:emailText isHTML:YES];
-                                         
-                                         [self presentViewController:emailController animated:YES completion:NULL];
-                                         
+                                          NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.dailygammon.com/help/index.html#pw"]];
+                                          if ([SFSafariViewController class] != nil) {
+                                              SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+                                              [self presentViewController:sfvc animated:YES completion:nil];
+                                          } else {
+                                              [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+                                          }
+
                                      }];
 
         [alert addAction:yesButton];
-        [alert addAction:mailButton];
+        [alert addAction:helpButton];
 
         [self presentViewController:alert animated:YES completion:nil];
 
