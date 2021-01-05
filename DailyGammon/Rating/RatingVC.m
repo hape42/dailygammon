@@ -27,6 +27,10 @@
 @property (strong, nonatomic) NSMutableArray *ratingArray;
 @property (strong, nonatomic) NSMutableArray *monatArray;
 
+@property (strong, nonatomic) NSMutableArray *averageArray;
+@property (readwrite, atomic) int average;
+@property (readwrite, atomic) BOOL iPad;
+
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
@@ -50,7 +54,8 @@
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
 
-    
+    self.iPad = FALSE;
+    self.average = 30;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,9 +92,45 @@
         [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
         
         [self.view addSubview:shareButton];
+        
+        int maxWidth = self.view.bounds.size.width;
+        int segmentWidth = 180;
+        int labelWidth = 80;
+        int edge = 50;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(maxWidth - segmentWidth - edge -labelWidth, 100, labelWidth, 35)];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.text = @"Average";
+
+        [self.view addSubview:label];
+        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
+        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+        averageControl.frame = CGRectMake(maxWidth-segmentWidth-edge, 100, segmentWidth, 35);
+        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
+        averageControl.selectedSegmentIndex = 1;
+        [self.view addSubview:averageControl];
+        self.iPad = TRUE;
     }
 }
 
+- (void)averageAction:(UISegmentedControl *)segment
+{
+    if(segment.selectedSegmentIndex == 0)
+        self.average = 7;
+    if(segment.selectedSegmentIndex == 1)
+        self.average = 30;
+    if(segment.selectedSegmentIndex == 2)
+        self.average = 90;
+    if(segment.selectedSegmentIndex == 3)
+        self.average = 365;
+    [self makeAverageArray];
+    [self initGraph];
+
+}
+
+-(void)makeAverageArray
+{
+    
+}
 #pragma mark CorePlot
 - (void) initGraph
 {
