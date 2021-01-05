@@ -123,6 +123,7 @@
         self.average = 90;
     if(segment.selectedSegmentIndex == 3)
         self.average = 365;
+    
     [self makeAverageArray];
     [self initGraph];
 
@@ -131,14 +132,51 @@
 -(void)makeAverageArray
 {
     self.averageArray = [[NSMutableArray alloc]initWithCapacity:20];
-    for(NSMutableDictionary *dict in self.ratingArray)
+    for(int index = 0; index < self.ratingArray.count; index++)
     {
-        [self.averageArray addObject:dict];
+        if(index > self.average)
+        {
+            float rating = 0.0;
+            for(int i = 0; i < self.average; i++)
+            {
+                NSMutableDictionary *dict = self.ratingArray[index-i];
+
+                rating += [[dict objectForKey:@"rating"]floatValue];
+            }
+            rating /= self.average;
+            NSDictionary *averageDict = @{
+                                          @"rating"  : [NSNumber numberWithDouble: rating]
+                                         };
+            [self.averageArray addObject:averageDict];
+        }
+        else
+        {
+            NSDictionary *averageDict = @{
+                                          @"rating"  : [NSNumber numberWithDouble: 0.0]
+                                         };
+            [self.averageArray addObject:averageDict];
+
+        }
+
     }
 }
+
 #pragma mark CorePlot
 - (void) initGraph
 {
+    if(hostingView != nil)
+    {
+        for (UIView *view in [self.view subviews])
+        {
+            if(view.tag == 1)
+                [view removeFromSuperview];
+        }
+
+        for (UIView *view in [hostingView subviews])
+        {
+            [view removeFromSuperview];
+        }
+    }
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
@@ -168,7 +206,7 @@
         self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
     }
 
-        
+    
     barLineChart.plotAreaFrame.borderLineStyle = nil;
     barLineChart.plotAreaFrame.cornerRadius = 0.0f;
     
@@ -329,14 +367,14 @@
             }
             else if ([plot.identifier isEqual:@"Average"] == YES)
             {
-                if(index < self.average)
+                if(index <= self.average)
                     return nil;
 
 
                 NSDictionary *dict = [self.averageArray objectAtIndex:index];
                 //            NSLog(@"%6.2f", [NSNumber numberWithFloat: [[dict objectForKey:@"kontostand"]floatValue]]);
                 
-                return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]-15];
+                return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]];
             }
             else if ([plot.identifier isEqual:@"Monat"] == YES)
             {
