@@ -73,8 +73,9 @@
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
 
+    [self makeAverageArray];
     [self initGraph];
-    
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -129,7 +130,11 @@
 
 -(void)makeAverageArray
 {
-    
+    self.averageArray = [[NSMutableArray alloc]initWithCapacity:20];
+    for(NSMutableDictionary *dict in self.ratingArray)
+    {
+        [self.averageArray addObject:dict];
+    }
 }
 #pragma mark CorePlot
 - (void) initGraph
@@ -138,7 +143,8 @@
     if(boardSchema < 1) boardSchema = 4;
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
     CPTColor *tintColor = [CPTColor colorWithCGColor:[[schemaDict objectForKey:@"TintColor"] CGColor]];
-    
+    CPTColor *averageColor = [CPTColor colorWithCGColor:[[UIColor yellowColor] CGColor]];
+
     int maxWidth = self.view.bounds.size.width;
     int maxHeight = self.view.bounds.size.height;
     
@@ -270,15 +276,24 @@
     plotSpace.xRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(0.0f) length:CPTDecimalFromInt((int)[self.ratingArray count])];
     plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromDouble(min) length:CPTDecimalFromDouble(max - min)];
     
-    CPTScatterPlot *kontoPlot = [[CPTScatterPlot alloc] init];
-    kontoPlot.dataSource = self;
-    kontoPlot.identifier = @"Rating";
-    [graph addPlot:kontoPlot toPlotSpace:plotSpace];
-    CPTMutableLineStyle *kontoLineStyle = [kontoPlot.dataLineStyle mutableCopy];
-    kontoLineStyle.lineWidth = 3.0;
-    kontoLineStyle.lineColor = tintColor;
-    kontoPlot.dataLineStyle = kontoLineStyle;
+    CPTScatterPlot *ratingPlot = [[CPTScatterPlot alloc] init];
+    ratingPlot.dataSource = self;
+    ratingPlot.identifier = @"Rating";
+    [graph addPlot:ratingPlot toPlotSpace:plotSpace];
+    CPTMutableLineStyle *ratingLineStyle = [ratingPlot.dataLineStyle mutableCopy];
+    ratingLineStyle.lineWidth = 3.0;
+    ratingLineStyle.lineColor = tintColor;
+    ratingPlot.dataLineStyle = ratingLineStyle;
     
+    CPTScatterPlot *averagePlot = [[CPTScatterPlot alloc] init];
+    averagePlot.dataSource = self;
+    averagePlot.identifier = @"Average";
+    [graph addPlot:averagePlot toPlotSpace:plotSpace];
+    CPTMutableLineStyle *averageLineStyle = [averagePlot.dataLineStyle mutableCopy];
+    averageLineStyle.lineWidth = 3.0;
+    averageLineStyle.lineColor = averageColor;
+    averagePlot.dataLineStyle = averageLineStyle;
+
     graph.legend = [CPTLegend legendWithGraph:graph];
     graph.legend.cornerRadius = 5.0;
     graph.legend.swatchSize = CGSizeMake(25.0, 25.0);
@@ -311,6 +326,17 @@
                 //            NSLog(@"%6.2f", [NSNumber numberWithFloat: [[dict objectForKey:@"kontostand"]floatValue]]);
                 
                 return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]];
+            }
+            else if ([plot.identifier isEqual:@"Average"] == YES)
+            {
+                if(index < self.average)
+                    return nil;
+
+
+                NSDictionary *dict = [self.averageArray objectAtIndex:index];
+                //            NSLog(@"%6.2f", [NSNumber numberWithFloat: [[dict objectForKey:@"kontostand"]floatValue]]);
+                
+                return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]-15];
             }
             else if ([plot.identifier isEqual:@"Monat"] == YES)
             {
