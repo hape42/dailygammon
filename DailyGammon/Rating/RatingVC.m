@@ -91,9 +91,7 @@
         [shareButton setTitle:@"Share" forState: UIControlStateNormal];
         shareButton.frame = CGRectMake(150, 100, 80, 35);
         [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
-        
         [self.view addSubview:shareButton];
-        
         int maxWidth = self.view.bounds.size.width;
         int segmentWidth = 180;
         int labelWidth = 80;
@@ -109,11 +107,12 @@
         [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
         averageControl.selectedSegmentIndex = 1;
         [self.view addSubview:averageControl];
+
         self.iPad = TRUE;
     }
 }
 
-- (void)averageAction:(UISegmentedControl *)segment
+- (IBAction)averageAction:(UISegmentedControl *)segment
 {
     if(segment.selectedSegmentIndex == 0)
         self.average = 7;
@@ -161,7 +160,8 @@
     }
 }
 
-#pragma mark CorePlot
+#pragma mark - CorePlot
+    
 - (void) initGraph
 {
     if(hostingView != nil)
@@ -202,7 +202,7 @@
         if([design isX]) //Notch
             barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(30, 0, maxWidth - 30, maxHeight)];
         else
-            barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight)];
+            barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(40, 0, maxWidth, maxHeight-0)];
         self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
     }
 
@@ -285,7 +285,7 @@
     y.axisLineStyle = nil;
     y.majorTickLineStyle = nil;
     y.minorTickLineStyle = nil;
-    y.majorIntervalLength = CPTDecimalFromString(@"10");
+    y.majorIntervalLength = CPTDecimalFromString(@"20");
     y.orthogonalCoordinateDecimal = CPTDecimalFromString(@"0");
     //    y.title = @"Kontostand";
     y.titleOffset = 40.0f;
@@ -295,13 +295,13 @@
     y.majorGridLineStyle = gridLineStyle;
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 100, maxWidth, maxHeight-100)];
+        hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 140, maxWidth, maxHeight-140)];
     else
     {
         if([design isX]) //Notch
-            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(30, 40, maxWidth - 30, maxHeight-50)];
+            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(30, 90, maxWidth - 30, maxHeight-90)];
         else
-            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-20)];
+            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-0)];
     }
     hostingView.hostedGraph = barLineChart;
     hostingView.tag = 1;
@@ -336,7 +336,7 @@
     graph.legend.cornerRadius = 5.0;
     graph.legend.swatchSize = CGSizeMake(25.0, 25.0);
     graph.legendAnchor = CPTRectAnchorBottom;
-    graph.legendDisplacement = CGPointMake(0.0, -10.0);
+    graph.legendDisplacement = CGPointMake(0.0, 30.0);
     graph.legend.numberOfColumns = 3;
     
 }
@@ -393,7 +393,11 @@
     
     CPTMutableTextStyle *textStyle = [CPTMutableTextStyle textStyle];
     [textStyle setFontSize:15];
-    NSString *oldMonth = @"12";
+    NSString *oldMonth = @"99";
+    int step = 1;
+    if([self.ratingArray count] > 600)
+        step = 3;
+    int monthCounter = 1;
     for (int i = 0; i < [self.ratingArray count]; i++)
     {
         NSDictionary *dict = [self.ratingArray objectAtIndex:i];
@@ -401,7 +405,18 @@
         NSString *newMonth = [[dict objectForKey:@"datum"] substringWithRange:NSMakeRange(5, 2)];
         if(![oldMonth isEqualToString:newMonth])
         {
-            axisLabel = [[CPTAxisLabel alloc] initWithText:[dict objectForKey:@"datum"] textStyle:textStyle];
+            NSString *dateText = [NSString stringWithFormat:@"%@ %@",
+                                  [[dict objectForKey:@"datum"] substringWithRange:NSMakeRange(2, 2)],
+                                  [[dict objectForKey:@"datum"] substringWithRange:NSMakeRange(5, 2)]];
+            if(monthCounter == step)
+            {
+                axisLabel = [[CPTAxisLabel alloc] initWithText:dateText textStyle:textStyle];
+                monthCounter = 1;
+            }
+            else
+            {
+                monthCounter++;
+            }
             oldMonth = newMonth;
         }
         [axisLabel setTickLocation:CPTDecimalFromInt(i)];
