@@ -325,7 +325,7 @@
     
     CPTScatterPlot *averagePlot = [[CPTScatterPlot alloc] init];
     averagePlot.dataSource = self;
-    averagePlot.identifier = @"Average";
+    averagePlot.identifier = [NSString stringWithFormat: @"Average %d",self.average] ;
     [graph addPlot:averagePlot toPlotSpace:plotSpace];
     CPTMutableLineStyle *averageLineStyle = [averagePlot.dataLineStyle mutableCopy];
     averageLineStyle.lineWidth = 3.0;
@@ -365,7 +365,7 @@
                 
                 return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]];
             }
-            else if ([plot.identifier isEqual:@"Average"] == YES)
+            else if ([plot.identifier isEqual:[NSString stringWithFormat: @"Average %d",self.average] ] == YES)
             {
                 if(index <= self.average)
                     return nil;
