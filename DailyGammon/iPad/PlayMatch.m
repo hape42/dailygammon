@@ -1246,6 +1246,10 @@
                                                {
                                                    playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
                                                    self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
+                                                   self.playerActive.numberOfLines = 1;
+                                                   self.playerActive.adjustsFontSizeToFitWidth = YES;
+                                                   self.playerActive.minimumScaleFactor = 0.1;
+                                                   self.playerActive.lineBreakMode = NSLineBreakByClipping;
                                                }
                                                self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                
@@ -1267,6 +1271,10 @@
                                                {
                                                    opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
                                                    self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
+                                                   self.opponentActive.numberOfLines = 1;
+                                                   self.opponentActive.adjustsFontSizeToFitWidth = YES;
+                                                   self.opponentActive.minimumScaleFactor = 0.1;
+                                                   self.opponentActive.lineBreakMode = NSLineBreakByClipping;
                                                }
                                                self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
                                                

@@ -79,10 +79,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
 
-    design = [[Design alloc] init];
+    design      = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
-    rating = [[Rating alloc] init];
-    tools = [[Tools alloc] init];
+    rating      = [[Rating alloc] init];
+    tools       = [[Tools alloc] init];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -176,15 +176,15 @@
     else
         [self.navigationController setNavigationBarHidden:NO animated:animated];
 
-    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
+    NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 
     self.loginOk = FALSE;
     
     //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
-    NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
+    NSString *post               = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
+    NSData *postData             = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
     [request setHTTPMethod:@"POST"];
@@ -285,6 +285,10 @@
 
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
     {
+        [self.indicator stopAnimating];
+        self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
+        self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
+
         return;
     }
 
@@ -683,6 +687,12 @@
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
     self.navigationBar.title = [NSString stringWithFormat:@"%d Matches where you can move" ,(int)self.topPageArray.count];
+    if(self.topPageArray.count == 0)
+    {
+        self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
+        self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
+
+    }
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", (int)self.topPageArray.count] forState: UIControlStateNormal];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
