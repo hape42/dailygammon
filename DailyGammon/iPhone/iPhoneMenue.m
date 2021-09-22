@@ -177,7 +177,7 @@
     [self.view addSubview:button6];
     if(countDB > minDB)
         [self.view addSubview:button7];
-//    [self.view addSubview:button8];
+    [self.view addSubview:button8];
 
 }
 -(void) ratingVC

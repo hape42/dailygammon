@@ -123,7 +123,7 @@
         [self presentViewController:controller animated:YES completion:nil];
         
         UIPopoverPresentationController *popController = [controller popoverPresentationController];
-        popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+        popController.permittedArrowDirections = UIPopoverArrowDirectionLeft;
         popController.delegate = self;
         
         UIButton *button = (UIButton *)sender;

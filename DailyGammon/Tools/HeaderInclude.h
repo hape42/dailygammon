@@ -27,12 +27,12 @@
 
     int countDB = [app.dbConnect countRating];
     int minDB = 5;
-    int anzahlButtons = 6;
-    if(countDB > minDB)
-        anzahlButtons = 7;
-//    int anzahlButtons = 7;
+//    int anzahlButtons = 6;
 //    if(countDB > minDB)
-//        anzahlButtons = 8;
+//        anzahlButtons = 7;
+    int anzahlButtons = 7;
+    if(countDB > minDB)
+        anzahlButtons = 8;
     int headerBreite = headerView.frame.size.width;
 
     int buttonBreite = (headerBreite - diceBreite - (anzahlButtons * luecke) ) / anzahlButtons;
@@ -144,7 +144,7 @@
     [headerView addSubview:button6];
     if(countDB > minDB)
         [headerView addSubview:button7];
-//    [headerView addSubview:button8];
+    [headerView addSubview:button8];
 
     return headerView;
 }
@@ -188,7 +188,7 @@
     [self presentViewController:controller animated:YES completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popController.delegate = self;
     
     UIButton *button = (UIButton *)sender;

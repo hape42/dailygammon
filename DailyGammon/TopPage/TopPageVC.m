@@ -197,10 +197,10 @@
 #warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
     if(conn)
     {
-        XLog(@"Connection Successful");
+        //XLog(@"Connection Successful");
     } else
     {
-        XLog(@"Connection could not be made");
+        //XLog(@"Connection could not be made");
     }
 
     if (self.downloadConnection)

@@ -261,7 +261,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5CU-2N-SWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="838.4765625" y="-1668.75"/>
+            <point key="canvasLocation" x="-302" y="-1804"/>
         </scene>
         <!--Top PageVC-->
         <scene sceneID="tne-QT-ifu">
@@ -472,7 +472,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G2s-Ob-NAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-762.3046875" y="-134.375"/>
+            <point key="canvasLocation" x="-1290" y="390"/>
         </scene>
         <!--PreferencesVC-->
         <scene sceneID="rV4-Oe-O0R">
@@ -483,7 +483,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ZzD-06-gcF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="izS-dO-JOl">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Confirmation on offering doubles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z06-qu-LbE">
@@ -619,7 +619,7 @@
                     </view>
                     <value key="contentSizeForViewInPopover" type="size" width="450" height="600"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="450" height="600"/>
+                    <size key="freeformSize" width="450" height="800"/>
                     <connections>
                         <outlet property="ConfirmationDouble" destination="2kM-6H-a0y" id="Ez2-a6-hpu"/>
                         <outlet property="ConfirmationPass" destination="twd-bZ-N0l" id="XSh-hv-czK"/>
@@ -634,7 +634,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H03-AS-N7k" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-762" y="288"/>
+            <point key="canvasLocation" x="-1433" y="1368"/>
         </scene>
         <!--Set UpVC-->
         <scene sceneID="RbZ-DF-hLA">
@@ -670,19 +670,6 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fal-QA-kYa">
                                 <rect key="frame" x="20" y="481" width="360" height="119"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gas-do-YXg">
-                                <rect key="frame" x="20" y="513" width="360" height="30"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="DailyGammon Preferences"/>
-                                <connections>
-                                    <action selector="preferencesAction:" destination="dOO-GA-B0a" eventType="touchUpInside" id="NZr-Gf-AuA"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xQr-ZL-Am7">
-                                <rect key="frame" x="20" y="126" width="360" height="474"/>
-                                <autoresizingMask key="autoresizingMask" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yKP-VM-xsc">
@@ -713,6 +700,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gas-do-YXg">
+                                <rect key="frame" x="20" y="326" width="360" height="30"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="DailyGammon Preferences"/>
+                                <connections>
+                                    <action selector="preferencesAction:" destination="dOO-GA-B0a" eventType="touchUpInside" id="NZr-Gf-AuA"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -728,7 +723,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Onj-fl-ZUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1453" y="225"/>
+            <point key="canvasLocation" x="-1454" y="-435"/>
         </scene>
         <!--Player-->
         <scene sceneID="cg8-0z-Exa">
@@ -888,7 +883,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mub-GW-gBt" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-297.0703125" y="-1669.53125"/>
+            <point key="canvasLocation" x="-1121" y="-1777"/>
         </scene>
         <!--View Controller About-->
         <scene sceneID="8rd-ls-ZIj">
@@ -1033,7 +1028,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eT-bB-Ge5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="31.640624999999996" y="-18.75"/>
+            <point key="canvasLocation" x="510" y="390"/>
         </scene>
         <!--Game Lounge-->
         <scene sceneID="cf6-yw-aDN">
