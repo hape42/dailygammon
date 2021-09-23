@@ -418,7 +418,11 @@
                 //return @"iPhone 6/6S/7/8";
                 return FALSE;
                 break;
-                
+            case 1792:
+                //return @"iPhone 11, XR";
+                return FALSE;
+                break;
+
             case 1920:
             case 2208:
                 //return @"iPhone 6+/6S+/7+/8+";
@@ -426,20 +430,25 @@
                 break;
                 
             case 2436:
-                //return @"iPhone X, XS";
+                //return @"iPhone X, XS, 11 Pro, 12 mini";
                 return TRUE;
                 break;
-                
+ 
+            case 2532:
+                //return @"iPhone 12, 12 Pro";
+                return TRUE;
+                break;
+
             case 2688:
-                //return @"iPhone XS Max";
+                //return @"iPhone XS Max, 11 Pro max";
                 return TRUE;
                 break;
                 
-            case 1792:
-                //return @"iPhone XR";
+            case 2778:
+                //return @"iPhone 12 Pro Max";
                 return TRUE;
                 break;
-                
+
             default:
                 return FALSE;
                 break;
