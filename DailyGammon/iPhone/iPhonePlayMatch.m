@@ -19,6 +19,7 @@
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
 #import "Tools.h"
+#import "Player.h"
 
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
@@ -1386,8 +1387,17 @@
     self.opponentName.frame = frame;
     
     self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
+    self.opponentName.text = @"";
     self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"] forPlayer:NO];
     self.opponentName = [design makeNiceLabel:self.opponentName];
+
+    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonOpponent = [design makeNiceButton:buttonOpponent];
+    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
+    buttonOpponent.frame = CGRectMake(50, 2, self.opponentName.frame.size.width - 100, self.opponentName.frame.size.height - 4);
+    [buttonOpponent addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
+    [self.opponentView addSubview:buttonOpponent];
 
     // alle Detail Labels size & position & fontsize berechnen
     frame = self.opponentRating.frame;
@@ -2214,6 +2224,19 @@ case ROLL:
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
+#pragma mark - player
+
+- (void)player:(UIButton*)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+
+}
+
 #pragma mark - chat Buttons
 
 - (IBAction)chatNextButton:(id)sender
@@ -2248,7 +2271,7 @@ case ROLL:
 
     }];
 
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
@@ -2312,7 +2335,7 @@ case ROLL:
          
      }];
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
@@ -2849,7 +2872,7 @@ shouldChangeTextInRange:(NSRange)range
      }];
     
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
                  [dict objectForKey:@"action"],

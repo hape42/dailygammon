@@ -22,6 +22,7 @@
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
 #import "Tools.h"
+#import "Player.h"
 
 @interface PlayMatch ()
 
@@ -326,7 +327,7 @@
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
     if( finishedMatchDict != nil)
     {
-        XLog(@"%@", finishedMatchDict);
+//        XLog(@"%@", finishedMatchDict);
         self.isFinishedMatch = TRUE;
         [self finishedMatchView:finishedMatchDict];
     }
@@ -482,7 +483,7 @@
                                        NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                                                            usedEncoding:&encoding
                                                                                                   error:&error];
-                                       XLog(@"matchString:%@",returnString);
+//                                       XLog(@"matchString:%@",returnString);
                                        self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
                                        [self showMatch];
                                        
@@ -502,7 +503,7 @@
                                        NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                                                            usedEncoding:&encoding
                                                                                                   error:&error];
-                                       XLog(@"matchString:%@",returnString);
+//                                       XLog(@"matchString:%@",returnString);
                                        self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
                                        [self showMatch];
                                    }];
@@ -1321,9 +1322,19 @@
 
     self.opponentView.frame = frame;
     
-    self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
+  //  self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
+    self.opponentName.text = @"";
     self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
     self.opponentName.adjustsFontSizeToFitWidth = YES;
+    
+    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonOpponent = [design makeNiceButton:buttonOpponent];
+    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
+    buttonOpponent.frame = CGRectMake(50, 2, self.opponentName.frame.size.width - 100, self.opponentName.frame.size.height - 4);
+    [buttonOpponent addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
+    [self.opponentView addSubview:buttonOpponent];
+
     self.opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
@@ -1668,7 +1679,7 @@
         }
         case ONLY_MESSAGE:
         {
-            XLog(@"ONLY_MESSAGE");
+//            XLog(@"ONLY_MESSAGE");
             break;
         }
         default:
@@ -1925,6 +1936,19 @@
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
+
+#pragma mark - player
+
+- (void)player:(UIButton*)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+
+}
 #pragma mark - chat Buttons
 
 - (IBAction)chatNextButton:(id)sender
@@ -1964,7 +1988,7 @@
      }];
     
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
@@ -2027,13 +2051,15 @@
          
      }];
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  escapedString];
-    
+//http://dailygammon.com/bg/sendmsg/32593?submit=Send&text=test
+//    matchLink = @"/bg/sendmsg/32593?submit=Send&text=test";
+
     [self showMatch];
 
 }
@@ -2164,7 +2190,7 @@
         CGRect frame = self.chatViewFrame;
         frame.origin.y -= 330;
         self.chatView.frame = frame;
-        XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
+//        XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
     }
     if(self.isFinishedMatch)
     {
@@ -2185,7 +2211,7 @@
     if(self.isChatView)
     {
         self.chatView.frame = self.chatViewFrame;
-        XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
+//        XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
     }
     if(self.isFinishedMatch)
     {
@@ -2605,7 +2631,7 @@
      }];
     
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
                  [dict objectForKey:@"action"],

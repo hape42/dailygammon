@@ -403,11 +403,16 @@
         XLog(@"Connection could not be made");
     }
 
+    [self doInvite];
 }
 -(void)doInvite
 {
     __block NSString *strComment = @"";
-    [self.comment.text enumerateSubstringsInRange:NSMakeRange(0, self.comment.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+    NSString * encodedString = [self.comment.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
+
+    [encodedString enumerateSubstringsInRange:NSMakeRange(0,
+                                                          self.comment.text.length)
+                                      options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
      {
          
          //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
@@ -422,10 +427,10 @@
          
      }];
     
-    NSString *commentString = [strComment stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-
     __block NSString *strNamend = @"";
-    [self.comment.text enumerateSubstringsInRange:NSMakeRange(0, self.comment.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
+    [self.named.text enumerateSubstringsInRange:NSMakeRange(0,
+                                                            self.named.text.length)
+                                        options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
      {
          
          //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
@@ -440,25 +445,19 @@
          
      }];
     
-    NSString *namedString = [strNamend stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
-
-    NSString *postString = [NSString stringWithFormat:@"player=%@&variant=%ld&length=%d&comment=%@&name=%@&time_control=%d&private=%@",
+    NSString *strPrivate = @"";
+    if(self.privateMatch.on)
+    {
+        strPrivate = @"@private=private";
+    }
+    NSString *postString = [NSString stringWithFormat:@"player=%@&variant=%ld&length=%d&comment=%@&name=%@&time_control=%d%@",
                             playerNummer,
                             self.variant.selectedSegmentIndex + 1,
                             self.matchLengthSelected,
-                            @"comment",
-                            @"name",
+                            strComment,
+                            strNamend,
                             3,
-                            @"on"];
-
-//    NSURL *urlInvite = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/invite/new/?submit=Invite&%@",postString]];
-//
-//    NSError *error = nil;
-//    NSData *inviteHtmlData = [NSData dataWithContentsOfURL:urlInvite options:NSDataReadingUncached error:&error];
-//    XLog(@"Error: %@", error);
-//    NSString *htmlString = [NSString stringWithUTF8String:[inviteHtmlData bytes]];
-//    htmlString = [[NSString alloc]
-//                  initWithData:inviteHtmlData encoding: NSISOLatin1StringEncoding];
+                            strPrivate];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/invite/new"]];
     [request setHTTPMethod:@"POST"];
@@ -467,7 +466,6 @@
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
     NSURLConnection *conn = [NSURLConnection connectionWithRequest:request delegate:self];
-//    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 
     if(conn)
     {
@@ -477,33 +475,12 @@
         XLog(@"Connection could not be made");
     }
 
-//    NSURLSession *session = [NSURLSession sharedSession];
-//    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
-//                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error)
-//                                      {
-//                                           XLog(@"Error: %@", error);
-//                                          // do something with the data
-//                                      }];
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self dismissViewControllerAnimated:YES completion:nil];
     else
         [self.navigationController popViewControllerAnimated:TRUE];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
-        NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
-        
-        if (statusCode == 200) {
-            NSLog(@"received successful (200) response ");
-        } else {
-            NSLog(@"whoops, something wrong, received status code of %d", statusCode);
-        }
-    } else {
-        NSLog(@"Not a HTTP response");
-    }
-}
 #pragma mark - textField
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -566,59 +543,6 @@ shouldChangeTextInRange:(NSRange)range
         [self dismissViewControllerAnimated:YES completion:nil];
     else
         [self.navigationController popViewControllerAnimated:TRUE];
-}
-
-#pragma mark NSURLConnection Delegate Methods
-
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    if(self.loginOk)
-        ;
-//        [self.datenData appendData:data];
-    else
-        self.loginOk = TRUE;
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    XLog(@"Connection didFailWithError");
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
-    {
-        //        XLog(@"name: '%@'\n",   [cookie name]);
-        //        XLog(@"value: '%@'\n",  [cookie value]);
-        //        XLog(@"domain: '%@'\n", [cookie domain]);
-        //        XLog(@"path: '%@'\n",   [cookie path]);
-        if([[cookie name] isEqualToString:@"USERID"])
-            [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        if([[cookie value] isEqualToString:@"N/A"])
-        {
-//            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-//            LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
-//            [self.navigationController pushViewController:vc animated:NO];
-        }
-        else
-        {
-            [ self doInvite];
-        }
-    }
-    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
-    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
-    {
-//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-//        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
-//        [self.navigationController pushViewController:vc animated:NO];
-    }
-    
-    return;
 }
 
 @end

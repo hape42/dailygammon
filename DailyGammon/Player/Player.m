@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UISearchBar *suche;
 
 @property (readwrite, retain, nonatomic) UIView *messageView;
-@property (readwrite, retain, nonatomic) UITextField *message;
+@property (readwrite, retain, nonatomic) UITextView *message;
 @property (assign, atomic) CGRect messageFrameSave;
 @property (assign, atomic) BOOL isMessageView;
 
@@ -43,6 +43,8 @@
 @implementation Player
 
 @synthesize design, tools;
+
+@synthesize name;
 
 #define PLAYER_BREITE .6
 #define RATING_BREITE .19
@@ -96,7 +98,7 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     float breite = maxBreite * 0.6;
-    float hoehe = 5+50+5+50+5+50;
+    float hoehe = maxHoehe-20;
     self.messageView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
                                                                 (maxHoehe - hoehe)/2,
                                                                 breite,
@@ -104,6 +106,15 @@
     self.messageFrameSave = self.messageView.frame;
     self.messageView.layer.cornerRadius = 14.0f;
     self.messageView.layer.borderWidth = 1.0f;
+
+    NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
+                 name];
+
+    [self readPlayerArray:searchLink];
+ 
+    [self searchBar:self.suche textDidChange:name];
+
+    [self.tableView reloadData];
 
 }
 
@@ -338,7 +349,7 @@
          
      }];
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
                  escapedString];
@@ -483,7 +494,7 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     float breite = maxBreite * 0.6;
-    float hoehe = 5+50+5+50+5+50;
+    float hoehe = maxHoehe * 0.8;
     CGRect frame = CGRectMake((maxBreite - breite)/2,
                               (maxHoehe - hoehe)/2,
                               breite,
@@ -504,10 +515,10 @@
     title.textAlignment = NSTextAlignmentCenter;
     
     
-    self.message = [[UITextField alloc] initWithFrame:CGRectMake(5,
+    self.message = [[UITextView alloc] initWithFrame:CGRectMake(5,
                                                                       55,
                                                                       breite - 10,
-                                                                      50)];
+                                                                      hoehe - 110)];
     [self.message setFont:[UIFont systemFontOfSize:20]];
     self.message.backgroundColor = [UIColor whiteColor];
     self.message.delegate = self;
@@ -516,14 +527,17 @@
     UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonSend = [self->design makeNiceButton:buttonSend];
     [buttonSend setTitle:@"Send" forState: UIControlStateNormal];
-    buttonSend.frame = CGRectMake(self.messageView.frame.size.width - 150, 115, 120, 35);
+    buttonSend.frame = CGRectMake(self.messageView.frame.size.width - 150,
+                                  self.messageView.frame.size.height - 50,
+                                  120,
+                                  40);
     buttonSend.tag = button.tag;
     [buttonSend addTarget:self action:@selector(actionSend:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *buttonCancel = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonCancel = [self->design makeNiceButton:buttonCancel];
     [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
-    buttonCancel.frame = CGRectMake(10, 115, 120, 35);
+    buttonCancel.frame = CGRectMake(10, self.messageView.frame.size.height - 50, 120, 40);
     [buttonCancel addTarget:self action:@selector(actionCancelSend) forControlEvents:UIControlEventTouchUpInside];
     
     [self.messageView addSubview:buttonCancel];
@@ -557,7 +571,7 @@
          
      }];
     
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
 

@@ -245,7 +245,7 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
-    
+   
     [self.navigationController pushViewController:vc animated:NO];
 
 }

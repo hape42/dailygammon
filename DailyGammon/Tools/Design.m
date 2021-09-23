@@ -14,8 +14,8 @@
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
 
-    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
-        return [self makeNiceFlatButton:button];
+//    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
+//        return [self makeNiceFlatButton:button];
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
         
