@@ -123,6 +123,7 @@
     self.inviteText.adjustsFontSizeToFitWidth = YES;
     self.inviteText.numberOfLines = 0;
     self.inviteText.minimumScaleFactor = 0.5;
+    self.inviteText.textColor = [design dgColor];
 
     self.messageTextTitle.text = [NSString stringWithFormat:@"Quick message to %@", playerName];
     self.messageTextTitle.adjustsFontSizeToFitWidth = YES;
@@ -314,7 +315,7 @@
     int maxBreite = self.view.bounds.size.width;
     
     float breite = 400;
-    float hoehe = 300;
+    float hoehe = 250;
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
     

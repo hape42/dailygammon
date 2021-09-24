@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Design : UIView
 
+- (UIColor *) dgColor;
+
 -(UIButton *) makeNiceButton: (UIButton *)button;
 -(UIBarButtonItem *) makeNiceBarButton: (UIBarButtonItem *)button;
 -(UIButton *) makeNiceFlatButton: (UIButton *)button;

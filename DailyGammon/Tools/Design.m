@@ -10,7 +10,13 @@
 
 @implementation Design
 
+- (UIColor *) dgColor
+{
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
+    return [schemaDict objectForKey:@"TintColor"] ;
+
+}
 -(UIButton *) makeNiceButton: (UIButton *)button
 {
 
@@ -428,14 +434,19 @@
                 //return @"iPhone 6+/6S+/7+/8+";
                 return FALSE;
                 break;
-                
+ 
+            case 2340:
+                //return @"iPhone 13 mini";
+                return TRUE;
+                break;
+
             case 2436:
                 //return @"iPhone X, XS, 11 Pro, 12 mini";
                 return TRUE;
                 break;
  
             case 2532:
-                //return @"iPhone 12, 12 Pro";
+                //return @"iPhone 12, 12 Pro, 13, 13 Pro";
                 return TRUE;
                 break;
 
@@ -445,7 +456,7 @@
                 break;
                 
             case 2778:
-                //return @"iPhone 12 Pro Max";
+                //return @"iPhone 12 Pro Max, 13 Pro max";
                 return TRUE;
                 break;
 
