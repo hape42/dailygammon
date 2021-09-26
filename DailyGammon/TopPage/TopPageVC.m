@@ -22,6 +22,7 @@
 #import "iPhoneMenue.h"
 #import "iPhonePlayMatch.h"
 #import "Tools.h"
+#import "NoInternet.h"
 
 @interface TopPageVC ()
 
@@ -67,6 +68,13 @@
 {
     [super viewDidLoad];
 
+//    NSURL *scriptUrl = [NSURL URLWithString:@"http://www.google.com/m"];
+//    NSData *data = [NSData dataWithContentsOfURL:scriptUrl];
+//    if (data)
+//        NSLog(@"Device is connected to the Internet");
+//    else
+//        NSLog(@"Device is not connected to the Internet");
+//
     self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     self.indicator.color = [schemaDict objectForKey:@"TintColor"];
@@ -169,6 +177,17 @@
 {
     [super viewWillAppear:animated];
 
+//    if(![tools hasConnectivity])
+//    {
+//
+//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//        NoInternet *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"NoInternet"];
+//
+//        [self.navigationController pushViewController:vc animated:NO];
+//        return;
+//    }
+
     [self.indicator startAnimating];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -180,7 +199,7 @@
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 
     self.loginOk = FALSE;
-    
+
     //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
     NSString *post               = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
     NSData *postData             = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -684,6 +703,7 @@
 
 - (void)updateTableView
 {
+    
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
     self.navigationBar.title = [NSString stringWithFormat:@"%d Matches where you can move" ,(int)self.topPageArray.count];

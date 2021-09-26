@@ -368,12 +368,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="jxU-Kz-Nvv"/>
+                        <segue destination="TtC-op-aww" kind="relationship" relationship="rootViewController" id="XwK-dT-yOe"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Am-1X-v1I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-296.96000000000004" y="-797.44000000000005"/>
+            <point key="canvasLocation" x="-523" y="-784"/>
         </scene>
         <!--Board SchemeVC-->
         <scene sceneID="4HE-s9-lV7">
@@ -1234,6 +1234,31 @@
             </objects>
             <point key="canvasLocation" x="-313.4765625" y="1232.8125"/>
         </scene>
+        <!--No Internet-->
+        <scene sceneID="ivL-AH-k7f">
+            <objects>
+                <viewController storyboardIdentifier="NoInternet" id="TtC-op-aww" customClass="NoInternet" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="b4x-Bx-YKX"/>
+                        <viewControllerLayoutGuide type="bottom" id="THs-MT-4um"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="N9a-V6-NO2">
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="startscreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="4ER-BG-nPf">
+                                <rect key="frame" x="110" y="38" width="817" height="355"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PlB-Ck-EF7"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hfP-ZO-QdS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-19" y="-62"/>
+        </scene>
     </scenes>
     <resources>
         <image name="BlueWhite.png" width="613" height="455"/>
@@ -1241,8 +1266,12 @@
         <image name="app_icon.png" width="1024" height="1024"/>
         <image name="classic.png" width="613" height="456"/>
         <image name="classicHD.png" width="614" height="455"/>
+        <image name="startscreen.png" width="1024" height="300"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="viewFlipsideBackgroundColor">
             <color red="0.1215686274509804" green="0.12941176470588239" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

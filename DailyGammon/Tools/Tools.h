@@ -16,6 +16,8 @@
 @property (strong, readwrite, retain, atomic) Preferences *preferences;
 
 -(BOOL)hasConnectivity;
+- (void)noInternet: (UIViewController *)vc;
+
 -(int)matchCount;
 
 @end

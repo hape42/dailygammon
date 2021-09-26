@@ -80,6 +80,25 @@ typedef void(^connection)(BOOL);
     return NO;
 }
 
+- (void)noInternet: (UIViewController *)vc
+{
+    UIAlertController * alert = [UIAlertController
+                                  alertControllerWithTitle:@"Problem"
+                                  message:@"This app is a client for the backgammon server from www.dailygammon.com\n\nThe app can only be used with a working internet connection.\n\nPlease make sure you have an internet connection and restart the app.\n\nThe app will exit now "
+                                  preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction* okButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    exit(0);
+                                }];
+
+    [alert addAction:okButton];
+    [vc presentViewController:alert animated:YES completion:nil];
+
+}
 /*
 #pragma mark - info
 - (void)miniBoardSchemaWarning
