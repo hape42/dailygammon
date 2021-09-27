@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		E00654D722A6784000194435 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* Player.m */; };
-		E00A3D8026FF000C008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D7F26FF000C008B526B /* NoInternet.m */; };
+		E00A3D832700CB7D008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D822700CB7D008B526B /* NoInternet.m */; };
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
@@ -81,8 +81,8 @@
 /* Begin PBXFileReference section */
 		E00654D522A6784000194435 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		E00654D622A6784000194435 /* Player.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
-		E00A3D7E26FF000C008B526B /* NoInternet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NoInternet.h; sourceTree = "<group>"; };
-		E00A3D7F26FF000C008B526B /* NoInternet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NoInternet.m; sourceTree = "<group>"; };
+		E00A3D812700CB7D008B526B /* NoInternet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoInternet.h; sourceTree = "<group>"; };
+		E00A3D822700CB7D008B526B /* NoInternet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoInternet.m; sourceTree = "<group>"; };
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
@@ -589,10 +589,10 @@
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E0F958A321AD4CCE003DAC01 /* Header.h */,
 				E0F958A421AD4CCE003DAC01 /* Header.m */,
+				E00A3D812700CB7D008B526B /* NoInternet.h */,
+				E00A3D822700CB7D008B526B /* NoInternet.m */,
 				E05324FF2271D40C0080D504 /* Tools.h */,
 				E05325002271D42A0080D504 /* Tools.m */,
-				E00A3D7E26FF000C008B526B /* NoInternet.h */,
-				E00A3D7F26FF000C008B526B /* NoInternet.m */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -654,7 +654,7 @@
 		E0F9587E21AD1687003DAC01 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Peter Schneider";
 				TargetAttributes = {
 					E0F9588521AD1688003DAC01 = {
@@ -760,7 +760,7 @@
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
 				E0BE3AFE223170F3003A824D /* iPhoneGameLounge.m in Sources */,
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
-				E00A3D8026FF000C008B526B /* NoInternet.m in Sources */,
+				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
@@ -838,7 +838,6 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -865,7 +864,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -903,7 +902,6 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -924,7 +922,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
@@ -953,7 +951,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -977,7 +975,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.1;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
