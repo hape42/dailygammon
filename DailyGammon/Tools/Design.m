@@ -81,18 +81,25 @@
 
 -(UIBarButtonItem *) makeNiceBarButton: (UIBarButtonItem *)button
 {
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
     button.customView.layer.cornerRadius = 14.0f;
     button.customView.layer.masksToBounds = YES;
     button.customView.backgroundColor = [UIColor colorWithRed:230.0/255 green:230.0/255 blue:230.0/255 alpha:1];
     [button.customView setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     //    button.imageView.layer.cornerRadius = 14.0f;
+    UIColor *schemaColor = [schemaDict objectForKey:@"TintColor"];
     button.customView.layer.shadowRadius = .0f;
-    button.customView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    button.customView.layer.shadowColor = schemaColor.CGColor;
     button.customView.layer.shadowOffset = CGSizeMake(5.0f, 5.0f);
     button.customView.layer.shadowOpacity = 0.5f;
+    button.customView.layer.borderWidth = 1;
+    button.customView.layer.borderColor = schemaColor.CGColor;
     button.customView.layer.masksToBounds = NO;
-    
+    button.tintColor = [schemaDict objectForKey:@"TintColor"];
     return button;
 }
 
@@ -426,7 +433,7 @@
                 break;
             case 1792:
                 //return @"iPhone 11, XR";
-                return FALSE;
+                return TRUE;
                 break;
 
             case 1920:

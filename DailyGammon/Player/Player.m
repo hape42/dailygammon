@@ -116,6 +116,7 @@
 
     [self.tableView reloadData];
 
+  //  self.message.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -126,6 +127,17 @@
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
     
+    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
+    [keyboardToolbar sizeToFit];
+    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                      target:nil action:nil];
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                      target:self action:@selector(messageDoneButtonPressed)];
+    keyboardToolbar.items = @[flexBarButton, doneBarButton];
+    self.message.inputAccessoryView = keyboardToolbar;
+
 }
 -(void) reDrawHeader
 {
@@ -500,6 +512,7 @@
                               breite,
                               hoehe);
     self.messageView.frame = frame;
+    self.messageFrameSave = self.messageView.frame;
 
     self.messageView.tag = 42+1;
     self.messageView.backgroundColor = GRAYLIGHT;
@@ -524,6 +537,18 @@
     self.message.delegate = self;
     self.message.text = @"";
     
+    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
+    [keyboardToolbar sizeToFit];
+    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                      target:nil action:nil];
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
+                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                      target:self action:@selector(messageDoneButtonPressed)];
+    doneBarButton = [design makeNiceBarButton:doneBarButton];
+    keyboardToolbar.items = @[flexBarButton, doneBarButton];
+    self.message.inputAccessoryView = keyboardToolbar;
+
     UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonSend = [self->design makeNiceButton:buttonSend];
     [buttonSend setTitle:@"Send" forState: UIControlStateNormal];
@@ -619,8 +644,8 @@
 }
 
 
-#pragma mark - textField
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+#pragma mark - textView
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
     self.isMessageView = TRUE;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -635,7 +660,7 @@
 }
 
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (BOOL)textViewShouldEndEditing:(UITextView *)textField
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
@@ -643,7 +668,10 @@
     
     return YES;
 }
-
+-(void)messageDoneButtonPressed
+{
+    [self.message resignFirstResponder];
+}
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     CGRect frame = self.messageView.frame;
