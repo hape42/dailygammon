@@ -15,6 +15,7 @@
 #import "AppDelegate.h"
 #import "Design.h"
 #import "iPhoneMenue.h"
+#import <SafariServices/SafariServices.h>
 
 @interface InviteDetail ()
 

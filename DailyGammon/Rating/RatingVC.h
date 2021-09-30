@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
+#import <MessageUI/MessageUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class Tools;
 
-@interface RatingVC : UIViewController<CPTPlotDataSource>
+@interface RatingVC : UIViewController<CPTPlotDataSource, MFMailComposeViewControllerDelegate>
 {
     CPTGraphHostingView *hostingView;
     CPTXYGraph *barLineChart;

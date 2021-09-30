@@ -21,6 +21,7 @@
 #import "Player.h"
 #import "iPhoneMenue.h"
 #import "Tools.h"
+#import <SafariServices/SafariServices.h>
 
 @interface RatingVC ()
 

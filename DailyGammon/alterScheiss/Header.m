@@ -11,11 +11,11 @@
 #import "TopPageVC.h"
 #import "AppDelegate.h"
 
-@implementation Header
+@implementation HeaderX
 
 @synthesize design;
 
--(UIView *)makeHeader
+-(UIView *)makeHeaderX
 {
     design = [[Design alloc] init];
     

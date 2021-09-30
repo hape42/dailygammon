@@ -8,6 +8,7 @@
 
 #import "BoardSchemeVC.h"
 #import "Design.h"
+#import <SafariServices/SafariServices.h>
 
 @interface BoardSchemeVC ()
 

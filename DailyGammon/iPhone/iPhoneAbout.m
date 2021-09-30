@@ -11,7 +11,6 @@
 #import "iPhoneMenue.h"
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
-#import <SafariServices/SafariServices.h>
 
 @interface iPhoneAbout ()
 

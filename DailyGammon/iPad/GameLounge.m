@@ -20,6 +20,7 @@
 #import "RatingVC.h"
 #import "Player.h"
 #import "Tools.h"
+#import <SafariServices/SafariServices.h>
 
 @interface GameLounge ()
 

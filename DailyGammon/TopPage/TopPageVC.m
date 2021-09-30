@@ -23,6 +23,7 @@
 #import "iPhonePlayMatch.h"
 #import "Tools.h"
 #import "NoInternet.h"
+#import <SafariServices/SafariServices.h>
 
 @interface TopPageVC ()
 

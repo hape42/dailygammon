@@ -19,6 +19,7 @@
 #import "DbConnect.h"
 #import "RatingVC.h"
 #import "iPhoneMenue.h"
+#import <SafariServices/SafariServices.h>
 
 @interface iPhoneGameLounge ()
 

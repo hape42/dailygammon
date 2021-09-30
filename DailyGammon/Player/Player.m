@@ -18,6 +18,9 @@
 #import "TopPageVC.h"
 #import "DbConnect.h"
 #import "Tools.h"
+#import <SafariServices/SafariServices.h>
+
+
 @interface Player ()
 
 @property (readwrite, retain, nonatomic) NSMutableArray *playerArray;

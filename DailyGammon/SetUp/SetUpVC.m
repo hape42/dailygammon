@@ -12,6 +12,7 @@
 #import "PreferencesVC.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
+#import <SafariServices/SafariServices.h>
 
 @interface SetUpVC ()
 

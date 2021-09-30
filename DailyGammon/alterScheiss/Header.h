@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Header : UIViewController
+@interface HeaderX : UIViewController
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

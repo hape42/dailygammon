@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @class Design;
 
-@interface iPhoneMenue : UIViewController
+@interface iPhoneMenue : UIViewController<MFMailComposeViewControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

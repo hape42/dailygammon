@@ -10,6 +10,7 @@
 #import "Design.h"
 #import "TFHpple.h"
 #import "Preferences.h"
+#import <SafariServices/SafariServices.h>
 
 @interface PreferencesVC ()
 

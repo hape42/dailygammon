@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class Tools;
 
-@interface iPhonePlayMatch : UIViewController<UIPopoverPresentationControllerDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate >
+@interface iPhonePlayMatch : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate >
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Match *match;

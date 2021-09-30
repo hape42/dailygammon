@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
+
 @class Design;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BoardSchemeVC : UIViewController
+@interface BoardSchemeVC : UIViewController <MFMailComposeViewControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

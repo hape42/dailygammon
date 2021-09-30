@@ -40,6 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)changeCheckerColor:(NSString *)imgName forColor: (NSString *)color;
 
+#define FEEDBACK_TEXT @"\nFound a bug?\nThen write me a short message and I'll try to fix it as soon as possible.\n\nGot a missing feature in mind?\nThen write me a short message. I collect all the suggestions and will implement them one after another if they make sense for most people."
 @end
 
 NS_ASSUME_NONNULL_END

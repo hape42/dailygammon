@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 
 @class Design;
 
-@interface SetUpVC : UIViewController<UIPopoverPresentationControllerDelegate>
+@interface SetUpVC : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
