@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIColor *) dgColor;
 
 -(UIButton *) makeNiceButton: (UIButton *)button;
+-(UIButton *) makeReverseButton: (UIButton *)button;
+
 -(UIBarButtonItem *) makeNiceBarButton: (UIBarButtonItem *)button;
 -(UIButton *) makeNiceFlatButton: (UIButton *)button;
 

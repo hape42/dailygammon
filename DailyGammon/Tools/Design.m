@@ -58,6 +58,42 @@
     return button;
 }
 
+-(UIButton *) makeReverseButton: (UIButton *)button
+{
+
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+        
+    button.layer.cornerRadius = 14.0f;
+    button.layer.masksToBounds = YES;
+    
+    switch (boardSchema)
+    {
+        case 1:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
+            break;
+        case 2:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
+            break;
+        case 3:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_blau.png"] forState:UIControlStateNormal];
+            break;
+        case 4:
+            [button setBackgroundImage:[UIImage imageNamed:@"button_rot.png"] forState:UIControlStateNormal];
+            break;
+        default:
+            break;
+    }
+
+    [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    
+    button.titleLabel.numberOfLines = 1;
+    button.titleLabel.adjustsFontSizeToFitWidth = YES;
+    button.titleLabel.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
+
+    return button;
+}
+
 -(UIButton *) makeNiceFlatButton: (UIButton *)button
 {
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];

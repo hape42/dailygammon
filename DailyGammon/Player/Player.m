@@ -509,7 +509,7 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     float breite = maxBreite * 0.6;
-    float hoehe = maxHoehe * 0.8;
+    float hoehe = maxHoehe * 0.5;
     CGRect frame = CGRectMake((maxBreite - breite)/2,
                               (maxHoehe - hoehe)/2,
                               breite,
@@ -535,7 +535,7 @@
                                                                       55,
                                                                       breite - 10,
                                                                       hoehe - 110)];
-    [self.message setFont:[UIFont systemFontOfSize:20]];
+    [self.message setFont:[UIFont systemFontOfSize:14]];
     self.message.backgroundColor = [UIColor whiteColor];
     self.message.delegate = self;
     self.message.text = @"";

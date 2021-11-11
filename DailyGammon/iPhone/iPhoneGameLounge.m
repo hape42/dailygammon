@@ -20,6 +20,7 @@
 #import "RatingVC.h"
 #import "iPhoneMenue.h"
 #import <SafariServices/SafariServices.h>
+#import "Tools.h"
 
 @interface iPhoneGameLounge ()
 
@@ -40,7 +41,7 @@
 
 @implementation iPhoneGameLounge
 
-@synthesize design, preferences, rating;
+@synthesize design, preferences, rating, tools;
 
 - (void)viewDidLoad
 {
@@ -53,7 +54,8 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
-    
+    tools = [[Tools alloc] init];
+
     UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.moreButton setImage:image forState:UIControlStateNormal];
     
@@ -239,12 +241,13 @@
             [topPageZeile addObject:topPageZeileSpalte];
             
         }
-        //        XLog(@"%@", topPageZeile);
-        
+ //       XLog(@"%@", topPageZeile[0]);
+        NSMutableDictionary *event = topPageZeile[0];
+        [event setObject:[tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
+         
         [self.gameLoungeArray addObject:topPageZeile];
     }
 }
-
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
@@ -289,7 +292,7 @@
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    for (UIView *subview in [cell subviews])
+    for (UIView *subview in [cell.contentView subviews])
     {
         if ([subview isKindOfClass:[UILabel class]])
         {
@@ -313,10 +316,10 @@
     int buttonBreite = 120;
     maxBreite -= (buttonBreite + 5);
     
-    float nameBreite = maxBreite * 0.5;
-    float lengthBreite = maxBreite * 0.15;
-    float timeBreite = maxBreite * 0.35;
-
+    float nameBreite = maxBreite * 0.45;
+    float lengthBreite = maxBreite * 0.125;
+    float timeBreite = maxBreite * 0.3;
+    float playerBreite = maxBreite * 0.125;
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameBreite,labelHoehe/2)];
     nameLabel.textAlignment = NSTextAlignmentLeft;
@@ -324,6 +327,7 @@
     nameLabel.text = [name objectForKey:@"Text"];
     [nameLabel setFont:[UIFont boldSystemFontOfSize: nameLabel.font.pointSize]];
     nameLabel.adjustsFontSizeToFitWidth = YES;
+ //   nameLabel.backgroundColor = [UIColor yellowColor];
     
     UILabel *variantLabel = [[UILabel alloc] initWithFrame:CGRectMake(x + 10, labelHoehe/2 ,nameBreite - 10,labelHoehe/2)];
     variantLabel.textAlignment = NSTextAlignmentLeft;
@@ -332,11 +336,19 @@
 
     x += nameBreite;
     
+    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,playerBreite,labelHoehe/2)];
+    playerLabel.textAlignment = NSTextAlignmentCenter;
+    playerLabel.text = [name objectForKey:@"player"];
+ //   playerLabel.backgroundColor = [UIColor greenColor];
+
+    x += playerBreite;
+
     UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthBreite,labelHoehe/2)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *length = zeile[2];
     lengthLabel.text = [length objectForKey:@"Text"];
-    
+ //   lengthLabel.backgroundColor = [UIColor yellowColor];
+
     UILabel *roundsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHoehe/2 ,lengthBreite,labelHoehe/2)];
     roundsLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *rounds = zeile[3];
@@ -348,7 +360,8 @@
     timeLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *time = zeile[4];
     NSDictionary *timePlus = zeile[5];
-    
+ //   timeLabel.backgroundColor = [UIColor greenColor];
+
     timeLabel.text = [NSString stringWithFormat:@"%@ %@",[time objectForKey:@"Text"], [timePlus objectForKey:@"Text"]];
 
     UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHoehe/2 ,timeBreite,labelHoehe/2)];
@@ -363,15 +376,20 @@
     
     if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"] || [[signUp objectForKey:@"Text"] isEqualToString:@"Cancel Signup\n"])
     {
+        button = [design makeNiceButton:button];
+
         [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
         //        [button sizeToFit];
         if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"])
             [button setTitle:@"Sign Up" forState: UIControlStateNormal];
         else
+        {
+            button = [design makeReverseButton:button];
+
             [button setTitle:@"Cancel" forState: UIControlStateNormal];
+        }
 
         button.frame = CGRectMake(maxBreite  , 5, buttonBreite , 35);
-        button = [design makeNiceButton:button];
 
         button.tag = indexPath.row;
         [button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
@@ -380,22 +398,23 @@
     {
         XLog(@"kein Button");
     }
-    /*
+    
     [cell.contentView addSubview:nameLabel];
     [cell.contentView addSubview:variantLabel];
+    [cell.contentView addSubview:playerLabel];
     [cell.contentView addSubview:lengthLabel];
     [cell.contentView addSubview:roundsLabel];
     [cell.contentView addSubview:timeLabel];
     [cell.contentView addSubview:graceLabel];
     [cell.contentView addSubview:button];
-    */
-    [cell addSubview:nameLabel];
-    [cell addSubview:variantLabel];
-    [cell addSubview:lengthLabel];
-    [cell addSubview:roundsLabel];
-    [cell addSubview:timeLabel];
-    [cell addSubview:graceLabel];
-    [cell addSubview:button];
+    
+//    [cell addSubview:nameLabel];
+//    [cell addSubview:variantLabel];
+//    [cell addSubview:lengthLabel];
+//    [cell addSubview:roundsLabel];
+//    [cell addSubview:timeLabel];
+//    [cell addSubview:graceLabel];
+//    [cell addSubview:button];
 
     return cell;
 }
@@ -414,10 +433,11 @@
     maxBreite -= buttonBreite;
     int x = 0;
     
-    float nameBreite = maxBreite * 0.5;
-    float lengthBreite = maxBreite * 0.15;
-    float timeBreite = maxBreite * 0.35;
-    
+    float nameBreite = maxBreite * 0.45;
+    float lengthBreite = maxBreite * 0.125;
+    float timeBreite = maxBreite * 0.3;
+    float playerBreite = maxBreite * 0.125;
+
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameBreite,40)];
     nameLabel.textAlignment = NSTextAlignmentLeft;
     nameLabel.text = self.gameLoungeHeaderArray[0];
@@ -425,6 +445,13 @@
     
     x += nameBreite;
     
+    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,playerBreite,20)];
+    playerLabel.textAlignment = NSTextAlignmentCenter;
+    playerLabel.text = @"Player";
+    playerLabel.textColor = [UIColor whiteColor];
+
+    x += playerBreite;
+
     UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthBreite,20)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     lengthLabel.text = self.gameLoungeHeaderArray[2];
@@ -449,6 +476,7 @@
     
     
     [headerView addSubview:nameLabel];
+    [headerView addSubview:playerLabel];
     [headerView addSubview:lengthLabel];
     [headerView addSubview:roundsLabel];
     [headerView addSubview:timeLabel];

@@ -19,6 +19,7 @@
 - (void)noInternet: (UIViewController *)vc;
 
 -(int)matchCount;
+- (NSString *)readPlayers:(NSString *)event;
 
 @end
 

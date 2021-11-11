@@ -215,5 +215,61 @@ typedef void(^connection)(BOOL);
     NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
     return (int)zeilen.count - 1;
     }
+
+
+- (NSString *)readPlayers:(NSString *)event
+{
+    NSString *players = @"64/10";
+    NSURL *urlEvent = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event]];
+    NSData *eventHtmlData = [NSData dataWithContentsOfURL:urlEvent];
+    
+    NSString *htmlString = [NSString stringWithUTF8String:[eventHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:eventHtmlData encoding: NSISOLatin1StringEncoding];
+    
+    NSMutableArray *playersArray = [[NSMutableArray alloc]initWithCapacity:2];
+    
+    NSRange searchRange = NSMakeRange(0,htmlString.length);
+    NSRange foundRange;
+    while (searchRange.location < htmlString.length)
+    {
+        searchRange.length = htmlString.length-searchRange.location;
+        foundRange = [htmlString rangeOfString:@"players" options:0 range:searchRange];
+        if (foundRange.location != NSNotFound)
+        {
+            // found an occurrence of the substring! do stuff here
+            searchRange.location = foundRange.location+foundRange.length;
+            
+            
+     //       NSLog(@"position %lu %@", (unsigned long)foundRange.location, [htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ]);
+            NSScanner *scanner = [NSScanner scannerWithString:[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ]];
+            NSCharacterSet *numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
+            NSString *numberString;
+
+            // Throw away characters before the first number.
+            [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
+            // Collect numbers.
+            [scanner scanCharactersFromSet:numbers intoString:&numberString];
+            if([[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ] isEqualToString:@"All"]) // Beginners hat "All players have ratings less than 1501 at signup time." zusätzlich
+                continue;
+            [playersArray addObject:numberString];
+        }
+        else
+        {
+            // no more substring to find
+            break;
+        }
+    }
+    
+    if(playersArray.count == 2)
+    {
+        players = [NSString stringWithFormat:@"%d/%d",[playersArray[0]intValue], [playersArray[1]intValue] ];
+    }
+    else
+        players = @"?";
+    return players;
+    }
+
+
 @end
 
