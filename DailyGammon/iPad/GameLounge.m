@@ -232,6 +232,8 @@
 
         }
 //        XLog(@"%@", topPageZeile);
+        NSMutableDictionary *event = topPageZeile[0];
+        [event setObject:[tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
 
         [self.gameLoungeArray addObject:topPageZeile];
     }
@@ -304,28 +306,32 @@
     int variantBreite = 120;
     int lengthBreite = 60;
     int roundsBreite = 60;
-    int timeBreite = 150;
+    int playerBreite = 60;
+    int timeBreite = 120;
     int graceBreite = 60;
-    int signUpBreite = (tableView.frame.size.width - nameBreite - variantBreite - lengthBreite - roundsBreite - timeBreite - graceBreite);
+    int signUpBreite = (tableView.frame.size.width - nameBreite - variantBreite - lengthBreite - roundsBreite - playerBreite - timeBreite - graceBreite);
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameBreite,labelHoehe)];
     nameLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *name = zeile[0];
     nameLabel.text = [name objectForKey:@"Text"];
-    
+//    nameLabel.backgroundColor = [UIColor yellowColor];
+
     x += nameBreite;
     
     UILabel *variantLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,variantBreite,labelHoehe)];
     variantLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *variant = zeile[1];
     variantLabel.text = [variant objectForKey:@"Text"];
-    
+//    nameLabel.backgroundColor = [UIColor greenColor];
+
     x += variantBreite;
     
     UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthBreite,labelHoehe)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *length = zeile[2];
     lengthLabel.text = [length objectForKey:@"Text"];
+ //   lengthLabel.backgroundColor = [UIColor yellowColor];
     
     x += lengthBreite;
     
@@ -333,13 +339,22 @@
     roundsLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *rounds = zeile[3];
     roundsLabel.text = [rounds objectForKey:@"Text"];
+//    roundsLabel.backgroundColor = [UIColor greenColor];
 
     x += roundsBreite;
     
+    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,playerBreite,labelHoehe)];
+    playerLabel.textAlignment = NSTextAlignmentCenter;
+    playerLabel.text = [name objectForKey:@"player"];
+//    playerLabel.backgroundColor = [UIColor blueColor];
+
+    x += playerBreite;
+
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeBreite,labelHoehe)];
     timeLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *time = zeile[4];
     NSDictionary *timePlus = zeile[5];
+//   timeLabel.backgroundColor = [UIColor yellowColor];
 
     timeLabel.text = [NSString stringWithFormat:@"%@ %@",[time objectForKey:@"Text"], [timePlus objectForKey:@"Text"]];
 
@@ -349,11 +364,15 @@
     graceLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *grace = zeile[6];
     graceLabel.text = [grace objectForKey:@"Text"];
+ //   graceLabel.backgroundColor = [UIColor greenColor];
 
     x += graceBreite;
     
     UILabel *signUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,signUpBreite,labelHoehe)];
     signUpLabel.textAlignment = NSTextAlignmentLeft;
+    
+//    signUpLabel.backgroundColor = [UIColor yellowColor];
+
     NSDictionary *signUp = zeile[7];
     //signUpLabel.text = [signUp objectForKey:@"Text"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -366,8 +385,10 @@
         if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"])
             button.frame = CGRectMake((signUpBreite - button.frame.size.width - 25)/2 , 5, 100 , 35);
         else
+        {
             button.frame = CGRectMake((signUpBreite - button.frame.size.width - 25)/2 , 5, 150 , 35);
-
+            button = [design makeReverseButton:button];
+        }
         button.frame = CGRectMake(x + ((signUpBreite - button.frame.size.width -50)/2), 5, button.frame.size.width + 50 , 35);
 
         button.tag = indexPath.row;
@@ -383,6 +404,7 @@
     [cell.contentView addSubview:variantLabel];
     [cell.contentView addSubview:lengthLabel];
     [cell.contentView addSubview:roundsLabel];
+    [cell.contentView addSubview:playerLabel];
     [cell.contentView addSubview:timeLabel];
     [cell.contentView addSubview:graceLabel];
    // [cell.contentView addSubview:signUpLabel];
@@ -402,7 +424,8 @@
     int variantBreite = 120;
     int lengthBreite = 60;
     int roundsBreite = 60;
-    int timeBreite = 150;
+    int playerBreite = 60;
+    int timeBreite = 120;
     int graceBreite = 60;
 
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameBreite,30)];
@@ -432,7 +455,14 @@
     roundsLabel.textColor = [UIColor whiteColor];
 
     x += roundsBreite;
-    
+
+    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundsBreite,30)];
+    playerLabel.textAlignment = NSTextAlignmentCenter;
+    playerLabel.text = @"Player";
+    playerLabel.textColor = [UIColor whiteColor];
+
+    x += playerBreite;
+
     UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeBreite,30)];
     timeLabel.textAlignment = NSTextAlignmentCenter;
     timeLabel.text = self.gameLoungeHeaderArray[4];
@@ -450,6 +480,7 @@
     [headerView addSubview:variantLabel];
     [headerView addSubview:lengthLabel];
     [headerView addSubview:roundsLabel];
+    [headerView addSubview:playerLabel];
     [headerView addSubview:timeLabel];
     [headerView addSubview:graceLabel];
 
