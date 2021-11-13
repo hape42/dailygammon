@@ -19,6 +19,7 @@
 #import "RatingVC.h"
 #import "iPhoneMenue.h"
 #import "Tools.h"
+#import "RatingTools.h"
 
 @interface iPhoneTopPageVC ()
 
@@ -44,7 +45,7 @@
 
 @implementation iPhoneTopPageVC
 
-@synthesize design, preferences, rating, tools;
+@synthesize design, preferences, rating, tools, ratingTools;
 
 #define NUMMERBREITE 30
 #define GRACEBREITE 70
@@ -65,6 +66,7 @@
     preferences = [[Preferences alloc] init];
     rating      = [[Rating alloc]      init];
     tools       = [[Tools alloc]       init];
+    ratingTools = [[RatingTools alloc] init];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -562,7 +564,7 @@
                        float ratingUser = [self->rating readRatingForUser:userID];
                        
                        NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                       [format setDateFormat:@"yyy-MM-dd"];
+                       [format setDateFormat:@"yyyy-MM-dd"];
                        NSString *dateDB = [format stringFromDate:[NSDate date]];
                        
                        float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];

@@ -125,7 +125,7 @@
     float ratingUser = [self readRatingForUser:userID];
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyy-MM-dd"];
+    [format setDateFormat:@"yyyy-MM-dd"];
     NSString *dateDB = [format stringFromDate:[NSDate date]];
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];

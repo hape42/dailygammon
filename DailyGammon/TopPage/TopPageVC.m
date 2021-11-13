@@ -22,6 +22,7 @@
 #import "iPhoneMenue.h"
 #import "iPhonePlayMatch.h"
 #import "Tools.h"
+#import "RatingTools.h"
 #import "NoInternet.h"
 #import <SafariServices/SafariServices.h>
 
@@ -63,7 +64,7 @@
 
 @implementation TopPageVC
 
-@synthesize design, preferences, rating, tools;
+@synthesize design, preferences, rating, tools, ratingTools;
 
 - (void)viewDidLoad
 {
@@ -92,6 +93,7 @@
     preferences = [[Preferences alloc] init];
     rating      = [[Rating alloc] init];
     tools       = [[Tools alloc] init];
+    ratingTools = [[RatingTools alloc] init];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -716,21 +718,20 @@
     }
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", (int)self.topPageArray.count] forState: UIControlStateNormal];
 
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateDB = [format stringFromDate:[NSDate date]];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+    float ratingUser = [self->rating readRatingForUser:userID];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
                    ^{
-
-                        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-                        float ratingUser = [self->rating readRatingForUser:userID];
-
-                        NSDateFormatter *format = [[NSDateFormatter alloc] init];
-                        [format setDateFormat:@"yyy-MM-dd"];
-                        NSString *dateDB = [format stringFromDate:[NSDate date]];
-                       
                         float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
                         if(ratingUser > ratingDB)
                             [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
                    });
+    [ratingTools saveRating:dateDB withRating:ratingUser] ;
 
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {

@@ -237,7 +237,7 @@
          date = [date dateByAddingTimeInterval:60*60*24])    // increment
     {
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
-        [format setDateFormat:@"yyy-MM-dd"];
+        [format setDateFormat:@"yyyy-MM-dd"];
         NSString *dateDB = [format stringFromDate:date];
 
         NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];

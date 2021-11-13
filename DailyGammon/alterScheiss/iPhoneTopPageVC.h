@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Preferences;
 @class Rating;
 @class Tools;
+@class RatingTools;
 
 @interface iPhoneTopPageVC : UIViewController<UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate>
 
@@ -21,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Preferences *preferences;
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
+@property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
 @end
 

@@ -155,9 +155,7 @@
                                           @"rating"  : [NSNumber numberWithDouble: 0.0]
                                          };
             [self.averageArray addObject:averageDict];
-
         }
-
     }
 }
 
@@ -189,7 +187,7 @@
     
 
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyy-MM-dd"];
+    [format setDateFormat:@"yyyy-MM-dd"];
     NSString *heute = [format stringFromDate:[NSDate date]];
     NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
 

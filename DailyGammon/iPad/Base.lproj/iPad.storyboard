@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="mzp-6b-xVH">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="mzp-6b-xVH">
     <device id="ipad9_7" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -708,6 +708,31 @@
                                     <action selector="preferencesAction:" destination="dOO-GA-B0a" eventType="touchUpInside" id="NZr-Gf-AuA"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ovW-Fv-IqR">
+                                <rect key="frame" x="20" y="399" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="iCloudAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="2HD-kC-pUB"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="iCloud" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYz-y1-LXV">
+                                <rect key="frame" x="145" y="452" width="132" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use iCloud for Rating data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Caq-Y6-yBI">
+                                <rect key="frame" x="95" y="404" width="210" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="iCloudOFF.png" translatesAutoresizingMaskIntoConstraints="NO" id="foN-xr-tDA">
+                                <rect key="frame" x="95" y="447" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -716,6 +741,8 @@
                     <size key="freeformSize" width="400" height="600"/>
                     <connections>
                         <outlet property="boardSchemeButton" destination="kgI-mC-1eZ" id="y6t-Kd-5pj"/>
+                        <outlet property="iCloudConnected" destination="foN-xr-tDA" id="QQT-gu-LCy"/>
+                        <outlet property="iCloudOutlet" destination="ovW-Fv-IqR" id="45m-80-2Ak"/>
                         <outlet property="preferencesButton" destination="gas-do-YXg" id="cro-GA-nKs"/>
                         <outlet property="showRatingsOutlet" destination="yKP-VM-xsc" id="9gf-IC-Rqg"/>
                         <outlet property="showWinLossOutlet" destination="1YF-bZ-9c9" id="mEg-Yz-3D2"/>
@@ -1266,6 +1293,7 @@
         <image name="app_icon.png" width="1024" height="1024"/>
         <image name="classic.png" width="613" height="456"/>
         <image name="classicHD.png" width="614" height="455"/>
+        <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="startscreen.png" width="1024" height="300"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

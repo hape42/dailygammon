@@ -68,7 +68,7 @@
     int maxHeight = self.view.bounds.size.height - self.header.frame.size.height;
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"yyy-MM-dd"];
+    [format setDateFormat:@"yyyy-MM-dd"];
     NSString *heute = [format stringFromDate:[NSDate date]];
     NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
     

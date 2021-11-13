@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UISwitch *showRatingsOutlet;
 @property (weak, nonatomic) IBOutlet UISwitch *showWinLossOutlet;
 @property (weak, nonatomic) IBOutlet UIButton *preferencesButton;
+@property (weak, nonatomic) IBOutlet UISwitch *iCloudOutlet;
+@property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 
 @end
 
@@ -52,6 +54,14 @@
     self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
     self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
+    [self.iCloudOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.iCloudOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.iCloudOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue] animated:YES];
+
+    if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
+    else
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
 }
 - (IBAction)doneAction:(id)sender
 {
@@ -108,6 +118,39 @@
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
+- (IBAction)iCloudAction:(id)sender
+{
+    if ([(UISwitch *)sender isOn])
+    {
+        if ( [[NSFileManager defaultManager] ubiquityIdentityToken] == nil)
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Problem"
+                                         message:@"You are not connected to iCloud. Before you can use this feature in the app, you need to connect to iCloud in the settings of your device."
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+                                            [self.iCloudOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue] animated:YES];
+                                        }];
+            
+            [alert addAction:yesButton];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+
+        }
+        else
+            [[NSUserDefaults standardUserDefaults] setBool:YES  forKey:@"iCloud"];
+    }
+    else
+        [[NSUserDefaults standardUserDefaults] setBool:NO  forKey:@"iCloud"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (IBAction)preferencesAction:(id)sender
 {
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
