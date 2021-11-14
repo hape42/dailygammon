@@ -22,6 +22,7 @@
 #import "iPhoneMenue.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
+#import "RatingTools.h"
 
 @interface RatingVC ()
 
@@ -41,7 +42,7 @@
 
 @implementation RatingVC
 
-@synthesize design, preferences, rating, tools;
+@synthesize design, preferences, rating, tools, ratingTools;
 
 - (void)viewDidLoad
 {
@@ -62,12 +63,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 
+    ratingTools = [[RatingTools alloc] init];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
 //    self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
  
-    self.ratingArray = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+        self.ratingArray = [ratingTools readAll];
+    else
+        self.ratingArray = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
 
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];

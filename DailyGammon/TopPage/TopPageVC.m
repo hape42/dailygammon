@@ -731,7 +731,8 @@
                         if(ratingUser > ratingDB)
                             [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
                    });
-    [ratingTools saveRating:dateDB withRating:ratingUser] ;
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+        [ratingTools saveRating:dateDB withRating:ratingUser] ;
 
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {

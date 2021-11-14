@@ -541,6 +541,7 @@
 			isa = PBXGroup;
 			children = (
 				E0AC59AC22283C8E00367EE9 /* iPad.storyboard */,
+				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E0C1D82821E900BA00494A82 /* GameLounge.h */,
 				E0C1D82921E900D100494A82 /* GameLounge.m */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
@@ -599,7 +600,6 @@
 				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0F958A021AD1884003DAC01 /* Design.h */,
 				E0F958A121AD1884003DAC01 /* Design.m */,
-				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E00A3D812700CB7D008B526B /* NoInternet.h */,
 				E00A3D822700CB7D008B526B /* NoInternet.m */,
 				E05324FF2271D40C0080D504 /* Tools.h */,

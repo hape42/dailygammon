@@ -13,6 +13,7 @@
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import <SafariServices/SafariServices.h>
+#import "RatingTools.h"
 
 @interface SetUpVC ()
 
@@ -27,14 +28,15 @@
 
 @implementation SetUpVC
 
-@synthesize design;
+@synthesize design, ratingTools;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    design = [[Design alloc] init];
-    
+    design      = [[Design alloc]      init];
+    ratingTools = [[RatingTools alloc] init];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
 
 }
@@ -47,10 +49,13 @@
     
     [self.showRatingsOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue] animated:YES];
     [self.showWinLossOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue] animated:YES];
+    
     [self.showRatingsOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
     [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    
     [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
     [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    
     self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
     self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
@@ -134,16 +139,28 @@
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
-                                            [self.iCloudOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue] animated:YES];
+                                            [self.iCloudOutlet setOn:NO animated:YES];
                                         }];
             
             [alert addAction:yesButton];
             
             [self presentViewController:alert animated:YES completion:nil];
-
         }
         else
+        {
             [[NSUserDefaults standardUserDefaults] setBool:YES  forKey:@"iCloud"];
+            
+            //hol alle Ratingeinträge aus der Datenbank und stell die Daten in die iCloud
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+            NSMutableArray *ratingArray = [app.dbConnect readAlleRatingForUser:userID];
+            for(NSMutableDictionary *dict in ratingArray)
+            {
+                float rating = [[dict objectForKey:@"rating"]floatValue];
+                NSString *datum = [dict objectForKey:@"datum"];
+                [ratingTools saveRating:datum withRating:rating] ;
+            }
+        }
     }
     else
         [[NSUserDefaults standardUserDefaults] setBool:NO  forKey:@"iCloud"];

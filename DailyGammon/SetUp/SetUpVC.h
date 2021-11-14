@@ -10,10 +10,12 @@
 #import <MessageUI/MessageUI.h>
 
 @class Design;
+@class RatingTools;
 
 @interface SetUpVC : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
+@property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
 @end
 
