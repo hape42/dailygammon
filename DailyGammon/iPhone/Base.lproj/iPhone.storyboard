@@ -1079,13 +1079,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rating from ... to ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKn-Eq-Msj">
-                                <rect key="frame" x="108" y="0.0" width="261" height="32"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7VE-Um-Ybh">
                                 <rect key="frame" x="523" y="5" width="25" height="22"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -1111,6 +1104,19 @@
                                     <action selector="share:" destination="Twn-Su-RBH" eventType="touchUpInside" id="x33-1R-OdA"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cvn-Lt-7mf">
+                                <rect key="frame" x="116" y="5" width="44" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="iCloud"/>
+                                <connections>
+                                    <action selector="iCloudAction:" destination="Twn-Su-RBH" eventType="touchUpInside" id="cXu-rF-zzO"/>
+                                    <action selector="share:" destination="Twn-Su-RBH" eventType="touchUpInside" id="8OM-tb-QHV"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="iCloudOFF.png" translatesAutoresizingMaskIntoConstraints="NO" id="CDz-2w-FDN">
+                                <rect key="frame" x="158" y="5" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="azw-Zz-UHT">
                                 <rect key="frame" x="377" y="0.0" width="138" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
@@ -1124,12 +1130,21 @@
                                     <action selector="averageAction:" destination="Twn-Su-RBH" eventType="valueChanged" id="OKW-h6-dlQ"/>
                                 </connections>
                             </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rating from ... to ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TKn-Eq-Msj">
+                                <rect key="frame" x="196" y="4" width="173" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="a9T-uy-KbR"/>
                     <connections>
                         <outlet property="header" destination="TKn-Eq-Msj" id="HSN-Bo-cyT"/>
+                        <outlet property="iCloud" destination="Cvn-Lt-7mf" id="IQH-FR-yaV"/>
+                        <outlet property="iCloudConnected" destination="CDz-2w-FDN" id="rzt-O7-hYk"/>
                         <outlet property="moreButton" destination="7VE-Um-Ybh" id="ALJ-PU-96a"/>
                     </connections>
                 </viewController>

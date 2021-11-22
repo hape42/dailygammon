@@ -29,6 +29,7 @@
 @implementation SetUpVC
 
 @synthesize design, ratingTools;
+@synthesize fromRating;
 
 - (void)viewDidLoad
 {
@@ -74,6 +75,9 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     else
         [self.navigationController popViewControllerAnimated:TRUE];
+    if(fromRating)
+        [self dismissViewControllerAnimated:YES completion:nil];
+
 }
 
 - (IBAction)boardSchemeAction:(id)sender

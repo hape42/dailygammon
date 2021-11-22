@@ -17,5 +17,7 @@
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
+@property (readwrite, assign, atomic) BOOL fromRating;
+
 @end
 

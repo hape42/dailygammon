@@ -23,6 +23,7 @@
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
+#import "SetUpVC.h"
 
 @interface RatingVC ()
 
@@ -35,6 +36,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
+@property (weak, nonatomic) IBOutlet UIButton *iCloud;
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
@@ -99,6 +102,28 @@
         shareButton.frame = CGRectMake(150, 100, 80, 35);
         [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:shareButton];
+ 
+        UIButton *iCloudButton = [UIButton buttonWithType:UIButtonTypeSystem];
+        iCloudButton = [design makeNiceButton:iCloudButton];
+        [iCloudButton setTitle:@"iCloud" forState: UIControlStateNormal];
+        iCloudButton.frame = CGRectMake(250, 100, 80, 35);
+        [iCloudButton addTarget:self action:@selector(iCloudAction:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:iCloudButton];
+
+        UIImageView *iCloudConnected = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+        iCloudConnected.frame = CGRectMake(330, 100, 35, 35);
+        if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
+            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
+        else
+            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+        
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
+        else
+            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+
+        [self.view addSubview:iCloudConnected];
+
         int maxWidth = self.view.bounds.size.width;
         int segmentWidth = 180;
         int labelWidth = 80;
@@ -117,6 +142,16 @@
 
         self.iPad = TRUE;
     }
+    if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
+    else
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+    
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
+    else
+        [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+
 }
 
 - (IBAction)averageAction:(UISegmentedControl *)segment
@@ -209,6 +244,7 @@
         else
             barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(40, 0, maxWidth, maxHeight-0)];
         self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+        self.header = [design makeNiceLabel:self.header];
     }
 
     
@@ -304,7 +340,7 @@
     else
     {
         if([design isX]) //Notch
-            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(30, 90, maxWidth - 30, maxHeight-90)];
+            hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(30, 40, maxWidth - 30, maxHeight-40)];
         else
             hostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectMake(0, 40, maxWidth, maxHeight-0)];
     }
@@ -450,6 +486,52 @@
     
     [alert addAction:yesButton];
     
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+- (IBAction)iCloudAction:(id)sender
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"iCloud"
+                                 message:@"If you enable iCloud for your device (you have to do this in the settings of your device), your rating data will be stored in iCloud. this is only a few bytes per day.\n\nYou have several advantages:\n- If you play on multiple devices, you have the same rating data on each device.\n- If you have a new device, the rating data is automatically available.\n\nYou can also switch off the iCloud at any time. However, then you only have the respective local data available for each device."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    
+    UIAlertAction* iCloudButton = [UIAlertAction
+                                actionWithTitle:@"Setting"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        SetUpVC *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
+        controller.fromRating = TRUE;
+        // present the controller
+        // on iPad, this will be a Popover
+        // on iPhone, this will be an action sheet
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:controller animated:YES completion:nil];
+        
+        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        popController.delegate = self;
+        
+        UIButton *button = (UIButton *)sender;
+        popController.sourceView = button;
+        popController.sourceRect = button.bounds;
+
+                                }];
+
+    [alert addAction:yesButton];
+    [alert addAction:iCloudButton];
+
     [self presentViewController:alert animated:YES completion:nil];
     
 }
