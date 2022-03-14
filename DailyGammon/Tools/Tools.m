@@ -216,7 +216,45 @@ typedef void(^connection)(BOOL);
     return (int)zeilen.count - 1;
     }
 
+- (NSString *)readNote:(NSString *)event
+{
+    NSString *note = @"Note";
+    
+    NSURL *urlEvent = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event]];
+    NSData *eventHtmlData = [NSData dataWithContentsOfURL:urlEvent];
+    
+    NSString *htmlString = [NSString stringWithUTF8String:[eventHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:eventHtmlData encoding: NSISOLatin1StringEncoding];
+    NSRange searchRange = NSMakeRange(0,htmlString.length);
+    NSRange foundRange;
+    int i = 0;
+    NSMutableArray *hrArray = [[NSMutableArray alloc]init];
+    while (searchRange.location < htmlString.length)
+    {
+        searchRange.length = htmlString.length-searchRange.location;
+        foundRange = [htmlString rangeOfString:@"<hr>" options:0 range:searchRange];
+        
+        if (foundRange.location != NSNotFound)
+        {
+            searchRange.location = foundRange.location+foundRange.length;
 
+          //  XLog(@"<hr>%d", (int)foundRange.location);
+            hrArray[i++] = [NSNumber numberWithInt:(int)foundRange.location];
+        }
+        else
+        {
+            // no more substring to find
+            break;
+        }
+    }
+    // <hr><B>NOTE:</B> überspringen
+    int position = [hrArray[0]intValue] + 4 + 4 + 5 + 5;
+    note = [htmlString substringWithRange:NSMakeRange(position, [hrArray[1]intValue] - position)];
+    note = [note stringByReplacingOccurrencesOfString:@"<br>"
+                                         withString:@"\n"];
+    return note;
+}
 - (NSString *)readPlayers:(NSString *)event
 {
     NSString *players = @"64/10";
@@ -234,7 +272,8 @@ typedef void(^connection)(BOOL);
     while (searchRange.location < htmlString.length)
     {
         searchRange.length = htmlString.length-searchRange.location;
-        foundRange = [htmlString rangeOfString:@"players" options:0 range:searchRange];
+        foundRange = [htmlString rangeOfString:@" player" options:0 range:searchRange];
+        
         if (foundRange.location != NSNotFound)
         {
             // found an occurrence of the substring! do stuff here
@@ -242,9 +281,9 @@ typedef void(^connection)(BOOL);
             
             
      //       NSLog(@"position %lu %@", (unsigned long)foundRange.location, [htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ]);
-            NSScanner *scanner = [NSScanner scannerWithString:[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ]];
+            NSScanner *scanner = [NSScanner scannerWithString:[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 4) ]];
             NSCharacterSet *numbers = [NSCharacterSet characterSetWithCharactersInString:@"0123456789"];
-            NSString *numberString;
+            NSString *numberString = @"?";
 
             // Throw away characters before the first number.
             [scanner scanUpToCharactersFromSet:numbers intoString:NULL];
@@ -252,6 +291,8 @@ typedef void(^connection)(BOOL);
             [scanner scanCharactersFromSet:numbers intoString:&numberString];
             if([[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ] isEqualToString:@"All"]) // Beginners hat "All players have ratings less than 1501 at signup time." zusätzlich
                 continue;
+            if([numberString isEqual:@"?"])
+                XLog(@"? %@", playersArray);
             [playersArray addObject:numberString];
         }
         else
@@ -265,7 +306,15 @@ typedef void(^connection)(BOOL);
     {
         players = [NSString stringWithFormat:@"%d/%d",[playersArray[0]intValue], [playersArray[1]intValue] ];
     }
-    else
+    else if(playersArray.count == 3) // invited players überspringen
+    {
+        players = [NSString stringWithFormat:@"%d/%d",[playersArray[0]intValue], [playersArray[2]intValue] ];
+    }
+    else if(playersArray.count == 4) //
+    {
+        players = [NSString stringWithFormat:@"%d/%d",[playersArray[0]intValue], [playersArray[3]intValue] ];
+    }
+   else
         players = @"?";
     return players;
     }

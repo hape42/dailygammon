@@ -167,7 +167,7 @@
         }
         else
         {
-            [ self readGameLounge];
+         //   [self readGameLounge];
         }
     }
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
@@ -246,6 +246,12 @@
         [event setObject:[tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
          
         [self.gameLoungeArray addObject:topPageZeile];
+        if(topPageZeile.count == 9)
+        {
+            NSMutableDictionary *note = topPageZeile[8];
+            [note setObject:[tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
+        }
+
     }
 }
 
@@ -306,7 +312,8 @@
     
     cell.backgroundColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+    cell.accessoryView = nil;
+
     NSArray *zeile = self.gameLoungeArray[indexPath.row];
     
     int x = 0;
@@ -316,7 +323,7 @@
     int buttonBreite = 120;
     maxBreite -= (buttonBreite + 5);
     
-    float nameBreite = maxBreite * 0.45;
+    float nameBreite = maxBreite * 0.35;
     float lengthBreite = maxBreite * 0.125;
     float timeBreite = maxBreite * 0.3;
     float playerBreite = maxBreite * 0.125;
@@ -336,9 +343,11 @@
 
     x += nameBreite;
     
-    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,playerBreite,labelHoehe/2)];
+    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x+3, 0 ,playerBreite,labelHoehe/2)];
     playerLabel.textAlignment = NSTextAlignmentCenter;
     playerLabel.text = [name objectForKey:@"player"];
+    playerLabel.adjustsFontSizeToFitWidth = YES;
+
  //   playerLabel.backgroundColor = [UIColor greenColor];
 
     x += playerBreite;
@@ -389,7 +398,7 @@
             [button setTitle:@"Cancel" forState: UIControlStateNormal];
         }
 
-        button.frame = CGRectMake(maxBreite  , 5, buttonBreite , 35);
+        button.frame = CGRectMake(maxBreite -40 , 5, buttonBreite , 35);
 
         button.tag = indexPath.row;
         [button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
@@ -416,6 +425,14 @@
 //    [cell addSubview:graceLabel];
 //    [cell addSubview:button];
 
+    if(zeile.count == 9)
+    {
+        UIButton *infoButton = [self makeInfoButton];
+        infoButton.tag = indexPath.row;
+        cell.accessoryView = infoButton;
+     //   cell.backgroundColor = [UIColor greenColor];
+    }
+
     return cell;
 }
 
@@ -433,7 +450,7 @@
     maxBreite -= buttonBreite;
     int x = 0;
     
-    float nameBreite = maxBreite * 0.45;
+    float nameBreite = maxBreite * 0.35;
     float lengthBreite = maxBreite * 0.125;
     float timeBreite = maxBreite * 0.3;
     float playerBreite = maxBreite * 0.125;
@@ -550,6 +567,50 @@
     if(error)
         XLog(@"%@ %@", urlSignUp, error.localizedDescription);
     [self updateTableView];
+}
+
+- (UIButton *)makeInfoButton
+{
+    UIButton * button = [[UIButton alloc]init];
+    UIImage *image = [[UIImage imageNamed:@"Note"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0.0, 10.0, 30, 30);
+    [button addTarget:self action:@selector(showNote:) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:image forState:UIControlStateNormal];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSMutableDictionary *schemaDict = [design schema:boardSchema];
+
+    [button setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
+    button.imageView.tintColor = [schemaDict objectForKey:@"TintColor"];
+    return button;
+}
+- (void)showNote:(UIButton*)sender
+{
+    NSString *note = @"Note";
+    NSArray *zeile = self.gameLoungeArray[sender.tag];
+    if(zeile.count == 9)
+    {
+        NSDictionary *dict = zeile[8];
+        note = [dict objectForKey:@"note"];
+    }
+     UIAlertController * alert = [UIAlertController
+                                   alertControllerWithTitle:@"Note"
+                                   message:note
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+     UIAlertAction* okButton = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     return;
+                                 }];
+
+     [alert addAction:okButton];
+     [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (IBAction)moreAction:(id)sender

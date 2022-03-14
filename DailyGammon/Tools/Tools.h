@@ -20,6 +20,7 @@
 
 -(int)matchCount;
 - (NSString *)readPlayers:(NSString *)event;
+- (NSString *)readNote:(NSString *)event;
 
 @end
 

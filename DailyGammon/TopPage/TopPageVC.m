@@ -132,6 +132,9 @@
     if (!_indicator)
     {
         _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+        self.indicator.color = [schemaDict objectForKey:@"TintColor"];
+
     }
     return _indicator;
 }

@@ -157,7 +157,7 @@
         }
         else
         {
-            [ self readGameLounge];
+          //  [ self readGameLounge];
         }
     }
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
@@ -176,7 +176,7 @@
 
 -(void)readGameLounge
 {
-
+    XLog(@"readGameLounge");
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/lounge"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
 
@@ -236,7 +236,13 @@
         [event setObject:[tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
 
         [self.gameLoungeArray addObject:topPageZeile];
+        if(topPageZeile.count == 9)
+        {
+            NSMutableDictionary *note = topPageZeile[8];
+            [note setObject:[tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
+        }
     }
+    
 }
 
 
@@ -297,7 +303,8 @@
 
     cell.backgroundColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryNone;
-    
+    cell.accessoryView = nil;
+
     NSArray *zeile = self.gameLoungeArray[indexPath.row];
     
     int x = 0;
@@ -309,7 +316,7 @@
     int playerBreite = 60;
     int timeBreite = 120;
     int graceBreite = 60;
-    int signUpBreite = (tableView.frame.size.width - nameBreite - variantBreite - lengthBreite - roundsBreite - playerBreite - timeBreite - graceBreite);
+    int signUpBreite = (tableView.frame.size.width - nameBreite - variantBreite - lengthBreite - roundsBreite - playerBreite - timeBreite - graceBreite)- 00;
     
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameBreite,labelHoehe)];
     nameLabel.textAlignment = NSTextAlignmentLeft;
@@ -347,6 +354,7 @@
     playerLabel.textAlignment = NSTextAlignmentCenter;
     playerLabel.text = [name objectForKey:@"player"];
 //    playerLabel.backgroundColor = [UIColor blueColor];
+    playerLabel.adjustsFontSizeToFitWidth = YES;
 
     x += playerBreite;
 
@@ -410,6 +418,13 @@
    // [cell.contentView addSubview:signUpLabel];
     [cell.contentView addSubview:button];
 
+    if(zeile.count == 9)
+    {
+        UIButton *infoButton = [self makeInfoButton];
+        infoButton.tag = indexPath.row;
+        cell.accessoryView = infoButton;
+     //   cell.backgroundColor = [UIColor greenColor];
+    }
     return cell;
 }
 
@@ -490,7 +505,7 @@
 
 - (void)updateTableView
 {
-    [ self readGameLounge];
+    [self readGameLounge];
     [self.tableView reloadData];
 }
 
@@ -552,6 +567,50 @@
     if(error)
         XLog(@"%@ %@", urlSignUp, error.localizedDescription);
     [self updateTableView];
+}
+
+- (UIButton *)makeInfoButton
+{
+    UIButton * button = [[UIButton alloc]init];
+    UIImage *image = [[UIImage imageNamed:@"Note"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0.0, 10.0, 30, 30);
+    [button addTarget:self action:@selector(showNote:) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:image forState:UIControlStateNormal];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSMutableDictionary *schemaDict = [design schema:boardSchema];
+
+    [button setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
+    button.imageView.tintColor = [schemaDict objectForKey:@"TintColor"];
+    return button;
+}
+- (void)showNote:(UIButton*)sender
+{
+    NSString *note = @"Note";
+    NSArray *zeile = self.gameLoungeArray[sender.tag];
+    if(zeile.count == 9)
+    {
+        NSDictionary *dict = zeile[8];
+        note = [dict objectForKey:@"note"];
+    }
+     UIAlertController * alert = [UIAlertController
+                                   alertControllerWithTitle:@"Note"
+                                   message:note
+                                   preferredStyle:UIAlertControllerStyleAlert];
+
+     UIAlertAction* okButton = [UIAlertAction
+                                 actionWithTitle:@"OK"
+                                 style:UIAlertActionStyleDefault
+                                 handler:^(UIAlertAction * action)
+                                 {
+                                     return;
+                                 }];
+
+     [alert addAction:okButton];
+     [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Header
