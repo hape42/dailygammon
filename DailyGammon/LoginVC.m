@@ -36,7 +36,7 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     design = [[Design alloc] init];
     
     self.loginButton = [design makeNiceButton:self.loginButton];

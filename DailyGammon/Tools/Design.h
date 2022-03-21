@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UITableViewCell *) makeNiceCell: (UITableViewCell*)cell;
 
+- (UISwitch *) makeNiceSwitch: (UISwitch*)mySwitch;
+
 - (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down;
 
 - (UILabel *) makeNiceLabel: (UILabel*)label;
@@ -31,7 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isX;
 
-#define VIEWBACKGROUNDCOLOR [UIColor colorWithRed:246.0/255 green:246.0/255 blue:246.0/255 alpha:1]
+//#define VIEWBACKGROUNDCOLOR [UIColor colorWithRed:246.0/255 green:246.0/255 blue:246.0/255 alpha:1]
+#define VIEWBACKGROUNDCOLOR [UIColor yellowColor]
+
 //#define VIEWBACKGROUNDCOLOR [UIColor colorWithRed:204.0/255 green:204.0/255 blue:204.0/255 alpha:1]
 #define HEADERBACKGROUNDCOLOR [UIColor colorWithRed:0.0/255 green:102.0/255 blue:0.0/255 alpha:1]
 

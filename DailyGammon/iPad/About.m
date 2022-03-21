@@ -70,7 +70,7 @@
 }
 - (IBAction)MRAboutButtonInfo:(id)sender
 {
-    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://www.hape42.de"]];
+    NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://www.hape42.de"]];
     if ([SFSafariViewController class] != nil) {
         SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
         [self presentViewController:sfvc animated:YES completion:nil];

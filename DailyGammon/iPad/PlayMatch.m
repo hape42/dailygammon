@@ -140,7 +140,7 @@
     [super viewDidLoad];
     
 
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
     self.chatView.layer.borderWidth = 1.0f;
     self.opponentChat.layer.borderWidth = 1.0f;
@@ -1465,8 +1465,7 @@
             {
                 UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonDouble.frame.origin.y + 4, 50, 35)];
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
-                [verifyDouble setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                verifyDouble = [design makeNiceSwitch:verifyDouble];
                 [actionView addSubview: verifyDouble];
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonDouble.frame.origin.y,100, 35)];
@@ -1504,8 +1503,7 @@
                         {
                             UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonAccept.frame.origin.y + 4, 50, 35)];
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
-                           [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                            [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [actionView addSubview: verifyAccept];
             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, 35)];
@@ -1517,8 +1515,7 @@
                         {
                             UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonPass.frame.origin.y + 4, 50, 35)];
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
-                            [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                            [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [actionView addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, 35)];
@@ -2364,7 +2361,7 @@
 
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
-    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;
     
@@ -2511,7 +2508,7 @@
     
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
-    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;
     

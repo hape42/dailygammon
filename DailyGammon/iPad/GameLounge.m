@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
 

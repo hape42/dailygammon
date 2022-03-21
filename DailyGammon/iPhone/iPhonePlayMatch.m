@@ -140,7 +140,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
     self.chatView.layer.borderWidth = 1.0f;
     self.opponentChat.layer.borderWidth = 1.0f;
@@ -2660,7 +2660,7 @@ shouldChangeTextInRange:(NSRange)range
     
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
-    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;
@@ -2930,7 +2930,7 @@ shouldChangeTextInRange:(NSRange)range
     
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
-    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
     infoView.tag = FINISHED_MATCH_VIEW;
     infoView.layer.borderWidth = 1;

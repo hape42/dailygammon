@@ -70,21 +70,15 @@
 {
     [super viewDidLoad];
 
-//    NSURL *scriptUrl = [NSURL URLWithString:@"http://www.google.com/m"];
-//    NSData *data = [NSData dataWithContentsOfURL:scriptUrl];
-//    if (data)
-//        NSLog(@"Device is connected to the Internet");
-//    else
-//        NSLog(@"Device is not connected to the Internet");
-//
     self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     self.indicator.color = [schemaDict objectForKey:@"TintColor"];
     self.indicator.center = self.view.center;
     [self.view addSubview:self.indicator];
-
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
-//    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
+    
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    
+    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
@@ -182,17 +176,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-//    if(![tools hasConnectivity])
-//    {
-//
-//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-//        NoInternet *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"NoInternet"];
-//
-//        [self.navigationController pushViewController:vc animated:NO];
-//        return;
-//    }
 
     [self.indicator startAnimating];
 
@@ -410,9 +393,13 @@
         cellContentView.layer.transform = CATransform3DIdentity;
         cellContentView.layer.opacity = 1;
     } completion:^(BOOL finished) {}];
+   // cell.backgroundColor = [UIColor redColor];
+  //  cell.contentView.backgroundColor = [UIColor redColor];
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
     return;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"cell";
@@ -428,9 +415,8 @@
             [subview removeFromSuperview];
         }
     }
+    
     [cell setTintColor:[UIColor greenColor]];
-
-    cell.backgroundColor = [UIColor whiteColor];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell setTintColor:[UIColor greenColor]];
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
@@ -477,7 +463,6 @@
     nummerLabel.textAlignment = NSTextAlignmentCenter;
     NSDictionary *nummer = zeile[0];
     nummerLabel.text = [nummer objectForKey:@"Text"];
-    
     x += self.nummerBreite;
     
     UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventBreite,labelHoehe)];
@@ -1038,7 +1023,7 @@
                                                                 maxBreite / 3,
                                                                 maxHoehe / 3)];
     
-    infoView.backgroundColor = VIEWBACKGROUNDCOLOR;
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     infoView.layer.borderWidth = 1;
     infoView.tag = 42;
     [self.view addSubview:infoView];

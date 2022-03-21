@@ -147,6 +147,22 @@
     
     return cell;
 }
+
+- (UISwitch *) makeNiceSwitch: (UISwitch*)mySwitch
+{
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    [mySwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [mySwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [mySwitch setBackgroundColor:[UIColor colorNamed:@"ColorSwitch"]];
+    mySwitch.layer.cornerRadius = 16.0;
+    mySwitch.clipsToBounds = true;
+
+    return mySwitch;
+}
 #pragma mark - label
 
 - (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down

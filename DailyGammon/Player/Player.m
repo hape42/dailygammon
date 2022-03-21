@@ -58,7 +58,7 @@
     [super viewDidLoad];
     self.playerArray = [[NSMutableArray alloc]init];
     
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     

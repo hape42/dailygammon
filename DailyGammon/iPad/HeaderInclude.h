@@ -308,14 +308,14 @@
 
                                   }];
 
-    [alert addAction:contactButton];
+ //   [alert addAction:contactButton];
 
     UIAlertAction* listButton = [UIAlertAction
                                 actionWithTitle:@"Show list of upcomming features"
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                   {
-        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://hape42.de/App/dailygammon/"]];
+        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://hape42.de/hape42/Seiten/DailyGammon.html"]];
         if ([SFSafariViewController class] != nil)
         {
             SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];

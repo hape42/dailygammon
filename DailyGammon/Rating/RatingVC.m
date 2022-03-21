@@ -51,7 +51,7 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = VIEWBACKGROUNDCOLOR;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     //    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
