@@ -53,6 +53,7 @@
         frame.size.width -= 30;
         self.myColor.frame = frame;
    }
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
 }
 - (void)viewWillAppear:(BOOL)animated

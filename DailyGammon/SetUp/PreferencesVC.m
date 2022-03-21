@@ -41,6 +41,8 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
 
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -56,22 +58,14 @@
     
     self.doneButton = [design makeNiceButton:self.doneButton];
     
-    [self.ConfirmationDouble setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.ConfirmationDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.ConfirmationTake setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.ConfirmationTake setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.ConfirmationPass setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.ConfirmationPass setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.NameLink setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.NameLink setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.SkipOpponentRollDice setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.SkipOpponentRollDice setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.SkipAutomatic setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.SkipAutomatic setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.HidePipCount setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.HidePipCount setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.HomeBoardleftSide setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.HomeBoardleftSide setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    self.ConfirmationDouble = [design makeNiceSwitch:self.ConfirmationDouble];
+    self.ConfirmationTake = [design makeNiceSwitch:self.ConfirmationTake];
+    self.ConfirmationPass = [design makeNiceSwitch:self.ConfirmationPass];
+    self.NameLink = [design makeNiceSwitch:self.NameLink];
+    self.SkipOpponentRollDice = [design makeNiceSwitch:self.SkipOpponentRollDice];
+    self.SkipAutomatic = [design makeNiceSwitch:self.SkipAutomatic];
+    self.HidePipCount = [design makeNiceSwitch:self.HidePipCount];
+    self.HomeBoardleftSide = [design makeNiceSwitch:self.HomeBoardleftSide];
 
 }
 - (void)initSwitches

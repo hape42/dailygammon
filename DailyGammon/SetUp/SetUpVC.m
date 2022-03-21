@@ -39,6 +39,7 @@
     ratingTools = [[RatingTools alloc] init];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
 }
 
@@ -51,17 +52,13 @@
     [self.showRatingsOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue] animated:YES];
     [self.showWinLossOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue] animated:YES];
     
-    [self.showRatingsOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.showRatingsOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    
-    [self.showWinLossOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.showWinLossOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-    
+    self.showRatingsOutlet = [design makeNiceSwitch:self.showRatingsOutlet];
+    self.showWinLossOutlet = [design makeNiceSwitch:self.showWinLossOutlet];
+
     self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
     self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
-    [self.iCloudOutlet setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.iCloudOutlet setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+    self.iCloudOutlet = [design makeNiceSwitch:self.iCloudOutlet];
     [self.iCloudOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue] animated:YES];
 
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)

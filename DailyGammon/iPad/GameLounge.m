@@ -48,6 +48,8 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
 
     design = [[Design alloc] init];
@@ -278,6 +280,7 @@
         cellContentView.layer.transform = CATransform3DIdentity;
         cellContentView.layer.opacity = 1;
     } completion:^(BOOL finished) {}];
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
     return;
 }
@@ -610,6 +613,14 @@
                                  }];
 
      [alert addAction:okButton];
+    
+    UIView *firstSubview = alert.view.subviews.firstObject;
+
+    UIView *alertContentView = firstSubview.subviews.firstObject;
+
+    for (UIView *subSubView in alertContentView.subviews) { //This is main catch
+        subSubView.backgroundColor = [UIColor grayColor]; //Here you change background
+    }
      [self presentViewController:alert animated:YES completion:nil];
 }
 
