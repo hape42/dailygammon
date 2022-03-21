@@ -79,6 +79,7 @@
     
     self.suche.delegate = self;
     [self.suche setShowsCancelButton:YES animated:YES];
+    
 
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
 //
@@ -97,6 +98,9 @@
         
     }
     
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+
     self.isMessageView = FALSE;
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
@@ -161,7 +165,12 @@
     return self.playerArray.count;
 }
 
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
+    return;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"cell";
@@ -518,7 +527,8 @@
     self.messageFrameSave = self.messageView.frame;
 
     self.messageView.tag = 42+1;
-    self.messageView.backgroundColor = GRAYLIGHT;
+    self.messageView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                0,
                                                                breite - 10,
@@ -536,7 +546,7 @@
                                                                       breite - 10,
                                                                       hoehe - 110)];
     [self.message setFont:[UIFont systemFontOfSize:14]];
-    self.message.backgroundColor = [UIColor whiteColor];
+    self.message.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     self.message.delegate = self;
     self.message.text = @"";
     

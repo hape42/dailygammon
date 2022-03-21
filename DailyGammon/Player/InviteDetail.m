@@ -97,6 +97,9 @@
     
     design = [[Design alloc] init];
     
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    self.inviteView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     self.matchLengthButton = [design makeNiceButton:self.matchLengthButton];
     self.timeControlButton = [design makeNiceButton:self.timeControlButton];
     self.inviteButton      = [design makeNiceButton:self.inviteButton];
@@ -139,14 +142,8 @@
     CGRect frame = CGRectMake(self.privateMatch.frame.origin.x,
                                self.privateMatch.frame.origin.y + 4, 50, 35);
     self.privateMatch.frame = frame;
-    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    if(boardSchema < 1) boardSchema = 4;
 
-    NSMutableDictionary *schemaDict = [design schema:boardSchema];
-
-    [self.privateMatch setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [self.privateMatch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-
+    self.privateMatch = [design makeNiceSwitch:self.privateMatch];
     self.messageText.tag = 42;
     
     if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
