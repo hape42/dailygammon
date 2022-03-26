@@ -413,7 +413,7 @@
                                                      value:[UIFont systemFontOfSize:20.0]
                                                      range:NSMakeRange(0, [attr length])];
                                         [message setAttributedText:attr];
-                                        message.textColor = [UIColor darkTextColor];
+                                     //   message.textColor = [UIColor darkTextColor];
                                         message.adjustsFontSizeToFitWidth = YES;
                                         message.numberOfLines = 0;
                                         message.minimumScaleFactor = 0.5;
@@ -1470,7 +1470,7 @@
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonDouble.frame.origin.y,100, 35)];
                 verifyDoubleText.text = @"Verify";
-                verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
+            //    verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
             }
             break;
@@ -1508,7 +1508,7 @@
             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, 35)];
                             verifyAcceptText.text = @"Verify";
-                            verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                         //   verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
@@ -1520,7 +1520,7 @@
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, 35)];
                             verifyDeclineText.text = @"Verify";
-                            verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                       //     verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
                         }
 

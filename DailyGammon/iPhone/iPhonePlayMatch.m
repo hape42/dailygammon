@@ -352,11 +352,11 @@
 
     self.matchName.adjustsFontSizeToFitWidth = YES;
     
-    self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
+  //  self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     [self.moreButton setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
 
-    self.matchCountLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+ //   self.matchCountLabel.textColor = [schemaDict objectForKey:@"TintColor"];
 
 //    self.moreButton = [design makeNiceButton:self.moreButton];
 
@@ -453,7 +453,7 @@
                                                         value:[UIFont systemFontOfSize:20.0]
                                                         range:NSMakeRange(0, [attr length])];
                                            [message setAttributedText:attr];
-                                           message.textColor = [UIColor darkTextColor];
+                                       //    message.textColor = [UIColor darkTextColor];
                                            message.adjustsFontSizeToFitWidth = YES;
                                            message.numberOfLines = 0;
                                            message.minimumScaleFactor = 0.5;
@@ -1294,14 +1294,14 @@
                                                       playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
                                                       self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
                                                   }
-                                                  self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                             //     self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
                                                   
                                                   if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
                                                   {
                                                       opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
                                                       self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
                                                   }
-                                                  self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
+                                             //     self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
                                               }
                                               if(showWinLoss)
                                               {
@@ -1310,42 +1310,42 @@
                                                       playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
                                                       self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
                                                   }
-                                                  self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                           //       self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                   
                                                   if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
                                                   {
                                                       playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
                                                       self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
                                                   }
-                                                  self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                            //      self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                   
                                                   if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
                                                   {
                                                       playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
                                                       self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
                                                   }
-                                                  self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
+                                           //       self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                   
                                                   if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
                                                   {
                                                       opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
                                                       self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
                                                   }
-                                                  self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           //       self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
                                                   
                                                   if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
                                                   {
                                                       opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
                                                       self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
                                                   }
-                                                  self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           //       self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
 
                                                   if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
                                                   {
                                                       opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
                                                       self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
                                                   }
-                                                  self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
+                                           //       self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
                                               }
                                           });
                            
@@ -1364,6 +1364,9 @@
     
     self.opponentView.backgroundColor =  self.boardColor;
     self.playerView.backgroundColor   =  self.boardColor;
+
+    self.opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
+    self.playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
 
     float labelHoeheName    = opponentViewHoehe / 9 * 3;
     float labelHoeheDetails = opponentViewHoehe / 9 * 2;
@@ -1669,8 +1672,7 @@ case ROLL:
                 verifyDouble.frame = frame;
                 
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
-                [verifyDouble setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                [verifyDouble setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                verifyDouble = [design makeNiceSwitch:verifyDouble];
                 [actionView addSubview: verifyDouble];
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:
@@ -1679,7 +1681,7 @@ case ROLL:
                                                         100,
                                                         BUTTONHEIGHT)];
                 verifyDoubleText.text = @"Verify";
-                verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
+   //             verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
             }
             break;
@@ -1738,14 +1740,13 @@ case ROLL:
                             verifyAccept.frame = frame;
 
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
-                            [verifyAccept setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                            [verifyAccept setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [actionView addSubview: verifyAccept];
                             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:                                             CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + 3, buttonAccept.frame.origin.y, 100, BUTTONHEIGHT)];
 
                             verifyAcceptText.text = @"Verify";
-                            verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
+                    //        verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
@@ -1761,14 +1762,13 @@ case ROLL:
                             verifyDecline.frame = frame;
 
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
-                            [verifyDecline setTintColor:[schemaDict objectForKey:@"TintColor"]];
-                            [verifyDecline setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [actionView addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:
                                                           CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + 3, buttonPass.frame.origin.y, 100, BUTTONHEIGHT)];
                             verifyDeclineText.text = @"Verify";
-                            verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
+             //               verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
                         }
                         
@@ -1901,7 +1901,7 @@ case ROLL:
             }
             [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
             [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-            self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
+    //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
 
             self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
             if(([self.opponentChat.text length] == 0) && (isCheckbox == FALSE))
@@ -1951,7 +1951,7 @@ case ROLL:
             self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
             
             self.playerChat.text = @"you may chat here";
-            self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
+   //         self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
             
@@ -1979,7 +1979,7 @@ case ROLL:
                                                                          25)];
         messageText.text = [self.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
-        messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
+    //    messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
         messageText.adjustsFontSizeToFitWidth = YES;
 
         [actionView addSubview: messageText];

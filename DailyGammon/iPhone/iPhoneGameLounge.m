@@ -48,7 +48,8 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-    
+    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     
     design = [[Design alloc] init];
@@ -287,7 +288,8 @@
         cellContentView.layer.transform = CATransform3DIdentity;
         cellContentView.layer.opacity = 1;
     } completion:^(BOOL finished) {}];
-    
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+
     return;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

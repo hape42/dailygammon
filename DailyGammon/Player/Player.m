@@ -58,8 +58,6 @@
     [super viewDidLoad];
     self.playerArray = [[NSMutableArray alloc]init];
     
-    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
     
     design = [[Design alloc] init];
@@ -98,8 +96,9 @@
         
     }
     
-    self.view.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
-    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorTableView"];;
+    self.suche.backgroundColor = [UIColor colorNamed:@"ColorTableView"];;
 
     self.isMessageView = FALSE;
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
@@ -187,7 +186,7 @@
         }
     }
     
-    cell.backgroundColor = [UIColor whiteColor];
+//    cell.backgroundColor = [UIColor whiteColor];
     
     NSArray *zeile = self.playerArray[indexPath.row];
     NSMutableDictionary *dict = zeile[3];
@@ -214,7 +213,7 @@
                                                                      30)];
     playerLabel.textAlignment = NSTextAlignmentLeft;
     playerLabel.text = [dict objectForKey:@"Text"];
-    playerLabel.textColor = [UIColor darkTextColor];
+//    playerLabel.textColor = [UIColor darkTextColor];
     playerLabel.adjustsFontSizeToFitWidth = YES;
     playerLabel.numberOfLines = 0;
     playerLabel.minimumScaleFactor = 0.5;
@@ -226,7 +225,7 @@
     ratingLabel.textAlignment = NSTextAlignmentLeft;
     dict = zeile[4];
     ratingLabel.text = [dict objectForKey:@"Text"];
-    ratingLabel.textColor = [UIColor darkTextColor];
+//    ratingLabel.textColor = [UIColor darkTextColor];
     ratingLabel.adjustsFontSizeToFitWidth = YES;
     ratingLabel.numberOfLines = 0;
     ratingLabel.minimumScaleFactor = 0.5;
@@ -243,7 +242,7 @@
                                                             options:NSRegularExpressionSearch
                                                               range:NSMakeRange(0, experienceLabel.text.length)];
 
-    experienceLabel.textColor = [UIColor darkTextColor];
+//    experienceLabel.textColor = [UIColor darkTextColor];
     experienceLabel.adjustsFontSizeToFitWidth = YES;
     experienceLabel.numberOfLines = 0;
     experienceLabel.minimumScaleFactor = 0.5;

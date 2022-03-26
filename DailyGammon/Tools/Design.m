@@ -107,6 +107,9 @@
     button.layer.borderColor = [[schemaDict objectForKey:@"TintColor"]CGColor];
     button.tintColor = [schemaDict objectForKey:@"TintColor"];
     
+    button.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    button.layer.borderColor = [[UIColor colorNamed:@"ColorSwitch"]CGColor];
+
     if([button.titleLabel.text isEqualToString:@"Cancel"])
     {
         button.backgroundColor = [schemaDict objectForKey:@"TintColor"];

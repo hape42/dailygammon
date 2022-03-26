@@ -132,7 +132,7 @@
 
     UIButton *button8 = [UIButton buttonWithType:UIButtonTypeSystem];
     button8 = [design makeNiceButton:button8];
-    [button8 setTitle:@"Player" forState: UIControlStateNormal];
+    [button8 setTitle:@"Players" forState: UIControlStateNormal];
     button8.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button8.tag = 8;
     [button8 addTarget:self action:@selector(playerVC) forControlEvents:UIControlEventTouchUpInside];
