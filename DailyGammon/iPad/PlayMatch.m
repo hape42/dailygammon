@@ -1232,14 +1232,12 @@
                                                    playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
                                                    self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
                                                }
-                                               self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
                                                {
                                                    opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
                                                    self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
                                                }
-                                               self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
                                            }
                                            if(showWinLoss)
                                            {
@@ -1252,21 +1250,18 @@
                                                    self.playerActive.minimumScaleFactor = 0.1;
                                                    self.playerActive.lineBreakMode = NSLineBreakByClipping;
                                                }
-                                               self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
                                                {
                                                    playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
                                                    self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
                                                }
-                                               self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
                                                {
                                                    playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
                                                    self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
                                                }
-                                               self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
                                                {
@@ -1277,21 +1272,18 @@
                                                    self.opponentActive.minimumScaleFactor = 0.1;
                                                    self.opponentActive.lineBreakMode = NSLineBreakByClipping;
                                                }
-                                               self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
                                                {
                                                    opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
                                                    self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
                                                }
-                                               self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
                                                
                                                if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
                                                {
                                                    opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
                                                    self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
                                                }
-                                               self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
                                            }
                                        });
             
@@ -1307,9 +1299,9 @@
     int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
     int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
     
-    self.opponentView.backgroundColor =  self.boardColor;
-    self.playerView.backgroundColor   =  self.boardColor;
-    
+    self.opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
+    self.playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
+
     float labelHoeheName    = opponentViewHoehe / 9 * 3;
     float labelHoeheDetails = opponentViewHoehe / 9 * 2;
 
@@ -1667,7 +1659,7 @@
             [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
             [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
             self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
-            self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
+ //           self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
 

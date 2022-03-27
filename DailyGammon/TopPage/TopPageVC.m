@@ -169,8 +169,8 @@
     self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];
     self.refreshButtonIPAD.tintColor = [schemaDict objectForKey:@"TintColor"];
 
-    [self.navigationController.navigationBar setTitleTextAttributes:
-     @{NSForegroundColorAttributeName:[schemaDict objectForKey:@"TintColor"]}];
+//    [self.navigationController.navigationBar setTitleTextAttributes:
+//     @{NSForegroundColorAttributeName:[schemaDict objectForKey:@"TintColor"]}];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -444,7 +444,7 @@
     frame.size.width = 10;
 
     checkmark.frame = frame;
-    cell.accessoryView = checkmark;
+ //   cell.accessoryView = checkmark;
     
     
     NSArray *zeile = self.topPageArray[indexPath.row];

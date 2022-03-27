@@ -1362,9 +1362,6 @@
     int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
     int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
     
-    self.opponentView.backgroundColor =  self.boardColor;
-    self.playerView.backgroundColor   =  self.boardColor;
-
     self.opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
     self.playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
 
