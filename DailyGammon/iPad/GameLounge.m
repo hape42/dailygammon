@@ -581,13 +581,10 @@
     button.frame = CGRectMake(0.0, 10.0, 30, 30);
     [button addTarget:self action:@selector(showNote:) forControlEvents:UIControlEventTouchUpInside];
     [button setImage:image forState:UIControlStateNormal];
-    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    if(boardSchema < 1) boardSchema = 4;
-    NSMutableDictionary *schemaDict = [design schema:boardSchema];
 
-    [button setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
-    button.imageView.tintColor = [schemaDict objectForKey:@"TintColor"];
+    [button setTintColor:[design schemaColor]];
+     [button setTitleColor:[design schemaColor] forState:UIControlStateNormal];
+     button.imageView.tintColor = [design schemaColor];
     return button;
 }
 - (void)showNote:(UIButton*)sender

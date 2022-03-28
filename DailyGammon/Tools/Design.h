@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Design : UIView
 
-- (UIColor *) dgColor;
+- (UIColor *) schemaColor;
 
 -(UIButton *) makeNiceButton: (UIButton *)button;
 -(UIButton *) makeReverseButton: (UIButton *)button;

@@ -1194,6 +1194,7 @@
                             <searchBar contentMode="redraw" fixedFrame="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NVw-t0-MDB">
                                 <rect key="frame" x="20" y="32" width="528" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" name="ColorSwitch"/>
                                 <color key="barTintColor" name="ColorTableViewCell"/>
                                 <textInputTraits key="textInputTraits" enablesReturnKeyAutomatically="YES"/>
                                 <scopeButtonTitles>
@@ -1392,6 +1393,9 @@
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="startscreen.png" width="1024" height="300"/>
+        <namedColor name="ColorSwitch">
+            <color red="0.37055522200000002" green="0.37056469920000001" blue="0.37055957319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ColorTableViewCell">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

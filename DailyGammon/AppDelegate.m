@@ -42,8 +42,9 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         schemaDict = [design schema:4];
     }
-    [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    
+ //   [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
+    [self.window setTintColor:[UIColor colorNamed:@"ColorSwitch"]];
+
     long count = [[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"];
     if(count < 0) count = 0;
     [[NSUserDefaults standardUserDefaults] setInteger:count+1 forKey:@"LaunchCount"];

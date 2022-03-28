@@ -355,6 +355,7 @@
   //  self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     [self.moreButton setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
  //   self.matchCountLabel.textColor = [schemaDict objectForKey:@"TintColor"];
 
@@ -427,7 +428,7 @@
                                                                                                              breite,
                                                                                                              hoehe)];
                                            self.messageAnswerView.tag = ANSWERREPLY_VIEW;
-                                           self.messageAnswerView.backgroundColor = GRAYLIGHT;
+                                            self.messageAnswerView.backgroundColor = [UIColor darkGrayColor];
                                            UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                                                       0,
                                                                                                       breite - 10,
@@ -441,7 +442,7 @@
                                            title.adjustsFontSizeToFitWidth = YES;
                                            title.numberOfLines = 0;
                                            title.minimumScaleFactor = 0.5;
-                                           title.backgroundColor = [UIColor whiteColor];
+                                           title.backgroundColor = [UIColor grayColor];
                                            title.textAlignment = NSTextAlignmentCenter;
                                            
                                            UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(5,
@@ -453,7 +454,7 @@
                                                         value:[UIFont systemFontOfSize:20.0]
                                                         range:NSMakeRange(0, [attr length])];
                                            [message setAttributedText:attr];
-                                       //    message.textColor = [UIColor darkTextColor];
+                                           message.backgroundColor = [UIColor grayColor];
                                            message.adjustsFontSizeToFitWidth = YES;
                                            message.numberOfLines = 0;
                                            message.minimumScaleFactor = 0.5;
@@ -466,7 +467,7 @@
                                            [self.answerMessage setFont:[UIFont systemFontOfSize:20]];
                                            self.answerMessage.text = @"you may chat here";
                                            self.answerMessage.delegate = self;
-                                           
+                                           self.answerMessage.backgroundColor = [UIColor lightGrayColor];
                                            UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
                                            buttonNext = [self->design makeNiceButton:buttonNext];
                                            [buttonNext setTitle:@"Send Reply" forState: UIControlStateNormal];

@@ -66,8 +66,8 @@
     UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.moreButton setImage:image forState:UIControlStateNormal];
     
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
 //        self.view.backgroundColor = [schemaDict objectForKey:@"TintColor"];

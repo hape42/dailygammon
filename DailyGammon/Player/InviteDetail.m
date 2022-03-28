@@ -127,7 +127,7 @@
     self.inviteText.adjustsFontSizeToFitWidth = YES;
     self.inviteText.numberOfLines = 0;
     self.inviteText.minimumScaleFactor = 0.5;
-    self.inviteText.textColor = [design dgColor];
+    self.inviteText.textColor = [design schemaColor];
 
     self.messageTextTitle.text = [NSString stringWithFormat:@"Quick message to %@", playerName];
     self.messageTextTitle.adjustsFontSizeToFitWidth = YES;

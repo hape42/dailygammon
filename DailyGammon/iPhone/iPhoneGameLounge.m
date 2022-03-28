@@ -62,6 +62,7 @@
     
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;

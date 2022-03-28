@@ -70,9 +70,8 @@
 {
     [super viewDidLoad];
 
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.indicator.color = [schemaDict objectForKey:@"TintColor"];
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    self.indicator.color = [design schemaColor];
     self.indicator.center = self.view.center;
     [self.view addSubview:self.indicator];
     
@@ -125,7 +124,7 @@
 {
     if (!_indicator)
     {
-        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
         NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
         self.indicator.color = [schemaDict objectForKey:@"TintColor"];
 
@@ -165,7 +164,8 @@
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
-    
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
     self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];
     self.refreshButtonIPAD.tintColor = [schemaDict objectForKey:@"TintColor"];
 
@@ -625,23 +625,20 @@
             break;
    }
     
-    
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-
     switch (order)
     {
         case 0:
-            graceLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            graceLabel.textColor = [design schemaColor];
             break;
         case 1:
-            poolLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            poolLabel.textColor = [design schemaColor];
             break;
         case 2:
-            graceLabel.textColor = [schemaDict objectForKey:@"TintColor"];
-            poolLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            graceLabel.textColor = [design schemaColor];
+            poolLabel.textColor = [design schemaColor];
             break;
         case 3:
-            opponentLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+            opponentLabel.textColor = [design schemaColor];
             break;
         case 4:
             roundLabel = [design makeSortLabel:roundLabel sortOrderDown:YES];

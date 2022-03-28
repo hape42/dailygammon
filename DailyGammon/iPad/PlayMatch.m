@@ -387,7 +387,7 @@
                                                                                                      breite,
                                                                                                     hoehe)];
                                         self.messageAnswerView.tag = ANSWERREPLY_VIEW;
-                                        self.messageAnswerView.backgroundColor = GRAYLIGHT;
+                                        self.messageAnswerView.backgroundColor = [UIColor darkGrayColor];
                                         UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                                                     0,
                                                                                                     breite - 10,
@@ -401,7 +401,7 @@
                                         title.adjustsFontSizeToFitWidth = YES;
                                         title.numberOfLines = 0;
                                         title.minimumScaleFactor = 0.5;
-                                        title.backgroundColor = [UIColor whiteColor];
+                                        title.backgroundColor = [UIColor grayColor];
                                         title.textAlignment = NSTextAlignmentCenter;
                                         
                                         UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(5,
@@ -413,7 +413,7 @@
                                                      value:[UIFont systemFontOfSize:20.0]
                                                      range:NSMakeRange(0, [attr length])];
                                         [message setAttributedText:attr];
-                                     //   message.textColor = [UIColor darkTextColor];
+                                        message.backgroundColor = [UIColor grayColor];
                                         message.adjustsFontSizeToFitWidth = YES;
                                         message.numberOfLines = 0;
                                         message.minimumScaleFactor = 0.5;
@@ -426,7 +426,8 @@
                                         [self.answerMessage setFont:[UIFont systemFontOfSize:20]];
                                         self.answerMessage.text = @"you may chat here";
                                         self.answerMessage.delegate = self;
-                                        
+                                        self.answerMessage.backgroundColor = [UIColor lightGrayColor];
+
                                         UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
                                         buttonNext = [self->design makeNiceButton:buttonNext];
                                         [buttonNext setTitle:@"Send Reply" forState: UIControlStateNormal];
@@ -1462,7 +1463,6 @@
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonDouble.frame.origin.y,100, 35)];
                 verifyDoubleText.text = @"Verify";
-            //    verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
             }
             break;
@@ -1500,7 +1500,6 @@
             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, 35)];
                             verifyAcceptText.text = @"Verify";
-                         //   verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
@@ -1512,7 +1511,6 @@
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, 35)];
                             verifyDeclineText.text = @"Verify";
-                       //     verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
                         }
 
@@ -1656,10 +1654,7 @@
                 self.quoteSwitch.frame = self.quoteSwitchFrame;
                 self.quoteMessage.frame = self.quoteMessageFrame;
             }
-            [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
-            [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
-            self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
- //           self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
+            self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
 
@@ -1978,7 +1973,8 @@
     
     
     NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-
+//    escapedString = str;
+//    NSString *escapedString = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
@@ -1987,7 +1983,7 @@
 //    hole erstes element aus dem Array
 //    baue daraus matchLink
 //    lösche erstes elemnt aus dem array
-    
+   
     if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > 3)
     {
         NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];

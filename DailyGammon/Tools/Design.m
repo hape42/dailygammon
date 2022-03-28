@@ -10,9 +10,12 @@
 
 @implementation Design
 
-- (UIColor *) dgColor
+- (UIColor *) schemaColor
 {
-    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+
+    NSMutableDictionary *schemaDict = [self schema:boardSchema];
 
     return [schemaDict objectForKey:@"TintColor"] ;
 
@@ -384,6 +387,24 @@
             break;
 
         default:
+        {
+            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"BoardSchemaColor"];
+            
+            [schemaDict setObject:[UIColor grayColor] forKey:@"RandSchemaColor"];
+            [schemaDict setObject:[UIColor darkGrayColor] forKey:@"barMittelstreifenColor"];
+            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
+           
+            UIColor *schemaColor = [UIColor colorWithRed:165.0/255 green:46.0/255 blue:40.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"TintColor"];
+            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
+            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:43.0/255 green:43.0/255 blue:43.0/255 alpha:1] forKey:@"labelColor1"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
+            
+            [schemaDict setObject:[UIColor colorWithRed:166.0/255 green:46.0/255 blue:40.0/255 alpha:1] forKey:@"labelColor2"];
+            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor2"];
+       }
             break;
     }
     return schemaDict;

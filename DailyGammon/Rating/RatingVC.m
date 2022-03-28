@@ -61,6 +61,8 @@
 
     self.iPad = FALSE;
     self.average = 30;
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -217,10 +219,7 @@
             [view removeFromSuperview];
         }
     }
-    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    if(boardSchema < 1) boardSchema = 4;
-    NSMutableDictionary *schemaDict = [design schema:boardSchema];
-    CPTColor *tintColor = [CPTColor colorWithCGColor:[[schemaDict objectForKey:@"TintColor"] CGColor]];
+    CPTColor *tintColor = [CPTColor colorWithCGColor:[[design schemaColor] CGColor]];
     CPTColor *averageColor = [CPTColor colorWithCGColor:[[UIColor yellowColor] CGColor]];
 
     int maxWidth = self.view.bounds.size.width;
