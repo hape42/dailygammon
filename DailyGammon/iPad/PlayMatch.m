@@ -1953,32 +1953,14 @@
                 checkbox = @"&quote=off";
        }
     }
-//    NSString *escapedString = [self.playerChat.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
 
-    __block NSString *str = @"";
-    [self.playerChat.text enumerateSubstringsInRange:NSMakeRange(0, self.playerChat.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         
-         NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//    escapedString = str;
-//    NSString *escapedString = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+    NSString *chatString = [tools cleanChatString:self.playerChat.text];
+
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
-                 escapedString];
+                 chatString];
+    
 //    schicke matchlink hier schon ab, wenn sort = round oder length
 //    hole erstes element aus dem Array
 //    baue daraus matchLink
@@ -2020,30 +2002,12 @@
                 checkbox = @"&quote=off";
         }
     }
-    __block NSString *str = @"";
-    [self.playerChat.text enumerateSubstringsInRange:NSMakeRange(0, self.playerChat.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         
-         NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
+    NSString *chatString = [tools cleanChatString:self.playerChat.text];
+
     matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
-                 escapedString];
-//http://dailygammon.com/bg/sendmsg/32593?submit=Send&text=test
-//    matchLink = @"/bg/sendmsg/32593?submit=Send&text=test";
+                 chatString];
 
     [self showMatch];
 
@@ -2599,29 +2563,11 @@
     NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
 
-    __block NSString *str = @"";
-    [self.answerMessage.text enumerateSubstringsInRange:NSMakeRange(0, self.answerMessage.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         
-         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
+    NSString *chatString = [tools cleanChatString:self.answerMessage.text];
+
     matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
                  [dict objectForKey:@"action"],
-                 escapedString];
-    XLog(@"matchLink %@", matchLink);
+                 chatString];
     [self showMatch];
 }
 - (void) actionCancelReplay

@@ -356,26 +356,10 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-//    XLog(@"Text change - %@",searchText);
-    
-    __block NSString *str = @"";
-    [searchText enumerateSubstringsInRange:NSMakeRange(0, searchText.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    searchText = [tools cleanChatString:searchText];
 
     NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
-                 escapedString];
+                            searchText];
 
     [self readPlayerArray:searchLink];
 }
@@ -592,23 +576,7 @@
     
     NSMutableDictionary *dict = zeile[3];
     
-    __block NSString *str = @"";
-    [self.message.text enumerateSubstringsInRange:NSMakeRange(0, self.message.text.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         
-         //NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    NSString *escapedString = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *escapedString = [tools cleanChatString:self.message.text];
 
     NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
 

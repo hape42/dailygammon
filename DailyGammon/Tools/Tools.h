@@ -22,5 +22,7 @@
 - (NSString *)readPlayers:(NSString *)event;
 - (NSString *)readNote:(NSString *)event;
 
+- (NSString *)cleanChatString:(NSString *)chatString;
+
 @end
 
