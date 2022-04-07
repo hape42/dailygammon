@@ -1619,17 +1619,6 @@ case ROLL:
         {
 #pragma mark - Button Roll Double
             float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 0;// minus textzeile für Message
-//            UIView *button1 = [[UIView alloc] initWithFrame:CGRectMake(0,0,
-//                                                                          maxBreite - self.opponentView.frame.origin.x - 5,
-//                                                                          platzFuerButton)];
-//            UIView *button2 = [[UIView alloc] initWithFrame:CGRectMake(0,platzFuerButton,
-//                                                                       maxBreite - self.opponentView.frame.origin.x - 5,
-//                                                                       platzFuerButton)];
-//            button1.backgroundColor = [UIColor redColor];
-//            button2.backgroundColor = [UIColor yellowColor];
-//
-//            [actionView addSubview:button1];
-//            [actionView addSubview:button2];
 
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonRoll = [design makeNiceButton:buttonRoll];

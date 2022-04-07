@@ -29,6 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
+@property (strong, readwrite, retain, atomic) UIView *filterView;
 
 @end
 

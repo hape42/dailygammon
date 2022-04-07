@@ -163,7 +163,6 @@
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
-    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
     self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];

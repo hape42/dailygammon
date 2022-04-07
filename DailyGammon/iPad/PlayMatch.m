@@ -84,6 +84,7 @@
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
 @property (readwrite, retain, nonatomic) UIView *finishedMatchView;
+@property (readwrite, retain, nonatomic) UITextView *finishedMatchChat;
 
 @property (readwrite, retain, nonatomic) UIView *messageAnswerView;
 @property (readwrite, retain, nonatomic) UITextView *answerMessage;
@@ -2372,20 +2373,20 @@
     player2Score.text = playerArray[3];
     [infoView addSubview:player2Score];
 
-    UITextView *chat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
-    chat.textAlignment = NSTextAlignmentLeft;
+    self.finishedMatchChat  = [[UITextView alloc] initWithFrame:CGRectMake(rand, player2Name.layer.frame.origin.y + 40 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 100 ))];
+    self.finishedMatchChat.textAlignment = NSTextAlignmentLeft;
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     NSString *chatString = @"";
     for( NSString *chatZeile in chatArray)
     {
         chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
     }
-    chat.text = chatString;
-    chat.editable = YES;
-    [chat setDelegate:self];
+    self.finishedMatchChat.text = chatString;
+    self.finishedMatchChat.editable = YES;
+    [self.finishedMatchChat setDelegate:self];
 
-    [chat setFont:[UIFont systemFontOfSize:20]];
-    [infoView addSubview:chat];
+    [self.finishedMatchChat setFont:[UIFont systemFontOfSize:20]];
+    [infoView addSubview:self.finishedMatchChat];
 
     UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonNext = [design makeNiceButton:buttonNext];
@@ -2411,7 +2412,7 @@
 
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
     NSString *href = @"";
-    for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+    for(NSDictionary *dict in [finishedMatchDict objectForKey:@"attributes"])
     {
         href = [dict objectForKey:@"action"];
     }
@@ -2424,10 +2425,12 @@
     if( [finishedMatchDict objectForKey:@"NextButton"] != nil)
         nextButtonText = [finishedMatchDict objectForKey:@"NextButton"];
     
+    NSString *chatString = [tools cleanChatString:self.finishedMatchChat.text];
+
     if([href isEqualToString:@""])
         matchLink = @"/bg/nextgame";
     else
-        matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1", href, nextButtonText];
+        matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1&chat=%@", href, nextButtonText, chatString];
     [self showMatch];
 }
 - (void)actionToTopFinishedMatch

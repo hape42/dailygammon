@@ -28,16 +28,21 @@
 @interface RatingVC ()
 
 @property (strong, nonatomic) NSMutableArray *ratingArray;
+@property (strong, nonatomic) NSMutableArray *ratingArrayAll;
+
 @property (strong, nonatomic) NSMutableArray *monatArray;
 
 @property (strong, nonatomic) NSMutableArray *averageArray;
-@property (readwrite, atomic) int average;
+@property (readwrite, atomic) int average, dataRange;
 @property (readwrite, atomic) BOOL iPad;
 
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 @property (weak, nonatomic) IBOutlet UIButton *iCloud;
+@property (weak, nonatomic) IBOutlet UIButton *shareButton;
+@property (weak, nonatomic) IBOutlet UIButton *infoButton;
+@property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
@@ -46,13 +51,13 @@
 @implementation RatingVC
 
 @synthesize design, preferences, rating, tools, ratingTools;
+@synthesize filterView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-    //    self.tableView.backgroundColor = HEADERBACKGROUNDCOLOR;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
     
@@ -60,8 +65,80 @@
         [self.view addSubview:[self makeHeader]];
 
     self.iPad = FALSE;
-    self.average = 30;
+    
+    int ratingAverage = 0;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
+    {
+        ratingAverage = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue];
+    }
+    else
+    {
+        self.average = 90;
+        [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"ratingAverage"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    switch (ratingAverage)
+    {
+        case 0:
+                self.average = 7;
+            break;
+        case 1:
+                self.average = 30;
+            break;
+        case 2:
+                self.average = 90;
+            break;
+        case 3:
+                self.average = 365;
+            break;
+        default:
+            self.average = 90;
+            break;
+    }
+    
+    int dataArea = 0;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingData"] != nil)
+    {
+        dataArea = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingData"]intValue];
+    }
+    else
+    {
+        self.dataRange = 0;
+        [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"ratingData"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    switch (dataArea)
+    {
+        case 0:
+                self.dataRange = 0;
+            break;
+        case 1:
+                self.dataRange = 30;
+            break;
+        case 2:
+                self.dataRange = 90;
+            break;
+        case 3:
+                self.dataRange = 365;
+            break;
+        default:
+            self.dataRange = 0;
+            break;
+    }
+
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
+    self.moreButton.tintColor = [UIColor yellowColor];
+
+    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.moreButton setImage:image forState:UIControlStateNormal];
+    
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
+    image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.filterButton setImage:image forState:UIControlStateNormal];
+    self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
 }
 
@@ -76,17 +153,17 @@
 //    self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
  
     if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
-        self.ratingArray = [ratingTools readAll];
+        self.ratingArrayAll = [ratingTools readAll];
     else
-        self.ratingArray = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
+        self.ratingArrayAll = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
 
-    design = [[Design alloc] init];
+    self.ratingArray = [self filterDataArray];
+    
+    design =      [[Design alloc] init];
     preferences = [[Preferences alloc] init];
-    rating = [[Rating alloc] init];
-    tools = [[Tools alloc] init];
+    rating =      [[Rating alloc] init];
+    tools =       [[Tools alloc] init];
 
-    [self makeAverageArray];
-    [self initGraph];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
@@ -127,22 +204,42 @@
         [self.view addSubview:iCloudConnected];
 
         int maxWidth = self.view.bounds.size.width;
-        int segmentWidth = 180;
-        int labelWidth = 80;
+//        int segmentWidth = 180;
+//        int labelWidth = 80;
         int edge = 50;
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(maxWidth - segmentWidth - edge -labelWidth, 100, labelWidth, 35)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.text = @"Average";
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(maxWidth - segmentWidth - edge -labelWidth, 100, labelWidth, 35)];
+//        [label setTextAlignment:NSTextAlignmentCenter];
+//        label.text = @"Average";
+//
+//        [self.view addSubview:label];
+//        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
+//        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+//        averageControl.frame = CGRectMake(maxWidth-segmentWidth-edge, 100, segmentWidth, 35);
+//
+//        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
+//        averageControl.selectedSegmentIndex = 1;
+//        [self.view addSubview:averageControl];
 
-        [self.view addSubview:label];
-        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
-        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-        averageControl.frame = CGRectMake(maxWidth-segmentWidth-edge, 100, segmentWidth, 35);
-        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
-        averageControl.selectedSegmentIndex = 1;
-        [self.view addSubview:averageControl];
+        UIButton *filterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        filterButton.frame = CGRectMake(maxWidth-35-edge, 100, 35, 35);
+        UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [filterButton setImage:image forState:UIControlStateNormal];
+        filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
+        [filterButton addTarget:self action:@selector(showFilter:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:filterButton];
 
         self.iPad = TRUE;
+    }
+    else
+    {
+        self.moreButton.tintColor   = [UIColor colorNamed:@"ColorSwitch"];
+        self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
+        self.iCloud      = [design makeNiceButton:self.iCloud];
+        self.shareButton = [design makeNiceButton:self.shareButton];
+        self.infoButton  = [design makeNiceButton:self.infoButton];
+
     }
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
@@ -154,23 +251,11 @@
     else
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
 
-}
-
-- (IBAction)averageAction:(UISegmentedControl *)segment
-{
-    if(segment.selectedSegmentIndex == 0)
-        self.average = 7;
-    if(segment.selectedSegmentIndex == 1)
-        self.average = 30;
-    if(segment.selectedSegmentIndex == 2)
-        self.average = 90;
-    if(segment.selectedSegmentIndex == 3)
-        self.average = 365;
-    
     [self makeAverageArray];
     [self initGraph];
 
 }
+
 
 -(void)makeAverageArray
 {
@@ -202,6 +287,43 @@
     }
 }
 
+- (NSMutableArray *)filterDataArray
+{
+    NSMutableArray *filteredArray = [[NSMutableArray alloc]initWithCapacity:1000];
+    
+    int dataArea = 0;
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingData"] != nil)
+    {
+        dataArea = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingData"]intValue];
+    }
+    unsigned long filter = 30;
+    switch (dataArea)
+    {
+        case 0: //Alle
+            return self.ratingArrayAll;
+            break;
+        case 1:
+            filter = 30;
+            break;
+        case 2:
+            filter = 90;
+            break;
+        case 3:
+            filter = 365;
+            break;
+        default:
+            filter = 30;
+            break;
+    }
+    if(self.ratingArrayAll.count < filter)
+        filter = self.ratingArrayAll.count;
+    for(unsigned long i = filter; i > 0; i--)
+    {
+        NSMutableDictionary *ratingDict = self.ratingArrayAll[self.ratingArrayAll.count - i];
+        [filteredArray addObject:ratingDict];
+    }
+    return filteredArray;
+}
 #pragma mark - CorePlot
     
 - (void) initGraph
@@ -356,7 +478,11 @@
     
     CPTScatterPlot *ratingPlot = [[CPTScatterPlot alloc] init];
     ratingPlot.dataSource = self;
-    ratingPlot.identifier = @"Rating";
+    if(self.dataRange == 0)
+        ratingPlot.identifier = [NSString stringWithFormat: @"Rating"] ;
+    else
+        ratingPlot.identifier = [NSString stringWithFormat: @"Rating last %d days",self.dataRange] ;
+
     [graph addPlot:ratingPlot toPlotSpace:plotSpace];
     CPTMutableLineStyle *ratingLineStyle = [ratingPlot.dataLineStyle mutableCopy];
     ratingLineStyle.lineWidth = 3.0;
@@ -365,7 +491,7 @@
     
     CPTScatterPlot *averagePlot = [[CPTScatterPlot alloc] init];
     averagePlot.dataSource = self;
-    averagePlot.identifier = [NSString stringWithFormat: @"Average %d",self.average] ;
+    averagePlot.identifier = [NSString stringWithFormat: @"Average %d days",self.average] ;
     [graph addPlot:averagePlot toPlotSpace:plotSpace];
     CPTMutableLineStyle *averageLineStyle = [averagePlot.dataLineStyle mutableCopy];
     averageLineStyle.lineWidth = 3.0;
@@ -388,6 +514,12 @@
 
 -(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
+    NSString *ratingPlotIdentifier = [NSString stringWithFormat: @"Rating"] ;
+    if(self.dataRange == 0)
+        ratingPlotIdentifier = [NSString stringWithFormat: @"Rating"] ;
+    else
+        ratingPlotIdentifier = [NSString stringWithFormat: @"Rating last %d days",self.dataRange] ;
+
     switch (fieldEnum)
     {
         case CPTScatterPlotFieldX:
@@ -398,14 +530,14 @@
             
         case CPTScatterPlotFieldY:
         {
-            if ([plot.identifier isEqual:@"Rating"] == YES)
+            if ([plot.identifier isEqual:ratingPlotIdentifier] == YES)
             {
                 NSDictionary *dict = [self.ratingArray objectAtIndex:index];
                 //            NSLog(@"%6.2f", [NSNumber numberWithFloat: [[dict objectForKey:@"kontostand"]floatValue]]);
                 
                 return [NSNumber numberWithFloat: [[dict objectForKey:@"rating"]floatValue]];
             }
-            else if ([plot.identifier isEqual:[NSString stringWithFormat: @"Average %d",self.average] ] == YES)
+            else if ([plot.identifier isEqual:[NSString stringWithFormat: @"Average %d days",self.average] ] == YES)
             {
                 if(index <= self.average)
                     return nil;
@@ -571,6 +703,164 @@
     [self.navigationController pushViewController:vc animated:NO];
     
 }
+
+#pragma mark - Filter
+
+- (IBAction)showFilter:(id)sender
+{
+
+    float filterBreite =  400.0;
+    float filterHoehe = 200;
+
+    float labelBreite = 200;
+    float labelHoehe = 35;
+    int rand = 10;
+    
+    float y = rand;
+    float x = rand;
+
+  //  if(filterView == nil)
+    {
+        filterView = [[UIView alloc]initWithFrame:CGRectMake( [[UIScreen mainScreen] bounds].size.width - filterBreite - 50,
+                                                           -500,
+                                                           filterBreite,
+                                                           filterHoehe)];
+        filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
+        filterView.layer.borderWidth = 1;
+        [self.view addSubview:filterView];
+
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelBreite, labelHoehe)];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.text = @"Average:";
+        [filterView addSubview:label];
+        
+        int ratingAverage = 0;
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
+        {
+            ratingAverage = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue];
+        }
+        else
+        {
+            ratingAverage = 2;
+            [[NSUserDefaults standardUserDefaults] setInteger:ratingAverage forKey:@"ratingAverage"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
+        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
+        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+        averageControl.frame = CGRectMake(rand + labelBreite + rand, 10, 170, labelHoehe);
+        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
+        averageControl.selectedSegmentIndex = ratingAverage;
+        [filterView addSubview:averageControl];
+
+        x = rand;
+        y += 50;
+
+        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelBreite, labelHoehe)];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.text = @"Data: show last x days";
+        [filterView addSubview:label];
+        
+        int ratingData = 0;
+        if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingData"] != nil)
+        {
+            ratingData = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingData"]intValue];
+        }
+        else
+        {
+            ratingData = 2;
+            [[NSUserDefaults standardUserDefaults] setInteger:ratingData forKey:@"ratingData"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+
+        itemArray = [NSArray arrayWithObjects: @"All", @"30", @"90", @"365",nil];
+        UISegmentedControl *dataControl = [[UISegmentedControl alloc] initWithItems:itemArray];
+        dataControl.frame = CGRectMake(rand + labelBreite + rand, y, 170, labelHoehe);
+        [dataControl addTarget:self action:@selector(dataAction:) forControlEvents: UIControlEventValueChanged];
+        dataControl.selectedSegmentIndex = ratingData;
+        [filterView addSubview:dataControl];
+
+        x = rand;
+        y += 70;
+        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        closeButton.frame = CGRectMake((filterBreite - 100) / 2, y, 100, 35);
+        [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
+        [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+        closeButton = [design makeNiceButton:closeButton];
+        [filterView addSubview:closeButton];
+    }
+    filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
+    x = [[UIScreen mainScreen] bounds].size.width - filterBreite - 50;
+
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self->filterView.frame = CGRectMake(x,50,filterBreite,filterHoehe);
+
+    } completion:^(BOOL finished) {
+    }];
+
+    return;
+}
+
+
+-(void)closeFilter
+{
+
+    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self->filterView.frame = CGRectMake(self->filterView.frame.origin.x,
+                                            -500,
+                                            self->filterView.frame.size.width,
+                                            self->filterView.frame.size.height);
+
+    } completion:^(BOOL finished) {
+    }];
+
+}
+
+- (IBAction)averageAction:(UISegmentedControl *)segment
+{
+    [self closeFilter];
+    
+    if(segment.selectedSegmentIndex == 0)
+        self.average = 7;
+    if(segment.selectedSegmentIndex == 1)
+        self.average = 30;
+    if(segment.selectedSegmentIndex == 2)
+        self.average = 90;
+    if(segment.selectedSegmentIndex == 3)
+        self.average = 365;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingAverage"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self makeAverageArray];
+    [self initGraph];
+
+}
+- (IBAction)dataAction:(UISegmentedControl *)segment
+{
+    [self closeFilter];
+    
+    if(segment.selectedSegmentIndex == 0)
+        self.dataRange = 0;
+    if(segment.selectedSegmentIndex == 1)
+        self.dataRange = 30;
+    if(segment.selectedSegmentIndex == 2)
+        self.dataRange = 90;
+    if(segment.selectedSegmentIndex == 3)
+        self.dataRange = 365;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingData"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    self.ratingArray = [self filterDataArray];
+
+    [self makeAverageArray];
+    [self initGraph];
+
+}
+
 #pragma mark - Header
 #include "HeaderInclude.h"
 
