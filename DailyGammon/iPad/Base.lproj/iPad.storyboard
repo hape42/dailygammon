@@ -170,7 +170,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Chat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVp-wB-iQf">
-                                        <rect key="frame" x="8" y="0.0" width="46" height="24"/>
+                                        <rect key="frame" x="8" y="0.0" width="512" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" name="ColorViewBackground"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -219,6 +219,15 @@
                                         <rect key="frame" x="267" y="180" width="49" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     </switch>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hK8-C2-YjV">
+                                        <rect key="frame" x="481" y="-3" width="31" height="31"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="eyeglasses" catalog="system"/>
+                                        <connections>
+                                            <action selector="chatTransparent:" destination="luK-r6-8If" eventType="touchUpInside" id="nW9-im-Amh"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" name="ColorViewBackground"/>
                             </view>
@@ -259,12 +268,13 @@
                         <outlet property="playerWon" destination="3s1-fV-FBH" id="Ld8-se-0fu"/>
                         <outlet property="quoteMessage" destination="PvK-DZ-o41" id="Gxy-p6-UUa"/>
                         <outlet property="quoteSwitch" destination="54j-eS-0Zg" id="7BM-U4-Wpk"/>
+                        <outlet property="transparentButton" destination="hK8-C2-YjV" id="rpS-vb-zMo"/>
                         <outlet property="unexpectedMove" destination="Z2q-aE-oJC" id="6Dn-Nd-GKb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5CU-2N-SWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-302" y="-1804"/>
+            <point key="canvasLocation" x="-302.34375" y="-1804.6875"/>
         </scene>
         <!--Top PageVC-->
         <scene sceneID="tne-QT-ifu">
@@ -1296,13 +1306,14 @@
         <image name="app_icon.png" width="1024" height="1024"/>
         <image name="classic.png" width="613" height="456"/>
         <image name="classicHD.png" width="614" height="455"/>
+        <image name="eyeglasses" catalog="system" width="128" height="54"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="startscreen.png" width="1024" height="300"/>
         <namedColor name="Color">
             <color red="0.5559999942779541" green="0.97899997234344482" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ColorSwitch">
-            <color red="0.37055522200000002" green="0.37056469920000001" blue="0.37055957319999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.36862745098039218" green="0.36862745098039218" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="ColorTableView">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -150,8 +150,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Chat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVp-wB-iQf">
-                                        <rect key="frame" x="8" y="0.0" width="46" height="24"/>
+                                        <rect key="frame" x="8" y="0.0" width="352" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" name="ColorViewBackground"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -200,6 +201,17 @@
                                         <rect key="frame" x="8" y="89" width="49" height="31"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     </switch>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Iq-qX-Wvn">
+                                        <rect key="frame" x="324" y="2" width="28" height="24"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="eyeglasses" catalog="system">
+                                            <color key="baseForegroundColor" name="ColorSwitch"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="chatTransparent:" destination="luK-r6-8If" eventType="touchUpInside" id="cvx-7x-Mm1"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" name="ColorViewBackground"/>
                             </view>
@@ -245,11 +257,12 @@
                         <outlet property="playerWon" destination="3s1-fV-FBH" id="Ld8-se-0fu"/>
                         <outlet property="quoteMessage" destination="PvK-DZ-o41" id="Gxy-p6-UUa"/>
                         <outlet property="quoteSwitch" destination="54j-eS-0Zg" id="7BM-U4-Wpk"/>
+                        <outlet property="transparentButton" destination="3Iq-qX-Wvn" id="8kH-aO-Azy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5CU-2N-SWg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1061.9190404797603" y="-1687.2"/>
+            <point key="canvasLocation" x="1061.3390928725703" y="-1687.8504672897195"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AKm-Ci-1Ks">
@@ -1389,6 +1402,7 @@
         <image name="GrayRed.png" width="616" height="457"/>
         <image name="classic.png" width="613" height="456"/>
         <image name="classicHD.png" width="614" height="455"/>
+        <image name="eyeglasses" catalog="system" width="128" height="54"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>

@@ -29,6 +29,7 @@
 		E0763D3822DB210100EDA562 /* info in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3722DB210100EDA562 /* info */; };
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
+		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
@@ -114,6 +115,7 @@
 		E0763D3722DB210100EDA562 /* info */ = {isa = PBXFileReference; lastKnownFileType = text; path = info; sourceTree = "<group>"; };
 		E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhonePlayMatch.h; sourceTree = "<group>"; };
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
+		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
 		E09C007321B042020056D2A2 /* PlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayMatch.m; sourceTree = "<group>"; };
 		E09C008721B117430056D2A2 /* HeaderInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderInclude.h; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 				E0F9589721AD168B003DAC01 /* Info.plist */,
 				E0BDCC3921BE769900E8AF25 /* BuildInfo.sh */,
 				E09C008921B13E000056D2A2 /* PrefixHeader.pch */,
+				E091B514280156D3000501E8 /* Settings.bundle */,
 			);
 			path = SupportingFiles;
 			sourceTree = "<group>";
@@ -725,6 +728,7 @@
 				E0763D2C22D62DE300EDA562 /* pfeil_down.png in Resources */,
 				E01E9DE222761964000399EA /* button_grau.png in Resources */,
 				E0AEFC52220578BB00CFFB6C /* button_blau.png in Resources */,
+				E091B515280156D3000501E8 /* Settings.bundle in Resources */,
 				E0AC59B122283C9000367EE9 /* iPhone.storyboard in Resources */,
 				E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */,
 				E0763D2922D62DE300EDA562 /* pfeil_up_kreis.png in Resources */,

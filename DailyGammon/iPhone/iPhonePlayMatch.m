@@ -48,6 +48,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *playerScore;
 
 @property (weak, nonatomic) IBOutlet UIView *chatView;
+@property (weak, nonatomic) IBOutlet UIButton *transparentButton;
+@property (assign, atomic) BOOL chatIsTransparent;
+
 @property (weak, nonatomic) IBOutlet UITextView *opponentChat;
 @property (weak, nonatomic) IBOutlet UITextView *playerChat;
 @property (weak, nonatomic) IBOutlet UIButton *NextButtonOutlet;
@@ -180,6 +183,9 @@
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
+    self.chatIsTransparent = FALSE;
+    [self.transparentButton setTitle:@"" forState: UIControlStateNormal];
+
     float breite = maxBreite * 0.6;
     float hoehe = 5+50+5+50+5+50+5+50;
     self.messageAnswerView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
@@ -2226,6 +2232,23 @@ case ROLL:
 
 #pragma mark - chat Buttons
 
+- (IBAction)chatTransparent:(id)sender
+{
+    if(self.chatIsTransparent)
+    {
+        self.chatIsTransparent = FALSE;
+        self.chatView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+        
+    }
+    else
+    {
+        self.chatIsTransparent = TRUE;
+        self.chatView.backgroundColor = [UIColor clearColor];
+        
+    }
+
+
+}
 - (IBAction)chatNextButton:(id)sender
 {
     if([self.playerChat.text isEqualToString:@"you may chat here"])
