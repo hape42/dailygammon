@@ -185,6 +185,10 @@
     
     self.chatIsTransparent = FALSE;
     [self.transparentButton setTitle:@"" forState: UIControlStateNormal];
+    image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.transparentButton setImage:image forState:UIControlStateNormal];
+    self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    
 
     float breite = maxBreite * 0.6;
     float hoehe = 5+50+5+50+5+50+5+50;
@@ -2238,15 +2242,18 @@ case ROLL:
     {
         self.chatIsTransparent = FALSE;
         self.chatView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-        
+        UIImage *image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.transparentButton setImage:image forState:UIControlStateNormal];
+        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     }
     else
     {
         self.chatIsTransparent = TRUE;
         self.chatView.backgroundColor = [UIColor clearColor];
-        
+        UIImage *image = [[UIImage imageNamed:@"Brille_voll"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.transparentButton setImage:image forState:UIControlStateNormal];
+        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     }
-
 
 }
 - (IBAction)chatNextButton:(id)sender

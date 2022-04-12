@@ -298,6 +298,20 @@
     return text;
 }
 
+- (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert
+{
+    UIView *firstSubview = alert.view.subviews.firstObject;
+
+    UIView *alertContentView = firstSubview.subviews.firstObject;
+
+    for (UIView *subSubView in alertContentView.subviews)
+    { //This is main catch
+        subSubView.backgroundColor = [UIColor grayColor]; //Here you change background
+    }
+    [alert.view setTintColor:[UIColor darkTextColor]];
+    return alert;
+}
+
 #pragma mark - Schema
 -(NSMutableDictionary *)schema:(int)nummer
 {

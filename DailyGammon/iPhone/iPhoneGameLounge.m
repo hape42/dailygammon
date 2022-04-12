@@ -586,8 +586,9 @@
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
 
     [button setTintColor:[schemaDict objectForKey:@"TintColor"]];
-    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
-    button.imageView.tintColor = [schemaDict objectForKey:@"TintColor"];
+    [button setTitleColor:[UIColor colorNamed:@"ColorSwitch"] forState:UIControlStateNormal];
+    button.imageView.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
     return button;
 }
 - (void)showNote:(UIButton*)sender
@@ -613,6 +614,8 @@
                                  }];
 
      [alert addAction:okButton];
+    alert = [design makeBackgroundColor:alert];
+
      [self presentViewController:alert animated:YES completion:nil];
 }
 

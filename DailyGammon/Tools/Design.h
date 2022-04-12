@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color forPlayer:(BOOL)player;
 
+- (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
+
 - (BOOL)isX;
 
 //#define VIEWBACKGROUNDCOLOR [UIColor colorWithRed:246.0/255 green:246.0/255 blue:246.0/255 alpha:1]

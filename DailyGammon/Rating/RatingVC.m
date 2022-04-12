@@ -80,15 +80,18 @@
     switch (ratingAverage)
     {
         case 0:
-                self.average = 7;
+                self.average = 0;
             break;
         case 1:
-                self.average = 30;
+                self.average = 7;
             break;
         case 2:
-                self.average = 90;
+                self.average = 30;
             break;
         case 3:
+                self.average = 90;
+            break;
+        case 4:
                 self.average = 365;
             break;
         default:
@@ -116,9 +119,12 @@
                 self.dataRange = 30;
             break;
         case 2:
-                self.dataRange = 90;
+                self.dataRange = 60;
             break;
         case 3:
+                self.dataRange = 90;
+            break;
+        case 4:
                 self.dataRange = 365;
             break;
         default:
@@ -306,9 +312,12 @@
             filter = 30;
             break;
         case 2:
-            filter = 90;
+            filter = 60;
             break;
         case 3:
+            filter = 90;
+            break;
+        case 4:
             filter = 365;
             break;
         default:
@@ -317,9 +326,30 @@
     }
     if(self.ratingArrayAll.count < filter)
         filter = self.ratingArrayAll.count;
+    
+    float ratingVorher = 0.0;
+    float min = 9999.0;
+    float max = -1.0;
+
     for(unsigned long i = filter; i > 0; i--)
     {
-        NSMutableDictionary *ratingDict = self.ratingArrayAll[self.ratingArrayAll.count - i];
+        NSMutableDictionary *ratingDict = [self.ratingArrayAll[self.ratingArrayAll.count - i]mutableCopy];
+        
+        float rating = [[ratingDict objectForKey:@"rating"]floatValue];
+
+        if (rating < 1.0)
+            rating = ratingVorher;
+        else
+            ratingVorher = rating;
+        
+//        XLog(@"%3.1f %3.1f", rating, ratingVorher);
+        if(rating > max)
+            max = rating;
+        if(rating < min)
+            min = rating;
+        [ratingDict setObject:[NSNumber numberWithDouble: max]  forKey:@"max"];
+        [ratingDict setObject:[NSNumber numberWithDouble: min]  forKey:@"min"];
+        
         [filteredArray addObject:ratingDict];
     }
     return filteredArray;
@@ -342,6 +372,7 @@
         }
     }
     CPTColor *tintColor = [CPTColor colorWithCGColor:[[design schemaColor] CGColor]];
+
     CPTColor *averageColor = [CPTColor colorWithCGColor:[[UIColor yellowColor] CGColor]];
 
     int maxWidth = self.view.bounds.size.width;
@@ -388,7 +419,7 @@
     barLineChart.plotAreaFrame.paddingBottom = 100.0;
     
     CPTMutableTextStyle *textStyle = [CPTTextStyle textStyle];
-    textStyle.color = tintColor;
+    textStyle.color = [CPTColor colorWithCGColor:[[UIColor colorNamed:@"ColorSwitch"]CGColor]];
     textStyle.fontSize = 16.0f;
     textStyle.textAlignment = CPTTextAlignmentCenter;
     barLineChart.titleTextStyle = textStyle;
@@ -483,7 +514,6 @@
     else
         ratingPlot.identifier = [NSString stringWithFormat: @"Rating last %d days",self.dataRange] ;
 
-    [graph addPlot:ratingPlot toPlotSpace:plotSpace];
     CPTMutableLineStyle *ratingLineStyle = [ratingPlot.dataLineStyle mutableCopy];
     ratingLineStyle.lineWidth = 3.0;
     ratingLineStyle.lineColor = tintColor;
@@ -492,7 +522,7 @@
     CPTScatterPlot *averagePlot = [[CPTScatterPlot alloc] init];
     averagePlot.dataSource = self;
     averagePlot.identifier = [NSString stringWithFormat: @"Average %d days",self.average] ;
-    [graph addPlot:averagePlot toPlotSpace:plotSpace];
+   
     CPTMutableLineStyle *averageLineStyle = [averagePlot.dataLineStyle mutableCopy];
     averageLineStyle.lineWidth = 3.0;
     averageLineStyle.lineColor = averageColor;
@@ -505,6 +535,19 @@
     graph.legendDisplacement = CGPointMake(0.0, 30.0);
     graph.legend.numberOfColumns = 3;
     
+    CPTMutableTextStyle *legendeTextStyle = [CPTTextStyle textStyle];
+    legendeTextStyle.color = [CPTColor colorWithCGColor:[[UIColor colorNamed:@"ColorSwitch"]CGColor]];
+
+    [graph.legend setTextStyle:(CPTTextStyle *)legendeTextStyle];
+
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
+    {
+        if( [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue] >0 )
+            [graph addPlot:averagePlot toPlotSpace:plotSpace];
+    }
+
+    [graph addPlot:ratingPlot toPlotSpace:plotSpace];
+
 }
 
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
@@ -617,6 +660,8 @@
     
     [alert addAction:yesButton];
     
+    alert = [design makeBackgroundColor:alert];
+    
     [self presentViewController:alert animated:YES completion:nil];
     
 }
@@ -662,6 +707,7 @@
 
     [alert addAction:yesButton];
     [alert addAction:iCloudButton];
+    alert = [design makeBackgroundColor:alert];
 
     [self presentViewController:alert animated:YES completion:nil];
     
@@ -708,7 +754,8 @@
 
 - (IBAction)showFilter:(id)sender
 {
-
+    [self closeFilter];
+    
     float filterBreite =  400.0;
     float filterHoehe = 200;
 
@@ -721,8 +768,8 @@
 
   //  if(filterView == nil)
     {
-        filterView = [[UIView alloc]initWithFrame:CGRectMake( [[UIScreen mainScreen] bounds].size.width - filterBreite - 50,
-                                                           -500,
+        filterView = [[UIView alloc]initWithFrame:CGRectMake( [[UIScreen mainScreen] bounds].size.width,
+                                                           hostingView.frame.origin.y + 50,
                                                            filterBreite,
                                                            filterHoehe)];
         filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
@@ -747,7 +794,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
-        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
+        NSArray *itemArray = [NSArray arrayWithObjects:  @"No", @"7", @"30", @"90", @"365",nil];
         UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
         averageControl.frame = CGRectMake(rand + labelBreite + rand, 10, 170, labelHoehe);
         [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
@@ -774,7 +821,7 @@
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
 
-        itemArray = [NSArray arrayWithObjects: @"All", @"30", @"90", @"365",nil];
+        itemArray = [NSArray arrayWithObjects: @"All", @"30", @"60", @"90", @"365",nil];
         UISegmentedControl *dataControl = [[UISegmentedControl alloc] initWithItems:itemArray];
         dataControl.frame = CGRectMake(rand + labelBreite + rand, y, 170, labelHoehe);
         [dataControl addTarget:self action:@selector(dataAction:) forControlEvents: UIControlEventValueChanged];
@@ -795,7 +842,7 @@
     x = [[UIScreen mainScreen] bounds].size.width - filterBreite - 50;
 
     [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self->filterView.frame = CGRectMake(x,50,filterBreite,filterHoehe);
+        self->filterView.frame = CGRectMake(x,self->filterView.frame.origin.y,filterBreite,filterHoehe);
 
     } completion:^(BOOL finished) {
     }];
@@ -808,8 +855,8 @@
 {
 
     [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self->filterView.frame = CGRectMake(self->filterView.frame.origin.x,
-                                            -500,
+        self->filterView.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width,
+                                            self->filterView.frame.origin.y,
                                             self->filterView.frame.size.width,
                                             self->filterView.frame.size.height);
 
@@ -823,12 +870,14 @@
     [self closeFilter];
     
     if(segment.selectedSegmentIndex == 0)
-        self.average = 7;
+        self.average = 0;
     if(segment.selectedSegmentIndex == 1)
-        self.average = 30;
+        self.average = 7;
     if(segment.selectedSegmentIndex == 2)
-        self.average = 90;
+        self.average = 30;
     if(segment.selectedSegmentIndex == 3)
+        self.average = 90;
+    if(segment.selectedSegmentIndex == 4)
         self.average = 365;
     
     [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingAverage"];
@@ -847,8 +896,10 @@
     if(segment.selectedSegmentIndex == 1)
         self.dataRange = 30;
     if(segment.selectedSegmentIndex == 2)
-        self.dataRange = 90;
+        self.dataRange = 60;
     if(segment.selectedSegmentIndex == 3)
+        self.dataRange = 90;
+    if(segment.selectedSegmentIndex == 4)
         self.dataRange = 365;
     
     [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingData"];

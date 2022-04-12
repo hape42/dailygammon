@@ -51,7 +51,8 @@
 			<array>
 				<string>All</string>
 				<string>Month</string>
-				<string>Quater year</string>
+				<string>2 Months</string>
+				<string>Quarter Year</string>
 				<string>Year</string>
 			</array>
 			<key>Values</key>

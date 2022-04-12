@@ -172,7 +172,10 @@
 
     self.chatIsTransparent = FALSE;
     [self.transparentButton setTitle:@"" forState: UIControlStateNormal];
-
+    UIImage *image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.transparentButton setImage:image forState:UIControlStateNormal];
+    self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    
     self.quoteSwitchFrame = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
     
@@ -1689,7 +1692,8 @@
                                                                          35)];
         messageText.text = [self.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
-        messageText.textColor   = [schemaDict objectForKey:@"TintColor"];
+        messageText.textColor   = [UIColor colorNamed:@"ColorSwitch"];
+        
         [actionView addSubview: messageText];
 
     }
@@ -1944,17 +1948,22 @@
 
 - (IBAction)chatTransparent:(id)sender
 {
+
     if(self.chatIsTransparent)
     {
         self.chatIsTransparent = FALSE;
         self.chatView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-        
+        UIImage *image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.transparentButton setImage:image forState:UIControlStateNormal];
+        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     }
     else
     {
         self.chatIsTransparent = TRUE;
         self.chatView.backgroundColor = [UIColor clearColor];
-        
+        UIImage *image = [[UIImage imageNamed:@"Brille_voll"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self.transparentButton setImage:image forState:UIControlStateNormal];
+        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     }
 
 

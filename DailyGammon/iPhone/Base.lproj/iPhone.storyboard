@@ -150,7 +150,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Chat" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EVp-wB-iQf">
-                                        <rect key="frame" x="8" y="0.0" width="352" height="24"/>
+                                        <rect key="frame" x="8" y="3" width="352" height="24"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" name="ColorViewBackground"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -202,12 +202,12 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                     </switch>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Iq-qX-Wvn">
-                                        <rect key="frame" x="324" y="2" width="28" height="24"/>
+                                        <rect key="frame" x="322" y="0.0" width="30" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="eyeglasses" catalog="system">
-                                            <color key="baseForegroundColor" name="ColorSwitch"/>
-                                        </buttonConfiguration>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Button" image="Brille">
+                                            <color key="titleColor" name="ColorSwitch"/>
+                                        </state>
                                         <connections>
                                             <action selector="chatTransparent:" destination="luK-r6-8If" eventType="touchUpInside" id="cvx-7x-Mm1"/>
                                         </connections>
@@ -1129,7 +1129,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7VE-Um-Ybh">
-                                <rect key="frame" x="872" y="6" width="25" height="22"/>
+                                <rect key="frame" x="872" y="6" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <color key="tintColor" systemColor="systemPurpleColor"/>
@@ -1139,7 +1139,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cfF-yq-eR0">
-                                <rect key="frame" x="815" y="2" width="30" height="30"/>
+                                <rect key="frame" x="817" y="8" width="25" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="slider"/>
@@ -1399,10 +1399,10 @@
     </scenes>
     <resources>
         <image name="BlueWhite.png" width="613" height="455"/>
+        <image name="Brille" width="44" height="44"/>
         <image name="GrayRed.png" width="616" height="457"/>
         <image name="classic.png" width="613" height="456"/>
         <image name="classicHD.png" width="614" height="455"/>
-        <image name="eyeglasses" catalog="system" width="128" height="54"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>

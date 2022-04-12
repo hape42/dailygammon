@@ -583,8 +583,8 @@
     [button setImage:image forState:UIControlStateNormal];
 
     [button setTintColor:[design schemaColor]];
-     [button setTitleColor:[design schemaColor] forState:UIControlStateNormal];
-     button.imageView.tintColor = [design schemaColor];
+    [button setTitleColor:[UIColor colorNamed:@"ColorSwitch"] forState:UIControlStateNormal];
+    button.imageView.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     return button;
 }
 - (void)showNote:(UIButton*)sender
@@ -611,13 +611,16 @@
 
      [alert addAction:okButton];
     
-    UIView *firstSubview = alert.view.subviews.firstObject;
+//    UIView *firstSubview = alert.view.subviews.firstObject;
+//
+//    UIView *alertContentView = firstSubview.subviews.firstObject;
+//
+//    for (UIView *subSubView in alertContentView.subviews)
+//    { //This is main catch
+//        subSubView.backgroundColor = [UIColor grayColor]; //Here you change background
+//    }
+    alert = [design makeBackgroundColor:alert];
 
-    UIView *alertContentView = firstSubview.subviews.firstObject;
-
-    for (UIView *subSubView in alertContentView.subviews) { //This is main catch
-        subSubView.backgroundColor = [UIColor grayColor]; //Here you change background
-    }
      [self presentViewController:alert animated:YES completion:nil];
 }
 
