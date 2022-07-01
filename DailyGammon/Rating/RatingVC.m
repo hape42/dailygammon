@@ -528,6 +528,14 @@
     averageLineStyle.lineColor = averageColor;
     averagePlot.dataLineStyle = averageLineStyle;
 
+    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
+    {
+        if( [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue] >0 )
+            [graph addPlot:averagePlot toPlotSpace:plotSpace];
+    }
+
+    [graph addPlot:ratingPlot toPlotSpace:plotSpace];
+
     graph.legend = [CPTLegend legendWithGraph:graph];
     graph.legend.cornerRadius = 5.0;
     graph.legend.swatchSize = CGSizeMake(25.0, 25.0);
@@ -540,13 +548,6 @@
 
     [graph.legend setTextStyle:(CPTTextStyle *)legendeTextStyle];
 
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
-    {
-        if( [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue] >0 )
-            [graph addPlot:averagePlot toPlotSpace:plotSpace];
-    }
-
-    [graph addPlot:ratingPlot toPlotSpace:plotSpace];
 
 }
 

@@ -2771,6 +2771,7 @@ shouldChangeTextInRange:(NSRange)range
 - (void)actionNextFinishedMatch
 {
     
+#warning    der chat string muss übergeben werden
     self.finishedMatchView.frame = self.finishedMatchFrame;
     
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
