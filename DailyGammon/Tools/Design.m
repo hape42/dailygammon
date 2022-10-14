@@ -510,7 +510,8 @@
 {
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
-        switch ((int)[[UIScreen mainScreen] nativeBounds].size.height)
+        int height = (int)[[UIScreen mainScreen] nativeBounds].size.height;
+        switch (height)
         {
             case 1136:
                 //return @"iPhone 5 or 5S or 5C";
@@ -543,7 +544,11 @@
                 break;
  
             case 2532:
-                //return @"iPhone 12, 12 Pro, 13, 13 Pro";
+                //return @"iPhone 12, 12 Pro, 13, 13 Pro, 14";
+                return TRUE;
+                break;
+            case 2556:
+                //return @"iPhone 14 Pro";
                 return TRUE;
                 break;
 
@@ -553,7 +558,11 @@
                 break;
                 
             case 2778:
-                //return @"iPhone 12 Pro Max, 13 Pro max";
+                //return @"iPhone 12 Pro Max, 13 Pro max, 14 Plus";
+                return TRUE;
+                break;
+            case 2796:
+                //return @"iPhone 14 Pro max";
                 return TRUE;
                 break;
 
