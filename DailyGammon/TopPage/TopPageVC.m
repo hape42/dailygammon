@@ -833,6 +833,9 @@
 
 -(void)sortOpponent
 {
+    if(self.topPageArray.count < 1)
+        return;
+
     [self.topPageArray sortUsingComparator:^(id first, id second){
         id firstObject = [first objectAtIndex:6];
         id secondObject = [second objectAtIndex:6];
@@ -870,6 +873,9 @@
 
 -(void)sortEvent
 {
+    
+    if(self.topPageArray.count < 1)
+        return;
     [self.topPageArray sortUsingComparator:^(id first, id second){
         id firstObject = [first objectAtIndex:1];
         id secondObject = [second objectAtIndex:1];
@@ -907,6 +913,9 @@
 
 -(void)sortLength
 {
+    if(self.topPageArray.count < 1)
+        return;
+
     [self.topPageArray sortUsingComparator:^(id first, id second){
         id firstObject = [first objectAtIndex:5];
         id secondObject = [second objectAtIndex:5];
@@ -950,6 +959,9 @@
 
 -(void)sortRound
 {
+    if(self.topPageArray.count < 1)
+        return;
+
     [self.topPageArray sortUsingComparator:^(id first, id second){
         id firstObject = [first objectAtIndex:4];
         id secondObject = [second objectAtIndex:4];
