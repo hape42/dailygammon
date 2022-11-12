@@ -1,27 +1,21 @@
 
-🔴 Text still missing or not good enough
-
-🔵 still needs to be translated
-
-🟢 Can stay like this
-
 # DailyGammon
 
-🟢 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
+<img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
 
-🟢 You can download the IOS app for free and without ads in the appstore
+You can download the IOS app for free and without ads in the appstore
       <a href="https://apps.apple.com/us/app/dailygammon/id1449956942?l=de&ls=1">
         <img class="AppleDownload" src="https://hape42.de/hape42/Bilder/Download.svg" alt="">
       </a>
 
-### 🟢 What is Dailygammon?
+### What is Dailygammon?
 
 DailyGammon is a mixture of letter chess and backgammon. You sign up for one or more games (most players have several games going at once) with other players on the [site](http://dailygammon.com/). When you sign up, you make a series of moves in each game (move order), and the server records your moves. Later, your opponent logs in and responds to your moves. Then when you log back in, those moves are waiting for you! Using this method, you can complete an entire backgammon match over the course of a few weeks, taking only a few minutes each day. There are so-called time credits per match which can grow with the number of moves already made. I myself always have a few dozen games running at the same time. It is a very big advantage to be able to take as much time as you want for a move. You should definitely try this out as a backgammon player. 
 
 
 
-### 🟢 Why I have developed an app as a client for the Dailygammon server?
-🟢 The site has the cleanest html code you can imagine. and this has been stable for many years. unfortunately, this also means that there is no energy for adjustments on modern devices and the resulting demands. On a PC in the browser it's all still ok. But on an iPad or iPhone it really needs improvement. 
+### Why I have developed an app as a client for the Dailygammon server?
+The site has the cleanest html code you can imagine. and this has been stable for many years. unfortunately, this also means that there is no energy for adjustments on modern devices and the resulting demands. On a PC in the browser it's all still ok. But on an iPad or iPhone it really needs improvement. 
 
 I have full understanding for the operator of the website that he does not want to invest in further developments. everything has been running stable for many years and it should stay that way.
 
@@ -54,21 +48,17 @@ Communication was/is also very difficult. My English skills are more those of a 
 
 ### Help Wanted
 
-🔵 Ich wollte natürlich niemand an mein Baby ran lassen. Das habe ich in vielen Nächten und Wochenenden erschaffen.
+Originally, of course, I didn't want anyone to touch my baby. I created all this in many nights and weekends.
 
-🔵 Aber ich habe meine Einstellung dazu geändert. ich würde sehr gerne das alles mit Entwicklern teilen.
+But I have changed my attitude towards it. I would love to share it all with other developers and keep developing the project. There are some oddities to fix. And there are also quite a few features waiting to be implemented.
 
-* 🔵 Zum Einen gibt es womöglich Code Fragmente die anderen helfen könnten.
-* 🔵 Zum anderen gibt es noch jede menge zu tun um die app fertig zu machen (kann eine app überhaupt fertig werden?)
- 
-🔵 ich werde also jeden als contributer willkommen heissen der ein paar der Anforderungen erfüllt.
-* 🔵 Erfahrung als Software entwickler in Objective-c und oder Swift (das ist sehr wichtig, den ich suche Unterstützung aus zeitgründen und kann keine zeit aufwenden um jemand programmieren beizubringen)
-* 🔵 Erfahrung in Git und github (ich selbst verfüge nur über oberflächenwissen von git bzw github und wir müssen ja über github zusammen arbieten können)
-* 🔵 das Spiel Backgammon zu kennen wäre natürlich hilfreich, ist aber nicht unbedingt erforderlich. Allerdings benötigt man einen account auf dailygammon.com um sinnvoll testen zu können
+So I will welcome anyone as a contributer who meets a few of the following requirements.
 
-🔵 Ich bin auch bereit die komplette app umzuschreiben, wenn es bessere lösungen für ein bestimmtes thema gibt.
+* Experience as a software developer in Objective-c and or Swift (this is very important, because I'm looking for support because of time constraints and I can't spend time to teach someone programming).
+* Experience in Git and github (I myself have only initial knowledge of git and github and we need to be able to work together via github)
+* Knowing the game of backgammon would be helpful of course, but is not essential. However, you need an account on dailygammon.com to be able to test meaningfully
+* I am also willing to rewrite the entire app if there are better solutions for a particular topic.
 
-🔵 mir ist durchaus bewusst, dass mich diese Hilfe (womöglich von mehreren personen) erst mal sehr viel zeit kosten wird. Ich werde viel erklären müssen warum ich das so und so programmiert habe. Ich werde ab sofort den Code durchforsten und versuchen inline schon mal einiges zu kommentieren. ich werde auch viel namen ändern die ich im code benutzt habe und nur für deutsch sprechende menschen zu verstehen sind 😇
-Aber ich bin bereit diesen Weg zu gehen. 
- 
+* I am well aware that this help (possibly from several people) will cost me a lot of time at first. I will have to explain a lot why I programmed it this way and that way. I will go through the code from now on and try to comment some things inline. I will also change a lot of names that I have used in the code and are only understandable for German-speaking people 😇 But I am ready to go this way.
 
+Translated with www.DeepL.com/Translator (free version)
