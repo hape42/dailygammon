@@ -42,6 +42,6 @@ ich werde also jeden als contributer willkommen heissen der ein paar der Anforde
 
 Ich bin auch bereit die komplette app umzuschreiben, wenn es bessere lösungen für ein bestimmtes thema gibt.
 
-* 
+mir ist durchaus bewusst, dass mich diese Hilfe (womöglich von mehreren personen) erst mal sehr viel zeit kosten wird. Ich werde viel erklären müssen warum ich das so und so programmiert habe. Ich werde ab sofort den Code durchforsten und versuchen inline schon mal einiges zu kommentieren. ich werde auch viel namen ändern die ich im code benutzt habe und nur für deutsch sprechende menschen zu verstehen sind 😇
  
 
