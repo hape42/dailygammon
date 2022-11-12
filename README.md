@@ -5,8 +5,7 @@
 
 🟢 Can stay like this
 
-
-# Help Wanted
+# DailyGammon
 
 🔴 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
 
@@ -15,8 +14,13 @@
         <img class="AppleDownload" src="https://hape42.de/hape42/Bilder/Download.svg" alt="">
       </a>
 
-* 🔴 was ist eigentlich dailgammon
-* 🔴 warum habe ich eine app als client gemacht
+### 🟢 What is Dailygammon?
+
+DailyGammon is a mixture of letter chess and backgammon. You sign up for one or more games (most players have several games going at once) with other players on the [site](http://dailygammon.com/). When you sign up, you make a series of moves in each game (move order), and the server records your moves. Later, your opponent logs in and responds to your moves. Then when you log back in, those moves are waiting for you! Using this method, you can complete an entire backgammon match over the course of a few weeks, taking only a few minutes each day. There are so-called time credits per match which can grow with the number of moves already made. I myself always have a few dozen games running at the same time. It is a very big advantage to be able to take as much time as you want for a move. You should definitely try this out as a backgammon player. 
+
+
+
+### 🔴 Why I have developed an app as a client for the Dailygammon server
   +  🔴 es gibt keine api und der entwickler / besitzer hat auch keine zeit um zu helfen. er will zeit nur für den betrieb des servers investieren. 
   +  🔴 die seite hat den cleansten html code den man sich vorstellen kann. und das stabil seit sehr vielen jahren. das bedeutet leider auch dass an moderene geräten und daraus entstandenen ansprüchen keine energie für anpassungen da ist. an einem PC im Browser ist das alles noch ok. aber an einem iPad oder iPhone ist das wiklich verbesserungswürdig.
    *  🔴 screenshots wie die seite im browser auf dem iphone aussieht
