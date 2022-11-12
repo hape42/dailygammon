@@ -1,4 +1,4 @@
-
+# Help Wanted
 
 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
 
@@ -35,6 +35,13 @@ Aber ich habe meine Einstellung dazu geändert. ich würde sehr gerne das alles 
 * Zum Einen gibt es womöglich Code Fragmente die anderen helfen könnten.
 * Zum anderen gibt es noch jede menge zu tun um die app fertig zu machen (kann eine app überhaupt fertig werden?)
  
- 
+ich werde also jeden als contributer willkommen heissen der ein paar der Anforderungen erfüllt.
+* Erfahrung als Software entwickler in Objective-c und oder Swift (das ist sehr wichtig, den ich suche Unterstützung aus zeitgründen und kann keine zeit aufwenden um jemand programmieren beizubringen)
+* Erfahrung in Git und github (ich selbst verfüge nur über oberflächenwissen von git bzw github und wir müssen ja über github zusammen arbieten können)
+* das Spiel Backgammon zu kennen wäre natürlich hilfreich, ist aber nicht unbedingt erforderlich. Allerdings benötigt man einen account auf dailygammon.com um sinnvoll testen zu können
+
+Ich bin auch bereit die komplette app umzuschreiben, wenn es bessere lösungen für ein bestimmtes thema gibt.
+
+* 
  
 
