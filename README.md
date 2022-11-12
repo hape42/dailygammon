@@ -7,7 +7,7 @@
 
 # DailyGammon
 
-🔴 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
+🟢 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
 
 🟢 You can download the IOS app for free and without ads in the appstore
       <a href="https://apps.apple.com/us/app/dailygammon/id1449956942?l=de&ls=1">
@@ -20,16 +20,24 @@ DailyGammon is a mixture of letter chess and backgammon. You sign up for one or 
 
 
 
-### 🔴 Why I have developed an app as a client for the Dailygammon server
-  +  🔴 es gibt keine api und der entwickler / besitzer hat auch keine zeit um zu helfen. er will zeit nur für den betrieb des servers investieren. 
-  +  🔴 die seite hat den cleansten html code den man sich vorstellen kann. und das stabil seit sehr vielen jahren. das bedeutet leider auch dass an moderene geräten und daraus entstandenen ansprüchen keine energie für anpassungen da ist. an einem PC im Browser ist das alles noch ok. aber an einem iPad oder iPhone ist das wiklich verbesserungswürdig.
-   *  🔴 screenshots wie die seite im browser auf dem iphone aussieht
-   *  🔴 es ist alles klitze klein und du muss wirklich genau zielen um die steine für einen zug zu berühren.
-   -  🔴 ein paar zusätzlich features die mir schon immer gefehlt haben, aber keine cheatssind. nur um es komfortabler zu haben.
-   *  🔴 screenshots wie die seite in der app auf dem iphone aussieht
+### 🟢 Why I have developed an app as a client for the Dailygammon server?
+🟢 The site has the cleanest html code you can imagine. and this has been stable for many years. unfortunately, this also means that there is no energy for adjustments on modern devices and the resulting demands. On a PC in the browser it's all still ok. But on an iPad or iPhone it really needs improvement. 
+
+I have full understanding for the operator of the website that he does not want to invest in further developments. everything has been running stable for many years and it should stay that way.
+
+On an iPhone, everything is teeny tiny and you have to aim really accurately (or re-zoom on each move) to touch the checkers for a move.
+
+I just wanted it to be more comfortable to play. So I jumped into the adventure and started to develop a native app for my iPad.
+
+I just need to read and interpret the clean HTML code and somehow implement it in my app. 😂
+
+That's how naive I really was, I had little idea of HTML and only a beginner's knowledge of Objective-C
+
+But I found the code from Hpple (Created by [Geoffrey Grosenbach](http://topfunky.com)) relatively fast. This helped me a lot in parsing the HTML.
+
 
  ### History  
- 🔵 ich habe das als projekt optimiert für mein iPad erst mal nur für mich alleine angefangen. Ich bin zwar software entwickler, aber meine letzten progamierungen sind schon sehr lange her und waren haptsächlich in C.
+ 🔵 ca 2018 ich habe das als projekt optimiert für mein iPad erst mal nur für mich alleine angefangen. Ich bin zwar software entwickler, aber meine letzten progamierungen sind schon sehr lange her und waren haptsächlich in C.
  
  Ich musste mich als erstmal in Objective-C versuchen einzuarbeiten. Das projekt ist dann typisch gewachsen wie eben ein projekt so wächst wenn man es nur für sich alleine macht. Anfangs hatte ich mich rein darauf beschränkt das spielen zu ermöglichen. Weitere features lamen nach und nach. Letztendlich habe ich ich dann doch getraut die App über den Appstore allen Spielern von Dailygammon zur Verfügung zu stellen. Wichtig für mich war der Spirit von Dailygammon auch in der App umzusetzen. Kostenfrei und keine Werbung. Nur das reine Spiel soll sich dem Anwender präsentieren.
  
