@@ -37,17 +37,20 @@ But I found the code from Hpple (Created by [Geoffrey Grosenbach](http://topfunk
 
 
  ### History  
- 🔵 ca 2018 ich habe das als projekt optimiert für mein iPad erst mal nur für mich alleine angefangen. Ich bin zwar software entwickler, aber meine letzten progamierungen sind schon sehr lange her und waren haptsächlich in C.
+🟢 2018 I started this as a project optimized for my iPad just for myself. I'm a software developer, but my last jobs as a developer were a long time ago and were mainly in C. I had to learn Objective-C first.
  
- Ich musste mich als erstmal in Objective-C versuchen einzuarbeiten. Das projekt ist dann typisch gewachsen wie eben ein projekt so wächst wenn man es nur für sich alleine macht. Anfangs hatte ich mich rein darauf beschränkt das spielen zu ermöglichen. Weitere features lamen nach und nach. Letztendlich habe ich ich dann doch getraut die App über den Appstore allen Spielern von Dailygammon zur Verfügung zu stellen. Wichtig für mich war der Spirit von Dailygammon auch in der App umzusetzen. Kostenfrei und keine Werbung. Nur das reine Spiel soll sich dem Anwender präsentieren.
+So I had to learn Objective-C first. The project grew slowly like a project grows when you do it for yourself. In the beginning I was only trying to make it possible to play. Other features came little by little. 
+
+Finally I dared to make the app available to all Dailygammon players via the Appstore. Important for me was to implement the spirit of Dailygammon in the app. Free of charge and no advertising. Only the pure game should present itself to the user.
  
-Es kam, wie es kommen musste. Je mehr Spieler die App nutzten, desto mehr kamen Fehler hoch. Teils aufgrund von unterschiedlichen devices, teils von der nutzung der app auf eine art die ich nie so gemacht habe. Als Entwickler testet man seine eigenen werke halt doch sehr eingeschränkt.
+It came as it had to come. The more players used the app, the more errors came up. Partly due to different devices, partly from using the app in a way I never did. As a developer, you test your own work in a very limited way.
 
-Es kam also ein bugFix nach dem anderen, kleinere Verbesserumngen und neue features dazu.
+So it came one bugFix after another, smaller improvements and new features.
 
-Ständig mit der knappen zeit am kämpfen. Das projekt wurde immer größer
+Constantly struggling with the shortage of time. The project became bigger and bigger.
 
-Kommunikation war/ist auch sehr schwierig. meine English kenntnisse sind eher die eines anfängers. komplizierte diskussionen waren sehr schwer. Aber gott sei dank habe ich deepl.com gefunden. das hilft mir sehr.
+Communication was/is also very difficult. My English skills are more those of a beginner. Complicated discussions with users were very difficult for me. But thank god i found deepl.com. it helps me a lot.
+
 
 ### Help Wanted
 
