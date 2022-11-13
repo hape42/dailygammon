@@ -61,4 +61,12 @@ So I will welcome anyone as a contributer who meets a few of the following requi
 
 * I am well aware that this help (possibly from several people) will cost me a lot of time at first. I will have to explain a lot why I programmed it this way and that way. I will go through the code from now on and try to comment some things inline. I will also change a lot of names that I have used in the code and are only understandable for German-speaking people 😇 But I am ready to go this way.
 
+### To new contributer
+
+The best way to get started is to get an account at [Dailygammon](http://dailygammon.com/) and play a few rounds on the website. This is absolutely free. No advertising! and no hidden costs!
+
+Then you will better understand what I did in the app and why.
+
+Of course I am very happy to help you with the first steps.
+
 Translated with www.DeepL.com/Translator (free version)
