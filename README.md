@@ -3,7 +3,7 @@
 
 <img src="https://hape42.de/hape42/Bilder/Apps/DailyGammon/AppIcon.png" alt="Example" width="50" height="50"> is free and ad-free client for the long-running [**DailyGammon**](http://dailygammon.com/help/#DG)  web-based application. 
 
-You can download the IOS app for free and without ads in the appstore
+You can download the iOS app for free and without ads in the appstore
       <a href="https://apps.apple.com/us/app/dailygammon/id1449956942?l=de&ls=1">
         <img class="AppleDownload" src="https://hape42.de/hape42/Bilder/Download.svg" alt="">
       </a>
