@@ -15,7 +15,7 @@ DailyGammon is a mixture of letter chess and backgammon. You sign up for one or 
 
 
 ### Why I have developed an app as a client for the Dailygammon server?
-The site has the cleanest html code you can imagine. and this has been stable for many years. unfortunately, this also means that there is no energy for adjustments on modern devices and the resulting demands. On a PC in the browser it's all still ok. But on an iPad or iPhone it really needs improvement. 
+The site has the cleanest html code you can imagine. and this has been stable for many years. Unfortunately, this also means that there is no energy for adjustments on modern devices and the resulting demands. On a PC in the browser it's all still ok. But on an iPad or iPhone it really needs improvement. 
 
 I have full understanding for the operator of the website that he does not want to invest in further developments. everything has been running stable for many years and it should stay that way.
 
