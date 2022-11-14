@@ -33,7 +33,7 @@ But I found the code from Hpple (Created by [Geoffrey Grosenbach](http://topfunk
  ### History  
 2018 I started this as a project optimized for my iPad just for myself. I'm a software developer, but my last jobs as a developer were a long time ago and were mainly in C. I had to learn Objective-C first.
  
-So I had to learn Objective-C first. The project grew slowly like a project grows when you do it for yourself. In the beginning I was only trying to make it possible to play. Other features came little by little. 
+The project grew slowly like a project grows when you do it for yourself. In the beginning I was only trying to make it possible to play. Other features came little by little. 
 
 Finally I dared to make the app available to all Dailygammon players via the Appstore. Important for me was to implement the spirit of Dailygammon in the app. Free of charge and no advertising. Only the pure game should present itself to the user.
  
