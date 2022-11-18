@@ -202,6 +202,7 @@
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 #warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
 //    if(conn)
 //    {
