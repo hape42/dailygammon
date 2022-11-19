@@ -21,11 +21,11 @@
 // ist Rating zum Datum kleiner, dann überschreibe den Eintrag und speichere zurück
 
 
-- (void)saveRating:(NSString *)datum
+- (void)saveRating:(NSString *)date
         withRating:(float)rating
 {
     //hole gesamten Monat für das Jahr für Datum 2021-11-08
-    NSString *key = [datum substringWithRange:NSMakeRange(0,7)];
+    NSString *key = [date substringWithRange:NSMakeRange(0,7)];
     
     NSMutableArray *ratingArray = [[[NSUbiquitousKeyValueStore defaultStore] objectForKey:key] mutableCopy];
     if(ratingArray == nil)
@@ -34,11 +34,11 @@
         for(int i = 0; i < 31; i++)
             ratingArray[i]= [NSNumber numberWithFloat:0.0];
     }
-    int tag = [[datum substringWithRange:NSMakeRange(8,2)]intValue] - 1;
+    int day = [[date substringWithRange:NSMakeRange(8,2)]intValue] - 1;
     
-    float ratingAlt = [ratingArray[tag] floatValue];
-    if (rating > ratingAlt)
-        ratingArray[tag] = [NSNumber numberWithFloat:rating];
+    float ratingOld = [ratingArray[day] floatValue];
+    if (rating > ratingOld)
+        ratingArray[day] = [NSNumber numberWithFloat:rating];
 
     NSArray *array = [ratingArray copy];
     [[NSUbiquitousKeyValueStore defaultStore] setObject:array forKey:key];
@@ -54,14 +54,16 @@
     NSMutableArray *ratingArrayAll = [[NSMutableArray alloc]init];
     NSString *oldestDate = @"2019-01-01";
     int thisYear = [[ [format stringFromDate:[NSDate date]] substringWithRange:NSMakeRange(0,4)]intValue];
-    BOOL gefunden = FALSE;
+    BOOL found = FALSE;
+    // find the oldest date for which there is an entry in defaultStore and store formatted
+    // as yyyy-mm-dd in oldestDate
     for(int year = 2019; year < thisYear; year++)
     {
-        if(gefunden)
+        if(found)
             break;
         for(int month = 1; month < 12; month++)
         {
-            if(gefunden)
+            if(found)
                 break;
             NSString * key = [NSString stringWithFormat:@"%d-%02d",year, month];
             NSMutableArray *ratingArray = [[[NSUbiquitousKeyValueStore defaultStore] objectForKey:key] mutableCopy];
@@ -73,7 +75,7 @@
                     {
                         oldestDate = [NSString stringWithFormat:@"%d-%02d-%02d",year, month, day+1];
                         XLog(@"%@",oldestDate);
-                        gefunden = TRUE;
+                        found = TRUE;
                         break;
                     }
                 }
@@ -84,7 +86,7 @@
     
     NSDate *endDate = [NSDate date];
     
-    float ratingVorher = 0.0;
+    float ratingBefore = 0.0;
     float min = 9999.0;
     float max = -1.0;
     
@@ -97,14 +99,14 @@
         NSString *key = [iCloudDate substringWithRange:NSMakeRange(0,7)];
 
         NSMutableArray *ratingArray = [[[NSUbiquitousKeyValueStore defaultStore] objectForKey:key] mutableCopy];
-        int tag = [[iCloudDate substringWithRange:NSMakeRange(8,2)]intValue] - 1;
+        int day = [[iCloudDate substringWithRange:NSMakeRange(8,2)]intValue] - 1;
         
-        float rating = [ratingArray[tag] floatValue];
+        float rating = [ratingArray[day] floatValue];
 
         if (rating < 1.0)
-            rating = ratingVorher;
+            rating = ratingBefore;
         else
-            ratingVorher = rating;
+            ratingBefore = rating;
         
 //        XLog(@"%3.1f %3.1f", rating, ratingVorher);
         if(rating > max)
