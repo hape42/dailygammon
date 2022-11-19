@@ -327,7 +327,7 @@
     if(self.ratingArrayAll.count < filter)
         filter = self.ratingArrayAll.count;
     
-    float ratingVorher = 0.0;
+    float ratingBefore = 0.0;
     float min = 9999.0;
     float max = -1.0;
 
@@ -338,9 +338,9 @@
         float rating = [[ratingDict objectForKey:@"rating"]floatValue];
 
         if (rating < 1.0)
-            rating = ratingVorher;
+            rating = ratingBefore;
         else
-            ratingVorher = rating;
+            ratingBefore = rating;
         
 //        XLog(@"%3.1f %3.1f", rating, ratingVorher);
         if(rating > max)
@@ -381,13 +381,13 @@
 
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-dd"];
-    NSString *heute = [format stringFromDate:[NSDate date]];
+    NSString *today = [format stringFromDate:[NSDate date]];
     NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(0, 0, maxWidth, maxHeight-200)];
-        barLineChart.title = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+        barLineChart.title = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],today] ;
     }
     else
     {
@@ -395,7 +395,7 @@
             barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(30, 0, maxWidth - 30, maxHeight)];
         else
             barLineChart = [[CPTXYGraph alloc] initWithFrame:CGRectMake(40, 0, maxWidth, maxHeight-0)];
-        self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],heute] ;
+        self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],today] ;
         self.header = [design makeNiceLabel:self.header];
     }
 
@@ -757,11 +757,11 @@
 {
     [self closeFilter];
     
-    float filterBreite =  400.0;
-    float filterHoehe = 200;
+    float filterWidth =  400.0;
+    float filterHeight = 200;
 
-    float labelBreite = 200;
-    float labelHoehe = 35;
+    float labelWidth = 200;
+    float labelHeight = 35;
     int rand = 10;
     
     float y = rand;
@@ -771,14 +771,14 @@
     {
         filterView = [[UIView alloc]initWithFrame:CGRectMake( [[UIScreen mainScreen] bounds].size.width,
                                                            hostingView.frame.origin.y + 50,
-                                                           filterBreite,
-                                                           filterHoehe)];
+                                                           filterWidth,
+                                                           filterHeight)];
         filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
         filterView.layer.borderWidth = 1;
         [self.view addSubview:filterView];
 
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelBreite, labelHoehe)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelWidth, labelHeight)];
         [label setTextAlignment:NSTextAlignmentCenter];
         label.text = @"Average:";
         [filterView addSubview:label];
@@ -797,7 +797,7 @@
         
         NSArray *itemArray = [NSArray arrayWithObjects:  @"No", @"7", @"30", @"90", @"365",nil];
         UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-        averageControl.frame = CGRectMake(rand + labelBreite + rand, 10, 170, labelHoehe);
+        averageControl.frame = CGRectMake(rand + labelWidth + rand, 10, 170, labelHeight);
         [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
         averageControl.selectedSegmentIndex = ratingAverage;
         [filterView addSubview:averageControl];
@@ -805,7 +805,7 @@
         x = rand;
         y += 50;
 
-        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelBreite, labelHoehe)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelWidth, labelHeight)];
         [label setTextAlignment:NSTextAlignmentCenter];
         label.text = @"Data: show last x days";
         [filterView addSubview:label];
@@ -824,7 +824,7 @@
 
         itemArray = [NSArray arrayWithObjects: @"All", @"30", @"60", @"90", @"365",nil];
         UISegmentedControl *dataControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-        dataControl.frame = CGRectMake(rand + labelBreite + rand, y, 170, labelHoehe);
+        dataControl.frame = CGRectMake(rand + labelWidth + rand, y, 170, labelHeight);
         [dataControl addTarget:self action:@selector(dataAction:) forControlEvents: UIControlEventValueChanged];
         dataControl.selectedSegmentIndex = ratingData;
         [filterView addSubview:dataControl];
@@ -832,7 +832,7 @@
         x = rand;
         y += 70;
         UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = CGRectMake((filterBreite - 100) / 2, y, 100, 35);
+        closeButton.frame = CGRectMake((filterWidth - 100) / 2, y, 100, 35);
         [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitle:@"Close" forState:UIControlStateNormal];
         closeButton = [design makeNiceButton:closeButton];
@@ -840,10 +840,10 @@
     }
     filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    x = [[UIScreen mainScreen] bounds].size.width - filterBreite - 50;
+    x = [[UIScreen mainScreen] bounds].size.width - filterWidth - 50;
 
     [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self->filterView.frame = CGRectMake(x,self->filterView.frame.origin.y,filterBreite,filterHoehe);
+        self->filterView.frame = CGRectMake(x,self->filterView.frame.origin.y,filterWidth,filterHeight);
 
     } completion:^(BOOL finished) {
     }];

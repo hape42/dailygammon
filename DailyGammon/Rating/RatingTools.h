@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface RatingTools : NSObject
 
-- (void)saveRating:(NSString *)datum
+- (void)saveRating:(NSString *)date
         withRating:(float)rating;
 
 
