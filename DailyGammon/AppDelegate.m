@@ -81,11 +81,6 @@
     {
         [SKStoreReviewController requestReview] ;
     }
-    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count > 0)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
-    }
-
 }
 
 

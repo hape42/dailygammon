@@ -19,9 +19,9 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>4066</string>
+	<string>4071</string>
 	<key>DGBuildDate</key>
-	<string>17. November 2022 17:48:57</string>
+	<string>19. November 2022 10:04:49</string>
 	<key>DGbuildNumber</key>
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>

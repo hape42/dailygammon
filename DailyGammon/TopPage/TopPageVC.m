@@ -80,7 +80,6 @@
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
 
     design      = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
@@ -258,10 +257,6 @@
             LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }
-        else
-        {
-            [ self readTopPage];
-        }
     }
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
@@ -271,9 +266,14 @@
         LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
+    else
+    {
+        [ self readTopPage];
+    }
+
 }
 
-/**/
+/*
 #pragma mark NSURLConnection Delegate Methods
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -329,12 +329,12 @@
     
     return;
 }
-/**/
+*/
 #pragma mark - Hpple
 
 -(void)readTopPage
 {
-
+    XLog(@"readTopPage");
     [self.indicator startAnimating];
 
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
