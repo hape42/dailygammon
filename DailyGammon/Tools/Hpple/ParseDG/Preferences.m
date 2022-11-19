@@ -27,9 +27,9 @@
     for(TFHppleElement *element in elements)
     {
         TFHppleElement *child = [element firstChild];
-        for (TFHppleElement *enkel in child.children)
+        for (TFHppleElement *grandChild in child.children)
         {
-            NSDictionary *dict = [enkel attributes];
+            NSDictionary *dict = [grandChild attributes];
             if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
             {
                 [preferencesArray addObject:dict];
@@ -53,9 +53,9 @@
     for(TFHppleElement *element in elements)
     {
         TFHppleElement *child = [element firstChild];
-        for (TFHppleElement *enkel in child.children)
+        for (TFHppleElement *grandChild in child.children)
         {
-            NSDictionary *dict = [enkel attributes];
+            NSDictionary *dict = [grandChild attributes];
      //       XLog(@"%@",dict);
             if([[dict objectForKey:@"checked"] isEqualToString:@"checked"])
                return order;
@@ -78,9 +78,9 @@
     for(TFHppleElement *element in elements)
     {
         TFHppleElement *child = [element firstChild];
-        for (TFHppleElement *enkel in child.children)
+        for (TFHppleElement *grandChild in child.children)
         {
-            NSDictionary *dict = [enkel attributes];
+            NSDictionary *dict = [grandChild attributes];
             //       XLog(@"%@",dict);
             if([[element content] isEqualToString:@"Mini"])
                 if([[dict objectForKey:@"checked"] isEqualToString:@"checked"])
