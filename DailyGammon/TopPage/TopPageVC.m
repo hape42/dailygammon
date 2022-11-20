@@ -29,7 +29,6 @@
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
-//@property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 @property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (readwrite, retain, nonatomic) NSMutableArray *topPageArray;
@@ -48,13 +47,13 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *refreshButtonIPAD;
 
-@property (assign, atomic) float nummerBreite;
-@property (assign, atomic) float graceBreite;
-@property (assign, atomic) float poolBreite;
-@property (assign, atomic) float roundBreite;
-@property (assign, atomic) float lengthBreite;
-@property (assign, atomic) float opponentBreite;
-@property (assign, atomic) float eventBreite;
+@property (assign, atomic) float numberWidth;
+@property (assign, atomic) float graceWidth;
+@property (assign, atomic) float poolWidth;
+@property (assign, atomic) float roundWidth;
+@property (assign, atomic) float lengthWidth;
+@property (assign, atomic) float opponentWidth;
+@property (assign, atomic) float eventWidth;
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
@@ -92,8 +91,10 @@
     
     if([design isX])
     {
-        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
-        
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        UIWindow *keyWindow = (UIWindow *) windows[0];
+        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
+
         CGRect frame = self.tableView.frame;
         frame.origin.x = safeArea.left ;
         frame.size.width = self.tableView.frame.size.width - safeArea.left ;
@@ -101,22 +102,22 @@
     }
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
-        self.nummerBreite = 40;
-        self.graceBreite  = 80;
-        self.poolBreite   = 120;
-        self.roundBreite  = 80;
-        self.lengthBreite = 80;
+        self.numberWidth = 40;
+        self.graceWidth  = 80;
+        self.poolWidth   = 120;
+        self.roundWidth  = 80;
+        self.lengthWidth = 80;
     }
     else
     {
-        self.nummerBreite = 30;
-        self.graceBreite  = 70;
-        self.poolBreite   = 86;
-        self.roundBreite  = 70;
-        self.lengthBreite = 70;
+        self.numberWidth = 30;
+        self.graceWidth  = 70;
+        self.poolWidth   = 86;
+        self.roundWidth  = 70;
+        self.lengthWidth = 70;
     }
-    self.opponentBreite = (self.tableView.frame.size.width - self.nummerBreite - self.graceBreite - self.poolBreite - self.roundBreite - self.lengthBreite)/2 ;
-    self.eventBreite = self.opponentBreite;
+    self.opponentWidth = (self.tableView.frame.size.width - self.numberWidth - self.graceWidth - self.poolWidth - self.roundWidth - self.lengthWidth)/2 ;
+    self.eventWidth = self.opponentWidth;
 
 }
 - (UIActivityIndicatorView *)indicator
@@ -132,7 +133,6 @@
 }
 -(void) reDrawHeader
 {
-//    [self.view addSubview:[self makeHeader]];
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
     else
@@ -167,8 +167,6 @@
     self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];
     self.refreshButtonIPAD.tintColor = [schemaDict objectForKey:@"TintColor"];
 
-//    [self.navigationController.navigationBar setTitleTextAttributes:
-//     @{NSForegroundColorAttributeName:[schemaDict objectForKey:@"TintColor"]}];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -197,45 +195,44 @@
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
-//    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
-#warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
-//    if(conn)
-//    {
-//        //XLog(@"Connection Successful");
-//    } else
-//    {
-//        //XLog(@"Connection could not be made");
-//    }
-
-//    if (self.downloadConnection)
-//    {
-//        self.datenData = [[NSMutableData alloc] init];
-//    }
     [self reDrawHeader];
 
 }
 
 #pragma mark - NSURLSessionDataDelegate
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+didReceiveResponse:(NSURLResponse *)response
+ completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
+{
     self.datenData = [[NSMutableData alloc] init];
     completionHandler(NSURLSessionResponseAllow);
 }
 
-- (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    if(self.loginOk) {
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+    didReceiveData:(NSData *)data
+{
+    if(self.loginOk)
+    {
         [self.datenData appendData:data];
     }
-    else {
+    else
+    {
         self.loginOk = YES;
     }
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
-    if (error) {
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error
+{
+    if (error)
+    {
         XLog(@"Connection didFailWithError %@", error.localizedDescription);
         return;
     }
@@ -270,66 +267,8 @@
     {
         [ self readTopPage];
     }
-
 }
 
-/*
-#pragma mark NSURLConnection Delegate Methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    self.datenData = [[NSMutableData alloc] init];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    if(self.loginOk)
-        [self.datenData appendData:data];
-    else
-        self.loginOk = YES;
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    XLog(@"Connection didFailWithError");
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
-    {
-//        XLog(@"name: '%@'\n",   [cookie name]);
-//        XLog(@"value: '%@'\n",  [cookie value]);
-//        XLog(@"domain: '%@'\n", [cookie domain]);
-//        XLog(@"path: '%@'\n",   [cookie path]);
-        if([[cookie name] isEqualToString:@"USERID"])
-            [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
-        
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        if([[cookie value] isEqualToString:@"N/A"])
-        {
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-            LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
-            [self.navigationController pushViewController:vc animated:NO];
-        }
-        else
-        {
-            [ self readTopPage];
-        }
-    }
-    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
-    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
-        [self.navigationController pushViewController:vc animated:NO];
-    }
-    
-    return;
-}
-*/
 #pragma mark - Hpple
 
 -(void)readTopPage
@@ -380,12 +319,12 @@
     }
     self.topPageArray = [[NSMutableArray alloc]init];
     queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
-    for(int zeile = 2; zeile <= zeilen.count; zeile ++)
+    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+    for(int row = 2; row <= rows.count; row ++)
     {
         NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,zeile];
+        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
         NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
         for(TFHppleElement *element in elementZeile)
         {
@@ -498,75 +437,66 @@
     frame.size.width = 10;
 
     checkmark.frame = frame;
- //   cell.accessoryView = checkmark;
     
-    
-    NSArray *zeile = self.topPageArray[indexPath.row];
+    NSArray *row = self.topPageArray[indexPath.row];
     
     int x = 0;
-    int labelHoehe = cell.frame.size.height;
-//    int nummerBreite = 40;
-//    int graceBreite = 80;
-//    int poolBreite = 120;
-//    int roundBreite = 80;
-//    int lengthBreite = 80;
-//    int opponentBreite = (tableView.frame.size.width - nummerBreite - graceBreite - poolBreite - roundBreite - lengthBreite)/2 ;
-//    int eventBreite = opponentBreite;
+    int labelHeight = cell.frame.size.height;
     
-    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.nummerBreite,labelHoehe)];
-    nummerLabel.textAlignment = NSTextAlignmentCenter;
-    NSDictionary *nummer = zeile[0];
-    nummerLabel.text = [nummer objectForKey:@"Text"];
-    x += self.nummerBreite;
+    UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.numberWidth,labelHeight)];
+    numberLabel.textAlignment = NSTextAlignmentCenter;
+    NSDictionary *nummer = row[0];
+    numberLabel.text = [nummer objectForKey:@"Text"];
+    x += self.numberWidth;
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventBreite,labelHoehe)];
+    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventWidth,labelHeight)];
     eventLabel.textAlignment = NSTextAlignmentLeft;
-    NSDictionary *event = zeile[1];
+    NSDictionary *event = row[1];
     eventLabel.text = [event objectForKey:@"Text"];
     eventLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += self.eventBreite;
+    x += self.eventWidth;
     
-    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.graceBreite,labelHoehe)];
+    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.graceWidth,labelHeight)];
     graceLabel.textAlignment = NSTextAlignmentCenter;
-    NSDictionary *grace = zeile[2];
+    NSDictionary *grace = row[2];
     graceLabel.text = [grace objectForKey:@"Text"];
     graceLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += self.graceBreite;
+    x += self.graceWidth;
     
-    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.poolBreite,labelHoehe)];
+    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.poolWidth,labelHeight)];
     poolLabel.textAlignment = NSTextAlignmentCenter;
-    NSDictionary *pool = zeile[3];
+    NSDictionary *pool = row[3];
     poolLabel.text = [pool objectForKey:@"Text"];
     poolLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += self.poolBreite;
+    x += self.poolWidth;
     
-    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.roundBreite,labelHoehe)];
+    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.roundWidth,labelHeight)];
     roundLabel.textAlignment = NSTextAlignmentCenter;
-    NSDictionary *round = zeile[4];
+    NSDictionary *round = row[4];
     roundLabel.text = [round objectForKey:@"Text"];
     roundLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += self.roundBreite;
+    x += self.roundWidth;
     
-    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.lengthBreite,labelHoehe)];
+    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.lengthWidth,labelHeight)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
-    NSDictionary *length = zeile[5];
+    NSDictionary *length = row[5];
     lengthLabel.text = [length objectForKey:@"Text"];
     lengthLabel.adjustsFontSizeToFitWidth = YES;
 
-    x += self.lengthBreite;
+    x += self.lengthWidth;
     
-    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.opponentBreite,labelHoehe)];
+    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.opponentWidth,labelHeight)];
     opponentLabel.textAlignment = NSTextAlignmentLeft;
     opponentLabel.text = self.topPageHeaderArray[6];
-    NSDictionary *opponent = zeile[6];
+    NSDictionary *opponent = row[6];
     opponentLabel.text = [opponent objectForKey:@"Text"];
     opponentLabel.adjustsFontSizeToFitWidth = YES;
 
-    [cell.contentView addSubview:nummerLabel];
+    [cell.contentView addSubview:numberLabel];
     [cell.contentView addSubview:eventLabel];
     [cell.contentView addSubview:graceLabel];
     [cell.contentView addSubview:poolLabel];
@@ -584,13 +514,13 @@
 
     int x = 0;
 
-    UILabel *nummerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.nummerBreite,30)];
-    nummerLabel.textAlignment = NSTextAlignmentCenter;
-    nummerLabel.text = self.topPageHeaderArray[0];
-    nummerLabel.textColor = [UIColor whiteColor];
-    x += self.nummerBreite;
+    UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.numberWidth,30)];
+    numberLabel.textAlignment = NSTextAlignmentCenter;
+    numberLabel.text = self.topPageHeaderArray[0];
+    numberLabel.textColor = [UIColor whiteColor];
+    x += self.numberWidth;
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventBreite,30)];
+    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventWidth,30)];
     eventLabel.textAlignment = NSTextAlignmentCenter;
     eventLabel.text = self.topPageHeaderArray[1];
     eventLabel.textColor = [UIColor whiteColor];
@@ -598,9 +528,9 @@
     buttonEvent.frame = eventLabel.frame;
     [buttonEvent addTarget:self action:@selector(sortEvent) forControlEvents:UIControlEventTouchUpInside];
 
-    x += self.eventBreite;
+    x += self.eventWidth;
 
-    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.graceBreite, 30)];
+    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.graceWidth, 30)];
     graceLabel.textAlignment = NSTextAlignmentCenter;
     graceLabel.text = self.topPageHeaderArray[2];
     graceLabel.textColor = [UIColor whiteColor];
@@ -608,9 +538,9 @@
     buttonGrace.frame = graceLabel.frame;
     [buttonGrace addTarget:self action:@selector(sortGrace:) forControlEvents:UIControlEventTouchUpInside];
 
-    x += self.graceBreite;
+    x += self.graceWidth;
     
-    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.poolBreite,30)];
+    UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.poolWidth,30)];
     poolLabel.textAlignment = NSTextAlignmentCenter;
     poolLabel.text = self.topPageHeaderArray[3];
     poolLabel.textColor = [UIColor whiteColor];
@@ -618,9 +548,9 @@
     buttonPool.frame = poolLabel.frame;
     [buttonPool addTarget:self action:@selector(sortPool:) forControlEvents:UIControlEventTouchUpInside];
 
-    x += self.poolBreite;
+    x += self.poolWidth;
     
-    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.roundBreite,30)];
+    UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.roundWidth,30)];
     roundLabel.textAlignment = NSTextAlignmentCenter;
     roundLabel.text = self.topPageHeaderArray[4];
     roundLabel.textColor = [UIColor whiteColor];
@@ -628,9 +558,9 @@
     buttonRound.frame = roundLabel.frame;
     [buttonRound addTarget:self action:@selector(sortRound) forControlEvents:UIControlEventTouchUpInside];
 
-    x += self.roundBreite;
+    x += self.roundWidth;
     
-    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.lengthBreite,30)];
+    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.lengthWidth,30)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
     lengthLabel.text = self.topPageHeaderArray[5];
     lengthLabel.textColor = [UIColor whiteColor];
@@ -638,9 +568,9 @@
     buttonLength.frame = lengthLabel.frame;
     [buttonLength addTarget:self action:@selector(sortLength) forControlEvents:UIControlEventTouchUpInside];
 
-    x += self.lengthBreite;
+    x += self.lengthWidth;
     
-    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.opponentBreite,30)];
+    UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.opponentWidth,30)];
     opponentLabel.textAlignment = NSTextAlignmentCenter;
     opponentLabel.text = self.topPageHeaderArray[6];
     opponentLabel.textColor = [UIColor whiteColor];
@@ -650,7 +580,6 @@
 
     int order = [preferences readNextMatchOrdering];
                  
-    
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
         case 4:
@@ -719,7 +648,7 @@
             opponentLabel = [design makeSortLabel:opponentLabel sortOrderDown:NO];
         break;  }
 
-    [headerView addSubview:nummerLabel];
+    [headerView addSubview:numberLabel];
     
     [headerView addSubview:eventLabel];
     [headerView addSubview:buttonEvent];
@@ -813,14 +742,14 @@
         return;
     }
     [self dismissViewControllerAnimated:YES completion:Nil];
-    NSArray *zeile = self.topPageArray[indexPath.row];
+    NSArray *row = self.topPageArray[indexPath.row];
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-        NSDictionary *match = zeile[8];
+        NSDictionary *match = row[8];
         vc.matchLink = [match objectForKey:@"href"];
         vc.topPageArray = self.topPageArray;
         [self.navigationController pushViewController:vc animated:NO];
@@ -828,7 +757,7 @@
     else
     {
         iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
-        NSDictionary *match = zeile[8];
+        NSDictionary *match = row[8];
         vc.matchLink = [match objectForKey:@"href"];
         vc.topPageArray = self.topPageArray;
 
@@ -878,12 +807,14 @@
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    [NSURLConnection connectionWithRequest:request delegate:self];
- 
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+
     [[NSUserDefaults standardUserDefaults] setInteger:typ forKey:@"orderTyp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
-    
 }
 
 -(void)sortOpponent
@@ -1178,7 +1109,10 @@
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    [NSURLConnection connectionWithRequest:request delegate:self];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 
 }
 -(void)gotoWebsite
