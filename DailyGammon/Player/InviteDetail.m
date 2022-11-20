@@ -250,9 +250,7 @@
 
     float breite = 300;
     float hoehe = 300;
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-
+    
     float x = 0,y = 0;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
@@ -266,7 +264,7 @@
         hoehe = 250;
         breite = 250;
     }
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(x,y,breite,hoehe)];
+    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(-500,-500,breite,hoehe)];
 
     self.pickerSammelView.backgroundColor = [UIColor whiteColor];
     self.pickerSammelView.layer.borderWidth = 1.0f;
@@ -296,7 +294,11 @@
     
     [self.pickerSammelView addSubview:self.picker];
     [self.view addSubview:self.pickerSammelView];
-    [UIView commitAnimations];
+    
+    [UIView animateWithDuration:1.0
+                     animations:^{
+        self.pickerSammelView.frame = CGRectMake(x,y,breite,hoehe);
+    }];
 
     [self.picker reloadAllComponents];
 
@@ -314,8 +316,6 @@
     
     float breite = 400;
     float hoehe = 250;
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
     
     float x = 0,y = 0;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -330,7 +330,7 @@
         hoehe = 250;
         breite = 250;
     }
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(x,y,breite,hoehe)];
+    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(-500,-500,breite,hoehe)];
 
     self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
     
@@ -362,7 +362,11 @@
     
     [self.pickerSammelView addSubview:self.picker];
     [self.view addSubview:self.pickerSammelView];
-    [UIView commitAnimations];
+    
+    [UIView animateWithDuration:1.0
+                     animations:^{
+        self.pickerSammelView.frame = CGRectMake(x,y,breite,hoehe);
+    }];
     
     [self.picker reloadAllComponents];
 
@@ -370,10 +374,10 @@
 
 -(void)closePickerView
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    self.pickerSammelView.frame = CGRectMake(999, 999, 400, 400);
-    [UIView commitAnimations];
+    [UIView animateWithDuration:1.0
+                     animations:^{
+        self.pickerSammelView.frame = CGRectMake(999, 999, 400, 400);
+    }];
 }
 
 - (IBAction)inviteAction:(id)sender
