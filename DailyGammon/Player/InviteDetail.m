@@ -396,15 +396,10 @@
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
-    if(conn)
-    {
-        XLog(@"Connection Successful");
-    } else
-    {
-        XLog(@"Connection could not be made");
-    }
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 
     [self doInvite];
 }
@@ -468,15 +463,10 @@
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    NSURLConnection *conn = [NSURLConnection connectionWithRequest:request delegate:self];
-
-    if(conn)
-    {
-        XLog(@"Connection Successful");
-    } else
-    {
-        XLog(@"Connection could not be made");
-    }
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self dismissViewControllerAnimated:YES completion:nil];
