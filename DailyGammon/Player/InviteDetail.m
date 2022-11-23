@@ -467,10 +467,27 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
 
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self dismissViewControllerAnimated:YES completion:nil];
-    else
-        [self.navigationController popViewControllerAnimated:TRUE];
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Invitation"
+                                 message:@"Your invitation was sent."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+            [self dismissViewControllerAnimated:YES completion:nil];
+        else
+            [self.navigationController popViewControllerAnimated:TRUE];
+
+                                }];
+    
+    [alert addAction:yesButton];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
 }
 
 #pragma mark - textField
