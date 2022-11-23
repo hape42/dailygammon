@@ -19,6 +19,7 @@
 #import "DbConnect.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
+#import "LoginVC.h"
 
 
 @interface Player ()

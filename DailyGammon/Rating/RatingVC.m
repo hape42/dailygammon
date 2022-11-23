@@ -24,6 +24,7 @@
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
 #import "SetUpVC.h"
+#import "LoginVC.h"
 
 @interface RatingVC ()
 

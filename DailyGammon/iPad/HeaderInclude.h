@@ -211,20 +211,13 @@
 
 - (void)logout
 {
-    NSURL *urlMatch = [NSURL URLWithString:@"http://dailygammon.com/bg/logout"];
-    
-    NSError *error = nil;
-    NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                       usedEncoding:&encoding
-                                                              error:&error];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+    LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
 
     [self.navigationController pushViewController:vc animated:NO];
 
