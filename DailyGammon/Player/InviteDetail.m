@@ -136,9 +136,6 @@
 
     [self.ignorePlayer setTitle:[NSString stringWithFormat:@"Ignore %@", playerName] forState:UIControlStateNormal];
 
-    self.matchLengthSelected = 3;
-    self.timeControlSelected = 0;
-    
     CGRect frame = CGRectMake(self.privateMatch.frame.origin.x,
                                self.privateMatch.frame.origin.y + 4, 50, 35);
     self.privateMatch.frame = frame;
@@ -159,7 +156,9 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
-
+    self.matchLengthSelected = 5; // der Wert !
+    self.timeControlSelected = 0; // der Array Index !
+    
 }
 
 - (void)moreAction
@@ -273,7 +272,7 @@
     self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
     self.picker.delegate = self;
     self.picker.dataSource = self;
-    [self.picker selectRow:self.matchLengthSelected inComponent:0 animated:YES];
+    [self.picker selectRow:2 inComponent:0 animated:YES]; //preSelect Match length 5
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
     [button addTarget:self
@@ -454,7 +453,7 @@
                             self.matchLengthSelected,
                             strComment,
                             strNamend,
-                            3,
+                            self.timeControlSelected,
                             strPrivate];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/invite/new"]];
