@@ -11,7 +11,7 @@
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "RatingVC.h"
-#import "iPhoneTopPageVC.h"
+#import "TopPageVC.h"
 #import "LoginVC.h"
 #import "SetupVC.h"
 #import "iPhoneGameLounge.h"
@@ -213,7 +213,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

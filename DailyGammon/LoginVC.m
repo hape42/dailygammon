@@ -9,7 +9,6 @@
 #import "LoginVC.h"
 #import "Design.h"
 #import "TopPageVC.h"
-#import "iphoneTopPageVC.h"
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
@@ -187,7 +186,7 @@
             }
             else
             {
-                iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
                 [self.navigationController pushViewController:vc animated:NO];
             }
         }

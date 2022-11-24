@@ -13,7 +13,7 @@
 #import "Rating.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
-#import "iPhoneTopPageVC.h"
+#import "TopPageVC.h"
 #import "iPhoneMenue.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
@@ -310,7 +310,7 @@
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -319,7 +319,7 @@
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -574,7 +574,7 @@
                                         
                                         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-                                        iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                                        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
                                         [self.navigationController pushViewController:vc animated:NO];
                                         
                                     }];
@@ -1609,7 +1609,7 @@
             //    [match readMatch:matchLink];
                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-                iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
                 [self.navigationController pushViewController:vc animated:NO];
                 return;
 
@@ -2549,7 +2549,7 @@ shouldChangeTextInRange:(NSRange)range
                                 {
                                     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                                     
-                                    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                                    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
                                     
                                     [self.navigationController pushViewController:vc animated:NO];
                                 }];
@@ -2820,7 +2820,7 @@ shouldChangeTextInRange:(NSRange)range
                                                          error:&error];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    iPhoneTopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
