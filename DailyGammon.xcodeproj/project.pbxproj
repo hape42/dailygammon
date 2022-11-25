@@ -936,6 +936,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -945,7 +946,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -962,6 +963,7 @@
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -971,7 +973,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

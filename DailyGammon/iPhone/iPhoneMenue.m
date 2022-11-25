@@ -245,36 +245,8 @@
     [self.navigationController pushViewController:vc animated:NO];
 }
 
-- (IBAction)popoverSetUp:(id)sender
-{
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
-    
-    // present the controller
-    // on iPad, this will be a Popover
-    // on iPhone, this will be an action sheet
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    popController.delegate = self;
-    
-    UIButton *button = (UIButton *)sender;
-    popController.sourceView = button;
-    popController.sourceRect = button.bounds;
-}
-
 - (void)logout
 {
-    NSURL *urlMatch = [NSURL URLWithString:@"http://dailygammon.com/bg/logout"];
-    
-    NSError *error = nil;
-    NSStringEncoding encoding = 0;
-    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                       usedEncoding:&encoding
-                                                              error:&error];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
