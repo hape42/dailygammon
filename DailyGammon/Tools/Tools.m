@@ -356,10 +356,8 @@ typedef void(^connection)(BOOL);
             }
         }
     }
-    str = result.copy;
 
-    
-    str = [str stringByAddingPercentEscapesUsingEncoding:NSISOLatin1StringEncoding];
+    str = [result.copy stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
 
     return str;
 }
