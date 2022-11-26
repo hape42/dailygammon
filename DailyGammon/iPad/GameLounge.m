@@ -24,7 +24,6 @@
 @interface GameLounge ()
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
-@property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 @property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeArray;
@@ -35,6 +34,8 @@
 
 @property (readwrite, retain, nonatomic) UIButton *topPageButton;
 
+@property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
+
 @end
 
 @implementation GameLounge
@@ -44,6 +45,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    
+    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
+    self.indicator.color = [design schemaColor];
+    self.indicator.center = self.view.center;
+    [self.view addSubview:self.indicator];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
@@ -59,6 +66,17 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+}
+- (UIActivityIndicatorView *)indicator
+{
+    if (!_indicator)
+    {
+        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+        self.indicator.color = [schemaDict objectForKey:@"TintColor"];
+
+    }
+    return _indicator;
 }
 
 -(void) reDrawHeader
@@ -88,57 +106,49 @@
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
-    
-#warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
-    if(conn)
-    {
-        XLog(@"Connection Successful");
-    } else
-    {
-        XLog(@"Connection could not be made");
-    }
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 
-    if (self.downloadConnection)
-    {
-        self.datenData = [[NSMutableData alloc] init];
-    }
-    
-    [self reDrawHeader];
+    [self.indicator startAnimating];
 
 }
 
-
-#pragma mark NSURLConnection Delegate Methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+#pragma mark - NSURLSessionDataDelegate
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+didReceiveResponse:(NSURLResponse *)response
+ completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
-//    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-//    NSDictionary *fields = [HTTPResponse allHeaderFields];
- //   NSString *cookie = [fields valueForKey:@"Set-Cookie"];
-//    XLog(@"Connection begonnen %@", cookie);
-    
     self.datenData = [[NSMutableData alloc] init];
-
+    completionHandler(NSURLSessionResponseAllow);
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+    didReceiveData:(NSData *)data
 {
     if(self.loginOk)
+    {
         [self.datenData appendData:data];
+    }
     else
-        self.loginOk = TRUE;
-//    XLog(@"Connection didReceiveData");
+    {
+        self.loginOk = YES;
+    }
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error
 {
-//    XLog(@"Connection didFailWithError");
-}
+    if (error)
+    {
+        XLog(@"Connection didFailWithError %@", error.localizedDescription);
+        return;
+    }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
     for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
     {
 //        XLog(@"name: '%@'\n",   [cookie name]);
@@ -147,7 +157,7 @@
 //        XLog(@"path: '%@'\n",   [cookie path]);
         if([[cookie name] isEqualToString:@"USERID"])
             [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
-        
+
         [[NSUserDefaults standardUserDefaults] synchronize];
         if([[cookie value] isEqualToString:@"N/A"])
         {
@@ -155,10 +165,6 @@
 
             LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
             [self.navigationController pushViewController:vc animated:NO];
-        }
-        else
-        {
-          //  [ self readGameLounge];
         }
     }
     XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
@@ -169,9 +175,12 @@
         LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
-    
-    return;
+    else
+    {
+        [self reDrawHeader];
+    }
 }
+
 
 #pragma mark - Hpple
 
@@ -243,7 +252,8 @@
             [note setObject:[tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
         }
     }
-    
+    [self.indicator stopAnimating];
+
 }
 
 
