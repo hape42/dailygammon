@@ -13,7 +13,8 @@
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
 
-@interface LoginVC ()
+@interface LoginVC ()<NSURLSessionDataDelegate>
+
 @property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
 @property (weak, nonatomic) IBOutlet UITextField *passwordOutlet;
 
@@ -23,7 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *logo;
 
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
-@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
 @end
 
@@ -53,7 +53,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
- }
+}
 
 - (BOOL)textFieldShouldReturn:(UITextView *)textField
 {
@@ -67,67 +67,52 @@
     NSString *userName = self.usewrnameOutlet.text;
     NSString *userPassword = self.passwordOutlet.text;
     
-    //https://stackoverflow.com/questions/54741600/how-to-submit-a-password-with-special-characters-from-app-to-a-web-server-by-nsu?noredirect=1#comment96266886_54741600
-    NSDictionary *dictionary = @{@"login": userName, @"password": userPassword};
-    NSData *body = [dictionary percentEncodedData];
-    userPassword = [self percentEscapeString:userPassword];
-
-    NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[body length]];
+    NSString *post               = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
+    NSData *postData             = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSString *postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:body];
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [request setHTTPBody:postData];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     
-    
-//#warning https://stackoverflow.com/questions/32647138/nsurlconnection-initwithrequest-is-deprecated
-    if(conn)
-    {
-        NSLog(@"Connection Successful");
-    }
-    else
-    {
-        NSLog(@"Connection could not be made");
-    }
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+
 }
 
-- (NSString *)percentEscapeString:(NSString *)string
-{
-    NSString *result = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-                                                                                 (CFStringRef)string,
-                                                                                 (CFStringRef)@" ",
-                                                                                 (CFStringRef)@":/?@!$&'()*+,;=",
-                                                                                 kCFStringEncodingUTF8));
-    return [result stringByReplacingOccurrencesOfString:@" " withString:@"+"];
-}
-
-#pragma mark NSURLConnection Delegate Methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+#pragma mark - NSURLSessionDataDelegate
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+didReceiveResponse:(NSURLResponse *)response
+ completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
 {
     NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
     NSDictionary *fields = [HTTPResponse allHeaderFields];
     NSString *cookie = [fields valueForKey:@"Set-Cookie"];
     XLog(@"Connection begonnen %@", cookie);
+    completionHandler(NSURLSessionResponseAllow);
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)URLSession:(NSURLSession *)session
+          dataTask:(NSURLSessionDataTask *)dataTask
+    didReceiveData:(NSData *)data
 {
     XLog(@"Connection didReceiveData");
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error
 {
-    XLog(@"Connection didFailWithError");
-}
+    if (error)
+    {
+        XLog(@"Connection didFailWithError %@", error.localizedDescription);
+        return;
+    }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
     XLog(@"Connection Finished");
     for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
     {
@@ -229,6 +214,7 @@
     }
     XLog(@"%@", [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]);
 }
+
 - (IBAction)createAccountAction:(id)sender
 {
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/create"]];
@@ -238,11 +224,6 @@
     } else {
         [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
     }
-//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/create"] options:@{} completionHandler:nil];
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//    {
-//        [self.presentingPopoverController dismissPopoverAnimated:YES];
-//    }
 }
 - (IBAction)faqAction:(id)sender
 {
@@ -254,11 +235,6 @@
         [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
     }
 
-//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/help"] options:@{} completionHandler:nil];
-//    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-//    {
-//        [self.presentingPopoverController dismissPopoverAnimated:YES];
-//    }
 }
 
 #pragma mark - Email
@@ -266,11 +242,7 @@
 {
     if (error)
     {
-        XLog(@"Fehler MFMailComposeViewController: %@", error);
-    }
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
+        XLog(@"Error MFMailComposeViewController: %@", error);
     }
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }

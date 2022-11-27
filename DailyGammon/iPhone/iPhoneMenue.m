@@ -14,7 +14,6 @@
 #import "TopPageVC.h"
 #import "LoginVC.h"
 #import "SetupVC.h"
-#import "iPhoneGameLounge.h"
 #import "About.h"
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
