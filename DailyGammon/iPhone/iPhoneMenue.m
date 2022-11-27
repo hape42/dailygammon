@@ -18,6 +18,7 @@
 #import "About.h"
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
+#import "GameLounge.h"
 
 @interface iPhoneMenue ()
 
@@ -222,7 +223,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    iPhoneGameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneGameLounge"];
+    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneGameLounge"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

@@ -20,6 +20,7 @@
 #import "Player.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
+#import "iPhoneMenue.h"
 
 @interface GameLounge ()
 
@@ -29,6 +30,9 @@
 @property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeArray;
 @property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeHeaderArray;
 @property (weak, nonatomic) IBOutlet UILabel *header;
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
@@ -66,6 +70,18 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    if([design isX])
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        UIWindow *keyWindow = (UIWindow *) windows[0];
+        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
+
+        CGRect frame = self.tableView.frame;
+        frame.origin.x = safeArea.left ;
+        frame.size.width = self.tableView.frame.size.width - safeArea.left ;
+        self.tableView.frame = frame;
+    }
+
 }
 - (UIActivityIndicatorView *)indicator
 {
@@ -81,7 +97,10 @@
 
 -(void) reDrawHeader
 {
-    [self.view addSubview:[self makeHeader]];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.view addSubview:[self makeHeader]];
+
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
     [self updateTableView];
 }
@@ -89,7 +108,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    else
+        [self.navigationController setNavigationBarHidden:NO animated:animated];
+    self.navigationItem.hidesBackButton = YES;
+
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -398,11 +422,73 @@ didCompleteWithError:(NSError *)error
     else
     {
         //iPhone
+        int maxWidth = tableView.frame.size.width;
+        int buttonWidth = 120;
+        maxWidth -= (buttonWidth + 5);
+        
+        float nameWidth = maxWidth * 0.35;
+        float lengthWidth = maxWidth * 0.125;
+        float timeWidth = maxWidth * 0.3;
+        float playerWidth = maxWidth * 0.125;
+        
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameWidth,labelHeight/2)];
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        NSDictionary *name = row[0];
+        nameLabel.text = [name objectForKey:@"Text"];
+        [nameLabel setFont:[UIFont boldSystemFontOfSize: nameLabel.font.pointSize]];
+        nameLabel.adjustsFontSizeToFitWidth = YES;
+        
+        UILabel *variantLabel = [[UILabel alloc] initWithFrame:CGRectMake(x + 10, labelHeight/2 ,nameWidth - 10,labelHeight/2)];
+        variantLabel.textAlignment = NSTextAlignmentLeft;
+        NSDictionary *variant = row[1];
+        variantLabel.text = [variant objectForKey:@"Text"];
+
+        x += nameWidth;
+        
+        UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x+3, 0 ,playerWidth,labelHeight/2)];
+        playerLabel.textAlignment = NSTextAlignmentCenter;
+        playerLabel.text = [name objectForKey:@"player"];
+        playerLabel.adjustsFontSizeToFitWidth = YES;
+
+        x += playerWidth;
+
+        UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,labelHeight/2)];
+        lengthLabel.textAlignment = NSTextAlignmentCenter;
+        NSDictionary *length = row[2];
+        lengthLabel.text = [length objectForKey:@"Text"];
+
+        UILabel *roundsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/2 ,lengthWidth,labelHeight/2)];
+        roundsLabel.textAlignment = NSTextAlignmentCenter;
+        NSDictionary *rounds = row[3];
+        roundsLabel.text = [rounds objectForKey:@"Text"];
+
+        x += lengthWidth;
+
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeWidth,labelHeight/2)];
+        timeLabel.textAlignment = NSTextAlignmentCenter;
+        NSDictionary *time = row[4];
+        NSDictionary *timePlus = row[5];
+
+        timeLabel.text = [NSString stringWithFormat:@"%@ %@",[time objectForKey:@"Text"], [timePlus objectForKey:@"Text"]];
+
+        UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/2 ,timeWidth,labelHeight/2)];
+        graceLabel.textAlignment = NSTextAlignmentCenter;
+        NSDictionary *grace = row[6];
+        graceLabel.text = [grace objectForKey:@"Text"];
+        
+        x += timeWidth;
+        [cell.contentView addSubview:nameLabel];
+        [cell.contentView addSubview:variantLabel];
+        [cell.contentView addSubview:playerLabel];
+        [cell.contentView addSubview:lengthLabel];
+        [cell.contentView addSubview:roundsLabel];
+        [cell.contentView addSubview:timeLabel];
+        [cell.contentView addSubview:graceLabel];
+
     }
     UILabel *signUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,signUpWidth,labelHeight)];
     signUpLabel.textAlignment = NSTextAlignmentLeft;
     
-
     NSDictionary *signUp = row[7];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 
@@ -446,74 +532,141 @@ didCompleteWithError:(NSError *)error
 
     int x = 0;
 
-    int nameWidth = 250;
-    int variantWidth = 120;
-    int lengthWidth = 60;
-    int roundsWidth = 60;
-    int playerWidth = 60;
-    int timeWidth = 120;
-    int graceWidth = 60;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        
+        int nameWidth = 250;
+        int variantWidth = 120;
+        int lengthWidth = 60;
+        int roundsWidth = 60;
+        int playerWidth = 60;
+        int timeWidth = 120;
+        int graceWidth = 60;
+        
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameWidth,30)];
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        nameLabel.text = self.gameLoungeHeaderArray[0];
+        nameLabel.textColor = [UIColor whiteColor];
+        
+        x += nameWidth;
+        
+        UILabel *variantLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,variantWidth,30)];
+        variantLabel.textAlignment = NSTextAlignmentCenter;
+        variantLabel.text = self.gameLoungeHeaderArray[1];
+        variantLabel.textColor = [UIColor whiteColor];
+        
+        x += variantWidth;
+        
+        UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,30)];
+        lengthLabel.textAlignment = NSTextAlignmentCenter;
+        lengthLabel.text = self.gameLoungeHeaderArray[2];
+        lengthLabel.textColor = [UIColor whiteColor];
+        
+        x += lengthWidth;
+        
+        UILabel *roundsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundsWidth,30)];
+        roundsLabel.textAlignment = NSTextAlignmentCenter;
+        roundsLabel.text = self.gameLoungeHeaderArray[3];
+        roundsLabel.textColor = [UIColor whiteColor];
+        
+        x += roundsWidth;
+        
+        UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundsWidth,30)];
+        playerLabel.textAlignment = NSTextAlignmentCenter;
+        playerLabel.text = @"Player";
+        playerLabel.textColor = [UIColor whiteColor];
+        
+        x += playerWidth;
+        
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeWidth,30)];
+        timeLabel.textAlignment = NSTextAlignmentCenter;
+        timeLabel.text = self.gameLoungeHeaderArray[4];
+        timeLabel.textColor = [UIColor whiteColor];
+        
+        x += timeWidth;
+        
+        UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,graceWidth,30)];
+        graceLabel.textAlignment = NSTextAlignmentCenter;
+        graceLabel.text = self.gameLoungeHeaderArray[5];
+        graceLabel.textColor = [UIColor whiteColor];
+        
+        
+        [headerView addSubview:nameLabel];
+        [headerView addSubview:variantLabel];
+        [headerView addSubview:lengthLabel];
+        [headerView addSubview:roundsLabel];
+        [headerView addSubview:playerLabel];
+        [headerView addSubview:timeLabel];
+        [headerView addSubview:graceLabel];
+    }
+    else
+    {
+        int maxWidth = tableView.frame.size.width;
+        int buttonWidth = 120;
+        maxWidth -= buttonWidth;
+        int x = 0;
+        
+        float nameWidth = maxWidth * 0.35;
+        float lengthWidth = maxWidth * 0.125;
+        float timeWidth = maxWidth * 0.3;
+        float playerWidth = maxWidth * 0.125;
 
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameWidth,30)];
-    nameLabel.textAlignment = NSTextAlignmentLeft;
-    nameLabel.text = self.gameLoungeHeaderArray[0];
-    nameLabel.textColor = [UIColor whiteColor];
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,nameWidth,40)];
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        nameLabel.text = self.gameLoungeHeaderArray[0];
+        nameLabel.textColor = [UIColor whiteColor];
+        
+        x += nameWidth;
+        
+        UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,playerWidth,20)];
+        playerLabel.textAlignment = NSTextAlignmentCenter;
+        playerLabel.text = @"Player";
+        playerLabel.textColor = [UIColor whiteColor];
 
-    x += nameWidth;
-    
-    UILabel *variantLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,variantWidth,30)];
-    variantLabel.textAlignment = NSTextAlignmentCenter;
-    variantLabel.text = self.gameLoungeHeaderArray[1];
-    variantLabel.textColor = [UIColor whiteColor];
+        x += playerWidth;
 
-    x += variantWidth;
+        UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,20)];
+        lengthLabel.textAlignment = NSTextAlignmentCenter;
+        lengthLabel.text = self.gameLoungeHeaderArray[2];
+        lengthLabel.textColor = [UIColor whiteColor];
+        
+        UILabel *roundsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 20 ,lengthWidth,20)];
+        roundsLabel.textAlignment = NSTextAlignmentCenter;
+        roundsLabel.text = self.gameLoungeHeaderArray[3];
+        roundsLabel.textColor = [UIColor whiteColor];
 
-    UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,30)];
-    lengthLabel.textAlignment = NSTextAlignmentCenter;
-    lengthLabel.text = self.gameLoungeHeaderArray[2];
-    lengthLabel.textColor = [UIColor whiteColor];
+        x += lengthWidth;
 
-    x += lengthWidth;
-    
-    UILabel *roundsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundsWidth,30)];
-    roundsLabel.textAlignment = NSTextAlignmentCenter;
-    roundsLabel.text = self.gameLoungeHeaderArray[3];
-    roundsLabel.textColor = [UIColor whiteColor];
+        UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeWidth,20)];
+        timeLabel.textAlignment = NSTextAlignmentCenter;
+        timeLabel.text = self.gameLoungeHeaderArray[4];
+        timeLabel.textColor = [UIColor whiteColor];
 
-    x += roundsWidth;
+        UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 20 ,timeWidth,20)];
+        graceLabel.textAlignment = NSTextAlignmentCenter;
+        graceLabel.text = self.gameLoungeHeaderArray[5];
+        graceLabel.textColor = [UIColor whiteColor];
+        
+        [headerView addSubview:nameLabel];
+        [headerView addSubview:playerLabel];
+        [headerView addSubview:lengthLabel];
+        [headerView addSubview:roundsLabel];
+        [headerView addSubview:timeLabel];
+        [headerView addSubview:graceLabel];
 
-    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundsWidth,30)];
-    playerLabel.textAlignment = NSTextAlignmentCenter;
-    playerLabel.text = @"Player";
-    playerLabel.textColor = [UIColor whiteColor];
-
-    x += playerWidth;
-
-    UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,timeWidth,30)];
-    timeLabel.textAlignment = NSTextAlignmentCenter;
-    timeLabel.text = self.gameLoungeHeaderArray[4];
-    timeLabel.textColor = [UIColor whiteColor];
-
-    x += timeWidth;
-    
-    UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,graceWidth,30)];
-    graceLabel.textAlignment = NSTextAlignmentCenter;
-    graceLabel.text = self.gameLoungeHeaderArray[5];
-    graceLabel.textColor = [UIColor whiteColor];
-
-
-    [headerView addSubview:nameLabel];
-    [headerView addSubview:variantLabel];
-    [headerView addSubview:lengthLabel];
-    [headerView addSubview:roundsLabel];
-    [headerView addSubview:playerLabel];
-    [headerView addSubview:timeLabel];
-    [headerView addSubview:graceLabel];
-
+    }
     return headerView;
     
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        return 30;
+    else
+        return 40;
+
+}
 - (void)updateTableView
 {
     [self readGameLounge];
@@ -625,6 +778,16 @@ didCompleteWithError:(NSError *)error
 }
 
 #pragma mark - Header
+
+- (IBAction)moreAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+}
+
 #include "HeaderInclude.h"
 
 @end
