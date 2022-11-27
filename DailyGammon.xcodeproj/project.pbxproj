@@ -54,7 +54,6 @@
 		E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */; };
 		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
 		E0BE3AFB2231194D003A824D /* menue.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BE3AFA2231194C003A824D /* menue.png */; };
-		E0BE3AFE223170F3003A824D /* iPhoneGameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */; };
 		E0BE3B042236EF08003A824D /* iPhoneAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3B032236EF08003A824D /* iPhoneAbout.m */; };
 		E0BE3B06223A3440003A824D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BE3B05223A3440003A824D /* StoreKit.framework */; };
 		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
@@ -226,8 +225,6 @@
 		E0BDCC3F21C185A300E8AF25 /* Rating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
 		E0BDCC4021C185A300E8AF25 /* Rating.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
 		E0BE3AFA2231194C003A824D /* menue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menue.png; sourceTree = "<group>"; };
-		E0BE3AFC223170F3003A824D /* iPhoneGameLounge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneGameLounge.h; sourceTree = "<group>"; };
-		E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneGameLounge.m; sourceTree = "<group>"; };
 		E0BE3B022236EF08003A824D /* iPhoneAbout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneAbout.h; sourceTree = "<group>"; };
 		E0BE3B032236EF08003A824D /* iPhoneAbout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneAbout.m; sourceTree = "<group>"; };
 		E0BE3B05223A3440003A824D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -333,6 +330,15 @@
 				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
 			);
 			path = Player;
+			sourceTree = "<group>";
+		};
+		E09871E1293366760043DC8A /* GameLounge */ = {
+			isa = PBXGroup;
+			children = (
+				E0C1D82821E900BA00494A82 /* GameLounge.h */,
+				E0C1D82921E900D100494A82 /* GameLounge.m */,
+			);
+			path = GameLounge;
 			sourceTree = "<group>";
 		};
 		E09C008821B13D010056D2A2 /* SupportingFiles */ = {
@@ -507,8 +513,6 @@
 				E0F1E4002229353C00494918 /* iPhoneMenue.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
-				E0BE3AFC223170F3003A824D /* iPhoneGameLounge.h */,
-				E0BE3AFD223170F3003A824D /* iPhoneGameLounge.m */,
 				E0BE3B022236EF08003A824D /* iPhoneAbout.h */,
 				E0BE3B032236EF08003A824D /* iPhoneAbout.m */,
 			);
@@ -520,8 +524,6 @@
 			children = (
 				E0AC59AC22283C8E00367EE9 /* iPad.storyboard */,
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
-				E0C1D82821E900BA00494A82 /* GameLounge.h */,
-				E0C1D82921E900D100494A82 /* GameLounge.m */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
 				E0BDCC3621BE6AE300E8AF25 /* About.h */,
@@ -554,6 +556,7 @@
 				E07F021722EED0870065546C /* Rating */,
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
+				E09871E1293366760043DC8A /* GameLounge */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
@@ -750,7 +753,6 @@
 				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
 				E0AC594922270F5600367EE9 /* RatingVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
-				E0BE3AFE223170F3003A824D /* iPhoneGameLounge.m in Sources */,
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
