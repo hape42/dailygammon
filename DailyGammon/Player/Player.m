@@ -50,9 +50,9 @@
 
 @synthesize name;
 
-#define PLAYER_BREITE .6
-#define RATING_BREITE .19
-#define EXPERIENCE_BREITE .19
+#define PLAYER_WIDTH .6
+#define RATING_WIDTH .19
+#define EXPERIENCE_WIDTH .19
 
 - (void)viewDidLoad
 {
@@ -69,32 +69,22 @@
     
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-//        self.view.backgroundColor = [schemaDict objectForKey:@"TintColor"];
-    }
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     self.suche.delegate = self;
     [self.suche setShowsCancelButton:YES animated:YES];
     
-
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-//
-//    [self.view addGestureRecognizer:tap];
     if([design isX])
     {
-        //        CGRect frame = self.tableView.frame;
-        //        frame.size.width -= 30;
-        //        self.tableView.frame = frame;
-        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
-        
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        UIWindow *keyWindow = (UIWindow *) windows[0];
+        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
+
         CGRect frame = self.tableView.frame;
         frame.origin.x = safeArea.left ;
         frame.size.width = self.tableView.frame.size.width - safeArea.left ;
         self.tableView.frame = frame;
-        
     }
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
@@ -102,14 +92,14 @@
     self.suche.backgroundColor = [UIColor colorNamed:@"ColorTableView"];;
 
     self.isMessageView = FALSE;
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    float breite = maxBreite * 0.6;
-    float hoehe = maxHoehe-20;
-    self.messageView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
-                                                                (maxHoehe - hoehe)/2,
-                                                                breite,
-                                                                hoehe)];
+    int maxWidth = [UIScreen mainScreen].bounds.size.width;
+    int maxHeight  = [UIScreen mainScreen].bounds.size.height;
+    float width = maxWidth * 0.6;
+    float hight = maxHeight-20;
+    self.messageView = [[UIView alloc] initWithFrame:CGRectMake((maxWidth - width)/2,
+                                                                (maxHeight - hight)/2,
+                                                                width,
+                                                                hight)];
     self.messageFrameSave = self.messageView.frame;
     self.messageView.layer.cornerRadius = 14.0f;
     self.messageView.layer.borderWidth = 1.0f;
@@ -123,7 +113,6 @@
 
     [self.tableView reloadData];
 
-  //  self.message.returnKeyType = UIReturnKeyDone;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -186,11 +175,9 @@
             [subview removeFromSuperview];
         }
     }
-    
-//    cell.backgroundColor = [UIColor whiteColor];
-    
-    NSArray *zeile = self.playerArray[indexPath.row];
-    NSMutableDictionary *dict = zeile[3];
+        
+    NSArray *row = self.playerArray[indexPath.row];
+    NSMutableDictionary *dict = row[3];
 
     UIButton *messageButton = [UIButton buttonWithType:UIButtonTypeSystem];
     messageButton = [design makeNiceButton:messageButton];
@@ -206,48 +193,44 @@
     inviteButton.tag = indexPath.row;
     [inviteButton addTarget:self action:@selector(inviteAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    float restBreite = tableView.frame.size.width - 220;
+    float restWidth = tableView.frame.size.width - 220;
     
     UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                      5,
-                                                                     restBreite * PLAYER_BREITE ,
+                                                                     restWidth * PLAYER_WIDTH ,
                                                                      30)];
     playerLabel.textAlignment = NSTextAlignmentLeft;
     playerLabel.text = [dict objectForKey:@"Text"];
-//    playerLabel.textColor = [UIColor darkTextColor];
     playerLabel.adjustsFontSizeToFitWidth = YES;
     playerLabel.numberOfLines = 0;
     playerLabel.minimumScaleFactor = 0.5;
 
     UILabel *ratingLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + playerLabel.frame.size.width,
                                                                      5,
-                                                                     restBreite * RATING_BREITE ,
+                                                                     restWidth * RATING_WIDTH ,
                                                                      30)];
     ratingLabel.textAlignment = NSTextAlignmentLeft;
-    dict = zeile[4];
+    dict = row[4];
     ratingLabel.text = [dict objectForKey:@"Text"];
-//    ratingLabel.textColor = [UIColor darkTextColor];
     ratingLabel.adjustsFontSizeToFitWidth = YES;
     ratingLabel.numberOfLines = 0;
     ratingLabel.minimumScaleFactor = 0.5;
 
     UILabel *experienceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + ratingLabel.frame.origin.x + ratingLabel.frame.size.width,
                                                                          5,
-                                                                         restBreite * EXPERIENCE_BREITE ,
+                                                                         restWidth * EXPERIENCE_WIDTH ,
                                                                          30)];
     experienceLabel.textAlignment = NSTextAlignmentRight;
-    dict = zeile[6];
+    dict = row[6];
     experienceLabel.text = [dict objectForKey:@"Text"];
     experienceLabel.text = [experienceLabel.text stringByReplacingOccurrencesOfString:@"[\r\n]"
                                                          withString:@""
                                                             options:NSRegularExpressionSearch
                                                               range:NSMakeRange(0, experienceLabel.text.length)];
 
-//    experienceLabel.textColor = [UIColor darkTextColor];
     experienceLabel.adjustsFontSizeToFitWidth = YES;
     experienceLabel.numberOfLines = 0;
     experienceLabel.minimumScaleFactor = 0.5;
-
 
     [cell.contentView addSubview:playerLabel];
     [cell.contentView addSubview:ratingLabel];
@@ -263,11 +246,11 @@
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
     headerView.backgroundColor = [UIColor lightGrayColor];
     
-    float restBreite = tableView.frame.size.width - 220;
+    float restWidth = tableView.frame.size.width - 220;
 
     UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                      0,
-                                                                     restBreite * PLAYER_BREITE ,
+                                                                     restWidth * PLAYER_WIDTH ,
                                                                      30)];
     playerLabel.textAlignment = NSTextAlignmentLeft;
     playerLabel.text = @"Player";
@@ -278,7 +261,7 @@
 
     UILabel *ratingLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + playerLabel.frame.size.width,
                                                                      0,
-                                                                     restBreite * RATING_BREITE ,
+                                                                     restWidth * RATING_WIDTH ,
                                                                      30)];
     ratingLabel.textAlignment = NSTextAlignmentLeft;
     ratingLabel.text = @"Rating";
@@ -288,7 +271,7 @@
     ratingLabel.minimumScaleFactor = 0.5;
     UILabel *experienceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + ratingLabel.frame.origin.x + ratingLabel.frame.size.width,
                                                                      0,
-                                                                     restBreite * EXPERIENCE_BREITE ,
+                                                                     restWidth * EXPERIENCE_WIDTH ,
                                                                      30)];
     experienceLabel.textAlignment = NSTextAlignmentRight;
     experienceLabel.text = @"Experience";
@@ -316,27 +299,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *zeile = self.playerArray[indexPath.row];
-    NSMutableDictionary *dict = zeile[3];
+    NSArray *row = self.playerArray[indexPath.row];
+    NSMutableDictionary *dict = row[3];
 
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        InviteDetail *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
-        vc.playerName = [dict objectForKey:@"Text"];
-        vc.playerNummer = [[dict objectForKey:@"href"] lastPathComponent];
-        [self.navigationController pushViewController:vc animated:NO];
-
-     }
-    else
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        InviteDetail *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
-        vc.playerName = [dict objectForKey:@"Text"];
-        vc.playerNummer = [[dict objectForKey:@"href"] lastPathComponent];
-       [self.navigationController pushViewController:vc animated:NO];
-    }
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    InviteDetail *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
+    vc.playerName = [dict objectForKey:@"Text"];
+    vc.playerNummer = [[dict objectForKey:@"href"] lastPathComponent];
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (IBAction)moreAction:(id)sender
@@ -405,16 +375,16 @@
     
     self.playerArray = [[NSMutableArray alloc]init];
     NSString *queryString = [NSString stringWithFormat:@"//table[2]/tr"];
-    NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
-    for(int zeile = 2; zeile <= zeilen.count; zeile ++)
+    NSArray *rown  = [xpathParser searchWithXPathQuery:queryString];
+    for(int row = 2; row <= rown.count; row ++)
     {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
+        NSMutableArray *topPageRow = [[NSMutableArray alloc]init];
         
-        NSString * searchString = [NSString stringWithFormat:@"//table[2]/tr[%d]/td",zeile];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+        NSString * searchString = [NSString stringWithFormat:@"//table[2]/tr[%d]/td",row];
+        NSArray *elementRow  = [xpathParser searchWithXPathQuery:searchString];
+        for(TFHppleElement *element in elementRow)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+            NSMutableDictionary *topPageRowColumn = [[NSMutableDictionary alloc]init];
             
             for (TFHppleElement *child in element.children)
             {
@@ -423,21 +393,21 @@
                 if ([child.tagName isEqualToString:@"a"])
                 {
                     // NSDictionary *href = [child attributes];
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                    [topPageRowColumn setValue:[child content] forKey:@"Text"];
+                    [topPageRowColumn setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
                     
                     //                    XLog(@"gefunden %@", [child attributes]);
                 }
                 else
                 {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                    [topPageRowColumn setValue:[element content] forKey:@"Text"];
                 }
             }
-            [topPageZeile addObject:topPageZeileSpalte];
+            [topPageRow addObject:topPageRowColumn];
         }
-        //        XLog(@"%@", topPageZeile);
+        //        XLog(@"%@", topPageRow);
         
-        [self.playerArray addObject:topPageZeile];
+        [self.playerArray addObject:topPageRow];
     }
     [self updateTableView];
 }
@@ -446,9 +416,9 @@
 - (IBAction)inviteAction:(UIButton*)button
 {
     [self dismissKeyboard];
-    NSArray *zeile = self.playerArray[button.tag];
+    NSArray *row = self.playerArray[button.tag];
 
-    NSMutableDictionary *dict = zeile[3];
+    NSMutableDictionary *dict = row[3];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
@@ -494,19 +464,19 @@
         [subUIView removeFromSuperview];
     }
     
-    NSArray *zeile = self.playerArray[button.tag];
+    NSArray *row = self.playerArray[button.tag];
     
-    NSMutableDictionary *dict = zeile[3];
+    NSMutableDictionary *dict = row[3];
 
     self.isMessageView = TRUE;
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    float breite = maxBreite * 0.6;
-    float hoehe = maxHoehe * 0.5;
-    CGRect frame = CGRectMake((maxBreite - breite)/2,
-                              (maxHoehe - hoehe)/2,
-                              breite,
-                              hoehe);
+    int maxWidth = [UIScreen mainScreen].bounds.size.width;
+    int maxHeight  = [UIScreen mainScreen].bounds.size.height;
+    float width = maxWidth * 0.6;
+    float hight = maxHeight * 0.5;
+    CGRect frame = CGRectMake((maxWidth - width)/2,
+                              (maxHeight - hight)/2,
+                              width,
+                              hight);
     self.messageView.frame = frame;
     self.messageFrameSave = self.messageView.frame;
 
@@ -515,7 +485,7 @@
 
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(5,
                                                                0,
-                                                               breite - 10,
+                                                               width - 10,
                                                                50)];
 
     [title setText:[NSString stringWithFormat:@"Quick message to %@",[dict objectForKey:@"Text"]]];
@@ -527,8 +497,8 @@
     
     self.message = [[UITextView alloc] initWithFrame:CGRectMake(5,
                                                                       55,
-                                                                      breite - 10,
-                                                                      hoehe - 110)];
+                                                                      width - 10,
+                                                                      hight - 110)];
     [self.message setFont:[UIFont systemFontOfSize:14]];
     self.message.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     self.message.delegate = self;
@@ -573,9 +543,9 @@
 
 -(void)actionSend:(UIButton*)button
 {
-    NSArray *zeile = self.playerArray[button.tag];
+    NSArray *row = self.playerArray[button.tag];
     
-    NSMutableDictionary *dict = zeile[3];
+    NSMutableDictionary *dict = row[3];
     
     NSString *escapedString = [tools cleanChatString:self.message.text];
 
