@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Tools;
 @class RatingTools;
 
-@interface RatingVC : UIViewController<CPTPlotDataSource, MFMailComposeViewControllerDelegate>
+@interface RatingVC : UIViewController<CPTPlotDataSource, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 {
     CPTGraphHostingView *hostingView;
     CPTXYGraph *barLineChart;

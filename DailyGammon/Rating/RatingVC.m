@@ -725,22 +725,15 @@
     UIGraphicsEndImageContext();
 
     NSString *str = [NSString stringWithFormat:@"My Name on DailyGammon %@",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
-    NSArray *postItems=@[ratingImage];
     
-    UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:postItems applicationActivities:nil];
-    
-    //if iPhone
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-        [self presentViewController:controller animated:YES completion:nil];
-    }
-    //if iPad
-    else
-    {
-        // Change Rect to position Popover
-        UIPopoverController *popup = [[UIPopoverController alloc] initWithContentViewController:controller];
-        [popup presentPopoverFromRect:CGRectMake(self.view.frame.size.width/2, self.view.frame.size.height/4, 0, 0)inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
+    UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[str, ratingImage] applicationActivities:nil];
+    shareVC.popoverPresentationController.sourceView    = self.view;
+    UIButton *button = (UIButton *)sender;
+
+    shareVC.popoverPresentationController.sourceRect = button.frame;
+
+    [self presentViewController:shareVC animated:YES completion:nil];
+
 }
 
 - (IBAction)moreAction:(id)sender
