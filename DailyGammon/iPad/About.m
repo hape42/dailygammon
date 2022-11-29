@@ -143,10 +143,13 @@
     {
         XLog(@"Fehler MFMailComposeViewController: %@", error);
     }
+    /* kha: haven't found any difference in the behavior of the about box
+     * that this deprecated code makes. So I'm boldly commenting it out.
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
     {
         [self.presentingPopoverController dismissPopoverAnimated:YES];
     }
+    */
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
 
