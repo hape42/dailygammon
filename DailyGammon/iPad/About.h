@@ -14,7 +14,7 @@
 
 @interface About : UIViewController <MFMailComposeViewControllerDelegate >
 
-@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
+@property (weak, nonatomic) UIPopoverPresentationController *presentingPopoverController;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
