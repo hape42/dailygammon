@@ -12,7 +12,7 @@
 #import "Preferences.h"
 #import <SafariServices/SafariServices.h>
 
-@interface PreferencesVC ()
+@interface PreferencesVC ()<NSURLSessionDataDelegate>
 
 @property (readwrite, retain, nonatomic) NSMutableArray *preferencesArray;
 
@@ -53,8 +53,6 @@
     self.scrollView.scrollEnabled = YES;
 
     [self initSwitches];
-
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     
     self.doneButton = [design makeNiceButton:self.doneButton];
     
@@ -181,8 +179,12 @@
     NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
     [request setHTTPBody:data];
     [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
-    [NSURLConnection connectionWithRequest:request delegate:self];
     
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+
 }
 
 @end

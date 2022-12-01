@@ -15,7 +15,7 @@
 @class Rating;
 @class Tools;
 
-@interface About : UIViewController <MFMailComposeViewControllerDelegate >
+@interface About : UIViewController <MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate >
 
 @property (weak, nonatomic) UIPopoverPresentationController *presentingPopoverController;
 
