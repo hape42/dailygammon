@@ -11,26 +11,26 @@
 #import <MessageUI/MessageUI.h>
 
 @class Design;
+@class Preferences;
+@class Rating;
+@class Tools;
 
 @interface About : UIViewController <MFMailComposeViewControllerDelegate >
 
 @property (weak, nonatomic) UIPopoverPresentationController *presentingPopoverController;
 
 @property (strong, readwrite, retain, atomic) Design *design;
+@property (strong, readwrite, retain, atomic) Preferences *preferences;
+@property (strong, readwrite, retain, atomic) Rating *rating;
+@property (strong, readwrite, retain, atomic) Tools *tools;
 
-@property (weak, nonatomic) IBOutlet UILabel *MRAbout;
-@property (weak, nonatomic) IBOutlet UILabel *MrAboutAppname;
 @property (weak, nonatomic) IBOutlet UILabel *MRAboutAppVersion;
-@property (weak, nonatomic) IBOutlet UILabel *MRAboutBuildInfo;
-@property (weak, nonatomic) IBOutlet UILabel *MRAboutDevice;
-@property (weak, nonatomic) IBOutlet UILabel *MRAboutOS;
-@property (weak, nonatomic) IBOutlet UILabel *MRAboutCopyright;
-@property (weak, nonatomic) IBOutlet UILabel *SMAboutChartCount;
-@property (weak, nonatomic) IBOutlet UILabel *SMAboutChartSize;
 
 - (IBAction)MRAboutButtonEmail:(id)sender;
 - (IBAction)MRAboutButtonInfo:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *buttonWeb;
+@property (weak, nonatomic) IBOutlet UIButton *buttonReminder;
+
 @property (weak, nonatomic) IBOutlet UIButton *buttonEmail;
 @property (weak, nonatomic) IBOutlet UIButton *buttonPrivacy;
 

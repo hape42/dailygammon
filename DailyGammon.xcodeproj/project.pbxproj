@@ -29,6 +29,7 @@
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
+		E09871E429372B980043DC8A /* GitHub-Mark-32px.png in Resources */ = {isa = PBXBuildFile; fileRef = E09871E329372B980043DC8A /* GitHub-Mark-32px.png */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
@@ -54,7 +55,6 @@
 		E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3D21BEA8F900E8AF25 /* Preferences.m */; };
 		E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC4021C185A300E8AF25 /* Rating.m */; };
 		E0BE3AFB2231194D003A824D /* menue.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BE3AFA2231194C003A824D /* menue.png */; };
-		E0BE3B042236EF08003A824D /* iPhoneAbout.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BE3B032236EF08003A824D /* iPhoneAbout.m */; };
 		E0BE3B06223A3440003A824D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BE3B05223A3440003A824D /* StoreKit.framework */; };
 		E0C1D82021E7CCEA00494A82 /* pfeil_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */; };
 		E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81B21E7CCE600494A82 /* dice_blau.png */; };
@@ -110,6 +110,7 @@
 		E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhonePlayMatch.h; sourceTree = "<group>"; };
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		E09871E329372B980043DC8A /* GitHub-Mark-32px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GitHub-Mark-32px.png"; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
 		E09C007321B042020056D2A2 /* PlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayMatch.m; sourceTree = "<group>"; };
 		E09C008721B117430056D2A2 /* HeaderInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderInclude.h; sourceTree = "<group>"; };
@@ -225,8 +226,6 @@
 		E0BDCC3F21C185A300E8AF25 /* Rating.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
 		E0BDCC4021C185A300E8AF25 /* Rating.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
 		E0BE3AFA2231194C003A824D /* menue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menue.png; sourceTree = "<group>"; };
-		E0BE3B022236EF08003A824D /* iPhoneAbout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneAbout.h; sourceTree = "<group>"; };
-		E0BE3B032236EF08003A824D /* iPhoneAbout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneAbout.m; sourceTree = "<group>"; };
 		E0BE3B05223A3440003A824D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		E0C1D81A21E7CCE500494A82 /* pfeil_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pfeil_gruen.png; sourceTree = "<group>"; };
 		E0C1D81B21E7CCE600494A82 /* dice_blau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_blau.png; sourceTree = "<group>"; };
@@ -339,6 +338,15 @@
 				E0C1D82921E900D100494A82 /* GameLounge.m */,
 			);
 			path = GameLounge;
+			sourceTree = "<group>";
+		};
+		E09871E52938B91A0043DC8A /* About */ = {
+			isa = PBXGroup;
+			children = (
+				E0BDCC3621BE6AE300E8AF25 /* About.h */,
+				E0BDCC3721BE6AE300E8AF25 /* About.m */,
+			);
+			path = About;
 			sourceTree = "<group>";
 		};
 		E09C008821B13D010056D2A2 /* SupportingFiles */ = {
@@ -513,8 +521,6 @@
 				E0F1E4002229353C00494918 /* iPhoneMenue.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
-				E0BE3B022236EF08003A824D /* iPhoneAbout.h */,
-				E0BE3B032236EF08003A824D /* iPhoneAbout.m */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -526,8 +532,6 @@
 				E09C008721B117430056D2A2 /* HeaderInclude.h */,
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
-				E0BDCC3621BE6AE300E8AF25 /* About.h */,
-				E0BDCC3721BE6AE300E8AF25 /* About.m */,
 			);
 			path = iPad;
 			sourceTree = "<group>";
@@ -557,6 +561,7 @@
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
 				E09871E1293366760043DC8A /* GameLounge */,
+				E09871E52938B91A0043DC8A /* About */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
@@ -591,6 +596,7 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E09871E329372B980043DC8A /* GitHub-Mark-32px.png */,
 				E0A92D49273F8BB800008477 /* iCloudOFF.png */,
 				E0A92D4B273F8BCA00008477 /* iCloudON.png */,
 				E0763D3322DB0E9500EDA562 /* 01-refresh.png */,
@@ -679,6 +685,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */,
+				E09871E429372B980043DC8A /* GitHub-Mark-32px.png in Resources */,
 				E0AEFC51220578BB00CFFB6C /* button_gruen.png in Resources */,
 				E0F9589621AD168B003DAC01 /* LaunchScreen.storyboard in Resources */,
 				E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */,
@@ -769,7 +776,6 @@
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 				E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */,
 				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
-				E0BE3B042236EF08003A824D /* iPhoneAbout.m in Sources */,
 				E00EB16921C633580088501C /* Match.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

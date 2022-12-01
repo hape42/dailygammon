@@ -49,6 +49,11 @@
     if(count < 0) count = 0;
     [[NSUserDefaults standardUserDefaults] setInteger:count+1 forKey:@"LaunchCount"];
 
+    long aboutCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"];
+    if(aboutCount < 0) aboutCount = 0;
+    [[NSUserDefaults standardUserDefaults] setInteger:aboutCount+1 forKey:@"AboutCount"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     return YES;
 }
 
@@ -71,6 +76,11 @@
     long count = [[NSUserDefaults standardUserDefaults] integerForKey:@"LaunchCount"];
     if(count < 0) count = 0;
     [[NSUserDefaults standardUserDefaults] setInteger:count+1 forKey:@"LaunchCount"];
+
+    long aboutCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"];
+    if(aboutCount < 0) aboutCount = 0;
+    [[NSUserDefaults standardUserDefaults] setInteger:aboutCount+1 forKey:@"AboutCount"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 
 }
 

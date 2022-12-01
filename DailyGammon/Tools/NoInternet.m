@@ -10,6 +10,7 @@
 #import "Tools.h"
 #import "TopPageVC.h"
 #import "AppDelegate.h"
+#import "About.h"
 
 @interface NoInternet ()
 
@@ -35,6 +36,21 @@
     }
     else
     {
+        XLog(@"AboutCount %ld", [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"]);
+        if ([[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"] == 5)
+        {
+            About *vc = [[About alloc]init];
+            
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
+            else
+                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
+
+            [self.navigationController pushViewController:vc animated:NO];
+            return;
+
+        }
         TopPageVC *vc = [[TopPageVC alloc]init];
         
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];

@@ -136,6 +136,8 @@
     [task resume];
 
     [self.indicator startAnimating];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.view addSubview:[self makeHeader]];
 
 }
 

@@ -30,10 +30,7 @@
         countDB = 99;
 
     int minDB = 5;
-//    int anzahlButtons = 6;
-//    if(countDB > minDB)
-//        anzahlButtons = 7;
-    int anzahlButtons = 8;
+    int anzahlButtons = 7;
     if(countDB > minDB)
         anzahlButtons += 1;
     int headerBreite = headerView.frame.size.width;
@@ -139,13 +136,6 @@
     
     x += buttonBreite + luecke;
 
-    UIButton *button9 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button9 = [design makeNiceButton:button9];
-    [button9 setTitle:@"Feedback" forState: UIControlStateNormal];
-    button9.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
-    button9.tag = 8;
-    [button9 addTarget:self action:@selector(feedback) forControlEvents:UIControlEventTouchUpInside];
-
     [headerView addSubview:diceView];
     
     [headerView addSubview:self.topPageButton];
@@ -157,7 +147,6 @@
     if(countDB > minDB)
         [headerView addSubview:button7];
     [headerView addSubview:button8];
-    [headerView addSubview:button9];
 
     return headerView;
 }
@@ -224,20 +213,10 @@
 }
 - (IBAction)showPopOverAbout:(id)sender
 {
+        
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
-    
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-    popController.delegate = self;
-    
-    UIButton *button = (UIButton *)sender;
-    popController.sourceView = button;
-    popController.sourceRect = button.bounds;
+    UIViewController *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
+    [self.navigationController pushViewController:vc animated:NO];
 
 }
 -(void) help
@@ -256,165 +235,5 @@
 
 }
 
-
-- (void)feedback
-{
-    UIAlertController * alert = [UIAlertController
-                                  alertControllerWithTitle:@"Feedback"
-                                  message:FEEDBACK_TEXT
-                                  preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction* cancelButton = [UIAlertAction
-                                actionWithTitle:@"Cancel"
-                                style:UIAlertActionStyleDestructive
-                                handler:^(UIAlertAction * action)
-                                {
-                                    return;
-                                }];
-
-    [alert addAction:cancelButton];
-
-    UIAlertAction* emailButton = [UIAlertAction
-                                actionWithTitle:@"Email"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                  {
-                                    [self sendMail];
-                                  }];
-
-    [alert addAction:emailButton];
- 
-    UIAlertAction* contactButton = [UIAlertAction
-                                actionWithTitle:@"Contact form"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                  {
-        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://hape42.de/App/contact/"]];
-        if ([SFSafariViewController class] != nil)
-        {
-            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
-            [self presentViewController:sfvc animated:YES completion:nil];
-        }
-        else
-        {
-            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-        }
-
-                                  }];
-
- //   [alert addAction:contactButton];
-
-    UIAlertAction* listButton = [UIAlertAction
-                                actionWithTitle:@"Show list of upcomming features"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                  {
-        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"https://hape42.de/hape42/Seiten/DailyGammon.html"]];
-        if ([SFSafariViewController class] != nil)
-        {
-            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
-            [self presentViewController:sfvc animated:YES completion:nil];
-        }
-        else
-        {
-            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-        }
-
-                                  }];
-
-    [alert addAction:listButton];
-
-    [self presentViewController:alert animated:YES completion:nil];
-    return;
-
-}
--(void) sendMail
-{
-
-    if (![MFMailComposeViewController canSendMail])
-    {
-
-        UIAlertController * alert = [UIAlertController
-                                      alertControllerWithTitle:@"Problem gefunden"
-                                      message:@"Normally the email is sent with Apple Mail. There seems to be a problem with Apple Mail. Please select your email program and send the email to DG@hape42.de"
-                                      preferredStyle:UIAlertControllerStyleAlert];
-
-        UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"OK"
-                                    style:UIAlertActionStyleDestructive
-                                    handler:^(UIAlertAction * action)
-                                      {
-                                          NSArray *objectsToShare = @[];
-
-                                          UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
-                                          
-                                          [shareVC setValue:@"send your request to DGs@hape42.de by Email" forKey:@"subject"];
-                                      //    [shareVC setValue:@"GolfGames@hape42.de" forKey:@"torecipients"];
-
-                                          [self presentViewController:shareVC animated:YES completion:nil];
-                                          return;
-
-                                      }];
-
-        [alert addAction:okButton];
-        UIAlertAction* cancelButton = [UIAlertAction
-                                    actionWithTitle:@"Cancel"
-                                    style:UIAlertActionStyleCancel
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        return;
-                                    }];
-
-        [alert addAction:cancelButton];
-        [self presentViewController:alert animated:YES completion:nil];
-        return;
-
-       XLog(@"Fehler: Mail kann nicht versendet werden");
-       return;
-    }
-    NSString *betreff = [NSString stringWithFormat:@"Feedback"];
-
-    NSString *text = @"";
-    NSString *emailText = @"";
-    text = [NSString stringWithFormat:@"Hallo Support-Team von %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@"my data: <br> "];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@"Version %@ Build %@<br><br>", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"]];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
-    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-
-    text = [NSString stringWithFormat:@" "];
-    emailText = [NSString stringWithFormat:@"%@%@<br><br>", emailText, text];
-    
-    MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
-    emailController.mailComposeDelegate = self;
-    NSArray *toGolfGames = [NSArray arrayWithObjects:@"DG@hape42.de",nil];
-
-
-    [emailController setToRecipients:toGolfGames];
-    [emailController setSubject:betreff];
-    [emailController setMessageBody:emailText isHTML:YES];
-    [self presentViewController:emailController animated:YES completion:NULL];
-
-}
-
-//-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-//{
-//    if (error)
-//    {
-//        XLog(@"Fehler MFMailComposeViewController: %@", error);
-//    }
-//    [controller dismissViewControllerAnimated:YES completion:NULL];
-//}
 
 #endif /* HeaderTest_h */
