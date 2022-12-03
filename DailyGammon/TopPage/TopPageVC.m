@@ -202,6 +202,13 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self reDrawHeader];
+    [self updateTableView];
+}
+
 #pragma mark - NSURLSessionDataDelegate
 - (void)URLSession:(NSURLSession *)session
           dataTask:(NSURLSessionDataTask *)dataTask
@@ -721,11 +728,6 @@ didCompleteWithError:(NSError *)error
             break;
      default:
             [self.tableView reloadData];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
-                                                        inSection:0];
-            [self.tableView scrollToRowAtIndexPath:indexPath
-                                  atScrollPosition:UITableViewScrollPositionTop animated:NO];
-
             break;
     }
     [self.indicator stopAnimating];
