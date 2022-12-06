@@ -82,6 +82,11 @@
     [[NSUserDefaults standardUserDefaults] setInteger:aboutCount+1 forKey:@"AboutCount"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count > 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
+    }
+
 }
 
 
