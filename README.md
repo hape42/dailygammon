@@ -69,4 +69,6 @@ Then you will better understand what I did in the app and why.
 
 Of course I am very happy to help you with the first steps.
 
+In order to give you a chance to understand what I was thinking about when I implemented it, I started to describe a little bit in a [**wiki**](https://github.com/hape42/dailygammon/wiki).
+
 Translated with www.DeepL.com/Translator (free version)
