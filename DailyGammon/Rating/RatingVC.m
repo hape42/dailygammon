@@ -8,7 +8,6 @@
 
 #import "RatingVC.h"
 #import "TopPageVC.h"
-//#import "Header.h"
 #import "Design.h"
 #import "TFHpple.h"
 #import "PlayMatch.h"
@@ -25,6 +24,7 @@
 #import "RatingTools.h"
 #import "SetUpVC.h"
 #import "LoginVC.h"
+#import "About.h"
 
 @interface RatingVC ()
 

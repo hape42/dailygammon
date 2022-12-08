@@ -34,5 +34,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonEmail;
 @property (weak, nonatomic) IBOutlet UIButton *buttonPrivacy;
 
+@property (nonatomic, assign) BOOL showRemindMeLaterButton;
 
 @end

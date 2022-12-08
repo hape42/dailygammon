@@ -45,6 +45,8 @@
 
 @synthesize design, preferences, rating, tools;
 
+@synthesize showRemindMeLaterButton;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -73,6 +75,10 @@
     self.infoText.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
     self.infoText.font = [UIFont systemFontOfSize:15.f];
 
+    if(!showRemindMeLaterButton)
+    {
+        buttonReminder.frame = CGRectMake(9999, 9999, buttonReminder.frame.size.width, buttonReminder.frame.size.height);
+    }
 }
 #define DATE [NSString stringWithUTF8String:__DATE__]
 #define TIME [NSString stringWithUTF8String:__TIME__]
@@ -253,6 +259,25 @@ didCompleteWithError:(NSError *)error
 {
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"AboutCount"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    NSString *message = @"\n\nThis view of the app is automatically displayed again after 5 launches of the app.\n\n";
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Information"
+                                 message:message
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    
+    [alert addAction:yesButton];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+
 }
 
 #pragma mark - Support Email

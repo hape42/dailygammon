@@ -24,6 +24,7 @@
 #import "RatingTools.h"
 #import "NoInternet.h"
 #import <SafariServices/SafariServices.h>
+#import "About.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 

@@ -252,8 +252,8 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     About *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
+    vc.showRemindMeLaterButton = NO;
     [self.navigationController pushViewController:vc animated:NO];
-    
     
 }
 -(void) help

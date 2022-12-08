@@ -21,6 +21,7 @@
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "iPhoneMenue.h"
+#import "About.h"
 
 @interface GameLounge ()
 

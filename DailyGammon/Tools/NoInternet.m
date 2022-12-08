@@ -46,7 +46,7 @@
                 vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
             else
                 vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
-
+            vc.showRemindMeLaterButton = YES;
             [self.navigationController pushViewController:vc animated:NO];
             return;
 

@@ -20,6 +20,7 @@
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "LoginVC.h"
+#import "About.h"
 
 
 @interface Player ()
