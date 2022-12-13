@@ -105,9 +105,9 @@
     self.messageView.layer.cornerRadius = 14.0f;
     self.messageView.layer.borderWidth = 1.0f;
 
-    NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
+    NSString *searchLinkUnquoted = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
                  name];
-
+    NSString *searchLink = [searchLinkUnquoted stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     [self readPlayerArray:searchLink];
  
     [self searchBar:self.suche textDidChange:name];
