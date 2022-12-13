@@ -26,6 +26,8 @@
 #import "LoginVC.h"
 #import "About.h"
 
+#include "Constants.h"
+
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -117,26 +119,7 @@
 
 @synthesize topPageArray;
 
-#define NEXT 1
-#define ROLL 2
-#define ROLL_DOUBLE 3
-#define CHECKER_MOVE 4
-#define SWAP_DICE 5
-#define UNDO_MOVE 6
-#define SUBMIT_MOVE 7
-#define CHAT 8
-#define GREEDY 9
-#define ONLY_MESSAGE 10
-#define NEXT__ 11
-#define ACCEPT_DECLINE 12
-#define SUBMIT_FORCED_MOVE 13
-#define NEXTGAME 14
 
-#define FINISHED_MATCH_VIEW 43
-#define CHAT_VIEW 42
-#define ACTION_VIEW 44
-#define BOARD_VIEW 45
-#define ANSWERREPLY_VIEW 46
 
 #define BUTTONHEIGHT 35
 #define BUTTONWIDTH 80
