@@ -30,7 +30,7 @@
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
 		E09871E429372B980043DC8A /* GitHub-Mark-32px.png in Resources */ = {isa = PBXBuildFile; fileRef = E09871E329372B980043DC8A /* GitHub-Mark-32px.png */; };
-		E09871EA294870E60043DC8A /* DrawBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E09871E9294870E60043DC8A /* DrawBoard.m */; };
+		E09871EA294870E60043DC8A /* MatchTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E09871E9294870E60043DC8A /* MatchTools.m */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
@@ -113,8 +113,8 @@
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		E09871E329372B980043DC8A /* GitHub-Mark-32px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GitHub-Mark-32px.png"; sourceTree = "<group>"; };
 		E09871E629448DA90043DC8A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		E09871E8294870E60043DC8A /* DrawBoard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
-		E09871E9294870E60043DC8A /* DrawBoard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
+		E09871E8294870E60043DC8A /* MatchTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchTools.h; sourceTree = "<group>"; };
+		E09871E9294870E60043DC8A /* MatchTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchTools.m; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
 		E09C007321B042020056D2A2 /* PlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayMatch.m; sourceTree = "<group>"; };
 		E09C008721B117430056D2A2 /* HeaderInclude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeaderInclude.h; sourceTree = "<group>"; };
@@ -359,8 +359,8 @@
 			children = (
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
-				E09871E8294870E60043DC8A /* DrawBoard.h */,
-				E09871E9294870E60043DC8A /* DrawBoard.m */,
+				E09871E8294870E60043DC8A /* MatchTools.h */,
+				E09871E9294870E60043DC8A /* MatchTools.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
 				E09871E629448DA90043DC8A /* Constants.h */,
@@ -770,7 +770,7 @@
 				E05325012271D42A0080D504 /* Tools.m in Sources */,
 				E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */,
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
-				E09871EA294870E60043DC8A /* DrawBoard.m in Sources */,
+				E09871EA294870E60043DC8A /* MatchTools.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,
 				E0F1E4012229353C00494918 /* iPhoneMenue.m in Sources */,
 				E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  DrawBoard.h
+//  MatchTools.h
 //  DailyGammon
 //
 //  Created by Peter Schneider on 13.12.22.
@@ -9,8 +9,13 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@class Design;
 
-@interface DrawBoard : NSObject
+@interface MatchTools : NSObject
+
+@property (strong, readwrite, retain, atomic) Design *design;
+
+-(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict;
 
 @end
 
