@@ -43,7 +43,7 @@
 
     design = [[Design alloc] init];
 
-    float zoomFactor = 1.0;
+    float zoomFactor = 1.0; // is important for iPhone
     
     // I have determined these numbers when planning on paper in order to optimally represent a game board.
     int checkerWidth = 40;
@@ -85,12 +85,13 @@
         zoomFactor = (maxHeight - y - 5) / boardHeight;
     }
     zoomFactor *= .98; // to have more space for the activityView, otherwise it hangs on the edge.
-    checkerWidth *= zoomFactor;
-    offWidth *= zoomFactor;;
-    barWidth  *= zoomFactor;;
-    cubeWidth *= zoomFactor;;
-    pointsHeight *= zoomFactor;;
-    numberHeight *= zoomFactor;;
+    
+    checkerWidth    *= zoomFactor;
+    offWidth        *= zoomFactor;;
+    barWidth        *= zoomFactor;;
+    cubeWidth       *= zoomFactor;;
+    pointsHeight    *= zoomFactor;;
+    numberHeight    *= zoomFactor;;
     indicatorHeight *= zoomFactor;;
 
     boardWidth  = cubeWidth + (6 * checkerWidth) + barWidth + (6 * checkerWidth) + offWidth;
@@ -103,8 +104,7 @@
     UIColor *boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     UIColor *edgeColor              = [schemaDict objectForKey:@"RandSchemaColor"];
     UIColor *barCentralStripColor   = [schemaDict objectForKey:@"barMittelstreifenColor"];
-    UIColor *numberColor            = [schemaDict objectForKey:@"nummerColor"];
-    UIColor *testColor = [UIColor redColor];
+    UIColor *numberColor            = [schemaDict objectForKey:@"numberColor"];
     
     boardView.backgroundColor = boardColor;
     NSMutableArray *moveArray = [[NSMutableArray alloc]init];
@@ -124,7 +124,7 @@
     numberBottomView.backgroundColor = edgeColor;
     numberBottomView.tag = 5002;
     
-    UIView *removeView;
+    UIView *removeView; // delete views and redraw is important. otherwise the numbers often overlap by 1 pixel or so and it gets uglier and uglier
     while((removeView = [boardView viewWithTag:5001]) != nil)
     {
         [removeView removeFromSuperview];
@@ -142,22 +142,23 @@
     NSMutableArray *numberArray = [boardDict objectForKey:@"nummernOben"];
     if(numberArray.count < 17)
     {
-        // aus irgendwelchen Gründen wurde gar kein Board angezeigt
+        // for some reason no board was displayed at all
 #warning        [self errorAction:2];
+#warning better call topPage instead return nil;
         return nil;
     }
     for(int i = 1; i <= 6; i++)
     {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = numberArray[i];
-        nummer.textColor = numberColor;
-        nummer.tag = i + 1000;
+        UILabel *number = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
+        number.textAlignment = NSTextAlignmentCenter;
+        number.text = numberArray[i];
+        number.textColor = numberColor;
+        number.tag = i + 1000;
         while((removeView = [numberTopView viewWithTag:i + 1000]) != nil)
         {
             [removeView removeFromSuperview];
         }
-        [numberTopView addSubview:nummer];
+        [numberTopView addSubview:number];
 
         x += checkerWidth;
     }
@@ -165,17 +166,17 @@
 
     for(int i = 8; i <= 13; i++)
     {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = numberArray[i];
-        nummer.textColor = numberColor;
-        nummer.tag = i + 1000;
+        UILabel *number = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
+        number.textAlignment = NSTextAlignmentCenter;
+        number.text = numberArray[i];
+        number.textColor = numberColor;
+        number.tag = i + 1000;
         while((removeView = [numberTopView viewWithTag:i + 1000]) != nil)
         {
             [removeView removeFromSuperview];
         }
         
-        [numberTopView addSubview:nummer];
+        [numberTopView addSubview:number];
         
         x += checkerWidth;
     }
@@ -186,11 +187,11 @@
     
     for(int i = 1; i <= 6; i++)
     {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = numberArray[i];
-        nummer.textColor = numberColor;
-        [numberBottomView addSubview:nummer];
+        UILabel *number = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
+        number.textAlignment = NSTextAlignmentCenter;
+        number.text = numberArray[i];
+        number.textColor = numberColor;
+        [numberBottomView addSubview:number];
         
         x += checkerWidth;
     }
@@ -198,11 +199,11 @@
     
     for(int i = 8; i <= 13; i++)
     {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = numberArray[i];
-        nummer.textColor = numberColor;
-        [numberBottomView addSubview:nummer];
+        UILabel *number = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerWidth, numberHeight)];
+        number.textAlignment = NSTextAlignmentCenter;
+        number.text = numberArray[i];
+        number.textColor = numberColor;
+        [numberBottomView addSubview:number];
         
         x += checkerWidth;
     }
@@ -213,23 +214,23 @@
                                                                boardView.frame.size.height - numberHeight)];
     offView.backgroundColor = edgeColor;
 
-    UIView *offInnenObenView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
+    UIView *offInsideTopView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
                                                                         0,
                                                                         checkerWidth,
                                                                         pointsHeight)];
-    offInnenObenView.backgroundColor = boardColor;
-    offInnenObenView.layer.borderWidth = 1;
-    offInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [offView addSubview:offInnenObenView];
+    offInsideTopView.backgroundColor = boardColor;
+    offInsideTopView.layer.borderWidth = 1;
+    offInsideTopView.layer.borderColor = [UIColor grayColor].CGColor;
+    [offView addSubview:offInsideTopView];
     
-    UIView *offInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
+    UIView *offInsideBottomView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
                                                                          pointsHeight + indicatorHeight + checkerWidth + indicatorHeight,
                                                                          checkerWidth,
                                                                          pointsHeight)];
-    offInnenUntenView.backgroundColor = boardColor;
-    offInnenUntenView.layer.borderWidth = 1;
-    offInnenUntenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [offView addSubview:offInnenUntenView];
+    offInsideBottomView.backgroundColor = boardColor;
+    offInsideBottomView.layer.borderWidth = 1;
+    offInsideBottomView.layer.borderColor = [UIColor grayColor].CGColor;
+    [offView addSubview:offInsideBottomView];
 
     UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(offWidth + (6 * checkerWidth),
                                                                0,
@@ -237,12 +238,12 @@
                                                                boardView.frame.size.height)];
     barView.backgroundColor = edgeColor;
 
-    UIView *barMitteView = [[UIView alloc] initWithFrame:CGRectMake(((barWidth / 2) - 2),
+    UIView *barMidleView = [[UIView alloc] initWithFrame:CGRectMake(((barWidth / 2) - 2),
                                                                     0,
                                                                     2,
                                                                     boardView.frame.size.height )];
-    barMitteView.backgroundColor = barCentralStripColor;
-    [barView addSubview:barMitteView];
+    barMidleView.backgroundColor = barCentralStripColor;
+    [barView addSubview:barMidleView];
     
     UIView *cubeView = [[UIView alloc] initWithFrame:CGRectMake(offWidth + (6 * checkerWidth) + barWidth + (6 * checkerWidth),
                                                                 numberHeight,
@@ -250,64 +251,63 @@
                                                                 boardView.frame.size.height - numberHeight)];
     cubeView.backgroundColor = edgeColor;
 
-    UIView *cubeInnenObenView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
+    UIView *cubeInsideTopView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
                                                                          0,
                                                                          checkerWidth,
                                                                          pointsHeight)];
-    cubeInnenObenView.backgroundColor = boardColor;
-    cubeInnenObenView.layer.borderWidth = 1;
-    cubeInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [cubeView addSubview:cubeInnenObenView];
+    cubeInsideTopView.backgroundColor = boardColor;
+    cubeInsideTopView.layer.borderWidth = 1;
+    cubeInsideTopView.layer.borderColor = [UIColor grayColor].CGColor;
+    [cubeView addSubview:cubeInsideTopView];
     
-    UIView *cubeInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
+    UIView *cubeInsideBottomView = [[UIView alloc] initWithFrame:CGRectMake((offWidth - checkerWidth) / 2,
                                                                           pointsHeight + indicatorHeight + checkerWidth + indicatorHeight,
                                                                           checkerWidth,
                                                                           pointsHeight)];
-    cubeInnenUntenView.backgroundColor = boardColor;
-    cubeInnenUntenView.layer.borderWidth = 1;
-    cubeInnenUntenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [cubeView addSubview:cubeInnenUntenView];
+    cubeInsideBottomView.backgroundColor = boardColor;
+    cubeInsideBottomView.layer.borderWidth = 1;
+    cubeInsideBottomView.layer.borderColor = [UIColor grayColor].CGColor;
+    [cubeView addSubview:cubeInsideBottomView];
     
     [boardView addSubview:offView];
     [boardView addSubview:barView];
     [boardView addSubview:cubeView];
 
     
-#pragma mark - obere Grafiken
+#pragma mark - upper graphics
     x = 0;
     y = numberHeight;
 
-    NSMutableArray *grafikObenArray = [boardDict objectForKey:@"grafikOben"];
-    for(int i = 0; i < grafikObenArray.count; i++)
+    NSMutableArray *graphicsTopArray = [boardDict objectForKey:@"grafikOben"];
+    for(int i = 0; i < graphicsTopArray.count; i++)
     {
-        NSMutableDictionary *zunge = grafikObenArray[i];
-        NSMutableArray *bilder = [zunge objectForKey:@"img"];
+        NSMutableDictionary *pointDict = graphicsTopArray[i];
+        NSMutableArray *images = [pointDict objectForKey:@"img"];
         switch(i)
         {
             case 0:
-                // linke Seite
+                // left side
                 y = numberHeight;
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
                 {
-                    NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
                                                  y, checkerWidth,
                                                  pointsHeight / 3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
+                    // is it a cube? then get width and height from the img for the view
                     if ([imgName containsString:@"cube"])
                     {
                         UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerWidth / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHoehe);
+                        float imgWidth = cubeImg.size.width;
+                        float imgHeight = cubeImg.size.height;
+                        float factor = checkerWidth / imgWidth;
+                        imgHeight *= factor;
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
                     }
-
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     y += pointsHeight / 3;
                 }
                 y = numberHeight;
@@ -317,25 +317,25 @@
             case 7:
                 // bar
                 {
-                    if(bilder.count > 0)
+                    if(images.count > 0)
                     {
-                        NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                        NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                         //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                        UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        int imgBreite = MAX(zungeView.frame.size.width,1);
-                        int imgHoehe = zungeView.frame.size.height;
-                        float faktor = imgHoehe / imgBreite;
-                        zungeView.frame = CGRectMake(x + ((barWidth - checkerWidth) / 2) , y + pointsHeight - (checkerWidth * faktor), checkerWidth, checkerWidth * faktor);
+                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                        int imgWidth = MAX(pointView.frame.size.width,1);
+                        int imgHeight = pointView.frame.size.height;
+                        float factor = imgHeight / imgWidth;
+                        pointView.frame = CGRectMake(x + ((barWidth - checkerWidth) / 2) , y + pointsHeight - (checkerWidth * factor), checkerWidth, checkerWidth * factor);
 
-                        [boardView addSubview:zungeView];
+                        [boardView addSubview:pointView];
                         NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                        [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.size.width] forKey:@"w"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.size.height] forKey:@"h"];
+                        [move setValue:[pointDict objectForKey:@"href"] forKey:@"href"];
                         [moveArray addObject:move];
                     }
                     x += barWidth;
@@ -343,28 +343,28 @@
                 }
                 break;
             case 14:
-                // rechte Seite
+                // right sidee
                 y = numberHeight;
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
                 {
-                    NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
                     // ist es ein cube? dann besorge breite und höhe vom img für den view
                     if ([imgName containsString:@"cube"])
                     {
                         UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerWidth / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth)/2), y, checkerWidth, imgHoehe);
+                        float imgWidth = cubeImg.size.width;
+                        float imgHeight = cubeImg.size.height;
+                        float factor = checkerWidth / imgWidth;
+                        imgHeight *= factor;
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth)/2), y, checkerWidth, imgHeight);
                         
                     }
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     y += pointsHeight / 3;
                 }
                 y = numberHeight;
@@ -373,30 +373,30 @@
                 break;
             default:
                 // zungen
-                if(bilder.count > 0)
+                if(images.count > 0)
                 {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
                     
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     x += checkerWidth;
                     NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.size.width] forKey:@"w"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.size.height] forKey:@"h"];
+                    [move setValue:[pointDict objectForKey:@"href"] forKey:@"href"];
                     [moveArray addObject:move];
                 }
                 break;
         }
     }
 
-#pragma mark - obere moveIndicator
+#pragma mark - upper moveIndicator
     x = 0;
     y = numberHeight + pointsHeight ;
     
@@ -423,19 +423,17 @@
                     NSString *img = [[moveIndicatorObenArray[i] lastPathComponent] stringByDeletingPathExtension];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
                     
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, checkerWidth, indicatorHeight);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x, y, checkerWidth, indicatorHeight);
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     x += checkerWidth;
                 }
                 break;
         }
     }
-    x += checkerWidth;
-
     
-#pragma mark - Würfel
+#pragma mark - Dices
     x = 0;
     y = numberHeight + pointsHeight + indicatorHeight ;
     
@@ -445,19 +443,19 @@
         NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
         NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-        UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
         
-        [boardView addSubview:zungeView];
+        [boardView addSubview:pointView];
 
         x = offWidth + (6 * checkerWidth) + barWidth  + (6 * checkerWidth) ;
 
         img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
         imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-        zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+        pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
         
-        [boardView addSubview:zungeView];
+        [boardView addSubview:pointView];
     }
     else
     {
@@ -470,13 +468,13 @@
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                 }
                    break;
-                case 2:     // 1. Würfel linke Boardhälfte
+                case 2:     // 1. dice left half of the board
                 {
                     x += offWidth + (checkerWidth / 2) + checkerWidth;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
@@ -489,7 +487,7 @@
                     [boardView addSubview:diceView];
                 }
                     break;
-                case 3:     // 2. Würfel linke Boardhälfte
+                case 3:     // 2. dice left half of the board
                 {
                     x += checkerWidth + checkerWidth;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
@@ -502,7 +500,7 @@
                     [boardView addSubview:diceView];
                 }
                     break;
-                case 4:     // 1. Würfel rechte Boardhälfte
+                case 4:     // 1. dice right half of the board
                 {
                     x += checkerWidth + checkerWidth + barWidth + checkerWidth + checkerWidth;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
@@ -515,7 +513,7 @@
                     [boardView addSubview:diceView];
                 }
                     break;
-                case 5:     // 2. Würfel rechte Boardhälfte
+                case 5:     // 2. dice right half of the board
                 {
                     x += checkerWidth + checkerWidth ;
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
@@ -528,24 +526,24 @@
                     [boardView addSubview:diceView];
                 }
                    break;
-                case 7:     //cube rechts
+                case 7:     //cube right
                 {
                     x += (checkerWidth * 2.5);
                     
                     NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                 }
                     break;
             }
         }
     }
 
-#pragma mark - untere moveIndicator
+#pragma mark - lower moveIndicator
     x = 0;
     y = numberHeight + pointsHeight + indicatorHeight + checkerWidth;
 
@@ -572,48 +570,47 @@
                 NSString *img = [[moveIndicatorUntenArray[i] lastPathComponent] stringByDeletingPathExtension];
                 NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
                 
-                UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                zungeView.frame = CGRectMake(x, y, checkerWidth, indicatorHeight);
+                UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                pointView.frame = CGRectMake(x, y, checkerWidth, indicatorHeight);
                 
-                [boardView addSubview:zungeView];
+                [boardView addSubview:pointView];
                 x += checkerWidth;
             }
                 break;
         }
     }
-#pragma mark - untere Grafiken
+#pragma mark - lower graphics
     x = 0;
     y = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight;
     
     NSMutableArray *grafikUntenArray = [boardDict objectForKey:@"grafikUnten"];
     for(int i = 0; i < grafikUntenArray.count; i++)
     {
-        NSMutableDictionary *zunge = grafikUntenArray[i];
-        NSMutableArray *bilder = [zunge objectForKey:@"img"];
+        NSMutableDictionary *pointDict = grafikUntenArray[i];
+        NSMutableArray *images = [pointDict objectForKey:@"img"];
         switch(i)
         {
             case 0:
                 // off board
                 y += (2 * (pointsHeight / 3));
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
                 {
-                    NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[images[(images.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
                     // ist es ein cube? dann besorge breite und höhe vom img für den view
                     if ([imgName containsString:@"cube"])
                     {
                         UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerWidth / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHoehe);
-
+                        float imgWidth = cubeImg.size.width;
+                        float imgHeight = cubeImg.size.height;
+                        float factor = checkerWidth / imgWidth;
+                        imgHeight *= factor;
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
                     }
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     y -= pointsHeight / 3;
                 }
                 y = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight;
@@ -623,25 +620,25 @@
             case 7:
                 // bar
                 {
-                    if(bilder.count > 0)
+                    if(images.count > 0)
                     {
-                        NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                        NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                       //  img = @"bar_b5";
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                        UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        int imgBreite = MAX(zungeView.frame.size.width,1);
-                        int imgHoehe = zungeView.frame.size.height;
-                        float faktor = imgHoehe / imgBreite;
-                        zungeView.frame = CGRectMake(x + ((barWidth - checkerWidth) / 2) , y, checkerWidth, checkerWidth * faktor);
+                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                        int imgWidth = MAX(pointView.frame.size.width,1);
+                        int imgHeight = pointView.frame.size.height;
+                        float factor = imgHeight / imgWidth;
+                        pointView.frame = CGRectMake(x + ((barWidth - checkerWidth) / 2) , y, checkerWidth, checkerWidth * factor);
 
-                        [boardView addSubview:zungeView];
+                        [boardView addSubview:pointView];
                         NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                        [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                        [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.size.width] forKey:@"w"];
+                        [move setValue:[NSNumber numberWithFloat:pointView.frame.size.height] forKey:@"h"];
+                        [move setValue:[pointDict objectForKey:@"href"] forKey:@"href"];
                         [moveArray addObject:move];
 
                     }
@@ -650,29 +647,29 @@
                 }
                 break;
             case 14:
-                // rechte Seite
+                // right side
                 {
 
                     y += (2 * (pointsHeight / 3));
-                    for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
+                    for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
                     {
-                        NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                        NSString *img = [[images[(images.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                        UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight / 3);
+                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight / 3);
                         // ist es ein cube? dann besorge breite und höhe vom img für den view
                         if ([imgName containsString:@"cube"])
                         {
                             UIImage *cubeImg = [UIImage imageNamed:imgName];
-                            float imgBreite = cubeImg.size.width;
-                            float imgHoehe = cubeImg.size.height;
-                            float faktor = checkerWidth / imgBreite;
-                            imgHoehe *= faktor;
-                            zungeView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHoehe);
+                            float imgWidth = cubeImg.size.width;
+                            float imgHeight = cubeImg.size.height;
+                            float factor = checkerWidth / imgWidth;
+                            imgHeight *= factor;
+                            pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
                         }
 
-                        [boardView addSubview:zungeView];
+                        [boardView addSubview:pointView];
                         y -= pointsHeight / 3;
                     }
 
@@ -682,24 +679,24 @@
                 }
                 break;
             default:
-                // zungen
-                if(bilder.count > 0)
+                // points
+                if(images.count > 0)
                 {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                     NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
 
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     
-                    [boardView addSubview:zungeView];
+                    [boardView addSubview:pointView];
                     x += checkerWidth;
                     NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.size.width] forKey:@"w"];
+                    [move setValue:[NSNumber numberWithFloat:pointView.frame.size.height] forKey:@"h"];
+                    [move setValue:[pointDict objectForKey:@"href"] forKey:@"href"];
                     [moveArray addObject:move];
                 }
                break;
