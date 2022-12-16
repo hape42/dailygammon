@@ -26,32 +26,14 @@
 #import "LoginVC.h"
 #import "About.h"
 
-#include "Constants.h"
-#include "MatchTools.h"
+#import "Constants.h"
+#import "MatchTools.h"
 
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
 @property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
-
-@property (weak, nonatomic) IBOutlet UIView  *opponentView;
-@property (weak, nonatomic) IBOutlet UILabel *opponentName;
-@property (weak, nonatomic) IBOutlet UILabel *opponentRating;
-@property (weak, nonatomic) IBOutlet UILabel *opponentActive;
-@property (weak, nonatomic) IBOutlet UILabel *opponentWon;
-@property (weak, nonatomic) IBOutlet UILabel *opponentLost;
-@property (weak, nonatomic) IBOutlet UILabel *opponentPips;
-@property (weak, nonatomic) IBOutlet UILabel *opponentScore;
-
-@property (weak, nonatomic) IBOutlet UIView *playerView;
-@property (weak, nonatomic) IBOutlet UILabel *playerName;
-@property (weak, nonatomic) IBOutlet UILabel *playerRating;
-@property (weak, nonatomic) IBOutlet UILabel *playerActive;
-@property (weak, nonatomic) IBOutlet UILabel *playerWon;
-@property (weak, nonatomic) IBOutlet UILabel *playerLost;
-@property (weak, nonatomic) IBOutlet UILabel *playerPips;
-@property (weak, nonatomic) IBOutlet UILabel *playerScore;
 
 @property (weak, nonatomic) IBOutlet UIView *chatView;
 @property (weak, nonatomic) IBOutlet UIButton *transparentButton;
@@ -248,15 +230,6 @@
     if(self.boardSchema < 1) self.boardSchema = 4;
     
     NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
-
-    self.opponentRating.text = @"";
-    self.opponentActive.text = @"";
-    self.opponentWon.text    = @"";
-    self.opponentLost.text   = @"";
-    self.playerRating.text   = @"";
-    self.playerActive.text   = @"";
-    self.playerWon.text      = @"";
-    self.playerLost.text     = @"";
 
     self.boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     self.randColor              = [schemaDict objectForKey:@"RandSchemaColor"];
@@ -540,11 +513,6 @@
 
 -(void)drawPlayingAreas
 {
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    
-    int x = 20;
-    int y = 200;
 
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
     UIView *boardView = [returnDict objectForKey:@"boardView"];
@@ -560,204 +528,18 @@
         {
             [subUIView removeFromSuperview];
         }
-        
         [removeView removeFromSuperview];
     }
 
     [self.view addSubview:boardView];
 
-    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
-    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
-    
-    static NSString *opponentRatingText = @"";
-    static NSString *playerRatingText   = @"";
-    
-    if(showRatings)
-    {
-        self.playerRating.text  = playerRatingText;
-        self.opponentRating.text = opponentRatingText;
-    }
-    
-    static NSString *playerActiveText = @"";
-    static NSString *playerWonText    = @"";
-    static NSString *playerLostText   = @"";
-    
-    static NSString *opponentActiveText = @"";
-    static NSString *opponentWonText    = @"";
-    static NSString *opponentLostText   = @"";
-    
-    if(showWinLoss)
-    {
-        self.playerActive.text = playerActiveText;
-        self.playerWon.text    = playerWonText;
-        self.playerLost.text   = playerLostText;
-        
-        self.opponentActive.text = opponentActiveText;
-        self.opponentWon.text    = opponentWonText;
-        self.opponentLost.text   = opponentLostText;
-    }
-
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                   ^{
-                       dispatch_async(dispatch_get_main_queue(),
-                                      ^{
-                                          [self->rating writeRating];
-                                      });
-                       
-                   });
-
-#pragma mark - opponent / player
-
-    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
-
-    if(showRatings || showWinLoss)
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                    ^{
-                        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-                        NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
-            
-                        self->ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
-
-                        dispatch_async(dispatch_get_main_queue(),
-                                       ^{
-                                           if(showRatings)
-                                           {
-                                               if(![playerRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingPlayer"]])
-                                               {
-                                                   playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                                   self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                               }
-                                               
-                                               if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
-                                               {
-                                                   opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
-                                                   self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
-                                               }
-                                           }
-                                           if(showWinLoss)
-                                           {
-                                               if(![playerActiveText isEqualToString:[self->ratingDict objectForKey:@"activePlayer"]])
-                                               {
-                                                   playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
-                                                   self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
-                                                   self.playerActive.numberOfLines = 1;
-                                                   self.playerActive.adjustsFontSizeToFitWidth = YES;
-                                                   self.playerActive.minimumScaleFactor = 0.1;
-                                                   self.playerActive.lineBreakMode = NSLineBreakByClipping;
-                                               }
-                                               
-                                               if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
-                                               {
-                                                   playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
-                                                   self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
-                                               }
-                                               
-                                               if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
-                                               {
-                                                   playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
-                                                   self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
-                                               }
-                                               
-                                               if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
-                                               {
-                                                   opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
-                                                   self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
-                                                   self.opponentActive.numberOfLines = 1;
-                                                   self.opponentActive.adjustsFontSizeToFitWidth = YES;
-                                                   self.opponentActive.minimumScaleFactor = 0.1;
-                                                   self.opponentActive.lineBreakMode = NSLineBreakByClipping;
-                                               }
-                                               
-                                               if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
-                                               {
-                                                   opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
-                                                   self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
-                                               }
-                                               
-                                               if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
-                                               {
-                                                   opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
-                                                   self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
-                                               }
-                                           }
-                                       });
-            
-                    });
-
-    }
-    
-    float actionViewHoehe  = 130.0;
-    float rand = 7;
-    actionViewHoehe = rand + BUTTONHEIGHT + rand + BUTTONHEIGHT + rand + 20 + rand + rand + rand + BUTTONHEIGHT + rand;
-    float platzGesamt = boardView.frame.size.height ;
-    float opponentViewHoehe = (platzGesamt  - actionViewHoehe) / 2;
-    int opponentViewY = boardView.frame.origin.y ;
-    int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    
-    self.opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
-    self.playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
-
-    float labelHoeheName    = opponentViewHoehe / 9 * 3;
-    float labelHoeheDetails = opponentViewHoehe / 9 * 2;
-
-    NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
-    
-    CGRect frame = self.opponentView.frame;
-    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = boardView.frame.origin.y ;
-    frame.size.width = maxBreite - frame.origin.x - 5;
-
-    self.opponentView.frame = frame;
-    
-  //  self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
-    self.opponentName.text = @"";
-    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
-    self.opponentName.adjustsFontSizeToFitWidth = YES;
-    
-    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonOpponent = [design makeNiceButton:buttonOpponent];
-    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
-    buttonOpponent.frame = CGRectMake(50, 2, self.opponentName.frame.size.width - 100, self.opponentName.frame.size.height - 4);
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView];
+    UIView *actionView = [returnDict objectForKey:@"actionView"];
+    UIView *playerView = [returnDict objectForKey:@"playerView"];
+    UIView *opponentView = [returnDict objectForKey:@"opponentView"];
+  
+    UIButton *buttonOpponent = [returnDict objectForKey:@"buttonOpponent"];
     [buttonOpponent addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
-    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
-    [self.opponentView addSubview:buttonOpponent];
-
-    self.opponentPips.text    = opponentArray[2];
-    if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
-    {
-        self.opponentScore.text   = opponentArray[5];
-        self.opponentPips.text    = opponentArray[2];
-    }
-    else
-    {
-        self.opponentScore.text   = opponentArray[3];
-        self.opponentPips.text    = @"";
-    }
-
-    NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
-    
-    frame = self.playerView.frame;
-    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = boardView.frame.origin.y + boardView.frame.size.height - self.playerView.frame.size.height ;
-    frame.size.width = maxBreite - frame.origin.x - 5;
-    self.playerView.frame = frame;
-    
-    self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
-    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"]  forPlayer:YES];
-    self.playerName.adjustsFontSizeToFitWidth = YES;
-    self.playerPips.text    = playerArray[2];
-    if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
-    {
-        self.playerPips.text    = playerArray[2];
-        self.playerScore.text   = playerArray[5];
-    }
-    else
-    {
-        self.playerScore.text   = playerArray[3];
-        self.playerPips.text    = @"";
-    }
     
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
@@ -767,18 +549,24 @@
         }
         [removeView removeFromSuperview];
     }
-
-    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
-                                                                  self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
-                                                                  maxBreite - self.opponentView.frame.origin.x -5,
-                                                                  self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
-    
-//    actionView.backgroundColor = [UIColor yellowColor];
-    actionView.tag = ACTION_VIEW;
-    //actionView.layer.borderWidth = 1;
-
     [self.view addSubview:actionView];
+    [self.view addSubview:playerView];
+    [self.view addSubview:opponentView];
+
     
+    int buttonHeight = 0;
+    int buttonWidth = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        buttonHeight = 35;
+        buttonWidth  = 100;
+    }
+    else
+    {
+        buttonHeight = 30;
+        buttonWidth  = 80;
+    }
+
     switch([self analyzeAction])
     {
         case NEXT:

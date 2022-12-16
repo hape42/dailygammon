@@ -9,11 +9,13 @@
 #import "MatchTools.h"
 #import "Design.h"
 #import "Constants.h"
+#import "Rating.h"
 
 @implementation MatchTools
 
-@synthesize design;
+@synthesize design, rating;
 
+#pragma mark - draw boardView
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict
 {
     
@@ -703,11 +705,314 @@
         }
     }
 
-#pragma mark - end
+#pragma mark - end drawBoard
     NSMutableDictionary *returnDict = [[NSMutableDictionary alloc]init];
     [returnDict setObject:boardView forKey:@"boardView"];
     [returnDict setObject:moveArray forKey:@"moveArray"];
 
     return returnDict;
+}
+
+#pragma mark - draw actionView
+-(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView
+{
+    int maxBreite = [UIScreen mainScreen].bounds.size.width;
+    int nameLabelHeight = 0;
+    int detailLabelHeight = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        nameLabelHeight   = 35;
+        detailLabelHeight = 20;
+    }
+    else
+    {
+        nameLabelHeight   = 20;
+        detailLabelHeight = 15;
+    }
+
+    rating = [[Rating alloc] init];
+    design = [[Design alloc] init];
+
+    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
+                                                                  boardView.frame.origin.y + nameLabelHeight + ( 3 * detailLabelHeight) ,
+                                                                  maxBreite - boardView.frame.size.width - boardView.frame.origin.x - 10,
+                                                                  boardView.frame.size.height - nameLabelHeight - ( 3 * detailLabelHeight) - nameLabelHeight - ( 3 * detailLabelHeight))];
+
+    UIView  *opponentView = [[UIView alloc] initWithFrame:CGRectMake(actionView.frame.origin.x,
+                                                                     boardView.frame.origin.y,
+                                                                     actionView.frame.size.width,
+                                                                     nameLabelHeight + ( 3 * detailLabelHeight))];
+
+    UILabel *opponentName        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             0,
+                                                                             opponentView.frame.size.width,
+                                                                             nameLabelHeight)];
+    UILabel *opponentRating      = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             nameLabelHeight,
+                                                                             opponentView.frame.size.width * .4,
+                                                                             detailLabelHeight)];
+    UILabel *opponentPips        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             nameLabelHeight+detailLabelHeight,
+                                                                             opponentView.frame.size.width * .4,
+                                                                             detailLabelHeight)];
+    UILabel *opponentScore       = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
+                                                                             opponentView.frame.size.width * .2,
+                                                                             detailLabelHeight)];
+    UILabel *opponentScoreValue  = [[UILabel alloc] initWithFrame:CGRectMake(opponentScore.frame.size.width,
+                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
+                                                                             opponentView.frame.size.width * .2,
+                                                                             detailLabelHeight)];
+
+    UILabel *opponentActive      = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+                                                                             nameLabelHeight,
+                                                                             opponentView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+    UILabel *opponentWon         = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+                                                                             nameLabelHeight + detailLabelHeight,
+                                                                             opponentView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+    UILabel *opponentLost        = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+                                                                             nameLabelHeight + detailLabelHeight  + detailLabelHeight,
+                                                                             opponentView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+    
+    [opponentView addSubview:opponentName];
+    
+    [opponentView addSubview:opponentRating];
+    [opponentView addSubview:opponentPips];
+    [opponentView addSubview:opponentScore];
+    [opponentView addSubview:opponentScoreValue];
+    
+    [opponentView addSubview:opponentActive];
+    [opponentView addSubview:opponentWon];
+    [opponentView addSubview:opponentLost];
+
+    UIView *playerView = [[UIView alloc] initWithFrame:CGRectMake(actionView.frame.origin.x,
+                                                                  actionView.frame.origin.y + actionView.frame.size.height,
+                                                                  actionView.frame.size.width,
+                                                                  nameLabelHeight + ( 3 * detailLabelHeight))];
+    
+    UILabel *playerName        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                           0,
+                                                                           playerView.frame.size.width,
+                                                                           nameLabelHeight)];
+    UILabel *playerRating      = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                           nameLabelHeight,
+                                                                           playerView.frame.size.width * .4,
+                                                                           detailLabelHeight)];
+    UILabel *playerPips        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             nameLabelHeight+detailLabelHeight,
+                                                                           playerView.frame.size.width * .4,
+                                                                             detailLabelHeight)];
+    UILabel *playerScore       = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
+                                                                           playerView.frame.size.width * .2,
+                                                                             detailLabelHeight)];
+    UILabel *playerScoreValue  = [[UILabel alloc] initWithFrame:CGRectMake(playerScore.frame.size.width,
+                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
+                                                                           playerView.frame.size.width * .2,
+                                                                             detailLabelHeight)];
+
+    UILabel *playerActive      = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+                                                                             nameLabelHeight,
+                                                                           playerView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+    UILabel *playerWon         = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+                                                                             nameLabelHeight + detailLabelHeight,
+                                                                           playerView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+    UILabel *playerLost        = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+                                                                             nameLabelHeight + detailLabelHeight  + detailLabelHeight,
+                                                                           playerView.frame.size.width * .6,
+                                                                             detailLabelHeight)];
+
+    [playerView addSubview:playerName];
+    
+    [playerView addSubview:playerRating];
+    [playerView addSubview:playerPips];
+    [playerView addSubview:playerScore];
+    [playerView addSubview:playerScoreValue];
+    
+    [playerView addSubview:playerActive];
+    [playerView addSubview:playerWon];
+    [playerView addSubview:playerLost];
+
+    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
+    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
+    
+    static NSString *opponentRatingText = @"";
+    static NSString *playerRatingText   = @"";
+    
+    if(showRatings)
+    {
+        playerRating.text  = playerRatingText;
+        opponentRating.text = opponentRatingText;
+    }
+    
+    static NSString *playerActiveText = @"";
+    static NSString *playerWonText    = @"";
+    static NSString *playerLostText   = @"";
+    
+    static NSString *opponentActiveText = @"";
+    static NSString *opponentWonText    = @"";
+    static NSString *opponentLostText   = @"";
+    
+    if(showWinLoss)
+    {
+        playerActive.text = playerActiveText;
+        playerWon.text    = playerWonText;
+        playerLost.text   = playerLostText;
+        
+        opponentActive.text = opponentActiveText;
+        opponentWon.text    = opponentWonText;
+        opponentLost.text   = opponentLostText;
+    }
+
+#pragma mark - opponent / player
+
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    
+    if(showRatings || showWinLoss)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+                    ^{
+                        NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+                        NSString *opponentID = [boardDict objectForKey:@"opponentID"];
+
+                        NSMutableDictionary *ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
+
+                        dispatch_async(dispatch_get_main_queue(),
+                                       ^{
+                                           if(showRatings)
+                                           {
+                                               if(![playerRatingText isEqualToString:[ratingDict objectForKey:@"ratingPlayer"]])
+                                               {
+                                                   playerRatingText       = [ratingDict objectForKey:@"ratingPlayer"];
+                                                   playerRating.text = [ratingDict objectForKey:@"ratingPlayer"];
+                                               }
+                                               
+                                               if(![opponentRatingText isEqualToString:[ratingDict objectForKey:@"ratingOpponent"]])
+                                               {
+                                                   opponentRatingText       = [ratingDict objectForKey:@"ratingOpponent"];
+                                                   opponentRating.text = [ratingDict objectForKey:@"ratingOpponent"];
+                                               }
+                                           }
+                                           if(showWinLoss)
+                                           {
+                                               if(![playerActiveText isEqualToString:[ratingDict objectForKey:@"activePlayer"]])
+                                               {
+                                                   playerActiveText       = [ratingDict objectForKey:@"activePlayer"];
+                                                   playerActive.text = [ratingDict objectForKey:@"activePlayer"];
+                                                   playerActive.numberOfLines = 1;
+                                                   playerActive.adjustsFontSizeToFitWidth = YES;
+                                                   playerActive.minimumScaleFactor = 0.1;
+                                                   playerActive.lineBreakMode = NSLineBreakByClipping;
+                                               }
+                                               
+                                               if(![playerWonText isEqualToString:[ratingDict objectForKey:@"wonPlayer"]])
+                                               {
+                                                   playerWonText       = [ratingDict objectForKey:@"wonPlayer"];
+                                                   playerWon.text = [ratingDict objectForKey:@"wonPlayer"];
+                                               }
+                                               
+                                               if(![playerLostText isEqualToString:[ratingDict objectForKey:@"lostPlayer"]])
+                                               {
+                                                   playerLostText       = [ratingDict objectForKey:@"lostPlayer"];
+                                                   playerLost.text = [ratingDict objectForKey:@"lostPlayer"];
+                                               }
+                                               
+                                               if(![opponentActiveText isEqualToString:[ratingDict objectForKey:@"activeOpponent"]])
+                                               {
+                                                   opponentActiveText       = [ratingDict objectForKey:@"activeOpponent"];
+                                                   opponentActive.text = [ratingDict objectForKey:@"activeOpponent"];
+                                                   opponentActive.numberOfLines = 1;
+                                                   opponentActive.adjustsFontSizeToFitWidth = YES;
+                                                   opponentActive.minimumScaleFactor = 0.1;
+                                                   opponentActive.lineBreakMode = NSLineBreakByClipping;
+                                               }
+                                               
+                                               if(![opponentWonText isEqualToString:[ratingDict objectForKey:@"wonOpponent"]])
+                                               {
+                                                   opponentWonText       = [ratingDict objectForKey:@"wonOpponent"];
+                                                   opponentWon.text = [ratingDict objectForKey:@"wonOpponent"];
+                                               }
+                                               
+                                               if(![opponentLostText isEqualToString:[ratingDict objectForKey:@"lostOpponent"]])
+                                               {
+                                                   opponentLostText       = [ratingDict objectForKey:@"lostOpponent"];
+                                                   opponentLost.text = [ratingDict objectForKey:@"lostOpponent"];
+                                               }
+                                           }
+                                       });
+            
+                    });
+
+    }
+    
+    opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
+    playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
+
+    NSMutableArray *opponentArray = [boardDict objectForKey:@"opponent"];
+    
+    opponentName.text = @"";
+    opponentName = [design makeLabelColor:opponentName forColor:[boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
+    opponentName.adjustsFontSizeToFitWidth = YES;
+    
+    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
+    buttonOpponent = [design makeNiceButton:buttonOpponent];
+    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
+    buttonOpponent.frame = CGRectMake(50, 2, opponentName.frame.size.width - 100, opponentName.frame.size.height - 4);
+    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
+    [opponentView addSubview:buttonOpponent];
+
+    opponentPips.text    = opponentArray[2];
+    if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
+    {
+        opponentScoreValue.text   = opponentArray[5];
+        opponentPips.text    = opponentArray[2];
+    }
+    else
+    {
+        opponentScoreValue.text   = opponentArray[3];
+        opponentPips.text    = @"";
+    }
+    [opponentScoreValue setFont:[UIFont boldSystemFontOfSize: opponentScoreValue.font.pointSize]];
+    opponentScore.text   = @"Score:";
+    
+    NSMutableArray *playerArray = [boardDict objectForKey:@"player"];
+    
+    playerName.text = [NSString stringWithFormat:@"%@",playerArray[0]];
+    playerName = [design makeLabelColor:playerName forColor:[boardDict objectForKey:@"playerColor"]  forPlayer:YES];
+    playerName = [design makeNiceLabel:playerName];
+    [playerName setTextAlignment:NSTextAlignmentCenter];
+    playerPips.text    = playerArray[2];
+    if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
+    {
+        playerPips.text    = playerArray[2];
+        playerScoreValue.text   = playerArray[5];
+    }
+    else
+    {
+        playerScoreValue.text   = playerArray[3];
+        playerPips.text    = @"";
+    }
+    [playerScoreValue setFont:[UIFont boldSystemFontOfSize: opponentScoreValue.font.pointSize]];
+    playerScore.text   = @"Score:";
+
+    actionView.tag = ACTION_VIEW;
+
+#pragma mark - end drawAction
+    
+    NSMutableDictionary *returnDict = [[NSMutableDictionary alloc]init];
+    [returnDict setObject:actionView forKey:@"actionView"];
+    [returnDict setObject:playerView forKey:@"playerView"];
+    [returnDict setObject:opponentView forKey:@"opponentView"];
+
+    [returnDict setObject:buttonOpponent forKey:@"buttonOpponent"];
+
+    return returnDict;
+
 }
 @end
