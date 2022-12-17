@@ -26,6 +26,7 @@
 		E0763D3022D6506200EDA562 /* PfeilUp.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D2E22D6506200EDA562 /* PfeilUp.png */; };
 		E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */; };
 		E0763D3522DB0E9600EDA562 /* 01-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3322DB0E9500EDA562 /* 01-refresh.png */; };
+		E0777D62294E24DB00712C76 /* BoardElements.m in Sources */ = {isa = PBXBuildFile; fileRef = E0777D61294E24DB00712C76 /* BoardElements.m */; };
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
@@ -108,6 +109,8 @@
 		E0763D2E22D6506200EDA562 /* PfeilUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PfeilUp.png; sourceTree = "<group>"; };
 		E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh@2x.png"; sourceTree = "<group>"; };
 		E0763D3322DB0E9500EDA562 /* 01-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh.png"; sourceTree = "<group>"; };
+		E0777D60294E24DB00712C76 /* BoardElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardElements.h; sourceTree = "<group>"; };
+		E0777D61294E24DB00712C76 /* BoardElements.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoardElements.m; sourceTree = "<group>"; };
 		E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhonePlayMatch.h; sourceTree = "<group>"; };
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -361,6 +364,8 @@
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
 				E09871E8294870E60043DC8A /* MatchTools.h */,
 				E09871E9294870E60043DC8A /* MatchTools.m */,
+				E0777D60294E24DB00712C76 /* BoardElements.h */,
+				E0777D61294E24DB00712C76 /* BoardElements.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
 				E09871E629448DA90043DC8A /* Constants.h */,
@@ -788,6 +793,7 @@
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
 				E00654D722A6784000194435 /* Player.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
+				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
 				E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,

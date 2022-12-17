@@ -10,10 +10,11 @@
 #import "Design.h"
 #import "Constants.h"
 #import "Rating.h"
+#import "BoardElements.h"
 
 @implementation MatchTools
 
-@synthesize design, rating;
+@synthesize design, rating, boardElements;
 
 #pragma mark - draw boardView
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict
@@ -43,7 +44,8 @@
     // !--!——————--------——-!—-!--------—————————!—-!
     //     12 11 10  9  8  7     6  5  4  3  2  1
 
-    design = [[Design alloc] init];
+    design        = [[Design alloc] init];
+    boardElements = [[BoardElements alloc] init];
 
     float zoomFactor = 1.0; // is important for iPhone
     
@@ -379,9 +381,11 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
+//                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
+//
+//                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img]];
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     
                     [boardView addSubview:pointView];

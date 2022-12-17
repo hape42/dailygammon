@@ -11,11 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Rating;
+@class BoardElements;
 
 @interface MatchTools : NSObject
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Rating *rating;
+@property (strong, readwrite, retain, atomic) BoardElements *boardElements;
 
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict;
 -(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView;

@@ -30,4 +30,12 @@
 #define BOARD_VIEW 45
 #define ANSWERREPLY_VIEW 46
 
+//board elemets
+#define POINT_DARK 1
+#define POINT_LIGHT 2
+#define POINT_UP 1
+#define POINT_DOWN 2
+#define CHECKER_DARK 1
+#define CHECKER_LIGHT 2
+
 #endif /* Constants_h */
