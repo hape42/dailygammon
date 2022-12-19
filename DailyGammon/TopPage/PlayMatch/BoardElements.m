@@ -41,7 +41,7 @@
         else
             pointDirection = POINT_UP;
         NSString *checker = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
-        NSString *count   = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]];
+        checkerNumber     = [[paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
         if([checker isEqualToString:@"y"])
             checkerColor = CHECKER_LIGHT;
         else
@@ -51,7 +51,7 @@
                               withColor:pointColor
                           withDirection:pointDirection
                        withCheckerColor:checkerColor
-                       withCheckerCount:[count intValue]];
+                       withCheckerCount:checkerNumber];
     }
     return image;
 }

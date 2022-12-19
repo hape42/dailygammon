@@ -108,9 +108,18 @@
     UIColor *boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
     UIColor *edgeColor              = [schemaDict objectForKey:@"RandSchemaColor"];
     UIColor *barCentralStripColor   = [schemaDict objectForKey:@"barMittelstreifenColor"];
-    UIColor *numberColor            = [schemaDict objectForKey:@"numberColor"];
+    UIColor *numberColor            = [schemaDict objectForKey:@"nummerColor"];
     
     boardView.backgroundColor = boardColor;
+    UIImage *boardImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d/BoardImage",schema]] ;
+    if(boardImage != nil)
+    {
+        UIGraphicsBeginImageContext(boardView.frame.size);
+        [[UIImage imageNamed:@"metall.jpg"] drawInRect:boardView.bounds];
+        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        boardView.backgroundColor = [UIColor colorWithPatternImage:image];
+    }
     NSMutableArray *moveArray = [[NSMutableArray alloc]init];
 
 #pragma mark - Numbers
