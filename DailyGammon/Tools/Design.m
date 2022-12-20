@@ -316,111 +316,21 @@
 -(NSMutableDictionary *)schema:(int)nummer
 {
     NSMutableDictionary *schemaDict = [[NSMutableDictionary alloc]init];
-    
-    switch (nummer)
-    {
-        case 1:
-        {
-            UIColor *schemaColor = [UIColor colorWithRed:255.0/255 green:254.0/255 blue:209.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"BoardSchemaColor"];
-            
-            UIColor *randColor = [UIColor colorWithRed:63.0/255 green:148.0/255 blue:104.0/255 alpha:1];
-            [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
-            [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"TintColor"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:0.0/255 green:33.0/255 blue:188.0/255 alpha:1] forKey:@"labelColor1"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:248.0/255 green:195.0/255 blue:69.0/255 alpha:1] forKey:@"labelColor2"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"labelTextColor2"];
+    if(nummer == 0) // for some reason number is 0 
+        nummer = 4;
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorBoard",nummer]]           forKey:@"BoardSchemaColor"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorEdge",nummer]]            forKey:@"RandSchemaColor"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorBarCentralStrip",nummer]] forKey:@"barMittelstreifenColor"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorNumber",nummer]]          forKey:@"nummerColor"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorTint",nummer]]            forKey:@"TintColor"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorLabel1",nummer]]          forKey:@"labelColor1"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorLabelText1",nummer]]      forKey:@"labelTextColor1"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorLabel2",nummer]]          forKey:@"labelColor2"];
+    [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorLabelText2",nummer]]      forKey:@"labelTextColor2"];
+    UIImage *boardImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d/BoardImage",nummer]] ;
+    if(boardImage != nil)
+        [schemaDict setObject:[UIImage imageNamed:[NSString stringWithFormat:@"%d/BoardImage",nummer]]       forKey:@"boardImage"];
 
-        }
-            break;
-        case 2:
-        {
-            UIColor *schemaColor = [UIColor colorWithRed:255.0/255 green:254.0/255 blue:209.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"BoardSchemaColor"];
-            
-            UIColor *randColor = [UIColor colorWithRed:63.0/255 green:148.0/255 blue:104.0/255 alpha:1];
-            [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
-            [schemaDict setObject:HEADERBACKGROUNDCOLOR forKey:@"TintColor"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:0.0/255 green:33.0/255 blue:188.0/255 alpha:1] forKey:@"labelColor1"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:248.0/255 green:195.0/255 blue:69.0/255 alpha:1] forKey:@"labelColor2"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"labelTextColor2"];
-
-        }
-            break;
-        case 3:
-        {
-            UIColor *schemaColor = [UIColor colorWithRed:204.0/255 green:204.0/255 blue:204.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"BoardSchemaColor"];
-
-            UIColor *randColor = [UIColor colorWithRed:142.0/255 green:142.0/255 blue:142.0/255 alpha:1];
-            [schemaDict setObject:randColor forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"barMittelstreifenColor"];
-            [schemaDict setObject:[UIColor blackColor] forKey:@"nummerColor"];
-            schemaColor = [UIColor colorWithRed:32.0/255 green:102.0/255 blue:194.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"TintColor"];
-            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
-
-            [schemaDict setObject:[UIColor colorWithRed:32.0/255 green:104.0/255 blue:197.0/255 alpha:1] forKey:@"labelColor1"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
-            
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelColor2"];
-            [schemaDict setObject:[UIColor colorWithRed:32.0/255 green:104.0/255 blue:197.0/255 alpha:1] forKey:@"labelTextColor2"];
-
-        }
-            break;
-      case 4:
-        {
-            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"BoardSchemaColor"];
-            
-            [schemaDict setObject:[UIColor grayColor] forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor darkGrayColor] forKey:@"barMittelstreifenColor"];
-            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
-           
-            UIColor *schemaColor = [UIColor colorWithRed:165.0/255 green:46.0/255 blue:40.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"TintColor"];
-            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:43.0/255 green:43.0/255 blue:43.0/255 alpha:1] forKey:@"labelColor1"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:166.0/255 green:46.0/255 blue:40.0/255 alpha:1] forKey:@"labelColor2"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor2"];
-       }
-            break;
-
-        default:
-        {
-            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"BoardSchemaColor"];
-            
-            [schemaDict setObject:[UIColor grayColor] forKey:@"RandSchemaColor"];
-            [schemaDict setObject:[UIColor darkGrayColor] forKey:@"barMittelstreifenColor"];
-            [schemaDict setObject:[UIColor lightGrayColor] forKey:@"nummerColor"];
-           
-            UIColor *schemaColor = [UIColor colorWithRed:165.0/255 green:46.0/255 blue:40.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"TintColor"];
-            schemaColor = [UIColor colorWithRed:179.0/255 green:83.0/255 blue:80.0/255 alpha:1];
-            [schemaDict setObject:schemaColor forKey:@"ButtonSchattenColor"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:43.0/255 green:43.0/255 blue:43.0/255 alpha:1] forKey:@"labelColor1"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor1"];
-            
-            [schemaDict setObject:[UIColor colorWithRed:166.0/255 green:46.0/255 blue:40.0/255 alpha:1] forKey:@"labelColor2"];
-            [schemaDict setObject:[UIColor whiteColor] forKey:@"labelTextColor2"];
-       }
-            break;
-    }
     return schemaDict;
 }
 

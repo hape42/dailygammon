@@ -27,6 +27,7 @@
 		E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3222DB0E9500EDA562 /* 01-refresh@2x.png */; };
 		E0763D3522DB0E9600EDA562 /* 01-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = E0763D3322DB0E9500EDA562 /* 01-refresh.png */; };
 		E0777D62294E24DB00712C76 /* BoardElements.m in Sources */ = {isa = PBXBuildFile; fileRef = E0777D61294E24DB00712C76 /* BoardElements.m */; };
+		E0777D64294F2B7000712C76 /* metall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0777D63294F2B7000712C76 /* metall.jpg */; };
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
@@ -111,6 +112,7 @@
 		E0763D3322DB0E9500EDA562 /* 01-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "01-refresh.png"; sourceTree = "<group>"; };
 		E0777D60294E24DB00712C76 /* BoardElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardElements.h; sourceTree = "<group>"; };
 		E0777D61294E24DB00712C76 /* BoardElements.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoardElements.m; sourceTree = "<group>"; };
+		E0777D63294F2B7000712C76 /* metall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = metall.jpg; sourceTree = "<group>"; };
 		E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhonePlayMatch.h; sourceTree = "<group>"; };
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -616,6 +618,7 @@
 		E0F958A621AD5B54003DAC01 /* Bilder */ = {
 			isa = PBXGroup;
 			children = (
+				E0777D63294F2B7000712C76 /* metall.jpg */,
 				E09871E329372B980043DC8A /* GitHub-Mark-32px.png */,
 				E0A92D49273F8BB800008477 /* iCloudOFF.png */,
 				E0A92D4B273F8BCA00008477 /* iCloudON.png */,
@@ -724,6 +727,7 @@
 				E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */,
 				E0AEFC4E220420D300CFFB6C /* button_rot.png in Resources */,
 				E0763D3522DB0E9600EDA562 /* 01-refresh.png in Resources */,
+				E0777D64294F2B7000712C76 /* metall.jpg in Resources */,
 				E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */,
 				E0763D2A22D62DE300EDA562 /* pfeil_down_kreis.png in Resources */,
 				E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */,

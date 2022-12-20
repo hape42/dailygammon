@@ -37,5 +37,8 @@
 #define POINT_DOWN 2
 #define CHECKER_DARK 1
 #define CHECKER_LIGHT 2
+#define OFF_TOP 1
+#define OFF_BOTTOM 2
+#define OFF_ALL 3
 
 #endif /* Constants_h */

@@ -517,9 +517,7 @@
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
     UIView *boardView = [returnDict objectForKey:@"boardView"];
     self.moveArray = [returnDict objectForKey:@"moveArray"];
-    
-    boardView.backgroundColor = self.boardColor;
-    
+        
     UIView *removeView;
     
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
