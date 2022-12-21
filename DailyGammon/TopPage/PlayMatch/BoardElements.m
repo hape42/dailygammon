@@ -161,15 +161,6 @@
 - (UIImage *)drawPointForSchema:(int)schema withColor:(int)pointColor withDirection:(int)pointDirection withCheckerColor:(int)checkerColor withCheckerCount:(int)checkerCount
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
-
-//    uiview  erstellen
-//    uiimageview mit zunge erstellen
-//    uiview addsubview zunge
-//    je checker uiimageview
-//    uiview addsubview checkerview
-//    mehr als 5? dann auf den letzten stein eine zahl schreiben
-    
-    // view in image transformieren
     
     UIView *pointView = [[UIView alloc]initWithFrame:CGRectMake(0,0,50,250)];
     NSString *pointName = @"";
@@ -239,7 +230,40 @@
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
 
-//    mehr als 5? dann auf den mittleren stein eine zahl schreiben
+    UIView *barView = [[UIView alloc]initWithFrame:CGRectMake(0,0,50, 50 * MIN(5,checkerCount))];
+
+    NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_dk"];
+    if(checkerColor == CHECKER_LIGHT)
+        checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_lt"];
+
+    for(int i = 0;  i < MIN(5,checkerCount); i++)
+    {
+        UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+        CGRect frame = checkerImageView.frame;
+        frame.origin.y = i * 50;
+        checkerImageView.frame = frame;
+        
+        [barView addSubview:checkerImageView];
+    }
+    if(checkerCount > 5)
+    {
+        UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,100,50,50)];
+        numberLabel.text = [NSString stringWithFormat:@"%d", checkerCount];
+        numberLabel.textAlignment = NSTextAlignmentCenter;
+        numberLabel.textColor = [UIColor whiteColor];
+        [numberLabel setFont:[numberLabel.font fontWithSize: 25]];
+        numberLabel.adjustsFontSizeToFitWidth = YES;
+        numberLabel.numberOfLines = 0;
+        numberLabel.minimumScaleFactor = 0.1;
+
+        [barView addSubview:numberLabel];
+    }
+
+    CGSize size = [barView bounds].size;
+    UIGraphicsBeginImageContext(size);
+    [[barView layer] renderInContext:UIGraphicsGetCurrentContext()];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
     return image;
 }
