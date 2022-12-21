@@ -25,14 +25,15 @@
     {
         // pt_dk_down_y3
         // pt_lt_up_b7
+        //pt_dk_down0
         // split name for parameters
         NSArray *paramters = [img componentsSeparatedByString: @"_"];
-        if(paramters.count != 4)
-            return image;
+
         int pointColor = 1;
         int pointDirection = 1;
         int checkerColor = 1;
         int checkerNumber = 0;
+        NSString *checker = @"";
         if([paramters[1] isEqualToString:@"dk"])
             pointColor = POINT_DARK;
         else
@@ -41,8 +42,22 @@
             pointDirection = POINT_DOWN;
         else
             pointDirection = POINT_UP;
-        NSString *checker = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
-        checkerNumber     = [[paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+        if(paramters.count == 3)
+        {
+            // no checker
+            NSString *direction = [paramters[2] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+            checkerNumber       = [[paramters[2] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+            if([direction isEqualToString:@"down"])
+                pointDirection = POINT_DOWN;
+            else
+                pointDirection = POINT_UP;
+
+        }
+        else
+        {
+            checker       = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+            checkerNumber = [[paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+        }
         if([checker isEqualToString:@"y"])
             checkerColor = CHECKER_LIGHT;
         else
@@ -136,21 +151,8 @@
 - (UIImage *)getCubeForSchema:(int)schema name:(NSString *)img
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
-    if(schema <= 4)
-    {
-        NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-        image = [UIImage imageNamed:imgName];
-        return image;
-    }
-    else
-    {
-        // cube4
-
-        int cubeNumber     = [[img stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
-
-        return [self drawCubeForSchema:schema
-                       withNumber:cubeNumber];
-    }
+    NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
+    image = [UIImage imageNamed:imgName];
     return image;
 }
 
@@ -169,6 +171,67 @@
     
     // view in image transformieren
     
+    UIView *pointView = [[UIView alloc]initWithFrame:CGRectMake(0,0,50,250)];
+    NSString *pointName = @"";
+
+    if(pointDirection == POINT_UP)
+    {
+        if(pointColor == POINT_LIGHT)
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light_up"];
+        else
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark_up"];
+    }
+    else
+    {
+        if(pointColor == POINT_LIGHT)
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light_down"];
+        else
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark_down"];
+
+    }
+    UIImageView *pointImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:pointName]] ;
+
+    [pointView addSubview:pointImageView];
+    
+    NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_dk"];
+    if(checkerColor == CHECKER_LIGHT)
+        checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_lt"];
+
+    for(int i = 0;  i < MIN(5,checkerCount); i++)
+    {
+        UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+        CGRect frame = checkerImageView.frame;
+        frame.origin.y = i * 50;
+        if(pointDirection == POINT_UP)
+            frame.origin.y = 200-(i * 50);
+        checkerImageView.frame = frame;
+        [pointView addSubview:checkerImageView];
+    }
+    UILabel *numberLabel;
+    if(checkerCount > 5)
+    {
+        int y = 0;
+        if(pointDirection == POINT_DOWN)
+            y = 200;
+        numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,y,50,50)];
+        numberLabel.text = [NSString stringWithFormat:@"%d", checkerCount];
+        numberLabel.textAlignment = NSTextAlignmentCenter;
+        numberLabel.textColor = [UIColor whiteColor];
+        [numberLabel setFont:[numberLabel.font fontWithSize: 25]];
+        numberLabel.adjustsFontSizeToFitWidth = YES;
+        numberLabel.numberOfLines = 0;
+        numberLabel.minimumScaleFactor = 0.1;
+
+        [pointView addSubview:numberLabel];
+
+    }
+    
+    CGSize size = [pointView bounds].size;
+    UIGraphicsBeginImageContext(size);
+    [[pointView layer] renderInContext:UIGraphicsGetCurrentContext()];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
     return image;
 }
 

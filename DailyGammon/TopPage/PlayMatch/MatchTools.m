@@ -89,7 +89,9 @@
         zoomFactor = (maxHeight - y - 5) / boardHeight;
     }
     zoomFactor *= .98; // to have more space for the activityView, otherwise it hangs on the edge.
-    
+    schema = 5;
+#warning schema = 5; is only for testing new boards
+
     checkerWidth    *= zoomFactor;
     offWidth        *= zoomFactor;;
     barWidth        *= zoomFactor;;
@@ -111,11 +113,11 @@
     UIColor *numberColor            = [schemaDict objectForKey:@"nummerColor"];
     
     boardView.backgroundColor = boardColor;
-    UIImage *boardImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d/BoardImage",schema]] ;
+    UIImage *boardImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d/background",schema]] ;
     if(boardImage != nil)
     {
         UIGraphicsBeginImageContext(boardView.frame.size);
-        [[UIImage imageNamed:@"metall.jpg"] drawInRect:boardView.bounds];
+        [boardImage drawInRect:boardView.bounds];
         UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         boardView.backgroundColor = [UIColor colorWithPatternImage:image];
@@ -305,19 +307,24 @@
                 {
                     NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
-                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
-                                                 y, checkerWidth,
-                                                 pointsHeight / 3);
+                    UIImageView *pointView =  [[UIImageView alloc] init];
                     // is it a cube? then get width and height from the img for the view
                     if ([img containsString:@"cube"])
                     {
                         UIImage *cubeImg = [boardElements getCubeForSchema:schema name:img];
+                        pointView =  [[UIImageView alloc] initWithImage:cubeImg];
                         float imgWidth = cubeImg.size.width;
                         float imgHeight = cubeImg.size.height;
                         float factor = checkerWidth / imgWidth;
                         imgHeight *= factor;
                         pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
+                    }
+                    else
+                    {
+                        pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
+                                                     y, checkerWidth,
+                                                     pointsHeight / 3);
                     }
                     [boardView addSubview:pointView];
                     y += pointsHeight / 3;
@@ -350,30 +357,35 @@
                         [moveArray addObject:move];
                     }
                     x += barWidth;
-                    
                 }
                 break;
             case 14:
-                // right sidee
+                // right side
                 y = numberHeight;
                 for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
                 {
                     NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
-                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
+                    UIImageView *pointView =  [[UIImageView alloc] init];
+                    // is it a cube? then get width and height from the img for the view
                     if ([img containsString:@"cube"])
                     {
                         UIImage *cubeImg = [boardElements getCubeForSchema:schema name:img];
+                        pointView =  [[UIImageView alloc] initWithImage:cubeImg];
                         float imgWidth = cubeImg.size.width;
                         float imgHeight = cubeImg.size.height;
                         float factor = checkerWidth / imgWidth;
                         imgHeight *= factor;
-                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth)/2), y, checkerWidth, imgHeight);
-                        
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
                     }
-                    
+                    else
+                    {
+                        pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
+                                                     y, checkerWidth,
+                                                     pointsHeight / 3);
+                    }
+
                     [boardView addSubview:pointView];
                     y += pointsHeight / 3;
                 }
@@ -604,18 +616,24 @@
                 {
                     NSString *img = [[images[(images.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
-                    if ([imgName containsString:@"cube"])
+                    UIImageView *pointView =  [[UIImageView alloc] init];
+                    // is it a cube? then get width and height from the img for the view
+                    if ([img containsString:@"cube"])
                     {
-                        UIImage *cubeImg = [UIImage imageNamed:imgName];
+                        UIImage *cubeImg = [boardElements getCubeForSchema:schema name:img];
+                        pointView =  [[UIImageView alloc] initWithImage:cubeImg];
                         float imgWidth = cubeImg.size.width;
                         float imgHeight = cubeImg.size.height;
                         float factor = checkerWidth / imgWidth;
                         imgHeight *= factor;
                         pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
+                    }
+                    else
+                    {
+                        pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
+                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
+                                                     y, checkerWidth,
+                                                     pointsHeight / 3);
                     }
                     [boardView addSubview:pointView];
                     y -= pointsHeight / 3;
@@ -632,8 +650,7 @@
                         NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                       //  img = @"bar_b5";
-                        NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getBarForSchema:schema name:img]];
                         int imgWidth = MAX(pointView.frame.size.width,1);
                         int imgHeight = pointView.frame.size.height;
                         float factor = imgHeight / imgWidth;
@@ -663,17 +680,24 @@
                         NSString *img = [[images[(images.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
                         NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
-                        UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                        pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, pointsHeight / 3);
-                        // ist es ein cube? dann besorge breite und höhe vom img für den view
-                        if ([imgName containsString:@"cube"])
+                        UIImageView *pointView =  [[UIImageView alloc] init];
+                        // is it a cube? then get width and height from the img for the view
+                        if ([img containsString:@"cube"])
                         {
-                            UIImage *cubeImg = [UIImage imageNamed:imgName];
+                            UIImage *cubeImg = [boardElements getCubeForSchema:schema name:img];
+                            pointView =  [[UIImageView alloc] initWithImage:cubeImg];
                             float imgWidth = cubeImg.size.width;
                             float imgHeight = cubeImg.size.height;
                             float factor = checkerWidth / imgWidth;
                             imgHeight *= factor;
                             pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, imgHeight);
+                        }
+                        else
+                        {
+                            pointView =  [[UIImageView alloc] initWithImage:[boardElements getOffForSchema:schema name:img]];
+                            pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2),
+                                                         y, checkerWidth,
+                                                         pointsHeight / 3);
                         }
 
                         [boardView addSubview:pointView];
@@ -691,9 +715,8 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img]];
 
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     
                     [boardView addSubview:pointView];
