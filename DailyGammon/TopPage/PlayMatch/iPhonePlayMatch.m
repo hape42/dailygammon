@@ -21,6 +21,9 @@
 #import "Tools.h"
 #import "Player.h"
 
+#import "Constants.h"
+#import "MatchTools.h"
+
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -116,29 +119,8 @@
 
 @synthesize topPageArray;
 
-#define NEXT 1
-#define ROLL 2
-#define ROLL_DOUBLE 3
-#define CHECKER_MOVE 4
-#define SWAP_DICE 5
-#define UNDO_MOVE 6
-#define SUBMIT_MOVE 7
-#define CHAT 8
-#define GREEDY 9
-#define ONLY_MESSAGE 10
-#define NEXT__ 11
-#define ACCEPT_DECLINE 12
-#define SUBMIT_FORCED_MOVE 13
-#define NEXTGAME 14
+@synthesize matchTools;
 
-#define FINISHED_MATCH_VIEW 43
-#define CHAT_VIEW 42
-#define ACTION_VIEW 44
-#define BOARD_VIEW 45
-#define ANSWERREPLY_VIEW 46
-
-#define BUTTONHEIGHT 30
-#define BUTTONWIDTH 80
 
 - (void)viewDidLoad
 {
@@ -156,6 +138,7 @@
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
+    matchTools = [[MatchTools alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
@@ -587,681 +570,19 @@
     }
     else
     {
-        [self drawBoard];
+        [self drawPlayingAreas];
     }
 }
 
--(void)drawBoard
+-(void)drawPlayingAreas
 {
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    
-    int x = 5;
 
-    bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
-    bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
-
-    static NSString *opponentRatingText = @"";
-    static NSString *playerRatingText   = @"";
-
-    if(showRatings)
-    {
-        self.playerRating.text  = playerRatingText;
-        self.opponentRating.text = opponentRatingText;
-    }
-    
-    static NSString *playerActiveText = @"";
-    static NSString *playerWonText    = @"";
-    static NSString *playerLostText   = @"";
-    
-    static NSString *opponentActiveText = @"";
-    static NSString *opponentWonText    = @"";
-    static NSString *opponentLostText   = @"";
-
-    if(showWinLoss)
-    {
-        self.playerActive.text = playerActiveText;
-        self.playerWon.text    = playerWonText;
-        self.playerLost.text   = playerLostText;
-        
-        self.opponentActive.text = opponentActiveText;
-        self.opponentWon.text    = opponentWonText;
-        self.opponentLost.text   = opponentLostText;
-    }
-
-    if([design isX])
-    {
-        maxBreite = [UIScreen mainScreen].bounds.size.width - 30;
-        x = 50;
-        
-        UIEdgeInsets safeArea = [[UIApplication sharedApplication] keyWindow].safeAreaInsets;
-        maxHoehe  = [UIScreen mainScreen].bounds.size.height - safeArea.bottom;
-    }
-    int y = 40;
-    
-    float zoomFaktor = 1.0;
-    // fixe Höhe war mal 484
-    // fixe Breite war mal 700
-    zoomFaktor = (maxHoehe - y - 5) / 484.0;
-    zoomFaktor *= .98; // damit actionView nicht zu schmal wird
-    
-    int checkerBreite = 40 * zoomFaktor;
-    int offBreite = 70 * zoomFaktor;
-    int barBreite = 40 * zoomFaktor;
-    int cubeBreite = offBreite;
-    int zungenHoehe = 200 * zoomFaktor;
-    int nummerHoehe = 15 * zoomFaktor;
-    int indicatorHoehe = 22 * zoomFaktor;
-    
-    UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x,
-                                                                 y,
-                                                                 offBreite + (6 * checkerBreite) + barBreite + (6 * checkerBreite)  + cubeBreite,
-                                                                 zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe + zungenHoehe)];
-    boardView.tag = BOARD_VIEW;
-    self.infoLabel.text = [NSString stringWithFormat:@"%d, %d",maxBreite,maxHoehe];
-    
-    self.infoLabel.text = [NSString stringWithFormat:@"%@ %5.0f, %5.0f , %5.2f",self.infoLabel.text, boardView.frame.size.width, boardView.frame.size.height, zoomFaktor];
-    
-    boardView.backgroundColor = self.boardColor;
-    
-#pragma mark - Ränder
-    UIView *offView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, offBreite, boardView.frame.size.height)];
-    offView.backgroundColor = self.randColor;
-    
-    UIView *offInnenObenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, 0, checkerBreite, zungenHoehe)];
-    offInnenObenView.backgroundColor = self.boardColor;
-    offInnenObenView.layer.borderWidth = 1;
-    offInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [offView addSubview:offInnenObenView];
-    
-    UIView *offInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe, checkerBreite, zungenHoehe)];
-    offInnenUntenView.backgroundColor = self.boardColor;
-    offInnenUntenView.layer.borderWidth = 1;
-    offInnenUntenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [offView addSubview:offInnenUntenView];
-    
-    UIView *barView = [[UIView alloc] initWithFrame:CGRectMake(offBreite+(6*checkerBreite), 0, barBreite, boardView.frame.size.height)];
-    barView.backgroundColor = self.randColor;
-    
-    UIView *barMitteView = [[UIView alloc] initWithFrame:CGRectMake(((barBreite/2) - 2),
-                                                                    -nummerHoehe,
-                                                                    2,
-                                                                    boardView.frame.size.height + (2 * nummerHoehe))];
-    barMitteView.backgroundColor = self.barMittelstreifenColor;
-    [barView addSubview:barMitteView];
-    
-    UIView *cubeView = [[UIView alloc] initWithFrame:CGRectMake(offBreite+(6*checkerBreite)+barBreite+(6*checkerBreite), 0, cubeBreite, boardView.frame.size.height)];
-    cubeView.backgroundColor = self.randColor;
-    
-    UIView *cubeInnenObenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, 0, checkerBreite, zungenHoehe)];
-    cubeInnenObenView.backgroundColor = self.boardColor;
-    cubeInnenObenView.layer.borderWidth = 1;
-    cubeInnenObenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [cubeView addSubview:cubeInnenObenView];
-    
-    UIView *cubeInnenUntenView = [[UIView alloc] initWithFrame:CGRectMake((offBreite-checkerBreite)/2, zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe, checkerBreite, zungenHoehe)];
-    cubeInnenUntenView.backgroundColor = self.boardColor;
-    cubeInnenUntenView.layer.borderWidth = 1;
-    cubeInnenUntenView.layer.borderColor = [UIColor grayColor].CGColor;
-    [cubeView addSubview:cubeInnenUntenView];
-    
-    UIView *nummerObenView = [[UIView alloc] initWithFrame:CGRectMake(x,
-                                                                      boardView.frame.origin.y - nummerHoehe,
-                                                                      boardView.frame.size.width,
-                                                                      nummerHoehe)];
-    nummerObenView.backgroundColor = self.randColor;
-    nummerObenView.tag = 5001;
-    UIView *nummerUntenView = [[UIView alloc] initWithFrame:CGRectMake(x,
-                                                                       boardView.frame.origin.y + boardView.frame.size.height,
-                                                                       boardView.frame.size.width,
-                                                                       nummerHoehe)];
-    nummerUntenView.backgroundColor = self.randColor;
-    nummerUntenView.tag = 5002;
+    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
+    UIView *boardView = [returnDict objectForKey:@"boardView"];
+    self.moveArray = [returnDict objectForKey:@"moveArray"];
 
     UIView *removeView;
-    while((removeView = [self.view viewWithTag:5001]) != nil)
-    {
-        [removeView removeFromSuperview];
-    }
-    while((removeView = [self.view viewWithTag:5002]) != nil)
-    {
-        [removeView removeFromSuperview];
-    }
 
-    [self.view addSubview:nummerObenView];
-    [self.view addSubview:nummerUntenView];
-    [boardView addSubview:offView];
-    [boardView addSubview:barView];
-    [boardView addSubview:cubeView];
-    
-#pragma mark - Nummern
-    x = boardView.frame.origin.x + offBreite;
-    y = boardView.frame.origin.y - nummerHoehe;
-    NSMutableArray *nummernArray = [self.boardDict objectForKey:@"nummernOben"];
-    if(nummernArray.count < 17)
-    {
-        // aus irgendwelchen Gründen wurde gar kein Board angezeigt
-        [self errorAction:2];
-        return;
-    }
-    for(int i = 1; i <= 6; i++)
-    {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = nummernArray[i];
-        nummer.adjustsFontSizeToFitWidth = YES;
-        nummer.numberOfLines = 0;
-        nummer.minimumScaleFactor = 0.5;
-
-        nummer.textColor = self.nummerColor;
-        nummer.tag = i + 1000;
-        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
-        {
-            [removeView removeFromSuperview];
-        }
-
-        [self.view addSubview:nummer];
-        
-        x += checkerBreite;
-    }
-    x += barBreite; // bar
-    
-    for(int i = 8; i <= 13; i++)
-    {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = nummernArray[i];
-        nummer.numberOfLines = 0;
-        nummer.minimumScaleFactor = 0.5;
-        nummer.adjustsFontSizeToFitWidth = YES;
-        nummer.textColor = self.nummerColor;
-        nummer.tag = i + 1000;
-        while((removeView = [self.view viewWithTag:i + 1000]) != nil)
-        {
-            [removeView removeFromSuperview];
-        }
-
-        [self.view addSubview:nummer];
-        
-        x += checkerBreite;
-    }
-    
-    x = boardView.frame.origin.x + offBreite;
-    y = boardView.frame.origin.y + boardView.frame.size.height;
-    nummernArray = [self.boardDict objectForKey:@"nummernUnten"];
-    
-    for(int i = 1; i <= 6; i++)
-    {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = nummernArray[i];
-        nummer.numberOfLines = 0;
-        nummer.minimumScaleFactor = 0.5;
-        nummer.adjustsFontSizeToFitWidth = YES;
-        nummer.textColor = self.nummerColor;
-        [self.view addSubview:nummer];
-        
-        x += checkerBreite;
-    }
-    x += barBreite; // bar
-    
-    for(int i = 8; i <= 13; i++)
-    {
-        UILabel *nummer = [[UILabel alloc]initWithFrame:CGRectMake(x, y, checkerBreite, nummerHoehe)];
-        nummer.textAlignment = NSTextAlignmentCenter;
-        nummer.text = nummernArray[i];
-        nummer.numberOfLines = 0;
-        nummer.minimumScaleFactor = 0.5;
-        nummer.adjustsFontSizeToFitWidth = YES;
-        nummer.textColor = self.nummerColor;
-        [self.view addSubview:nummer];
-        
-        x += checkerBreite;
-    }
-    
-#pragma mark - obere Grafiken
-    x = 0;
-    y = 0;
-    
-    NSMutableArray *grafikObenArray = [self.boardDict objectForKey:@"grafikOben"];
-    for(int i = 0; i < grafikObenArray.count; i++)
-    {
-        NSMutableDictionary *zunge = grafikObenArray[i];
-        NSMutableArray *bilder = [zunge objectForKey:@"img"];
-        switch(i)
-        {
-            case 0:
-                // linke Seite
-                y = 0;
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
-                {
-                    NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
-                    if ([imgName containsString:@"cube"])
-                    {
-                        UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerBreite / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
-                        
-                    }
-                    
-                    [boardView addSubview:zungeView];
-                    y += zungenHoehe/3;
-                }
-                y = 0;
-                x += offBreite;
-                
-                break;
-            case 7:
-                // bar
-            {
-                if(bilder.count > 0)
-                {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
-                    //  img = @"bar_b5";
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    int imgBreite = MAX(zungeView.frame.size.width,1);
-                    int imgHoehe = zungeView.frame.size.height;
-                    float faktor = imgHoehe / imgBreite;
-                    zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y + zungenHoehe - (checkerBreite * faktor), checkerBreite, checkerBreite * faktor);
-//                    zungeView.backgroundColor = [UIColor yellowColor];
-                    [boardView addSubview:zungeView];
-                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
-                    [self.moveArray addObject:move];
-                }
-                x += barBreite;
-                
-            }
-                break;
-            case 14:
-                // rechte Seite
-                y = 0;
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
-                {
-                    NSString *img = [[bilder[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
-                    if ([imgName containsString:@"cube"])
-                    {
-                        UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerBreite / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
-                        
-                    }
-                    
-                    [boardView addSubview:zungeView];
-                    y += zungenHoehe/3;
-                }
-                y = 0;
-                x += offBreite;
-                break;
-            default:
-                // zungen
-                if(bilder.count > 0)
-                {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, checkerBreite, zungenHoehe);
-                    
-                    [boardView addSubview:zungeView];
-                    x += checkerBreite;
-                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
-                    [self.moveArray addObject:move];
-                }
-                break;
-                
-        }
-        
-    }
-    
-#pragma mark - obere moveIndicator
-    x = 0;
-    y = zungenHoehe ;
-    
-    NSMutableArray *moveIndicatorObenArray = [self.boardDict objectForKey:@"moveIndicatorOben"];
-    for(int i = 0; i < moveIndicatorObenArray.count; i++)
-    {
-        switch(i)
-        {
-            case 0:
-                // off board
-                x += offBreite;
-                break;
-            case 7:
-                // bar
-                x += barBreite;
-                break;
-            case 14:
-                //cube
-                x += cubeBreite;
-                break;
-            default:
-                // zungen
-            {
-                NSString *img = [[moveIndicatorObenArray[i] lastPathComponent] stringByDeletingPathExtension];
-                NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                
-                UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                zungeView.frame = CGRectMake(x, y, checkerBreite, indicatorHoehe);
-                
-                [boardView addSubview:zungeView];
-                x += checkerBreite;
-            }
-                break;
-                
-        }
-    }
-    x += checkerBreite;
-    
-#pragma mark - Würfel
-    x = 0;
-    y = zungenHoehe + indicatorHoehe ;
-    
-    NSMutableArray *diceArray = [self.boardDict objectForKey:@"dice"];
-    if(diceArray.count < 8)
-    {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
-        NSString *img = [[diceArray[0] lastPathComponent] stringByDeletingPathExtension];
-        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-        NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-        UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
-        
-        [boardView addSubview:zungeView];
-        
-        x = offBreite + (6 * checkerBreite) + barBreite  + (6 * checkerBreite) ;
-        
-        img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
-        img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-        imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-        zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
-        
-        [boardView addSubview:zungeView];
-        
-    }
-    else
-    {
-        for(int i = 0; i < diceArray.count; i++)
-        {
-            switch(i)
-            {
-                case 0:
-                {// off board
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:zungeView];
-                }
-                    break;
-                case 2:     // 1. Würfel linke Boardhälfte
-                {
-                    x += offBreite + (checkerBreite / 2) + checkerBreite;
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
-                    UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    diceView.frame = CGRectMake(x, y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:diceView];
-                }
-                    break;
-                case 3:     // 2. Würfel linke Boardhälfte
-                {
-                    x += checkerBreite + checkerBreite;
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
-                    UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    diceView.frame = CGRectMake(x, y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:diceView];
-                }
-                    break;
-                case 4:     // 1. Würfel rechte Boardhälfte
-                {
-                    x += checkerBreite + checkerBreite + barBreite + checkerBreite + checkerBreite;
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
-                    UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    diceView.frame = CGRectMake(x, y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:diceView];
-                }
-                    break;
-                case 5:     // 2. Würfel rechte Boardhälfte
-                {
-                    x += checkerBreite + checkerBreite ;
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
-                    UIImageView *diceView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    diceView.frame = CGRectMake(x, y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:diceView];
-                }
-                    break;
-                case 7:     //cube rechts
-                {
-                    x += (checkerBreite * 2.5);
-                    
-                    NSString *img = [[diceArray[i] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, checkerBreite);
-                    
-                    [boardView addSubview:zungeView];
-                    
-                }
-                    break;
-                    
-            }
-        }
-    }
-#pragma mark - untere moveIndicator
-    x = 0;
-    y = zungenHoehe + indicatorHoehe + checkerBreite;
-    
-    NSMutableArray *moveIndicatorUntenArray = [self.boardDict objectForKey:@"moveIndicatorUnten"];
-    for(int i = 0; i < moveIndicatorUntenArray.count; i++)
-    {
-        switch(i)
-        {
-            case 0:
-                // off board
-                x += offBreite;
-                break;
-            case 7:
-                // bar
-                x += barBreite;
-                break;
-            case 14:
-                //cube
-                x += cubeBreite;
-                break;
-            default:
-                // zungen
-            {
-                NSString *img = [[moveIndicatorUntenArray[i] lastPathComponent] stringByDeletingPathExtension];
-                NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                
-                UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                zungeView.frame = CGRectMake(x, y, checkerBreite, indicatorHoehe);
-                
-                [boardView addSubview:zungeView];
-                x += checkerBreite;
-            }
-                break;
-                
-        }
-    }
-    x += checkerBreite;
-    
-#pragma mark - untere Grafiken
-    x = 0;
-    y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
-    
-    NSMutableArray *grafikUntenArray = [self.boardDict objectForKey:@"grafikUnten"];
-    for(int i = 0; i < grafikUntenArray.count; i++)
-    {
-        NSMutableDictionary *zunge = grafikUntenArray[i];
-        NSMutableArray *bilder = [zunge objectForKey:@"img"];
-        switch(i)
-        {
-            case 0:
-                // off board
-                y += (2*(zungenHoehe/3));
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
-                {
-                    NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
-                    if ([imgName containsString:@"cube"])
-                    {
-                        UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerBreite / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
-                        
-                    }
-                    [boardView addSubview:zungeView];
-                    y -= zungenHoehe/3;
-                }
-                y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
-                x += offBreite;
-                
-                break;
-            case 7:
-                // bar
-            {
-                if(bilder.count > 0)
-                {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
-                    //  img = @"bar_b5";
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    int imgBreite = MAX(zungeView.frame.size.width,1);
-                    int imgHoehe = zungeView.frame.size.height;
-                    float faktor = imgHoehe / imgBreite;
-                    zungeView.frame = CGRectMake(x + ((barBreite - checkerBreite) / 2) , y, checkerBreite, checkerBreite * faktor);
-                    
-                    [boardView addSubview:zungeView];
-                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
-                    [self.moveArray addObject:move];
-                    
-                }
-                x += barBreite;
-                
-            }
-                break;
-            case 14:
-                // rechte Seite
-            {
-                
-                y += (2*(zungenHoehe/3));
-                for(int indexOffBoard = 0; indexOffBoard < bilder.count; indexOffBoard++)
-                {
-                    NSString *img = [[bilder[(bilder.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, zungenHoehe/3);
-                    // ist es ein cube? dann besorge breite und höhe vom img für den view
-                    if ([imgName containsString:@"cube"])
-                    {
-                        UIImage *cubeImg = [UIImage imageNamed:imgName];
-                        float imgBreite = cubeImg.size.width;
-                        float imgHoehe = cubeImg.size.height;
-                        float faktor = checkerBreite / imgBreite;
-                        imgHoehe *= faktor;
-                        zungeView.frame = CGRectMake(x + ((offBreite-checkerBreite)/2), y, checkerBreite, imgHoehe);
-                        
-                    }
-                    
-                    [boardView addSubview:zungeView];
-                    y -= zungenHoehe/3;
-                }
-                
-                y = zungenHoehe + indicatorHoehe + checkerBreite + indicatorHoehe;
-                x += cubeBreite;
-                
-            }
-                break;
-            default:
-                // zungen
-                if(bilder.count > 0)
-                {
-                    NSString *img = [[bilder[0] lastPathComponent] stringByDeletingPathExtension];
-                    img = [design changeCheckerColor:img forColor:[self.boardDict objectForKey:@"playerColor"]];
-                    NSString *imgName = [NSString stringWithFormat:@"%d/%@",self.boardSchema, img] ;
-                    
-                    UIImageView *zungeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
-                    zungeView.frame = CGRectMake(x, y, checkerBreite, zungenHoehe);
-                    
-                    [boardView addSubview:zungeView];
-                    x += checkerBreite;
-                    NSMutableDictionary *move = [[NSMutableDictionary alloc]init];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.x + boardView.frame.origin.x] forKey:@"x"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.origin.y + boardView.frame.origin.y] forKey:@"y"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.width] forKey:@"w"];
-                    [move setValue:[NSNumber numberWithFloat:zungeView.frame.size.height] forKey:@"h"];
-                    [move setValue:[zunge objectForKey:@"href"] forKey:@"href"];
-                    [self.moveArray addObject:move];
-                    
-                }
-                break;
-        }
-    }
-    x += checkerBreite;
-    
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
@@ -1274,274 +595,14 @@
 
     [self.view addSubview:boardView];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                   ^{
-                       dispatch_async(dispatch_get_main_queue(),
-                                      ^{
-                                          [self->rating writeRating];
-                                      });
-                       
-                   });
-
-#pragma mark - opponent / player
     
-    NSMutableDictionary *schemaDict = [design schema:self.boardSchema];
-    
-    if(showRatings || showWinLoss)
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-                       ^{
-                           NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-                           NSString *opponentID = [self.boardDict objectForKey:@"opponentID"];
-                           
-                           self->ratingDict = [self->rating readRatingForPlayer:userID andOpponent:opponentID];
-                           
-                           dispatch_async(dispatch_get_main_queue(),
-                                          ^{
-                                              if(showRatings)
-                                              {
-                                                  if(![playerRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingPlayer"]])
-                                                  {
-                                                      playerRatingText       = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                                      self.playerRating.text = [self->ratingDict objectForKey:@"ratingPlayer"];
-                                                  }
-                                             //     self.playerRating.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                  
-                                                  if(![opponentRatingText isEqualToString:[self->ratingDict objectForKey:@"ratingOpponent"]])
-                                                  {
-                                                      opponentRatingText       = [self->ratingDict objectForKey:@"ratingOpponent"];
-                                                      self.opponentRating.text = [self->ratingDict objectForKey:@"ratingOpponent"];
-                                                  }
-                                             //     self.opponentRating.textColor = [schemaDict objectForKey:@"TintColor"];
-                                              }
-                                              if(showWinLoss)
-                                              {
-                                                  if(![playerActiveText isEqualToString:[self->ratingDict objectForKey:@"activePlayer"]])
-                                                  {
-                                                      playerActiveText       = [self->ratingDict objectForKey:@"activePlayer"];
-                                                      self.playerActive.text = [self->ratingDict objectForKey:@"activePlayer"];
-                                                  }
-                                           //       self.playerActive.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  
-                                                  if(![playerWonText isEqualToString:[self->ratingDict objectForKey:@"wonPlayer"]])
-                                                  {
-                                                      playerWonText       = [self->ratingDict objectForKey:@"wonPlayer"];
-                                                      self.playerWon.text = [self->ratingDict objectForKey:@"wonPlayer"];
-                                                  }
-                                            //      self.playerWon.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  
-                                                  if(![playerLostText isEqualToString:[self->ratingDict objectForKey:@"lostPlayer"]])
-                                                  {
-                                                      playerLostText       = [self->ratingDict objectForKey:@"lostPlayer"];
-                                                      self.playerLost.text = [self->ratingDict objectForKey:@"lostPlayer"];
-                                                  }
-                                           //       self.playerLost.textColor   = [schemaDict objectForKey:@"TintColor"];
-                                                  
-                                                  if(![opponentActiveText isEqualToString:[self->ratingDict objectForKey:@"activeOpponent"]])
-                                                  {
-                                                      opponentActiveText       = [self->ratingDict objectForKey:@"activeOpponent"];
-                                                      self.opponentActive.text = [self->ratingDict objectForKey:@"activeOpponent"];
-                                                  }
-                                           //       self.opponentActive.textColor = [schemaDict objectForKey:@"TintColor"];
-                                                  
-                                                  if(![opponentWonText isEqualToString:[self->ratingDict objectForKey:@"wonOpponent"]])
-                                                  {
-                                                      opponentWonText       = [self->ratingDict objectForKey:@"wonOpponent"];
-                                                      self.opponentWon.text = [self->ratingDict objectForKey:@"wonOpponent"];
-                                                  }
-                                           //       self.opponentWon.textColor = [schemaDict objectForKey:@"TintColor"];
-
-                                                  if(![opponentLostText isEqualToString:[self->ratingDict objectForKey:@"lostOpponent"]])
-                                                  {
-                                                      opponentLostText       = [self->ratingDict objectForKey:@"lostOpponent"];
-                                                      self.opponentLost.text = [self->ratingDict objectForKey:@"lostOpponent"];
-                                                  }
-                                           //       self.opponentLost.textColor = [schemaDict objectForKey:@"TintColor"];
-                                              }
-                                          });
-                           
-                       });
-        
-    }
-    // berechnen der actionView Elemente (Position & Dimension)
-    
-    float actionViewHoehe  = 130.0;
-    float rand = 7;
-    actionViewHoehe = rand + BUTTONHEIGHT + rand + BUTTONHEIGHT + rand + 20 + rand + rand + rand + BUTTONHEIGHT + rand;
-    float platzGesamt = boardView.frame.size.height + nummerHoehe + nummerHoehe;
-    float opponentViewHoehe = (platzGesamt  - actionViewHoehe) / 2;
-    int opponentViewY = boardView.frame.origin.y - nummerHoehe;;
-    int opponentViewX = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    
-    self.opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
-    self.playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
-
-    float labelHoeheName    = opponentViewHoehe / 9 * 3;
-    float labelHoeheDetails = opponentViewHoehe / 9 * 2;
-
-    NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
-    
-    CGRect frame = self.opponentView.frame;
-    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = opponentViewY;
-    frame.size.height = opponentViewHoehe;
-    frame.size.width =  maxBreite - opponentViewX - 5;
-
-    self.opponentView.frame = frame;
-    
-    float spalte1 = self.opponentView.frame.size.width * 0.4;
-    float spalte2 = self.opponentView.frame.size.width * 0.55;
-    float luecke = self.opponentView.frame.size.width * 0.05;
-    
-    frame = self.opponentName.frame;
-    frame.size.height = labelHoeheName;
-    self.opponentName.frame = frame;
-    
-    self.opponentName.text = [NSString stringWithFormat:@"\t%@",opponentArray[0]];
-    self.opponentName.text = @"";
-    self.opponentName = [design makeLabelColor:self.opponentName forColor:[self.boardDict objectForKey:@"opponentColor"] forPlayer:NO];
-    self.opponentName = [design makeNiceLabel:self.opponentName];
-
-    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonOpponent = [design makeNiceButton:buttonOpponent];
-    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
-    buttonOpponent.frame = CGRectMake(50, 2, self.opponentName.frame.size.width - 100, self.opponentName.frame.size.height - 4);
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView];
+    UIView *actionView = [returnDict objectForKey:@"actionView"];
+    UIView *playerView = [returnDict objectForKey:@"playerView"];
+    UIView *opponentView = [returnDict objectForKey:@"opponentView"];
+  
+    UIButton *buttonOpponent = [returnDict objectForKey:@"buttonOpponent"];
     [buttonOpponent addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
-    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
-    [self.opponentView addSubview:buttonOpponent];
-
-    // alle Detail Labels size & position & fontsize berechnen
-    frame = self.opponentRating.frame;
-    frame.origin.y = self.opponentName.frame.origin.y + self.opponentName.frame.size.height;
-    frame.size.width = spalte1;
-    frame.size.height = labelHoeheDetails;
-    self.opponentRating.frame = frame;
-    self.opponentRating = [design makeNiceLabel:self.opponentRating];
- 
-    frame = self.opponentActive.frame;
-    frame.origin.y = self.opponentRating.frame.origin.y;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    frame.size.height = labelHoeheDetails;
-    self.opponentActive.frame = frame;
-    self.opponentActive = [design makeNiceLabel:self.opponentActive];
-
-    frame = self.opponentScore.frame;
-    frame.origin.y = self.opponentRating.frame.origin.y + self.opponentRating.frame.size.height;
-    frame.size.width = spalte1;
-    frame.size.height = labelHoeheDetails;
-    self.opponentScore.frame = frame;
-    self.opponentScore = [design makeNiceLabel:self.opponentScore];
-
-    frame = self.opponentWon.frame;
-    frame.origin.y = self.opponentScore.frame.origin.y;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    frame.size.height = labelHoeheDetails;
-    self.opponentWon.frame = frame;
-    self.opponentWon = [design makeNiceLabel:self.opponentWon];
-
-    frame = self.opponentPips.frame;
-    frame.origin.y = self.opponentScore.frame.origin.y + self.opponentScore.frame.size.height;
-    frame.size.height = labelHoeheDetails;
-    frame.size.width = spalte1;
-    self.opponentPips.frame = frame;
-    self.opponentPips = [design makeNiceLabel:self.opponentPips];
-
-    frame = self.opponentLost.frame;
-    frame.origin.y = self.opponentPips.frame.origin.y;
-    frame.size.height = labelHoeheDetails;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    self.opponentLost.frame = frame;
-    self.opponentLost = [design makeNiceLabel:self.opponentLost];
-
-    self.opponentPips.text    = opponentArray[2];
-    if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
-    {
-        self.opponentScore.text   = [NSString stringWithFormat:@"score: %@", opponentArray[5]];
-        self.opponentPips.text    = opponentArray[2];
-    }
-    else
-    {
-        self.opponentScore.text   = [NSString stringWithFormat:@"score: %@", opponentArray[3]];
-        self.opponentPips.text    = @"";
-    }
-    
-    NSMutableArray *playerArray = [self.boardDict objectForKey:@"player"];
-    
-    frame = self.playerView.frame;
-    frame.size.height = opponentViewHoehe;
-    frame.origin.x = boardView.frame.origin.x + boardView.frame.size.width + 5;
-    frame.origin.y = opponentViewY + opponentViewHoehe + actionViewHoehe;
-    frame.size.width =  maxBreite - opponentViewX - 5;
-
-    self.playerView.frame = frame;
-    
-    self.playerName.text = [NSString stringWithFormat:@"\t%@",playerArray[0]];
-    self.playerName = [design makeLabelColor:self.playerName forColor:[self.boardDict objectForKey:@"playerColor"] forPlayer:YES];
-    frame = self.opponentName.frame;
-    frame.size.height = labelHoeheName;
-    self.playerName.frame = frame;
-    self.playerName = [design makeNiceLabel:self.playerName];
-
-    // alle Detail Labels size & position & fontsize berechnen
-    frame = self.playerRating.frame;
-    frame.origin.y = self.playerName.frame.origin.y + self.playerName.frame.size.height;
-    frame.size.height = labelHoeheDetails;
-    frame.size.width = spalte1;
-    self.playerRating.frame = frame;
-    self.playerRating = [design makeNiceLabel:self.playerRating];
-    
-    frame = self.playerActive.frame;
-    frame.origin.y = self.playerRating.frame.origin.y;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    frame.size.height = labelHoeheDetails;
-    self.playerActive.frame = frame;
-    self.playerActive = [design makeNiceLabel:self.playerActive];
-    
-    frame = self.playerScore.frame;
-    frame.origin.y = self.playerRating.frame.origin.y + self.playerRating.frame.size.height;
-    frame.size.height = labelHoeheDetails;
-    frame.size.width = spalte1;
-    self.playerScore.frame = frame;
-    self.playerScore = [design makeNiceLabel:self.playerScore];
-    
-    frame = self.playerWon.frame;
-    frame.origin.y = self.playerScore.frame.origin.y;
-    frame.size.height = labelHoeheDetails;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    self.playerWon.frame = frame;
-    self.playerWon = [design makeNiceLabel:self.playerWon];
-    
-    frame = self.playerPips.frame;
-    frame.origin.y = self.playerScore.frame.origin.y + self.playerScore.frame.size.height;
-    frame.size.height = labelHoeheDetails;
-    frame.size.width = spalte1;
-    self.playerPips.frame = frame;
-    self.playerPips = [design makeNiceLabel:self.playerPips];
-    
-    frame = self.playerLost.frame;
-    frame.origin.y = self.playerPips.frame.origin.y;
-    frame.size.height = labelHoeheDetails;
-    frame.origin.x = spalte1 + luecke;
-    frame.size.width = spalte2;
-    self.playerLost.frame = frame;
-    self.playerLost = [design makeNiceLabel:self.playerLost];
-
-    self.playerPips.text    = playerArray[2];
-    if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
-    {
-        self.playerPips.text    = playerArray[2];
-        self.playerScore.text   = [NSString stringWithFormat:@"score: %@", playerArray[5]];
-    }
-    else
-    {
-        self.playerScore.text   = [NSString stringWithFormat:@"score: %@", playerArray[3]];
-        self.playerPips.text    = @"";
-    }
     
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
@@ -1551,24 +612,30 @@
         }
         [removeView removeFromSuperview];
     }
-//    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
-//                                                                  self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
-//                                                                  maxBreite - self.opponentView.frame.origin.x -5,
-//                                                                  self.playerView.frame.origin.y - self.opponentView.frame.origin.y - self.playerView.frame.size.height)];
-    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(self.opponentView.frame.origin.x,
-                                                                  self.opponentView.frame.origin.y + self.opponentView.frame.size.height,
-                                                                  maxBreite - self.opponentView.frame.origin.x - 5,
-                                                                  actionViewHoehe)];
+    [self.view addSubview:actionView];
+    [self.view addSubview:playerView];
+    [self.view addSubview:opponentView];
+
+    
+    int buttonHeight = 0;
+    int buttonWidth = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        buttonHeight = 35;
+        buttonWidth  = 100;
+    }
+    else
+    {
+        buttonHeight = 30;
+        buttonWidth  = 80;
+    }
+
+    float actionViewHoehe  = 130.0;
     float actionViewBreite = actionView.layer.frame.size.width;
 //    float actionViewHoehe  = actionView.layer.frame.size.height;
-    float actionViewHoeheOhneSkip = actionViewHoehe - BUTTONHEIGHT - 5 - 5 - 1;
-    
-//    actionView.backgroundColor = GRAYLIGHT;
-    actionView.tag = ACTION_VIEW;
-//    actionView.layer.borderWidth = 1;
-    
-    [self.view addSubview:actionView];
-    
+    float actionViewHoeheOhneSkip = actionViewHoehe - buttonHeight - 5 - 5 - 1;
+    CGRect frame;
+
     switch([self analyzeAction])
     {
         case NEXT:
@@ -1578,9 +645,9 @@
             buttonNext = [design makeNiceButton:buttonNext];
             [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
             buttonNext.frame = CGRectMake((actionViewBreite / 2) - 50,
-                                          ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                          ((actionViewHoeheOhneSkip - buttonHeight) / 2),
                                           100,
-                                          BUTTONHEIGHT);
+                                          buttonHeight);
             [buttonNext addTarget:self action:@selector(actionNext) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonNext];
             break;
@@ -1591,7 +658,7 @@
             UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonNext = [design makeNiceButton:buttonNext];
             [buttonNext setTitle:@"Next>>" forState: UIControlStateNormal];
-            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, BUTTONHEIGHT);
+            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, buttonHeight);
             [buttonNext addTarget:self action:@selector(actionNext__) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonNext];
             break;
@@ -1620,7 +687,7 @@ case ROLL:
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
             buttonRoll = [design makeNiceButton:buttonRoll];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
-            buttonRoll.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, BUTTONHEIGHT);
+            buttonRoll.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, buttonHeight);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonRoll];
             break;
@@ -1634,9 +701,9 @@ case ROLL:
             buttonRoll = [design makeNiceButton:buttonRoll];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             buttonRoll.frame = CGRectMake((actionViewBreite/2) - 50,
-                                          0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                          0 + ((platzFuerButton - buttonHeight) / 2),
                                           100,
-                                          BUTTONHEIGHT);
+                                          buttonHeight);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonRoll];
             
@@ -1644,9 +711,9 @@ case ROLL:
             buttonDouble = [design makeNiceButton:buttonDouble];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
             buttonDouble.frame = CGRectMake((actionViewBreite/2) - 50,
-                                            platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                            platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                             100  ,
-                                            BUTTONHEIGHT);
+                                            buttonHeight);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonDouble];
             
@@ -1654,16 +721,16 @@ case ROLL:
             if(attributesArray.count == 3)
             {
                 buttonDouble.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
-                                                platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                                platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                                 70  ,
-                                                BUTTONHEIGHT);
+                                                buttonHeight);
 
                 UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
                                           CGRectMake(buttonDouble.frame.origin.x + buttonDouble.frame.size.width + 10,
                                                                                      buttonDouble.frame.origin.y  ,
                                                                                      50,
-                                                                                     BUTTONHEIGHT)];
-                verifyDouble.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0); // größe genau wie Doubel Button
+                                                                                     buttonHeight)];
+                verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
                 frame = verifyDouble.frame;
                 frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
                 verifyDouble.frame = frame;
@@ -1674,9 +741,9 @@ case ROLL:
                 
                 UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:
                                              CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + 3,
-                                                        platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                                        platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                                         100,
-                                                        BUTTONHEIGHT)];
+                                                        buttonHeight)];
                 verifyDoubleText.text = @"Verify";
    //             verifyDoubleText.textColor   = [schemaDict objectForKey:@"TintColor"];
                 [actionView addSubview: verifyDoubleText];
@@ -1692,9 +759,9 @@ case ROLL:
             buttonAccept = [design makeNiceButton:buttonAccept];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
             buttonAccept.frame = CGRectMake((actionViewBreite/2) - 50,
-                                            0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                            0 + ((platzFuerButton - buttonHeight) / 2),
                                             100,
-                                            BUTTONHEIGHT);
+                                            buttonHeight);
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonAccept];
             
@@ -1704,7 +771,7 @@ case ROLL:
             buttonPass.frame = CGRectMake((actionViewBreite/2) - 50,
                                           platzFuerButton + (platzFuerButton / 2),
                                           100,
-                                          BUTTONHEIGHT);
+                                          buttonHeight);
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonPass];
             
@@ -1712,13 +779,13 @@ case ROLL:
             if(attributesArray.count > 2)
             {
                 buttonAccept.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
-                                                0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                                0 + ((platzFuerButton - buttonHeight) / 2),
                                                 70  ,
-                                                BUTTONHEIGHT);
+                                                buttonHeight);
                 buttonPass.frame = CGRectMake(((actionViewBreite - 50 - 100 - 10)/2),
-                                                platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                                platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                                 70  ,
-                                                BUTTONHEIGHT);
+                                                buttonHeight);
 
                 for(NSDictionary * dict in attributesArray)
                 {
@@ -1730,8 +797,8 @@ case ROLL:
                                                       CGRectMake(buttonAccept.frame.origin.x + buttonAccept.frame.size.width + 10,
                                                                  buttonAccept.frame.origin.y -5 ,
                                                                  50,
-                                                                 BUTTONHEIGHT)];
-                            verifyAccept.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
+                                                                 buttonHeight)];
+                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyAccept.frame;
                             frame.origin.y = buttonAccept.frame.origin.y; // Yposition wie double Button
                             verifyAccept.frame = frame;
@@ -1740,7 +807,7 @@ case ROLL:
                             verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [actionView addSubview: verifyAccept];
                             
-                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:                                             CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + 3, buttonAccept.frame.origin.y, 100, BUTTONHEIGHT)];
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:                                             CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + 3, buttonAccept.frame.origin.y, 100, buttonHeight)];
 
                             verifyAcceptText.text = @"Verify";
                     //        verifyAcceptText.textColor   = [schemaDict objectForKey:@"TintColor"];
@@ -1752,8 +819,8 @@ case ROLL:
                                                        CGRectMake(buttonPass.frame.origin.x + buttonPass.frame.size.width + 10,
                                                                   buttonPass.frame.origin.y -5 ,
                                                                   50,
-                                                                  BUTTONHEIGHT)];
-                            verifyDecline.transform = CGAffineTransformMakeScale(BUTTONHEIGHT / 31.0, BUTTONHEIGHT / 31.0);
+                                                                  buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyDecline.frame;
                             frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
                             verifyDecline.frame = frame;
@@ -1763,7 +830,7 @@ case ROLL:
                             [actionView addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:
-                                                          CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + 3, buttonPass.frame.origin.y, 100, BUTTONHEIGHT)];
+                                                          CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + 3, buttonPass.frame.origin.y, 100, buttonHeight)];
                             verifyDeclineText.text = @"Verify";
              //               verifyDeclineText.textColor   = [schemaDict objectForKey:@"TintColor"];
                             [actionView addSubview: verifyDeclineText];
@@ -1781,9 +848,9 @@ case ROLL:
             buttonSwap = [design makeNiceButton:buttonSwap];
             [buttonSwap setTitle:@"Swap Dice" forState: UIControlStateNormal];
             buttonSwap.frame = CGRectMake((actionViewBreite / 2) - 50,
-                                          ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                          ((actionViewHoeheOhneSkip - buttonHeight) / 2),
                                           100,
-                                          BUTTONHEIGHT);
+                                          buttonHeight);
             [buttonSwap addTarget:self action:@selector(actionSwap) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSwap];
             break;
@@ -1796,9 +863,9 @@ case ROLL:
             [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
             float buttonBreite = MIN(200, actionViewBreite - 10);
             buttonGreedy.frame = CGRectMake((actionViewBreite / 2) - (buttonBreite / 2),
-                                            ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                            ((actionViewHoeheOhneSkip - buttonHeight) / 2),
                                             buttonBreite,
-                                            BUTTONHEIGHT);
+                                            buttonHeight);
             buttonGreedy.titleLabel.numberOfLines = 1;
             buttonGreedy.titleLabel.adjustsFontSizeToFitWidth = YES;
             buttonGreedy.titleLabel.lineBreakMode = NSLineBreakByClipping;
@@ -1813,9 +880,9 @@ case ROLL:
             buttonUndoMove = [design makeNiceButton:buttonUndoMove];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
             buttonUndoMove.frame = CGRectMake((actionViewBreite / 2) - 50,
-                                          ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                          ((actionViewHoeheOhneSkip - buttonHeight) / 2),
                                           100,
-                                          BUTTONHEIGHT);
+                                          buttonHeight);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
             break;
@@ -1828,9 +895,9 @@ case ROLL:
             buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
             [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
             buttonSubmitMove.frame = CGRectMake((actionViewBreite/2) - 50,
-                                                0 + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                                0 + ((platzFuerButton - buttonHeight) / 2),
                                                 100,
-                                                BUTTONHEIGHT);
+                                                buttonHeight);
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSubmitMove];
             
@@ -1838,9 +905,9 @@ case ROLL:
             buttonUndoMove = [design makeNiceButton:buttonUndoMove];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
             buttonUndoMove.frame = CGRectMake((actionViewBreite/2) - 50,
-                                              platzFuerButton + ((platzFuerButton - BUTTONHEIGHT) / 2),
+                                              platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                               100,
-                                              BUTTONHEIGHT);
+                                              buttonHeight);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
             
@@ -1854,9 +921,9 @@ case ROLL:
             [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
             float buttonBreite = MIN(200, actionViewBreite - 10);
             buttonSubmitMove.frame = CGRectMake((actionViewBreite / 2) - (buttonBreite / 2),
-                                            ((actionViewHoeheOhneSkip - BUTTONHEIGHT) / 2),
+                                            ((actionViewHoeheOhneSkip - buttonHeight) / 2),
                                             buttonBreite,
-                                            BUTTONHEIGHT);
+                                            buttonHeight);
             buttonSubmitMove.titleLabel.numberOfLines = 1;
             buttonSubmitMove.titleLabel.adjustsFontSizeToFitWidth = YES;
             buttonSubmitMove.titleLabel.lineBreakMode = NSLineBreakByClipping;
@@ -1896,8 +963,8 @@ case ROLL:
                 self.quoteSwitch.frame = self.quoteSwitchFrame;
                 self.quoteMessage.frame = self.quoteMessageFrame;
             }
-            [self.quoteSwitch setTintColor:[schemaDict objectForKey:@"TintColor"]];
-            [self.quoteSwitch setOnTintColor:[schemaDict objectForKey:@"TintColor"]];
+             self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
+
     //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
 
             self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
@@ -1987,10 +1054,12 @@ case ROLL:
     UIButton *buttonSkipGame = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonSkipGame = [design makeNiceButton:buttonSkipGame];
     [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
-    buttonSkipGame.frame = CGRectMake((actionViewBreite / 2) - 50,
-                                      actionViewHoehe - BUTTONHEIGHT - rand ,
-                                      100,
-                                      BUTTONHEIGHT);
+//    buttonSkipGame.frame = CGRectMake((actionViewBreite / 2) - 50,
+//                                      actionViewHoehe - buttonHeight - rand ,
+//                                      100,
+//                                      buttonHeight);
+    buttonSkipGame.frame = CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35);
+
     [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
     [actionView addSubview:buttonSkipGame];
 //    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, buttonSkipGame.frame.origin.y - 5, actionView.frame.size.width - 10, 1)];
@@ -2645,6 +1714,19 @@ shouldChangeTextInRange:(NSRange)range
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
     
+    int buttonHeight = 0;
+    int buttonWidth = 0;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        buttonHeight = 35;
+        buttonWidth  = 100;
+    }
+    else
+    {
+        buttonHeight = 30;
+        buttonWidth  = 80;
+    }
+
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
     infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
@@ -2754,14 +1836,14 @@ shouldChangeTextInRange:(NSRange)range
     UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonNext = [design makeNiceButton:buttonNext];
     [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, buttonHeight);
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
     
     UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonToTop = [design makeNiceButton:buttonToTop];
     [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, buttonHeight);
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
     
@@ -3006,14 +2088,14 @@ shouldChangeTextInRange:(NSRange)range
     UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonNext = [design makeNiceButton:buttonNext];
     [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 30, 100, buttonHeight);
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
     
     UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonToTop = [design makeNiceButton:buttonToTop];
     [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, BUTTONHEIGHT);
+    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 30, 100, buttonHeight);
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
     */

@@ -75,7 +75,7 @@
     else
     {
         x = 5;
-        int y = 40;
+        y = 40;
         if([design isX])
         {
             maxWidth = [UIScreen mainScreen].bounds.size.width - 30;
@@ -168,6 +168,10 @@
         number.textAlignment = NSTextAlignmentCenter;
         number.text = numberArray[i];
         number.textColor = numberColor;
+        number.adjustsFontSizeToFitWidth = YES;
+        number.numberOfLines = 0;
+        number.minimumScaleFactor = 0.1;
+
         number.tag = i + 1000;
         while((removeView = [numberTopView viewWithTag:i + 1000]) != nil)
         {
@@ -185,6 +189,9 @@
         number.textAlignment = NSTextAlignmentCenter;
         number.text = numberArray[i];
         number.textColor = numberColor;
+        number.adjustsFontSizeToFitWidth = YES;
+        number.numberOfLines = 0;
+        number.minimumScaleFactor = 0.1;
         number.tag = i + 1000;
         while((removeView = [numberTopView viewWithTag:i + 1000]) != nil)
         {
@@ -206,6 +213,9 @@
         number.textAlignment = NSTextAlignmentCenter;
         number.text = numberArray[i];
         number.textColor = numberColor;
+        number.adjustsFontSizeToFitWidth = YES;
+        number.numberOfLines = 0;
+        number.minimumScaleFactor = 0.1;
         [numberBottomView addSubview:number];
         
         x += checkerWidth;
@@ -218,6 +228,9 @@
         number.textAlignment = NSTextAlignmentCenter;
         number.text = numberArray[i];
         number.textColor = numberColor;
+        number.adjustsFontSizeToFitWidth = YES;
+        number.numberOfLines = 0;
+        number.minimumScaleFactor = 0.1;
         [numberBottomView addSubview:number];
         
         x += checkerWidth;
