@@ -297,12 +297,6 @@
         checkerImageView.frame = frame;
         [offView addSubview:checkerImageView];
     }
-//    if(offDirection == OFF_BOTTOM )
-//        offView.backgroundColor = UIColor.redColor;
-//    if(offDirection == OFF_TOP )
-//        offView.backgroundColor = UIColor.yellowColor;
-//    if(offDirection == OFF_ALL )
-//        offView.backgroundColor = UIColor.greenColor;
 
     CGSize size = [offView bounds].size;
     UIGraphicsBeginImageContext(size);
@@ -313,11 +307,5 @@
     return image;
 }
 
-- (UIImage *)drawCubeForSchema:(int)schema  withNumber:(int)cubeNumber 
-{
-    UIImage *image = [UIImage imageNamed:@"DeadShot"];
-
-    return image;
-}
 
 @end

@@ -89,8 +89,6 @@
         zoomFactor = (maxHeight - y - 5) / boardHeight;
     }
     zoomFactor *= .98; // to have more space for the activityView, otherwise it hangs on the edge.
-    schema = 5;
-#warning schema = 5; is only for testing new boards
 
     checkerWidth    *= zoomFactor;
     offWidth        *= zoomFactor;;

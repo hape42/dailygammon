@@ -12,25 +12,22 @@
 
 @interface BoardSchemeVC ()
 
-@property (weak, nonatomic) IBOutlet UIImageView *schema4;
-@property (weak, nonatomic) IBOutlet UIImageView *schema3;
-@property (weak, nonatomic) IBOutlet UIImageView *schema2;
-@property (weak, nonatomic) IBOutlet UIImageView *schema1;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *waehleSchemaOutlet;
+@property (strong, nonatomic) IBOutlet UIView *viewBoard;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *selectBoard;
+@property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *myColor;
 @property (weak, nonatomic) IBOutlet UILabel *titleCheckerColor;
-@property (readwrite, retain, nonatomic) UIView *myColorView;
-@property (readwrite, retain, nonatomic) UISwitch *switchColor1;
-@property (readwrite, retain, nonatomic) UISwitch *switchColor2;
-@property (readwrite, retain, nonatomic) UIImageView *color1;
-@property (readwrite, retain, nonatomic) UIImageView *color2;
+@property (readwrite, retain, nonatomic) UIView *buttonFrame;
+@property (readwrite, retain, nonatomic) UIButton *infoButton;
 
 @end
 
 @implementation BoardSchemeVC
 
 @synthesize design;
+@synthesize boardsArray;
 
 - (void)viewDidLoad
 {
@@ -38,116 +35,106 @@
     
     design = [[Design alloc] init];
 
-    UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
-    oneFingerTap.numberOfTapsRequired = 1;
-    oneFingerTap.numberOfTouchesRequired = 1;
-    [self.view addGestureRecognizer:oneFingerTap];
-    
-    if([design isX])
-    {
-        CGRect frame = self.waehleSchemaOutlet.frame;
-        frame.size.width -= 30;
-        self.waehleSchemaOutlet.frame = frame;
-        
-        frame = self.myColor.frame;
-        frame.size.width -= 30;
-        self.myColor.frame = frame;
-   }
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+
+    boardsArray = [[NSMutableArray alloc] initWithObjects:
+                   @{ @"number" : [NSNumber numberWithInt:1],
+                      @"name" : @"Classic Original",
+                      @"colorLight" : @"Yellow",
+                      @"colorDark"  : @"Blue"},
+                   @{ @"number" : [NSNumber numberWithInt:2],
+                      @"name" : @"Classic HD",
+                      @"colorLight" : @"Yellow",
+                      @"colorDark"  : @"Blue"},
+                   @{ @"number" : [NSNumber numberWithInt:3],
+                      @"name" : @"Blue / White Original",
+                      @"colorLight" : @"White",
+                      @"colorDark"  : @"Blue"},
+                   @{ @"number" : [NSNumber numberWithInt:4],
+                      @"name" : @"Red / Grey HD",
+                      @"colorLight" : @"Red",
+                      @"colorDark"  : @"Grey"},
+                   @{ @"number" : [NSNumber numberWithInt:5],
+                      @"name" : @"Wood HD",
+                      @"colorLight" : @"Light",
+                      @"colorDark"  : @"Dark"},
+                nil];
+    
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    
+    NSMutableDictionary *schemaDict = [design schema:boardSchema];
+
+    int maxWidth  = self.view.frame.size.width;
+    int maxHeight = self.view.frame.size.height - 20;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        maxWidth = 800;
+        maxHeight = 400;
+    }
+    self.buttonFrame =  [[UIView alloc] initWithFrame:CGRectMake(50,
+                                                                maxHeight - 45,
+                                                                maxWidth - 100,
+                                                                45)];
+    self.buttonFrame.layer.borderWidth = 1;
+    self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+    [self.view addSubview:self.buttonFrame];
+    
+    
+    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.infoButton = [design makeNiceButton:self.infoButton];
+    self.infoButton.layer.cornerRadius = 14.0f;
+    [self.infoButton setTitle:@"Info" forState: UIControlStateNormal];
+    //mittig in buttonFrame setzen
+    self.infoButton.frame = CGRectMake((self.buttonFrame.frame.size.width / 2) - 25,
+                                       (self.buttonFrame.frame.size.height / 2) - 15,
+                                  50,
+                                  30);
+    [self.infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
+    [self.buttonFrame addSubview:self.infoButton];
+    int gap = 5;
+    CGRect frame = self.myColor.frame;
+    frame.origin.y = self.buttonFrame.frame.origin.y - self.myColor.frame.size.height - gap;
+    frame.origin.x = self.buttonFrame.frame.origin.x;
+    frame.size.width = self.buttonFrame.frame.size.width;
+    self.myColor.frame = frame;
+    
+    frame = self.titleCheckerColor.frame;
+    frame.origin.y = self.myColor.frame.origin.y - self.titleCheckerColor.frame.size.height - gap ;
+    frame.origin.x = self.buttonFrame.frame.origin.x;
+    self.titleCheckerColor.frame = frame;
+
+    frame = self.selectBoard.frame;
+    frame.origin.y = self.toolBar.frame.size.height + gap + gap;
+    frame.origin.x = self.buttonFrame.frame.origin.x;
+    self.selectBoard.frame = frame;
+
+    frame = self.tableView.frame;
+    frame.origin.y = self.selectBoard.frame.origin.y + self.selectBoard.frame.size.height + gap;
+    frame.origin.x = self.buttonFrame.frame.origin.x;
+    frame.size.width = self.buttonFrame.frame.size.width;
+    frame.size.height = self.titleCheckerColor.frame.origin.y - self.selectBoard.frame.origin.y - self.selectBoard.frame.size.height - gap;
+    self.tableView.frame = frame;
+
+    return;
 }
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    int schema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    self.waehleSchemaOutlet.selectedSegmentIndex = schema - 1;
-  
+      
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    NSDictionary *dict = self.boardsArray[boardSchema-1];
+
+    [self.myColor setTitle:[dict objectForKey:@"colorDark"] forSegmentAtIndex:1];
+    [self.myColor setTitle:[dict objectForKey:@"colorLight"] forSegmentAtIndex:2];
+
     int sameColor = [[[NSUserDefaults standardUserDefaults] valueForKey:@"sameColor"]intValue];
     self.myColor.selectedSegmentIndex = sameColor;
-
-    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
-    {
-        float x = self.waehleSchemaOutlet.frame.origin.x;
-        float w = self.waehleSchemaOutlet.frame.size.width / 4;
-        float faktor = self.schema4.frame.size.width / (w - 10 - 10);
-        
-        CGRect frame = self.schema1.frame;
-        frame.size.width  /= faktor;
-        frame.size.height /= faktor;
-        frame.origin.x = x + 10;
-        self.schema1.frame = frame;
-        
-        frame = self.schema2.frame;
-        frame.size.width  /= faktor;
-        frame.size.height /= faktor;
-        frame.origin.x = x + 10 + w ;
-        self.schema2.frame = frame;
-        
-        frame = self.schema3.frame;
-        frame.size.width  /= faktor;
-        frame.size.height /= faktor;
-        frame.origin.x = x + 10 + w + w ;
-        self.schema3.frame = frame;
-        
-        frame = self.schema4.frame;
-        frame.size.width  /= faktor;
-        frame.size.height /= faktor;
-        frame.origin.x = x + 10 + w + w + w ;
-        self.schema4.frame = frame;
-        
-        frame = self.myColor.frame;
-        frame.origin.y = self.schema4.frame.origin.y + self.schema4.frame.size.height + 10;
-        self.myColor.frame = frame;
-    }
-    CGRect frame = self.titleCheckerColor.frame;
-    frame.origin.y = self.schema1.frame.origin.y + self.schema1.frame.size.height + 10;
-    self.titleCheckerColor.frame = frame;
-    
-    [self makeColorAuswahl];
-
-}
-
-- (void)cellTouched:(UIGestureRecognizer *)gesture
-{
-    CGPoint tapLocation = [gesture locationInView:self.view];
-//    XLog(@"TapPoint = %@ ", NSStringFromCGPoint(tapLocation));
-    if( CGRectContainsPoint(self.schema4.frame, tapLocation) )
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"BoardSchema"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        self.waehleSchemaOutlet.selectedSegmentIndex = 3;
-    }
-    if( CGRectContainsPoint(self.schema3.frame, tapLocation) )
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"BoardSchema"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        self.waehleSchemaOutlet.selectedSegmentIndex = 2;
-    }
-    if( CGRectContainsPoint(self.schema2.frame, tapLocation) )
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"BoardSchema"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        self.waehleSchemaOutlet.selectedSegmentIndex = 1;
-    }
-    if( CGRectContainsPoint(self.schema1.frame, tapLocation) )
-    {
-        [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"BoardSchema"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        self.waehleSchemaOutlet.selectedSegmentIndex = 0;
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    
-    [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
-
-    [self makeColorAuswahl];
 
 }
 
@@ -159,80 +146,14 @@
         [self.navigationController popViewControllerAnimated:TRUE];
 }
 
-- (IBAction)schemaWaehlen:(id)sender
-{
-    [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex + 1  forKey:@"BoardSchema"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
-    
-    [self makeColorAuswahl];
-}
 - (IBAction)myColorAction:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"sameColor"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self makeColorAuswahl];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
 
 }
 
-- (void) makeColorAuswahl
-{
-    
-    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    if(boardSchema < 1) boardSchema = 4;
-    
-    NSMutableDictionary *schemaDict = [design schema:boardSchema];
-
-    switch (boardSchema) {
-        case 1:
-            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
-            [self.myColor setTitle:@"Always Yellow" forSegmentAtIndex:2];
-            break;
-        case 2:
-            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
-            [self.myColor setTitle:@"Always Yellow" forSegmentAtIndex:2];
-            break;
-        case 3:
-            [self.myColor setTitle:@"Always Blue" forSegmentAtIndex:1];
-            [self.myColor setTitle:@"Always White" forSegmentAtIndex:2];
-            break;
-        case 4:
-            [self.myColor setTitle:@"Always Black" forSegmentAtIndex:1];
-            [self.myColor setTitle:@"Always Red" forSegmentAtIndex:2];
-            break;
-        default:
-            break;
-    }
-    
-    CGRect frame = self.myColor.frame;
-    frame.origin.y = self.titleCheckerColor.frame.origin.y + self.titleCheckerColor.frame.size.height + 10;
-    self.myColor.frame = frame;
-
-    UIView * rahmen =  [[UIView alloc] initWithFrame:CGRectMake(self.myColor.frame.origin.x,
-                                                                self.myColor.frame.origin.y + self.myColor.frame.size.height,
-                                                                self.myColor.frame.size.width,
-                                                                45)];
-    rahmen.layer.borderWidth = 1;
-    rahmen.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
-    [self.view addSubview:rahmen];
-    
-    
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    infoButton = [design makeNiceFlatButton:infoButton];
-    infoButton.layer.cornerRadius = 14.0f;
-    [infoButton setTitle:@"Info" forState: UIControlStateNormal];
-    infoButton.frame = CGRectMake(self.myColor.frame.origin.x + (self.myColor.frame.size.width / 2) - 25,
-                                  self.myColor.frame.origin.y + self.myColor.frame.size.height + 10,
-                                  50,
-                                  30);
-    [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.view addSubview:infoButton];
-
-}
 - (IBAction)info:(id)sender
 {
     UIAlertController * alert = [UIAlertController
@@ -254,37 +175,93 @@
     
 }
 
-- (void)actionColor1:(id)sender
-{   
-    if([(UISwitch *)sender isOn])
-    {
-        [self.switchColor2 setOn:NO animated:YES];
-        [[NSUserDefaults standardUserDefaults] setBool:YES  forKey:@"myColorB"];
-    }
-    else
-    {
-        [self.switchColor2 setOn:YES animated:YES];
-        [[NSUserDefaults standardUserDefaults] setBool:NO  forKey:@"myColorB"];
-    }
-
-    [[NSUserDefaults standardUserDefaults] synchronize];
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
+{
+    return 1;
 }
 
-- (void)actionColor2:(id)sender
+- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section
 {
+    return self.boardsArray.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if([(UISwitch *)sender isOn])
-    {
-        [self.switchColor1 setOn:NO animated:YES];
-        [[NSUserDefaults standardUserDefaults] setBool:NO  forKey:@"myColorB"];
-    }
-    else
-    {
-        [self.switchColor1 setOn:YES animated:YES];
-        [[NSUserDefaults standardUserDefaults] setBool:YES  forKey:@"myColorB"];
-    }
+    return 100;
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+    }
+    for (UIView *subview in [cell.contentView subviews])
+    {
+        if ([subview isKindOfClass:[UILabel class]])
+        {
+            [subview removeFromSuperview];
+        }
+        if ([subview isKindOfClass:[UIImageView class]])
+        {
+            [subview removeFromSuperview];
+        }
+    }
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    NSDictionary *dict = self.boardsArray[indexPath.row];
+
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1)
+        boardSchema = 4;
+    NSMutableDictionary *schemaDict = [design schema:[[dict objectForKey:@"number"]intValue]];
+
+    int x = 0;
+    int labelHeight = cell.contentView.frame.size.height;
+    labelHeight = 100;
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,200,labelHeight)];
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.text = [dict objectForKey:@"name"];
+    nameLabel.textColor = [schemaDict objectForKey:@"TintColor"] ;
+    [cell.contentView addSubview:nameLabel];
+
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d/board",[[dict objectForKey:@"number"]intValue ]]];
+    if(!image)
+        image = [UIImage imageNamed:@"DeadShot"];
+    float factor = image.size.width / image.size.height;
+    UIImageView *board =  [[UIImageView alloc] initWithFrame:CGRectMake(200, 5 ,labelHeight * factor,labelHeight-10)];
+    board.image = image;
+    [cell.contentView addSubview:board];
+
+    UILabel *checkLabel = [[UILabel alloc] initWithFrame:CGRectMake(400, 0 ,50,labelHeight)];
+    checkLabel.textAlignment = NSTextAlignmentCenter;
+    if([[dict objectForKey:@"number"]intValue] == boardSchema)
+        checkLabel.text = @"✅";
+    [cell.contentView addSubview:checkLabel];
+
+    return cell;
+}
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *dict = self.boardsArray[indexPath.row];
+
+    [[NSUserDefaults standardUserDefaults] setInteger:[[dict objectForKey:@"number"]intValue] forKey:@"BoardSchema"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self.myColor setTitle:[dict objectForKey:@"colorDark"] forSegmentAtIndex:1];
+    [self.myColor setTitle:[dict objectForKey:@"colorLight"] forSegmentAtIndex:2];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
+    self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+
+    [self.tableView reloadData];
 }
 
 @end

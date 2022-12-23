@@ -13,9 +13,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface BoardSchemeVC : UIViewController <MFMailComposeViewControllerDelegate>
+@interface BoardSchemeVC : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
+
+@property (readwrite, retain, nonatomic) NSMutableArray *boardsArray;
 
 @end
 

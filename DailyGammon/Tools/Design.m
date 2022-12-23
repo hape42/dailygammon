@@ -318,9 +318,7 @@
     NSMutableDictionary *schemaDict = [[NSMutableDictionary alloc]init];
     if(nummer == 0) // for some reason number is 0 
         nummer = 4;
-    nummer = 5;
-#warning schema = 5; is only for testing new boards
-
+    
     [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorBoard",nummer]]           forKey:@"BoardSchemaColor"];
     [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorEdge",nummer]]            forKey:@"RandSchemaColor"];
     [schemaDict setObject:[UIColor colorNamed:[NSString stringWithFormat:@"%d/ColorBarCentralStrip",nummer]] forKey:@"barMittelstreifenColor"];
