@@ -61,6 +61,10 @@
                       @"name" : @"Wood HD",
                       @"colorLight" : @"Light",
                       @"colorDark"  : @"Dark"},
+                   @{ @"number" : [NSNumber numberWithInt:6],
+                      @"name" : @"Metal HD",
+                      @"colorLight" : @"Light",
+                      @"colorDark"  : @"Dark"},
                 nil];
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
