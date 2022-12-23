@@ -81,6 +81,8 @@
                                                                 45)];
     self.buttonFrame.layer.borderWidth = 1;
     self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+    self.buttonFrame.layer.cornerRadius = 14.0f;
+
     [self.view addSubview:self.buttonFrame];
     
     
@@ -118,6 +120,9 @@
     frame.size.width = self.buttonFrame.frame.size.width;
     frame.size.height = self.titleCheckerColor.frame.origin.y - self.selectBoard.frame.origin.y - self.selectBoard.frame.size.height - gap;
     self.tableView.frame = frame;
+    self.tableView.layer.borderWidth = 1;
+    self.tableView.layer.cornerRadius = 14.0f;
+    self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
 
     return;
 }
@@ -209,7 +214,8 @@
             [subview removeFromSuperview];
         }
     }
-    
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];;
+
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     NSDictionary *dict = self.boardsArray[indexPath.row];
@@ -260,6 +266,7 @@
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
     self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+    self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
 
     [self.tableView reloadData];
 }
