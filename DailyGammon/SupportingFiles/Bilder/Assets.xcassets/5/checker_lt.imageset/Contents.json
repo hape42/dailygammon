@@ -6,12 +6,12 @@
       "scale" : "1x"
     },
     {
-      "filename" : "wood_2x.png",
+      "filename" : "wood_2x_text.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "wood_3x.png",
+      "filename" : "wood_3x_text.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
