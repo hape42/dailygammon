@@ -410,7 +410,7 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img]];
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight]];
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     [boardView addSubview:pointView];
                     x += checkerWidth;
@@ -726,7 +726,7 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img]];
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight]];
 
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     

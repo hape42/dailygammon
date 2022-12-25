@@ -12,7 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface BoardElements : NSObject
 
-- (UIImage *)getPointForSchema:(int)schema name:(NSString *)img;
+- (UIImage *)getPointForSchema:(int)schema
+                          name:(NSString *)img
+                     withWidth:(float)width
+                    withHeight:(float)height
+;
 - (UIImage *)getBarForSchema:(int)schema name:(NSString *)img;
 - (UIImage *)getOffForSchema:(int)schema name:(NSString *)img;
 - (UIImage *)getCubeForSchema:(int)schema name:(NSString *)img;

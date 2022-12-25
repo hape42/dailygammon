@@ -12,7 +12,11 @@
 @implementation BoardElements
 
 #pragma mark - methods to decide draw or catalog
-- (UIImage *)getPointForSchema:(int)schema name:(NSString *)img
+- (UIImage *)getPointForSchema:(int)schema
+                          name:(NSString *)img
+                     withWidth:(float)width
+                    withHeight:(float)height
+
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     if(schema <= 4)
@@ -67,7 +71,9 @@
                               withColor:pointColor
                           withDirection:pointDirection
                        withCheckerColor:checkerColor
-                       withCheckerCount:checkerNumber];
+                       withCheckerCount:checkerNumber
+                              withWidth:(float)width
+                             withHeight:(float)height];
     }
     return image;
 }
@@ -158,11 +164,17 @@
 
 #pragma mark - methods to draw elements
 
-- (UIImage *)drawPointForSchema:(int)schema withColor:(int)pointColor withDirection:(int)pointDirection withCheckerColor:(int)checkerColor withCheckerCount:(int)checkerCount
+- (UIImage *)drawPointForSchema:(int)schema
+                      withColor:(int)pointColor
+                  withDirection:(int)pointDirection
+               withCheckerColor:(int)checkerColor
+               withCheckerCount:(int)checkerCount
+                      withWidth:(float)width
+                     withHeight:(float)height
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     
-    UIView *pointView = [[UIView alloc]initWithFrame:CGRectMake(0,0,50,250)];
+    UIView *pointView = [[UIView alloc]initWithFrame:CGRectMake(0,0,width,height)];
     NSString *pointName = @"";
 
     if(pointDirection == POINT_UP)
@@ -180,8 +192,9 @@
             pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark_down"];
 
     }
-    UIImageView *pointImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:pointName]] ;
-
+    //UIImageView *pointImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:pointName]] ;
+    UIImageView *pointImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,width,height)];
+    pointImageView.image = [UIImage imageNamed:pointName];
     [pointView addSubview:pointImageView];
     
     NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_dk"];
@@ -190,11 +203,13 @@
 
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
-        UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+        //UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+        UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
+        checkerImageView.image = [UIImage imageNamed:checkerName];
         CGRect frame = checkerImageView.frame;
-        frame.origin.y = i * 50;
+        frame.origin.y = i * width;
         if(pointDirection == POINT_UP)
-            frame.origin.y = 200-(i * 50);
+            frame.origin.y = (4 * width)-(i * width);
         checkerImageView.frame = frame;
         [pointView addSubview:checkerImageView];
     }
@@ -203,8 +218,8 @@
     {
         int y = 0;
         if(pointDirection == POINT_DOWN)
-            y = 200;
-        numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,y,50,50)];
+            y = (4 * width);
+        numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,y,width,width)];
         numberLabel.text = [NSString stringWithFormat:@"%d", checkerCount];
         numberLabel.textAlignment = NSTextAlignmentCenter;
         numberLabel.textColor = [UIColor whiteColor];
