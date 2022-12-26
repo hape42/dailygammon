@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "checker_dk_trans.png",
+      "filename" : "checker_dk_4.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "checker_dk_4_2X.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
