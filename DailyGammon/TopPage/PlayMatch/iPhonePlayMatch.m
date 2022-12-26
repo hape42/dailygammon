@@ -1505,8 +1505,11 @@ case ROLL:
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    self.playerChat.text = @"";
-    self.answerMessage.text = @"";
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+    {
+        self.playerChat.text = @"";
+        self.answerMessage.text = @"";
+    }
 
     return YES;
 }
