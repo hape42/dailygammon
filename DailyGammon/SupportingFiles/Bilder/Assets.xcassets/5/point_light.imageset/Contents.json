@@ -1,11 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "light_point_up.png",
+      "filename" : "bright_point_down.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "point_lt_down.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

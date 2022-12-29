@@ -175,26 +175,18 @@
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     
     UIView *pointView = [[UIView alloc]initWithFrame:CGRectMake(0,0,width,height)];
-    NSString *pointName = @"";
+    NSString *pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light"];
 
+    if(pointColor == POINT_LIGHT)
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light"];
+        else
+            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark"];
+    UIImage *pointImage = [UIImage imageNamed:pointName];
     if(pointDirection == POINT_UP)
-    {
-        if(pointColor == POINT_LIGHT)
-            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light_up"];
-        else
-            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark_up"];
-    }
-    else
-    {
-        if(pointColor == POINT_LIGHT)
-            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_light_down"];
-        else
-            pointName = [NSString stringWithFormat:@"%d/%@",schema, @"point_dark_down"];
+        pointImage = [self imageRotate:pointImage byDegrees:180];
 
-    }
-    //UIImageView *pointImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:pointName]] ;
     UIImageView *pointImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,0,width,height)];
-    pointImageView.image = [UIImage imageNamed:pointName];
+    pointImageView.image = pointImage;
     [pointView addSubview:pointImageView];
     
     NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_dk"];
@@ -203,9 +195,11 @@
 
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
-        //UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
         UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
-        checkerImageView.image = [UIImage imageNamed:checkerName];
+        UIImage *checker = [UIImage imageNamed:checkerName];
+        
+        checker = [self imageRotate:checker byDegrees:[self getRandomNumberBetween:0 and:360]];
+        checkerImageView.image = checker;
         CGRect frame = checkerImageView.frame;
         frame.origin.y = i * width;
         if(pointDirection == POINT_UP)
@@ -241,6 +235,82 @@
     return image;
 }
 
+- (UIImage*)rotateUIImage:(UIImage*)sourceImage imageOrientation:(UIImageOrientation) orientation
+{
+    CGSize size = sourceImage.size;
+    UIGraphicsBeginImageContext(CGSizeMake(size.height, size.width));
+    [[UIImage imageWithCGImage:[sourceImage CGImage] scale:1.0 orientation:orientation] drawInRect:CGRectMake(0,0,size.height ,size.width)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return newImage;
+}
+-(int)getRandomNumberBetween:(int)from and:(int)to
+{
+    int number = (int)from + arc4random() % (to-from+1);
+    if(number <= 90)
+        return 90;
+    if(number <= 180)
+        return 180;
+    if(number <= 270)
+        return 270;
+    if(number <= 360)
+        return 360;
+    return (int)from + arc4random() % (to-from+1);
+}
+
+-(UIImageOrientation)getRandomImageOrientation
+{
+    int random = (int)1 + arc4random() % (8-1+1);
+    
+    UIImageOrientation orientation = random;
+    /*
+     UIImageOrientationUp
+     The original pixel data matches the image's intended display orientation.
+    UIImageOrientationDown
+    The image has been rotated 180° from the orientation of its original pixel data.
+    UIImageOrientationLeft
+    The image has been rotated 90° counterclockwise from the orientation of its original pixel data.
+    UIImageOrientationRight
+    The image has been rotated 90° clockwise from the orientation of its original pixel data.
+    UIImageOrientationUpMirrored
+    The image has been horizontally flipped from the orientation of its original pixel data.
+    UIImageOrientationDownMirrored
+    The image has been vertically flipped from the orientation of its original pixel data.
+    UIImageOrientationLeftMirrored
+    The image has been rotated 90° clockwise and flipped horizontally from the orientation of its original pixel data.
+    UIImageOrientationRightMirrored
+    The image has been rotated 90° counterclockwise and flipped horizontally from the orientation of its original pixel data.
+    */
+
+    return orientation;
+}
+- (UIImage *)imageRotate: (UIImage *)image byDegrees:(CGFloat)degrees
+{
+#define DEGREES_TO_RADIANS(degrees)((M_PI * degrees)/180)
+    CGFloat radians = DEGREES_TO_RADIANS(degrees);
+    CGSize size = image.size;
+
+    UIView *rotatedViewBox = [[UIView alloc] initWithFrame:CGRectMake(0,0, size.width, size.height)];
+    CGAffineTransform t = CGAffineTransformMakeRotation(radians);
+    rotatedViewBox.transform = t;
+    CGSize rotatedSize = rotatedViewBox.frame.size;
+
+    UIGraphicsBeginImageContextWithOptions(rotatedSize, NO, [[UIScreen mainScreen] scale]);
+    CGContextRef bitmap = UIGraphicsGetCurrentContext();
+
+    CGContextTranslateCTM(bitmap, rotatedSize.width / 2, rotatedSize.height / 2);
+
+    CGContextRotateCTM(bitmap, radians);
+
+    CGContextScaleCTM(bitmap, 1.0, -1.0);
+    CGContextDrawImage(bitmap, CGRectMake(-size.width / 2, -size.height / 2 , size.width, size.height), image.CGImage );
+
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    //XLog(@"%3.1f %@ %@",degrees,NSStringFromCGSize(size), NSStringFromCGSize(newImage.size));
+    return newImage;
+}
 - (UIImage *)drawBarForSchema:(int)schema  withCheckerColor:(int)checkerColor withCheckerCount:(int)checkerCount
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
@@ -250,10 +320,13 @@
     NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_dk"];
     if(checkerColor == CHECKER_LIGHT)
         checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_lt"];
+    UIImage *checker = [UIImage imageNamed:checkerName];
 
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
-        UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+      //  UIImageView *checkerImageView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:checkerName]] ;
+        UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+        checkerImageView.image = checker;
         CGRect frame = checkerImageView.frame;
         frame.origin.y = i * 50;
         checkerImageView.frame = frame;
@@ -287,9 +360,9 @@
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     UIView *offView = [[UIView alloc]initWithFrame:CGRectMake(0,0,230, 350)];
-    NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"off_black_shadow"];
+    NSString *checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"off_dark"];
     if(checkerColor == CHECKER_LIGHT)
-        checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"off_white_shadow"];
+        checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"off_light"];
 
     for(int i = 0;  i < checkerCount; i++)
     {
