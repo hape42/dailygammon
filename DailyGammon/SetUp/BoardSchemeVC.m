@@ -43,30 +43,37 @@
     boardsArray = [[NSMutableArray alloc] initWithObjects:
                    @{ @"number" : [NSNumber numberWithInt:1],
                       @"name" : @"Classic Original",
+                      @"design" : @"DailyGammon",
                       @"colorLight" : @"Yellow",
                       @"colorDark"  : @"Blue"},
                    @{ @"number" : [NSNumber numberWithInt:2],
                       @"name" : @"Classic HD",
+                      @"design" : @"DailyGammon",
                       @"colorLight" : @"Yellow",
                       @"colorDark"  : @"Blue"},
                    @{ @"number" : [NSNumber numberWithInt:3],
                       @"name" : @"Blue / White Original",
+                      @"design" : @"DailyGammon",
                       @"colorLight" : @"White",
                       @"colorDark"  : @"Blue"},
                    @{ @"number" : [NSNumber numberWithInt:4],
                       @"name" : @"Red / Grey HD",
+                      @"design" : @"hape42",
                       @"colorLight" : @"Red",
                       @"colorDark"  : @"Grey"},
                    @{ @"number" : [NSNumber numberWithInt:5],
                       @"name" : @"Wood HD",
+                      @"design" : @"darkhelmet",
                       @"colorLight" : @"Light",
                       @"colorDark"  : @"Dark"},
                    @{ @"number" : [NSNumber numberWithInt:6],
                       @"name" : @"Metal HD",
-                      @"colorLight" : @"Orange",
+                      @"design" : @"darkhelmet",
+                     @"colorLight" : @"Orange",
                       @"colorDark"  : @"Blue"},
                    @{ @"number" : [NSNumber numberWithInt:7],
                       @"name" : @"Mono HD",
+                      @"design" : @"darkhelmet",
                       @"colorLight" : @"Light",
                       @"colorDark"  : @"Dark"},
                 nil];
@@ -236,10 +243,20 @@
     int x = 0;
     int labelHeight = cell.contentView.frame.size.height;
     labelHeight = 100;
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,200,labelHeight)];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,200,labelHeight/2)];
     nameLabel.textAlignment = NSTextAlignmentCenter;
-    nameLabel.text = [dict objectForKey:@"name"];
+    nameLabel.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"name"]];
     nameLabel.textColor = [schemaDict objectForKey:@"TintColor"] ;
+    [cell.contentView addSubview:nameLabel];
+    
+    nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/2 ,200,labelHeight/4)];
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.text = [NSString stringWithFormat:@"Designed by"];
+    [cell.contentView addSubview:nameLabel];
+    
+    nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/4*3 ,200,labelHeight/4)];
+    nameLabel.textAlignment = NSTextAlignmentCenter;
+    nameLabel.text = [NSString stringWithFormat:@"%@",  [dict objectForKey:@"design"] ];
     [cell.contentView addSubview:nameLabel];
 
     UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d/board",[[dict objectForKey:@"number"]intValue ]]];
