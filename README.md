@@ -45,6 +45,8 @@ Constantly struggling with the shortage of time. The project became bigger and b
 
 Communication was/is also very difficult. My English skills are more those of a beginner. Complicated discussions with users were very difficult for me. But thank god i found deepl.com. it helps me a lot.
 
+### Future
+You can find [here](https://github.com/hape42/dailygammon/wiki/Roadmap/) an overview of what still needs to be done.
 
 ### Help Wanted
 
