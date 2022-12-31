@@ -1,17 +1,15 @@
 {
   "images" : [
     {
-      "filename" : "light_checker.png",
+      "filename" : "checker_lt_huge.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "light_checker_2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "light_checker_3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
