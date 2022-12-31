@@ -198,7 +198,7 @@
         UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
         UIImage *checker = [UIImage imageNamed:checkerName];
         
-        checker = [self imageRotate:checker byDegrees:[self getRandomNumberBetween:0 and:360]];
+     //   checker = [self imageRotate:checker byDegrees:[self getRandomNumberBetween:0 and:360]];
         checkerImageView.image = checker;
         CGRect frame = checkerImageView.frame;
         frame.origin.y = i * width;
