@@ -48,7 +48,7 @@
         default:
             break;
     }
-    [button setBackgroundImage:[UIImage imageNamed:@"button_grau.png"] forState:UIControlStateNormal];
+    [button setBackgroundImage: [self resizeImage: [UIImage imageNamed:@"button_grau.png"] convertToSize:button.frame.size] forState:UIControlStateNormal];
 
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
@@ -60,7 +60,13 @@
 
     return button;
 }
-
+- (UIImage *)resizeImage:(UIImage *)image convertToSize:(CGSize)size {
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return destImage;
+}
 -(UIButton *) makeReverseButton: (UIButton *)button
 {
 

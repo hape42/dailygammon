@@ -79,6 +79,20 @@
     {
         buttonReminder.frame = CGRectMake(9999, 9999, buttonReminder.frame.size.width, buttonReminder.frame.size.height);
     }
+    
+    //Display Zoom mode
+//    var isZoomed: Bool {
+//        return
+    CGRect bounds;
+    if( [UIScreen mainScreen].scale < [UIScreen mainScreen].nativeScale)
+    {
+        bounds = [UIScreen mainScreen].bounds;
+    }
+    else
+        bounds = [UIScreen mainScreen].bounds;
+
+    return;
+
 }
 #define DATE [NSString stringWithUTF8String:__DATE__]
 #define TIME [NSString stringWithUTF8String:__TIME__]
