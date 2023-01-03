@@ -23,6 +23,7 @@
 
 #import "Constants.h"
 #import "MatchTools.h"
+#import "DGButton.h"
 
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
@@ -630,7 +631,7 @@
         buttonWidth  = 80;
     }
 
-    float actionViewHoehe  = 130.0;
+    float actionViewHoehe  = actionView.layer.frame.size.height;
     float actionViewBreite = actionView.layer.frame.size.width;
 //    float actionViewHoehe  = actionView.layer.frame.size.height;
     float actionViewHoeheOhneSkip = actionViewHoehe - buttonHeight - 5 - 5 - 1;
@@ -698,23 +699,25 @@ case ROLL:
             float platzFuerButton = (actionViewHoeheOhneSkip / 2) - 0;// minus textzeile für Message
 
             UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonRoll = [design makeNiceButton:buttonRoll];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             buttonRoll.frame = CGRectMake((actionViewBreite/2) - 50,
                                           0 + ((platzFuerButton - buttonHeight) / 2),
                                           100,
                                           buttonHeight);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
+            buttonRoll = [design makeNiceButton:buttonRoll];
+
             [actionView addSubview:buttonRoll];
             
             UIButton *buttonDouble = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonDouble = [design makeNiceButton:buttonDouble];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
             buttonDouble.frame = CGRectMake((actionViewBreite/2) - 50,
                                             platzFuerButton + ((platzFuerButton - buttonHeight) / 2),
                                             100  ,
                                             buttonHeight);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
+            buttonDouble = [design makeNiceButton:buttonDouble];
+
             [actionView addSubview:buttonDouble];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1051,17 +1054,23 @@ case ROLL:
     }
     
 #pragma mark - Button Skip Game
-    UIButton *buttonSkipGame = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonSkipGame = [design makeNiceButton:buttonSkipGame];
-    [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
-//    buttonSkipGame.frame = CGRectMake((actionViewBreite / 2) - 50,
-//                                      actionViewHoehe - buttonHeight - rand ,
-//                                      100,
-//                                      buttonHeight);
-    buttonSkipGame.frame = CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35);
+//    UIButton *buttonSkipGame = [UIButton buttonWithType:UIButtonTypeSystem];
+//    buttonSkipGame = [design makeNiceButton:buttonSkipGame];
+//    [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
+////    buttonSkipGame.frame = CGRectMake((actionViewBreite / 2) - 50,
+////                                      actionViewHoehe - buttonHeight - rand ,
+////                                      100,
+////                                      buttonHeight);
+//    buttonSkipGame.frame = CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35);
+//
+//    [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
+//    [actionView addSubview:buttonSkipGame];
+//
+    DGButton *skipButton = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35)];
+    [skipButton setTitle:@"Skip Game" forState: UIControlStateNormal];
+    [skipButton addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
+    [actionView addSubview:skipButton];
 
-    [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
-    [actionView addSubview:buttonSkipGame];
 //    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, buttonSkipGame.frame.origin.y - 5, actionView.frame.size.width - 10, 1)];
 //    linie.backgroundColor = [UIColor blackColor];
 //    [actionView addSubview:linie];

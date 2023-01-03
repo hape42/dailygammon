@@ -54,7 +54,7 @@
 
     [self initSwitches];
     
-    self.doneButton = [design makeNiceButton:self.doneButton];
+//    self.doneButton = [design makeNiceButton:self.doneButton];
     
     self.ConfirmationDouble = [design makeNiceSwitch:self.ConfirmationDouble];
     self.ConfirmationTake = [design makeNiceSwitch:self.ConfirmationTake];

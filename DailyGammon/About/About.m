@@ -65,7 +65,7 @@
 
     buttonWeb      = [design makeNiceButton:buttonWeb];
     buttonEmail    = [design makeNiceButton:buttonEmail];
-    buttonPrivacy  = [design makeNiceButton:buttonPrivacy];
+//    buttonPrivacy  = [design makeNiceButton:buttonPrivacy];
     buttonReminder = [design makeNiceButton:buttonReminder];
     self.creditButton = [design makeNiceButton:self.creditButton];
 

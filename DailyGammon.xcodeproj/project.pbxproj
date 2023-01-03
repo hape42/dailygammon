@@ -78,6 +78,7 @@
 		E0F9589921AD168B003DAC01 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9589821AD168B003DAC01 /* main.m */; };
 		E0F958A221AD1884003DAC01 /* Design.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F958A121AD1884003DAC01 /* Design.m */; };
 		E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F958AF21ADA304003DAC01 /* TopPageVC.m */; };
+		E0FA69342964463200D88C26 /* DGButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69332964463200D88C26 /* DGButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -265,6 +266,8 @@
 		E0F958A121AD1884003DAC01 /* Design.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Design.m; sourceTree = "<group>"; };
 		E0F958AE21ADA304003DAC01 /* TopPageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPageVC.h; sourceTree = "<group>"; };
 		E0F958AF21ADA304003DAC01 /* TopPageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageVC.m; sourceTree = "<group>"; };
+		E0FA69322964463200D88C26 /* DGButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGButton.h; sourceTree = "<group>"; };
+		E0FA69332964463200D88C26 /* DGButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -601,6 +604,8 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E0FA69322964463200D88C26 /* DGButton.h */,
+				E0FA69332964463200D88C26 /* DGButton.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
 				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
@@ -793,6 +798,7 @@
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,
+				E0FA69342964463200D88C26 /* DGButton.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
 				E00654D722A6784000194435 /* Player.m in Sources */,

@@ -194,7 +194,7 @@
                                     <outlet property="delegate" destination="8bC-Xf-vdC" id="t6E-Cv-5io"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NHZ-tL-QaY">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NHZ-tL-QaY" customClass="DGButton">
                                 <rect key="frame" x="15" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Grace"/>
@@ -202,7 +202,7 @@
                                     <action selector="sortGrace:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qvf-U8-AW1"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1yw-ON-hkZ">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1yw-ON-hkZ" customClass="DGButton">
                                 <rect key="frame" x="205" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Pool"/>
@@ -210,7 +210,7 @@
                                     <action selector="sortPool:" destination="BYZ-38-t0r" eventType="touchUpInside" id="deI-ro-Ncm"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CSg-VK-I7k">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CSg-VK-I7k" customClass="DGButton">
                                 <rect key="frame" x="395" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Grace+Pool"/>
@@ -218,7 +218,7 @@
                                     <action selector="sortGracePool:" destination="BYZ-38-t0r" eventType="touchUpInside" id="YzL-IA-w1v"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyB-ln-XaD">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyB-ln-XaD" customClass="DGButton">
                                 <rect key="frame" x="591" y="50" width="130" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <state key="normal" title="Recent"/>
@@ -747,7 +747,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
-                                <rect key="frame" x="18" y="11.999999999999996" width="500" height="50.666666666666657"/>
+                                <rect key="frame" x="18" y="12" width="500" height="51"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="jL6-r1-whc"/>
                                 </constraints>
@@ -764,7 +764,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tqh-Bf-z22">
-                                <rect key="frame" x="38" y="74.666666666666671" width="852" height="210.33333333333331"/>
+                                <rect key="frame" x="38" y="75" width="852" height="210"/>
                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                 <string key="text">You are missing a feature?
 You have found a bug?
@@ -856,7 +856,7 @@ Did we make you curious?</string>
                                     <action selector="actionPrivacy:" destination="UX0-ua-SQF" eventType="touchUpInside" id="D7R-IF-ZXh"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-bO-x0d">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-bO-x0d" customClass="DGButton">
                                 <rect key="frame" x="732" y="352" width="150" height="32"/>
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>

@@ -156,10 +156,10 @@
 
     }
     
-    self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
-    self.sortPoolButton = [design makeNiceButton:self.sortPoolButton];
-    self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
-    self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
+//    self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
+//    self.sortPoolButton = [design makeNiceButton:self.sortPoolButton];
+//    self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
+//    self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 

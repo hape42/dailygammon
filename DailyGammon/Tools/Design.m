@@ -31,25 +31,16 @@
     button.layer.cornerRadius = 14.0f;
     button.layer.masksToBounds = YES;
     
-    switch (boardSchema)
-    {
-        case 1:
-            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
-            break;
-        case 2:
-            [button setBackgroundImage:[UIImage imageNamed:@"button_gruen.png"] forState:UIControlStateNormal];
-            break;
-        case 3:
-            [button setBackgroundImage:[UIImage imageNamed:@"button_blau.png"] forState:UIControlStateNormal];
-            break;
-        case 4:
-            [button setBackgroundImage:[UIImage imageNamed:@"button_rot.png"] forState:UIControlStateNormal];
-            break;
-        default:
-            break;
-    }
-    [button setBackgroundImage: [self resizeImage: [UIImage imageNamed:@"button_grau.png"] convertToSize:button.frame.size] forState:UIControlStateNormal];
 
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = button.bounds;
+    gradient.startPoint = CGPointMake(1, 0);;
+    gradient.endPoint = CGPointMake(1, 1);
+
+    gradient.colors = [NSArray arrayWithObjects:(id)UIColor.lightGrayColor.CGColor,
+                      (id)UIColor.grayColor.CGColor,
+                      (id)UIColor.lightGrayColor.CGColor, nil];
+    [button.layer addSublayer:gradient];
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
