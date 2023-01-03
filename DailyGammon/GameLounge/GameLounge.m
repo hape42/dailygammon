@@ -494,31 +494,32 @@ didCompleteWithError:(NSError *)error
     signUpLabel.textAlignment = NSTextAlignmentLeft;
     
     NSDictionary *signUp = row[7];
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    DGButton *button = [[DGButton alloc]initWithFrame:CGRectMake(0 , 0, 0 , 0)];
 
     if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"] || [[signUp objectForKey:@"Text"] isEqualToString:@"Cancel Signup\n"])
     {
-        button = [design makeNiceButton:button];
-        [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
         if([[signUp objectForKey:@"Text"] isEqualToString:@"Sign Up\n"])
-            button.frame = CGRectMake((signUpWidth - button.frame.size.width - 25)/2 , 5, 100 , 35);
+            button = [[DGButton alloc]initWithFrame:CGRectMake(x + ((signUpWidth )/2) - 50 , 5, 100 , 35)];
         else
         {
-            button.frame = CGRectMake((signUpWidth - button.frame.size.width - 25)/2 , 5, 150 , 35);
-            button = [design makeReverseButton:button];
+            button = [[DGButton alloc]initWithFrame:CGRectMake(x + ((signUpWidth )/2) - 75  , 5, 150 , 35)];
+
+            button = (DGButton *)[design makeReverseButton:button];
         }
-        button.frame = CGRectMake(x + ((signUpWidth - button.frame.size.width -50)/2), 5, button.frame.size.width + 50 , 35);
+
+        [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
 
         button.tag = indexPath.row;
         [button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];
         [signUpLabel addSubview:button];
+        [cell.contentView addSubview:button];
+
     }
     else
     {
         XLog(@"no Button");
     }
 
-    [cell.contentView addSubview:button];
 
     if(row.count == 9)
     {
