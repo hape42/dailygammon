@@ -746,57 +746,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="926" height="428"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
-                                <rect key="frame" x="27" y="26" width="831" height="21"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
+                                <rect key="frame" x="18" y="11.999999999999996" width="500" height="50.666666666666657"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="500" id="jL6-r1-whc"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0a-va-GJp">
-                                <rect key="frame" x="866" y="12" width="24" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0a-va-GJp">
+                                <rect key="frame" x="870" y="12" width="20" height="22"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                                 <connections>
                                     <action selector="moreAction:" destination="UX0-ua-SQF" eventType="touchUpInside" id="XK3-NE-UUn"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9Q-d8-HSF">
-                                <rect key="frame" x="38" y="258" width="329" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="  Show me the Project on GitHub" image="GitHub-Mark-32px.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="MRAboutButtonInfo:" destination="UX0-ua-SQF" eventType="touchUpInside" id="34J-I6-1dD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jw4-NP-Myf">
-                                <rect key="frame" x="550" y="258" width="329" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Remind me later">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="reminder:" destination="UX0-ua-SQF" eventType="touchUpInside" id="7FQ-WV-uY8"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tqh-Bf-z22">
-                                <rect key="frame" x="38" y="55" width="841" height="195"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tqh-Bf-z22">
+                                <rect key="frame" x="38" y="74.666666666666671" width="852" height="210.33333333333331"/>
                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                 <string key="text">You are missing a feature?
 You have found a bug?
@@ -812,8 +780,12 @@ Did we make you curious?</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZU-HG-va2">
-                                <rect key="frame" x="38" y="338" width="122" height="30"/>
+                                <rect key="frame" x="38" y="352" width="150" height="32"/>
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="WJV-7Y-eba"/>
+                                    <constraint firstAttribute="width" constant="150" id="fHM-3E-E4f"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Email to Support">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -826,9 +798,51 @@ Did we make you curious?</string>
                                     <action selector="MRAboutButtonEmail:" destination="UX0-ua-SQF" eventType="touchUpInside" id="RCl-SB-4u8"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9Q-d8-HSF">
+                                <rect key="frame" x="38" y="305" width="300" height="32"/>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="YGu-MI-zUt"/>
+                                    <constraint firstAttribute="height" constant="32" id="pU2-4y-Ja5"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="  Show me the Project on GitHub" image="GitHub-Mark-32px.png">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="MRAboutButtonInfo:" destination="UX0-ua-SQF" eventType="touchUpInside" id="34J-I6-1dD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jw4-NP-Myf">
+                                <rect key="frame" x="732" y="305" width="150" height="32"/>
+                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="E6Q-eI-YyJ"/>
+                                    <constraint firstAttribute="width" constant="150" id="RJ1-Gx-g5r"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Remind me later">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="reminder:" destination="UX0-ua-SQF" eventType="touchUpInside" id="7FQ-WV-uY8"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVK-Ur-y0b">
-                                <rect key="frame" x="436" y="338" width="54" height="30"/>
+                                <rect key="frame" x="388" y="352" width="150" height="32"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="0KE-PK-zb8"/>
+                                    <constraint firstAttribute="height" constant="32" id="tib-Gn-Qwz"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Credits">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -843,8 +857,12 @@ Did we make you curious?</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-bO-x0d">
-                                <rect key="frame" x="776" y="338" width="103" height="30"/>
+                                <rect key="frame" x="732" y="352" width="150" height="32"/>
                                 <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="1yU-Ow-JCn"/>
+                                    <constraint firstAttribute="height" constant="32" id="Z9u-5g-duR"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Privacy Policy">
                                     <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -860,12 +878,30 @@ Did we make you curious?</string>
                         </subviews>
                         <color key="backgroundColor" name="ColorViewBackground"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="EN6-bO-x0d" secondAttribute="trailing" constant="27" id="4A8-rg-ge6"/>
+                            <constraint firstItem="u0a-va-GJp" firstAttribute="trailingMargin" secondItem="EN6-bO-x0d" secondAttribute="trailing" id="4A8-rg-ge6"/>
+                            <constraint firstItem="b9Q-d8-HSF" firstAttribute="top" secondItem="Tqh-Bf-z22" secondAttribute="bottom" constant="20" id="5yc-aV-um2"/>
+                            <constraint firstItem="EN6-bO-x0d" firstAttribute="top" secondItem="jw4-NP-Myf" secondAttribute="bottom" constant="15" id="GX1-0D-nsP"/>
+                            <constraint firstItem="jw4-NP-Myf" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="Ice-Fu-YIh"/>
+                            <constraint firstItem="qZU-HG-va2" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="KNw-5g-7Gc"/>
+                            <constraint firstItem="cVK-Ur-y0b" firstAttribute="width" secondItem="qZU-HG-va2" secondAttribute="width" id="KlL-0w-gkc"/>
+                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="leading" secondItem="b9Q-d8-HSF" secondAttribute="leading" id="MwX-uR-b6O"/>
+                            <constraint firstItem="u0a-va-GJp" firstAttribute="top" secondItem="ikh-9S-bEu" secondAttribute="top" constant="12" id="OzI-8F-xMx"/>
+                            <constraint firstItem="EN6-bO-x0d" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="PBC-Pc-YPx"/>
+                            <constraint firstItem="NZF-YQ-QBO" firstAttribute="top" secondItem="ikh-9S-bEu" secondAttribute="top" constant="12" id="QW7-hM-ImL"/>
                             <constraint firstItem="cVK-Ur-y0b" firstAttribute="centerX" secondItem="ikh-9S-bEu" secondAttribute="centerX" id="RJ8-Pw-tui"/>
+                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="top" secondItem="NZF-YQ-QBO" secondAttribute="bottom" constant="12" id="RxT-9g-1qo"/>
+                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="trailingMargin" secondItem="jw4-NP-Myf" secondAttribute="trailing" id="SYI-v0-5ta"/>
                             <constraint firstItem="qZU-HG-va2" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leadingMargin" constant="18" id="TX8-VU-c9O"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="cVK-Ur-y0b" secondAttribute="bottom" constant="26" id="Z5q-Uy-dzd"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="qZU-HG-va2" secondAttribute="bottom" constant="26" id="nkb-g0-gDE"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="EN6-bO-x0d" secondAttribute="bottom" constant="26" id="ycX-YF-XmU"/>
+                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="cVK-Ur-y0b" secondAttribute="bottom" constant="10" id="Z5q-Uy-dzd"/>
+                            <constraint firstItem="qZU-HG-va2" firstAttribute="top" secondItem="b9Q-d8-HSF" secondAttribute="bottom" constant="15" id="bM1-p6-8aa"/>
+                            <constraint firstItem="EN6-bO-x0d" firstAttribute="width" secondItem="qZU-HG-va2" secondAttribute="width" id="c0i-cY-7Kl"/>
+                            <constraint firstItem="b9Q-d8-HSF" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leadingMargin" constant="18" id="edS-gB-j3S"/>
+                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="trailing" secondItem="u0a-va-GJp" secondAttribute="trailing" id="fkH-Iu-7jF"/>
+                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="qZU-HG-va2" secondAttribute="bottom" constant="10" id="nkb-g0-gDE"/>
+                            <constraint firstItem="cVK-Ur-y0b" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="ntG-gi-cOB"/>
+                            <constraint firstItem="NZF-YQ-QBO" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leading" constant="18" id="rjQ-ca-JgG"/>
+                            <constraint firstAttribute="trailing" secondItem="u0a-va-GJp" secondAttribute="trailing" constant="36" id="wYv-aN-Y1Q"/>
+                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="EN6-bO-x0d" secondAttribute="bottom" constant="10" id="ycX-YF-XmU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="25C-py-AJq"/>
