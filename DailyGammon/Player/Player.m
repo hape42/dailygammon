@@ -21,6 +21,7 @@
 #import <SafariServices/SafariServices.h>
 #import "LoginVC.h"
 #import "About.h"
+#import "DGButton.h"
 
 
 @interface Player ()
@@ -41,7 +42,7 @@
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 @property (assign, atomic) BOOL loginOk;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @end
 

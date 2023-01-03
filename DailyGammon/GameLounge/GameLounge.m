@@ -22,6 +22,7 @@
 #import <SafariServices/SafariServices.h>
 #import "iPhoneMenue.h"
 #import "About.h"
+#import "DGButton.h"
 
 @interface GameLounge ()
 
@@ -37,7 +38,7 @@
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
 

@@ -63,74 +63,58 @@
     x +=  diceBreite + luecke;
     
 //    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.topPageButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.topPageButton = [design makeNiceButton:self.topPageButton];
+    self.topPageButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
-    self.topPageButton.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     self.topPageButton.tag = 1;
     [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     
     x += buttonBreite + luecke;
     
-    UIButton *button2 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button2 = [design makeNiceButton:button2];
+    DGButton *button2 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
-    button2.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button2.tag = 2;
     [button2 addTarget:self action:@selector(GameLoungeVC) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
     
-    UIButton *button3 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button3 = [design makeNiceButton:button3];
+    DGButton *button3 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
-    button3.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button3.tag = 3;
     [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
     
-    UIButton *button4 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button4 = [design makeNiceButton:button4];
+    DGButton *button4 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
-    button4.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button4.tag = 4;
     [button4 addTarget:self action:@selector(popoverSetUp:) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
  
-    UIButton *button5 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button5 = [design makeNiceButton:button5];
+    DGButton *button5 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
-    button5.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button5.tag = 5;
     [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
 
-    UIButton *button6 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button6 = [design makeNiceButton:button6];
+    DGButton *button6 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button6 setTitle:@"About" forState: UIControlStateNormal];
-    button6.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button6.tag = 6;
     [button6 addTarget:self action:@selector(showPopOverAbout:) forControlEvents:UIControlEventTouchUpInside];
 
     x += buttonBreite + luecke;
     
-    UIButton *button7 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button7 = [design makeNiceButton:button7];
+    DGButton *button7 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button7 setTitle:@"Rating" forState: UIControlStateNormal];
-    button7.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button7.tag = 7;
     [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
     
     if(countDB > minDB)
         x += buttonBreite + luecke;
 
-    UIButton *button8 = [UIButton buttonWithType:UIButtonTypeSystem];
-    button8 = [design makeNiceButton:button8];
+    DGButton *button8 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [button8 setTitle:@"Players" forState: UIControlStateNormal];
-    button8.frame = CGRectMake(x, y, buttonBreite - 10, buttonHoehe);
     button8.tag = 8;
     [button8 addTarget:self action:@selector(playerVC) forControlEvents:UIControlEventTouchUpInside];
     

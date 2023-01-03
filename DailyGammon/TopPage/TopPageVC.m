@@ -25,6 +25,7 @@
 #import "NoInternet.h"
 #import <SafariServices/SafariServices.h>
 #import "About.h"
+#import "DGButton.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
@@ -55,7 +56,7 @@
 @property (assign, atomic) float opponentWidth;
 @property (assign, atomic) float eventWidth;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
 
@@ -156,17 +157,10 @@
 
     }
     
-//    self.sortGraceButton = [design makeNiceButton:self.sortGraceButton];
-//    self.sortPoolButton = [design makeNiceButton:self.sortPoolButton];
-//    self.sortGracePoolButton = [design makeNiceButton:self.sortGracePoolButton];
-//    self.sortRecentButton = [design makeNiceButton:self.sortRecentButton];
-
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
-    self.refreshButtonIPAD = [design makeNiceButton:self.refreshButtonIPAD];
-    self.refreshButtonIPAD.tintColor = [schemaDict objectForKey:@"TintColor"];
 
 }
 

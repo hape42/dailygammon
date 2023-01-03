@@ -16,6 +16,7 @@
 #import "Design.h"
 #import "iPhoneMenue.h"
 #import <SafariServices/SafariServices.h>
+#import "DGButton.h"
 
 @interface InviteDetail ()
 
@@ -52,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIView *inviteView;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 @property (assign, atomic) BOOL loginOk;
 
 @end

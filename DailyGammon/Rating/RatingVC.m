@@ -25,6 +25,7 @@
 #import "SetUpVC.h"
 #import "LoginVC.h"
 #import "About.h"
+#import "DGButton.h"
 
 @interface RatingVC ()
 
@@ -45,7 +46,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *infoButton;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @end
 

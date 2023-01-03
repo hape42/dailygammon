@@ -23,10 +23,11 @@
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "iPhoneMenue.h"
+#import "DGButton.h"
 
 @interface About ()<NSURLSessionDataDelegate>
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;

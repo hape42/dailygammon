@@ -25,6 +25,7 @@
 #import "Player.h"
 #import "LoginVC.h"
 #import "About.h"
+#import "DGButton.h"
 
 #import "Constants.h"
 #import "MatchTools.h"
