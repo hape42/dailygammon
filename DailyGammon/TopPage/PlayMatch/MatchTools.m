@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "Rating.h"
 #import "BoardElements.h"
+#import "DGButton.h"
 
 @implementation MatchTools
 
@@ -999,10 +1000,8 @@
     opponentName = [design makeLabelColor:opponentName forColor:[boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
     opponentName.adjustsFontSizeToFitWidth = YES;
     
-    UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeCustom];
-    buttonOpponent = [design makeNiceButton:buttonOpponent];
+    DGButton *buttonOpponent = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, opponentName.frame.size.width - 100, opponentName.frame.size.height - 4)] ;
     [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
-    buttonOpponent.frame = CGRectMake(50, 2, opponentName.frame.size.width - 100, opponentName.frame.size.height - 4);
     [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
     [opponentView addSubview:buttonOpponent];
 
