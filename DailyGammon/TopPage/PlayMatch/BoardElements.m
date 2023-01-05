@@ -213,6 +213,18 @@
         int y = 0;
         if(pointDirection == POINT_DOWN)
             y = (4 * width);
+        numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(1,y+1,width,width)];
+        numberLabel.text = [NSString stringWithFormat:@"%d", checkerCount];
+        numberLabel.textAlignment = NSTextAlignmentCenter;
+        numberLabel.textColor = [UIColor blackColor];
+        [numberLabel setFont:[numberLabel.font fontWithSize: 25]];
+        numberLabel.adjustsFontSizeToFitWidth = YES;
+        numberLabel.numberOfLines = 0;
+        numberLabel.minimumScaleFactor = 0.1;
+
+        [pointView addSubview:numberLabel];
+        
+        // kha: not sure if we need to construct a new numberlabel here; I assume we do.
         numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(0,y,width,width)];
         numberLabel.text = [NSString stringWithFormat:@"%d", checkerCount];
         numberLabel.textAlignment = NSTextAlignmentCenter;
