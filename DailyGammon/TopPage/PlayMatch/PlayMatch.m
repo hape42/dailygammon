@@ -89,7 +89,7 @@
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
 
-@property (readwrite, retain, nonatomic) UIButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @property (assign, atomic) int matchCount;
 
@@ -223,10 +223,7 @@
     frame.origin.y = 5000;
     self.chatView.frame = frame;
     self.infoLabel.frame = frame;
-    self.NextButtonOutlet = [design makeNiceButton:self.NextButtonOutlet];
-    self.ToTopOutlet = [design makeNiceButton:self.ToTopOutlet];
 
-//    [self.view addSubview:[self makeHeader]];
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
     
@@ -399,16 +396,12 @@
                                         self.answerMessage.delegate = self;
                                         self.answerMessage.backgroundColor = [UIColor lightGrayColor];
 
-                                        UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-                                        buttonNext = [self->design makeNiceButton:buttonNext];
+                                        DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(self.messageAnswerView.frame.size.width - 150, 270, 120, 35)];
                                         [buttonNext setTitle:@"Send Reply" forState: UIControlStateNormal];
-                                        buttonNext.frame = CGRectMake(self.messageAnswerView.frame.size.width - 150, 270, 120, 35);
                                         [buttonNext addTarget:self action:@selector(actionSendReplay) forControlEvents:UIControlEventTouchUpInside];
                                         
-                                        UIButton *buttonCancel = [UIButton buttonWithType:UIButtonTypeSystem];
-                                        buttonCancel = [self->design makeNiceButton:buttonCancel];
+                                        DGButton *buttonCancel = [[DGButton alloc] initWithFrame:CGRectMake(10, 270, 120, 35)];
                                         [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
-                                        buttonCancel.frame = CGRectMake(10, 270, 120, 35);
                                         [buttonCancel addTarget:self action:@selector(actionCancelReplay) forControlEvents:UIControlEventTouchUpInside];
                                         
                                         [self.messageAnswerView addSubview:buttonCancel];
@@ -571,10 +564,8 @@
         case NEXT:
         {
 #pragma mark - Button Next
-            UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonNext = [design makeNiceButton:buttonNext];
+            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
-            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonNext addTarget:self action:@selector(actionNext) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonNext];
             break;
@@ -582,10 +573,8 @@
         case NEXT__:
         {
 #pragma mark - Button Next>>
-            UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonNext = [design makeNiceButton:buttonNext];
+            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonNext setTitle:@"Next>>" forState: UIControlStateNormal];
-            buttonNext.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonNext addTarget:self action:@selector(actionNext__) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonNext];
             break;
@@ -611,10 +600,8 @@
        case ROLL:
         {
 #pragma mark - Button Roll
-            UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonRoll = [design makeNiceButton:buttonRoll];
+            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
-            buttonRoll.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonRoll];
             break;
@@ -622,17 +609,13 @@
         case ROLL_DOUBLE:
         {
 #pragma mark - Button Roll Double
-            UIButton *buttonRoll = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonRoll = [design makeNiceButton:buttonRoll];
+            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(10, 10, 100, 35)];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
-            buttonRoll.frame = CGRectMake(10, 10, 100, 35);
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonRoll];
  
-            UIButton *buttonDouble = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonDouble = [design makeNiceButton:buttonDouble];
+            DGButton *buttonDouble = [[DGButton alloc] initWithFrame:CGRectMake(10,  buttonRoll.frame.origin.y + 100 , 100, 35)];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
-            buttonDouble.frame = CGRectMake(10,  buttonRoll.frame.origin.y + 100 , 100, 35);
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonDouble];
 
@@ -653,17 +636,13 @@
         case ACCEPT_DECLINE:
         {
 #pragma mark - Button Accept Pass
-            UIButton *buttonAccept = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonAccept = [design makeNiceButton:buttonAccept];
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(10, 10, 100, 35)];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
-            buttonAccept.frame = CGRectMake(10, 20, 100, 35);
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonAccept];
             
-            UIButton *buttonPass = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonPass = [design makeNiceButton:buttonPass];
+            DGButton *buttonPass = [[DGButton alloc] initWithFrame:CGRectMake(10,  buttonAccept.frame.origin.y + 100 , 100, 35)];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
-            buttonPass.frame = CGRectMake(10,  buttonAccept.frame.origin.y + 100 , 100, 35);
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonPass];
             
@@ -705,10 +684,8 @@
        case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
-            UIButton *buttonSwap = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonSwap = [design makeNiceButton:buttonSwap];
+            DGButton *buttonSwap = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonSwap setTitle:@"Swap Dice" forState: UIControlStateNormal];
-            buttonSwap.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonSwap addTarget:self action:@selector(actionSwap) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSwap];
             break;
@@ -716,10 +693,8 @@
         case GREEDY:
         {
 #pragma mark - Submit Greedy Bearoff
-            UIButton *buttonGreedy = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonGreedy = [design makeNiceButton:buttonGreedy];
+            DGButton *buttonGreedy = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 100, (actionView.frame.size.height/2) -40, 200, 35)];
             [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
-            buttonGreedy.frame = CGRectMake((actionView.frame.size.width/2) - 100, (actionView.frame.size.height/2) -40, 200, 35);
             [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonGreedy];
             break;
@@ -727,10 +702,8 @@
         case UNDO_MOVE:
         {
 #pragma mark - Button Undo Move
-            UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonUndoMove = [design makeNiceButton:buttonUndoMove];
+            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
-            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
             break;
@@ -738,29 +711,22 @@
         case SUBMIT_MOVE:
         {
 #pragma mark - Button Submit Move
-            UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
+            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, 10, 100, 35)];
             [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
-            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, 10, 100, 35);
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSubmitMove];
             
-            UIButton *buttonUndoMove = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonUndoMove = [design makeNiceButton:buttonUndoMove];
+            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
-            buttonUndoMove.frame = CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35);
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonUndoMove];
-
             break;
         }
         case SUBMIT_FORCED_MOVE:
         {
 #pragma mark - Button Submit Forced Move
-            UIButton *buttonSubmitMove = [UIButton buttonWithType:UIButtonTypeSystem];
-            buttonSubmitMove = [design makeNiceButton:buttonSubmitMove];
+            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, 50, 150, 35)];
             [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
-            buttonSubmitMove.frame = CGRectMake((actionView.frame.size.width/2) - 75, 50, 150, 35);
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitForcedMove) forControlEvents:UIControlEventTouchUpInside];
             [actionView addSubview:buttonSubmitMove];
             break;
@@ -872,10 +838,8 @@
     }
 
 #pragma mark - Button Skip Game
-    UIButton *buttonSkipGame = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonSkipGame = [design makeNiceButton:buttonSkipGame];
+    DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35)];
     [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
-    buttonSkipGame.frame = CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35);
     [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
     [actionView addSubview:buttonSkipGame];
     UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, actionView.frame.size.height - 40 - 10, actionView.frame.size.width - 10, 1)];
@@ -1505,8 +1469,6 @@
 - (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
 {
     int rand = 10;
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
 
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
     
@@ -1584,17 +1546,13 @@
     [self.finishedMatchChat setFont:[UIFont systemFontOfSize:20]];
     [infoView addSubview:self.finishedMatchChat];
 
-    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonNext = [design makeNiceButton:buttonNext];
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
  
-    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonToTop = [design makeNiceButton:buttonToTop];
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
 
@@ -1733,17 +1691,13 @@
     [chat setFont:[UIFont systemFontOfSize:20]];
     [infoView addSubview:chat];
     
-    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonNext = [design makeNiceButton:buttonNext];
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(50, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
     
-    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonToTop = [design makeNiceButton:buttonToTop];
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
     
