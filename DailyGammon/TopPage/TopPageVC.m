@@ -1045,24 +1045,18 @@ didCompleteWithError:(NSError *)error
     
     float r = (infoView.layer.frame.size.width - ( 3 * 100)) / 4;
     
-    UIButton *buttonNext = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonNext = [design makeNiceButton:buttonNext];
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(r, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonNext setTitle:@"Fix it for me" forState: UIControlStateNormal];
-    buttonNext.frame = CGRectMake(r, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonNext addTarget:self action:@selector(fixIt) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonNext];
     
-    UIButton *buttonToTop = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonToTop = [design makeNiceButton:buttonToTop];
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35)];
     [buttonToTop setTitle:@"I fix it" forState: UIControlStateNormal];
-    buttonToTop.frame = CGRectMake(r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35);
     [buttonToTop addTarget:self action:@selector(gotoWebsite) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:buttonToTop];
     
-    UIButton *cancel = [UIButton buttonWithType:UIButtonTypeSystem];
-    cancel = [design makeNiceButton:cancel];
+    DGButton *cancel = [[DGButton alloc] initWithFrame:CGRectMake(r + 100 + r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35)];
     [cancel setTitle:@"Cancel" forState: UIControlStateNormal];
-    cancel.frame = CGRectMake(r + 100 + r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35);
     [cancel addTarget:self action:@selector(cancelInfo) forControlEvents:UIControlEventTouchUpInside];
     [infoView addSubview:cancel];
 

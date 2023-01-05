@@ -181,17 +181,13 @@
     NSArray *row = self.playerArray[indexPath.row];
     NSMutableDictionary *dict = row[3];
 
-    UIButton *messageButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    messageButton = [design makeNiceButton:messageButton];
+    DGButton *messageButton = [[DGButton alloc] initWithFrame:CGRectMake(tableView.frame.size.width - 100, 5, 100 , 35)];
     [messageButton setTitle:@"Message" forState: UIControlStateNormal];
-    messageButton.frame = CGRectMake(tableView.frame.size.width - 100, 5, 100 , 35);
     messageButton.tag = indexPath.row;
     [messageButton addTarget:self action:@selector(messageAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *inviteButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    inviteButton = [design makeNiceButton:inviteButton];
+    DGButton *inviteButton = [[DGButton alloc] initWithFrame:CGRectMake(messageButton.frame.origin.x - 110, 5, 100 , 35)];
     [inviteButton setTitle:@"Invite" forState: UIControlStateNormal];
-    inviteButton.frame = CGRectMake(messageButton.frame.origin.x - 110, 5, 100 , 35);
     inviteButton.tag = indexPath.row;
     [inviteButton addTarget:self action:@selector(inviteAction:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -518,20 +514,16 @@
     keyboardToolbar.items = @[flexBarButton, doneBarButton];
     self.message.inputAccessoryView = keyboardToolbar;
 
-    UIButton *buttonSend = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonSend = [self->design makeNiceButton:buttonSend];
+    DGButton *buttonSend = [[DGButton alloc] initWithFrame:CGRectMake(self.messageView.frame.size.width - 150,
+                                                                      self.messageView.frame.size.height - 50,
+                                                                      120,
+                                                                      40)];
     [buttonSend setTitle:@"Send" forState: UIControlStateNormal];
-    buttonSend.frame = CGRectMake(self.messageView.frame.size.width - 150,
-                                  self.messageView.frame.size.height - 50,
-                                  120,
-                                  40);
     buttonSend.tag = button.tag;
     [buttonSend addTarget:self action:@selector(actionSend:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *buttonCancel = [UIButton buttonWithType:UIButtonTypeSystem];
-    buttonCancel = [self->design makeNiceButton:buttonCancel];
+    DGButton *buttonCancel = [[DGButton alloc] initWithFrame:CGRectMake(10, self.messageView.frame.size.height - 50, 120, 40)];
     [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
-    buttonCancel.frame = CGRectMake(10, self.messageView.frame.size.height - 50, 120, 40);
     [buttonCancel addTarget:self action:@selector(actionCancelSend) forControlEvents:UIControlEventTouchUpInside];
     
     [self.messageView addSubview:buttonCancel];

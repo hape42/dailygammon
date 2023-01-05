@@ -33,16 +33,16 @@
 @property (assign, atomic) int matchLengthSelected;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *variant;
-@property (weak, nonatomic) IBOutlet UIButton *matchLengthButton;
-@property (weak, nonatomic) IBOutlet UIButton *timeControlButton;
-@property (weak, nonatomic) IBOutlet UIButton *inviteButton;
-@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
+@property (weak, nonatomic) IBOutlet DGButton *matchLengthButton;
+@property (weak, nonatomic) IBOutlet DGButton *timeControlButton;
+@property (weak, nonatomic) IBOutlet DGButton *inviteButton;
+@property (weak, nonatomic) IBOutlet DGButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UITextField *comment;
 @property (weak, nonatomic) IBOutlet UITextField *named;
 @property (weak, nonatomic) IBOutlet UISwitch *privateMatch;
 
-@property (weak, nonatomic) IBOutlet UIButton *sendMessage;
-@property (weak, nonatomic) IBOutlet UIButton *ignorePlayer;
+@property (weak, nonatomic) IBOutlet DGButton *sendMessage;
+@property (weak, nonatomic) IBOutlet DGButton *ignorePlayer;
 
 @property (weak, nonatomic) IBOutlet UIView *messageView;
 @property (weak, nonatomic) IBOutlet UILabel *inviteText;
@@ -100,12 +100,6 @@
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     self.inviteView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-
-    self.matchLengthButton = [design makeNiceButton:self.matchLengthButton];
-    self.timeControlButton = [design makeNiceButton:self.timeControlButton];
-    self.inviteButton      = [design makeNiceButton:self.inviteButton];
-    self.cancelButton      = [design makeNiceButton:self.cancelButton];
-    self.sendMessage       = [design makeNiceButton:self.sendMessage];
 
     self.isMatchLength = TRUE;
     self.isTimeControl = FALSE;
@@ -275,14 +269,12 @@
     self.picker.dataSource = self;
     [self.picker selectRow:2 inComponent:0 animated:YES]; //preSelect Match length 5
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    DGButton *button = [[DGButton alloc] initWithFrame:CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0)];
     [button addTarget:self
                action:@selector(closePickerView)
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Done" forState:UIControlStateNormal];
-    button.frame = CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0);
     design = [[Design alloc] init];
-    button = [design makeNiceButton:button];
     
     [self.pickerSammelView addSubview:button];
     
@@ -343,14 +335,12 @@
     self.picker.dataSource = self;
     [self.picker selectRow:self.timeControlSelected inComponent:0 animated:YES];
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+    DGButton *button = [[DGButton alloc] initWithFrame:CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0)];
     [button addTarget:self
                action:@selector(closePickerView)
      forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Done" forState:UIControlStateNormal];
-    button.frame = CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0);
     design = [[Design alloc] init];
-    button = [design makeNiceButton:button];
     
     [self.pickerSammelView addSubview:button];
     
