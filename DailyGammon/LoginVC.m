@@ -12,15 +12,16 @@
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
+#import "DGButton.h"
 
 @interface LoginVC ()<NSURLSessionDataDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
 @property (weak, nonatomic) IBOutlet UITextField *passwordOutlet;
 
-@property (weak, nonatomic) IBOutlet UIButton *loginButton;
-@property (weak, nonatomic) IBOutlet UIButton *createAccountButton;
-@property (weak, nonatomic) IBOutlet UIButton *faqButton;
+@property (weak, nonatomic) IBOutlet DGButton *loginButton;
+@property (weak, nonatomic) IBOutlet DGButton *createAccountButton;
+@property (weak, nonatomic) IBOutlet DGButton *faqButton;
 @property (weak, nonatomic) IBOutlet UIImageView *logo;
 
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
@@ -37,11 +38,7 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     design = [[Design alloc] init];
-    
-    self.loginButton = [design makeNiceButton:self.loginButton];
-    self.createAccountButton = [design makeNiceButton:self.createAccountButton];
-    self.faqButton = [design makeNiceButton:self.faqButton];
-    
+        
     self.logo.layer.cornerRadius = 14.0f;
     self.logo.layer.masksToBounds = YES;
     [self.usewrnameOutlet setDelegate:self];
