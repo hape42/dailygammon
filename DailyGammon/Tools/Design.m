@@ -20,44 +20,7 @@
     return [schemaDict objectForKey:@"TintColor"] ;
 
 }
--(UIButton *) makeNiceButton: (UIButton *)button
-{
 
-//    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
-//        return [self makeNiceFlatButton:button];
-    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
-    if(boardSchema < 1) boardSchema = 4;
-        
-    button.layer.cornerRadius = 14.0f;
-    button.layer.masksToBounds = YES;
-    
-
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = button.bounds;
-    gradient.startPoint = CGPointMake(1, 0);;
-    gradient.endPoint = CGPointMake(1, 1);
-
-    gradient.colors = [NSArray arrayWithObjects:(id)UIColor.lightGrayColor.CGColor,
-                      (id)UIColor.grayColor.CGColor,
-                      (id)UIColor.lightGrayColor.CGColor, nil];
-    [button.layer addSublayer:gradient];
-    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-
-    [button setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
-    
-    button.titleLabel.numberOfLines = 1;
-    button.titleLabel.adjustsFontSizeToFitWidth = YES;
-    button.titleLabel.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
-
-    return button;
-}
-- (UIImage *)resizeImage:(UIImage *)image convertToSize:(CGSize)size {
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *destImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return destImage;
-}
 -(UIButton *) makeReverseButton: (UIButton *)button
 {
 

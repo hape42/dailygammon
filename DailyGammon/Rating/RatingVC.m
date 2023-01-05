@@ -41,9 +41,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
-@property (weak, nonatomic) IBOutlet UIButton *iCloud;
-@property (weak, nonatomic) IBOutlet UIButton *shareButton;
-@property (weak, nonatomic) IBOutlet UIButton *infoButton;
+@property (weak, nonatomic) IBOutlet DGButton *iCloud;
+@property (weak, nonatomic) IBOutlet DGButton *shareButton;
+@property (weak, nonatomic) IBOutlet DGButton *infoButton;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
@@ -175,25 +175,19 @@
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
-        UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        infoButton = [design makeNiceButton:infoButton];
+        DGButton *infoButton = [[DGButton alloc] initWithFrame:CGRectMake(50, 100, 80, 35)];
         [infoButton setTitle:@"Info" forState: UIControlStateNormal];
-        infoButton.frame = CGRectMake(50, 100, 80, 35);
         [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
 
         [self.view addSubview:infoButton];
         
-        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        shareButton = [design makeNiceButton:shareButton];
+        DGButton *shareButton = [[DGButton alloc] initWithFrame:CGRectMake(150, 100, 80, 35)];
         [shareButton setTitle:@"Share" forState: UIControlStateNormal];
-        shareButton.frame = CGRectMake(150, 100, 80, 35);
         [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:shareButton];
  
-        UIButton *iCloudButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        iCloudButton = [design makeNiceButton:iCloudButton];
+        DGButton *iCloudButton = [[DGButton alloc] initWithFrame:CGRectMake(250, 100, 80, 35)];
         [iCloudButton setTitle:@"iCloud" forState: UIControlStateNormal];
-        iCloudButton.frame = CGRectMake(250, 100, 80, 35);
         [iCloudButton addTarget:self action:@selector(iCloudAction:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:iCloudButton];
 
@@ -243,10 +237,6 @@
     {
         self.moreButton.tintColor   = [UIColor colorNamed:@"ColorSwitch"];
         self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
-        self.iCloud      = [design makeNiceButton:self.iCloud];
-        self.shareButton = [design makeNiceButton:self.shareButton];
-        self.infoButton  = [design makeNiceButton:self.infoButton];
 
     }
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
@@ -826,11 +816,9 @@
 
         x = rand;
         y += 70;
-        UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        closeButton.frame = CGRectMake((filterWidth - 100) / 2, y, 100, 35);
+        DGButton *closeButton = [[DGButton alloc]initWithFrame:CGRectMake((filterWidth - 100) / 2, y, 100, 35)];
         [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitle:@"Close" forState:UIControlStateNormal];
-        closeButton = [design makeNiceButton:closeButton];
         [filterView addSubview:closeButton];
     }
     filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];

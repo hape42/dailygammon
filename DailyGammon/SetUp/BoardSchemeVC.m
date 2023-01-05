@@ -9,6 +9,7 @@
 #import "BoardSchemeVC.h"
 #import "Design.h"
 #import <SafariServices/SafariServices.h>
+#import "DGButton.h"
 
 @interface BoardSchemeVC ()
 
@@ -20,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UISegmentedControl *myColor;
 @property (weak, nonatomic) IBOutlet UILabel *titleCheckerColor;
 @property (readwrite, retain, nonatomic) UIView *buttonFrame;
-@property (readwrite, retain, nonatomic) UIButton *infoButton;
+@property (readwrite, retain, nonatomic) DGButton *infoButton;
 
 @end
 
@@ -106,15 +107,13 @@
     [self.view addSubview:self.buttonFrame];
     
     
-    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.infoButton = [design makeNiceButton:self.infoButton];
+    self.infoButton = [[DGButton alloc] initWithFrame:CGRectMake((self.buttonFrame.frame.size.width / 2) - 25,
+                                                                 (self.buttonFrame.frame.size.height / 2) - 15,
+                                                            50,
+                                                            30)];
     self.infoButton.layer.cornerRadius = 14.0f;
     [self.infoButton setTitle:@"Info" forState: UIControlStateNormal];
     //mittig in buttonFrame setzen
-    self.infoButton.frame = CGRectMake((self.buttonFrame.frame.size.width / 2) - 25,
-                                       (self.buttonFrame.frame.size.height / 2) - 15,
-                                  50,
-                                  30);
     [self.infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
     [self.buttonFrame addSubview:self.infoButton];
     int gap = 5;

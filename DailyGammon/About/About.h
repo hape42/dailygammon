@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "DGButton.h"
 
 @class Design;
 @class Preferences;
@@ -28,11 +29,11 @@
 
 - (IBAction)MRAboutButtonEmail:(id)sender;
 - (IBAction)MRAboutButtonInfo:(id)sender;
-@property (weak, nonatomic) IBOutlet UIButton *buttonWeb;
-@property (weak, nonatomic) IBOutlet UIButton *buttonReminder;
+@property (weak, nonatomic) IBOutlet DGButton *buttonWeb;
+@property (weak, nonatomic) IBOutlet DGButton *buttonReminder;
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonEmail;
-@property (weak, nonatomic) IBOutlet UIButton *buttonPrivacy;
+@property (weak, nonatomic) IBOutlet DGButton *buttonEmail;
+@property (weak, nonatomic) IBOutlet DGButton *buttonPrivacy;
 
 @property (nonatomic, assign) BOOL showRemindMeLaterButton;
 

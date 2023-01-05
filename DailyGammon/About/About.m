@@ -31,7 +31,7 @@
 
 @property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
-@property (weak, nonatomic) IBOutlet UIButton *creditButton;
+@property (weak, nonatomic) IBOutlet DGButton *creditButton;
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
 
 @end
@@ -64,12 +64,6 @@
                                    [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
                                    [self getBuildDate]];
 
-    buttonWeb      = [design makeNiceButton:buttonWeb];
-    buttonEmail    = [design makeNiceButton:buttonEmail];
-//    buttonPrivacy  = [design makeNiceButton:buttonPrivacy];
-    buttonReminder = [design makeNiceButton:buttonReminder];
-    self.creditButton = [design makeNiceButton:self.creditButton];
-
     self.infoText.numberOfLines = 0;
     self.infoText.adjustsFontSizeToFitWidth = YES;
     self.infoText.minimumScaleFactor = 0.1;
@@ -81,17 +75,6 @@
         buttonReminder.frame = CGRectMake(9999, 9999, buttonReminder.frame.size.width, buttonReminder.frame.size.height);
     }
     
-    //Display Zoom mode
-//    var isZoomed: Bool {
-//        return
-    CGRect bounds;
-    if( [UIScreen mainScreen].scale < [UIScreen mainScreen].nativeScale)
-    {
-        bounds = [UIScreen mainScreen].bounds;
-    }
-    else
-        bounds = [UIScreen mainScreen].bounds;
-
     return;
 
 }

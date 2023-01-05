@@ -14,13 +14,14 @@
 #import "DbConnect.h"
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
+#import "DGButton.h"
 
 @interface SetUpVC ()
 
-@property (weak, nonatomic) IBOutlet UIButton *boardSchemeButton;
+@property (weak, nonatomic) IBOutlet DGButton *boardSchemeButton;
 @property (weak, nonatomic) IBOutlet UISwitch *showRatingsOutlet;
 @property (weak, nonatomic) IBOutlet UISwitch *showWinLossOutlet;
-@property (weak, nonatomic) IBOutlet UIButton *preferencesButton;
+@property (weak, nonatomic) IBOutlet DGButton *preferencesButton;
 @property (weak, nonatomic) IBOutlet UISwitch *iCloudOutlet;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 
@@ -52,9 +53,6 @@
     
     self.showRatingsOutlet = [design makeNiceSwitch:self.showRatingsOutlet];
     self.showWinLossOutlet = [design makeNiceSwitch:self.showWinLossOutlet];
-
-    self.boardSchemeButton = [design makeNiceButton:self.boardSchemeButton];
-    self.preferencesButton = [design makeNiceButton:self.preferencesButton];
 
     self.iCloudOutlet = [design makeNiceSwitch:self.iCloudOutlet];
     [self.iCloudOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue] animated:YES];
