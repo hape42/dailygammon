@@ -193,13 +193,19 @@
     if(checkerColor == CHECKER_LIGHT)
         checkerName = [NSString stringWithFormat:@"%d/%@",schema, @"checker_lt"];
 
+    UIImage *checker = [UIImage imageNamed:checkerName];
+    NSMutableArray *checkerArray = [[NSMutableArray alloc]initWithCapacity:20];
+    int checkerNumber = 1;
+    do {
+        [checkerArray addObject:checker];
+        NSString *checkerNameNumber = [NSString stringWithFormat:@"%@_%d",checkerName, checkerNumber++];
+        checker = [UIImage imageNamed:checkerNameNumber];
+    } while (checker != nil);
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
         UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
-        UIImage *checker = [UIImage imageNamed:checkerName];
-        
-     //   checker = [self imageRotate:checker byDegrees:[self getRandomNumberBetween:0 and:360]];
-        checkerImageView.image = checker;
+        int index =  arc4random() % checkerArray.count;
+        checkerImageView.image = checkerArray[index];
         CGRect frame = checkerImageView.frame;
         frame.origin.y = i * width;
         if(pointDirection == POINT_UP)
