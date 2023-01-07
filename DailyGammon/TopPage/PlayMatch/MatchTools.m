@@ -67,6 +67,7 @@
 
     int x = 0;
     int y = 0;
+    
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         x = 20;
@@ -411,7 +412,7 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight]];
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight forPointRandom:i]]; // kha: forPointRandom doesn't need to be the actual point index, suffices if it is the same value for all checkers on the same point
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     [boardView addSubview:pointView];
                     x += checkerWidth;
@@ -727,7 +728,7 @@
                 {
                     NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
                     img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight]];
+                    UIImageView *pointView =  [[UIImageView alloc] initWithImage:[boardElements getPointForSchema:schema name:img withWidth:checkerWidth withHeight:pointsHeight forPointRandom:i]]; // kha: again: okay to pass a number that is not the point id, as long as it stays the same for this point
 
                     pointView.frame = CGRectMake(x, y, checkerWidth, pointsHeight);
                     

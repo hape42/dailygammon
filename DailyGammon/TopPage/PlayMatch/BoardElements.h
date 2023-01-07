@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
                           name:(NSString *)img
                      withWidth:(float)width
                     withHeight:(float)height
+                forPointRandom:(int)pointNum
 ;
 - (UIImage *)getBarForSchema:(int)schema name:(NSString *)img;
 - (UIImage *)getOffForSchema:(int)schema name:(NSString *)img;

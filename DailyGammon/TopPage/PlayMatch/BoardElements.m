@@ -11,11 +11,17 @@
 
 @implementation BoardElements
 
+const int pointsRandomSize = 30;
+int pointsRandoms[pointsRandomSize];
+bool isPointsRandomInitialized = false;
+int pointsRandomCurrentIndex = 0;
+
 #pragma mark - methods to decide draw or catalog
 - (UIImage *)getPointForSchema:(int)schema
                           name:(NSString *)img
                      withWidth:(float)width
                     withHeight:(float)height
+                forPointRandom:(int)pointNum
 
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
@@ -73,7 +79,8 @@
                        withCheckerColor:checkerColor
                        withCheckerCount:checkerNumber
                               withWidth:(float)width
-                             withHeight:(float)height];
+                             withHeight:(float)height
+                               forPoint:(int)pointNum];
     }
     return image;
 }
@@ -171,6 +178,7 @@
                withCheckerCount:(int)checkerCount
                       withWidth:(float)width
                      withHeight:(float)height
+                       forPoint:(int)pointNum
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     
@@ -201,10 +209,25 @@
         NSString *checkerNameNumber = [NSString stringWithFormat:@"%@_%d",checkerName, checkerNumber++];
         checker = [UIImage imageNamed:checkerNameNumber];
     } while (checker != nil);
+    
+    // initialze permanent random checkers
+    if (!isPointsRandomInitialized) {
+        isPointsRandomInitialized = true;
+        for (int i = 0; i < pointsRandomSize; i++) {
+            pointsRandoms[i] = arc4random();
+        }
+    }
+    
+    // determine the initial random index for this point
+    pointsRandomCurrentIndex = (pointNum*7) % pointsRandomSize;
+    
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
         UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
-        int index =  arc4random() % checkerArray.count;
+        int index =  pointsRandoms[pointsRandomCurrentIndex] % checkerArray.count;
+        pointsRandomCurrentIndex++;
+        if (pointsRandomCurrentIndex >= pointsRandomSize)
+            pointsRandomCurrentIndex = 0;
         checkerImageView.image = checkerArray[index];
         CGRect frame = checkerImageView.frame;
         frame.origin.y = i * width;
@@ -412,6 +435,5 @@
 
     return image;
 }
-
 
 @end
