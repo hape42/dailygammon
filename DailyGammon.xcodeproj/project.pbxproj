@@ -79,6 +79,7 @@
 		E0F958A221AD1884003DAC01 /* Design.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F958A121AD1884003DAC01 /* Design.m */; };
 		E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F958AF21ADA304003DAC01 /* TopPageVC.m */; };
 		E0FA69342964463200D88C26 /* DGButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69332964463200D88C26 /* DGButton.m */; };
+		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -268,6 +269,8 @@
 		E0F958AF21ADA304003DAC01 /* TopPageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageVC.m; sourceTree = "<group>"; };
 		E0FA69322964463200D88C26 /* DGButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGButton.h; sourceTree = "<group>"; };
 		E0FA69332964463200D88C26 /* DGButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGButton.m; sourceTree = "<group>"; };
+		E0FA69352969CE0900D88C26 /* DGLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGLabel.h; sourceTree = "<group>"; };
+		E0FA69362969CE0900D88C26 /* DGLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGLabel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,6 +607,8 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E0FA69352969CE0900D88C26 /* DGLabel.h */,
+				E0FA69362969CE0900D88C26 /* DGLabel.m */,
 				E0FA69322964463200D88C26 /* DGButton.h */,
 				E0FA69332964463200D88C26 /* DGButton.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
@@ -794,6 +799,7 @@
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
+				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
