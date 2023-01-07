@@ -53,6 +53,11 @@
         XLog(@"4 Next Game>> %@", urlMatch);
         htmlString = [self skipNext:htmlString];
     }
+    if ([htmlString rangeOfString:@"<u>Score</u>"].location != NSNotFound)
+    {
+        XLog(@" <u>Score</u>> %@", urlMatch);
+        htmlString = [self skipNext:htmlString];
+    }
     if ([htmlString rangeOfString:@"Welcome to DailyGammon"].location != NSNotFound)
     {
         XLog(@"Welcome to DailyGammon %@", urlMatch);
