@@ -67,6 +67,8 @@
 
     int x = 0;
     int y = 0;
+    
+    [boardElements initializeCheckerRandomness];
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         x = 20;
