@@ -157,10 +157,7 @@
 
     }
     
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
 
 }
 

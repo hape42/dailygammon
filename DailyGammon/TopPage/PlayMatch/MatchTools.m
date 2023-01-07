@@ -12,6 +12,7 @@
 #import "Rating.h"
 #import "BoardElements.h"
 #import "DGButton.h"
+#import "DGLabel.h"
 
 @implementation MatchTools
 
@@ -784,36 +785,36 @@
                                                                      actionView.frame.size.width,
                                                                      nameLabelHeight + ( 3 * detailLabelHeight))];
 
-    UILabel *opponentName        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *opponentName        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              0,
                                                                              opponentView.frame.size.width,
                                                                              nameLabelHeight)];
-    UILabel *opponentRating      = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *opponentRating      = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              nameLabelHeight,
                                                                              opponentView.frame.size.width * .4,
                                                                              detailLabelHeight)];
-    UILabel *opponentPips        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *opponentPips        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              nameLabelHeight+detailLabelHeight,
                                                                              opponentView.frame.size.width * .4,
                                                                              detailLabelHeight)];
-    UILabel *opponentScore       = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *opponentScore       = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              nameLabelHeight+detailLabelHeight+detailLabelHeight,
                                                                              opponentView.frame.size.width * .2,
                                                                              detailLabelHeight)];
-    UILabel *opponentScoreValue  = [[UILabel alloc] initWithFrame:CGRectMake(opponentScore.frame.size.width,
+    DGLabel *opponentScoreValue  = [[DGLabel alloc] initWithFrame:CGRectMake(opponentScore.frame.size.width,
                                                                              nameLabelHeight+detailLabelHeight+detailLabelHeight,
                                                                              opponentView.frame.size.width * .2,
                                                                              detailLabelHeight)];
 
-    UILabel *opponentActive      = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+    DGLabel *opponentActive      = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
                                                                              nameLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    UILabel *opponentWon         = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+    DGLabel *opponentWon         = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
                                                                              nameLabelHeight + detailLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    UILabel *opponentLost        = [[UILabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+    DGLabel *opponentLost        = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
                                                                              nameLabelHeight + detailLabelHeight  + detailLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
@@ -834,36 +835,36 @@
                                                                   actionView.frame.size.width,
                                                                   nameLabelHeight + ( 3 * detailLabelHeight))];
     
-    UILabel *playerName        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *playerName        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                            0,
                                                                            playerView.frame.size.width,
                                                                            nameLabelHeight)];
-    UILabel *playerRating      = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *playerRating      = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                            nameLabelHeight,
                                                                            playerView.frame.size.width * .4,
                                                                            detailLabelHeight)];
-    UILabel *playerPips        = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *playerPips        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              nameLabelHeight+detailLabelHeight,
                                                                            playerView.frame.size.width * .4,
                                                                              detailLabelHeight)];
-    UILabel *playerScore       = [[UILabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *playerScore       = [[DGLabel alloc] initWithFrame:CGRectMake(0,
                                                                              nameLabelHeight+detailLabelHeight+detailLabelHeight,
                                                                            playerView.frame.size.width * .2,
                                                                              detailLabelHeight)];
-    UILabel *playerScoreValue  = [[UILabel alloc] initWithFrame:CGRectMake(playerScore.frame.size.width,
+    DGLabel *playerScoreValue  = [[DGLabel alloc] initWithFrame:CGRectMake(playerScore.frame.size.width,
                                                                              nameLabelHeight+detailLabelHeight+detailLabelHeight,
                                                                            playerView.frame.size.width * .2,
                                                                              detailLabelHeight)];
 
-    UILabel *playerActive      = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+    DGLabel *playerActive      = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
                                                                              nameLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    UILabel *playerWon         = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+    DGLabel *playerWon         = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
                                                                              nameLabelHeight + detailLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    UILabel *playerLost        = [[UILabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+    DGLabel *playerLost        = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
                                                                              nameLabelHeight + detailLabelHeight  + detailLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
@@ -968,10 +969,6 @@
                                                {
                                                    opponentActiveText       = [ratingDict objectForKey:@"activeOpponent"];
                                                    opponentActive.text = [ratingDict objectForKey:@"activeOpponent"];
-                                                   opponentActive.numberOfLines = 1;
-                                                   opponentActive.adjustsFontSizeToFitWidth = YES;
-                                                   opponentActive.minimumScaleFactor = 0.1;
-                                                   opponentActive.lineBreakMode = NSLineBreakByClipping;
                                                }
                                                
                                                if(![opponentWonText isEqualToString:[ratingDict objectForKey:@"wonOpponent"]])

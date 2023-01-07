@@ -983,9 +983,10 @@ case ROLL:
     }
     
 #pragma mark - Button Skip Game
-    DGButton *skipButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 110,
+    
+    DGButton *skipButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.frame.size.width - 90,
                                                                       self.view.frame.size.height - 45,
-                                                                      100,
+                                                                      80,
                                                                       buttonHeight)];
    [skipButton setTitle:@"Skip Game" forState: UIControlStateNormal];
     [skipButton addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
