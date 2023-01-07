@@ -126,7 +126,7 @@
     matchTools = [[MatchTools alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+    [nc addObserver:self selector:@selector(drawPlayingAreas) name:@"changeSchemaNotification" object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
 
     [self.view addSubview:[self makeHeader]];
@@ -507,6 +507,8 @@
 
 -(void)drawPlayingAreas
 {
+    self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(self.boardSchema < 1) self.boardSchema = 4;
 
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
     UIView *boardView = [returnDict objectForKey:@"boardView"];

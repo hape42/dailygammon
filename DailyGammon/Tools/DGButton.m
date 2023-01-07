@@ -15,6 +15,8 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:@"changeSchemaNotification" object:nil];
+
     self = [super initWithFrame:frame];
     if (self)
     {
@@ -25,6 +27,8 @@
 
 - (id)initWithCoder:(NSCoder*)aDecoder
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:@"changeSchemaNotification" object:nil];
+
     self = [super initWithCoder:aDecoder];
     if (self)
     {
@@ -62,6 +66,16 @@
 
     if(title)
         [self setTitle:title forState: UIControlStateNormal];
+}
+- (void)changeButtonColor
+{
+    design = [[Design alloc] init];
+
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+    if(boardSchema < 1) boardSchema = 4;
+    [self setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
 
 }
 @end
