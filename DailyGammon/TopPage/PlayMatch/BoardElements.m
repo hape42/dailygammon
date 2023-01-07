@@ -21,6 +21,7 @@ int pointsRandomCurrentIndex = 0;
                           name:(NSString *)img
                      withWidth:(float)width
                     withHeight:(float)height
+                forPointRandom:(int)pointNum
 
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
@@ -78,7 +79,8 @@ int pointsRandomCurrentIndex = 0;
                        withCheckerColor:checkerColor
                        withCheckerCount:checkerNumber
                               withWidth:(float)width
-                             withHeight:(float)height];
+                             withHeight:(float)height
+                               forPoint:(int)pointNum];
     }
     return image;
 }
@@ -176,6 +178,7 @@ int pointsRandomCurrentIndex = 0;
                withCheckerCount:(int)checkerCount
                       withWidth:(float)width
                      withHeight:(float)height
+                       forPoint:(int)pointNum
 {
     UIImage *image = [UIImage imageNamed:@"DeadShot"];
     
@@ -214,6 +217,10 @@ int pointsRandomCurrentIndex = 0;
             pointsRandoms[i] = arc4random();
         }
     }
+    
+    // determine the initial random index for this point
+    pointsRandomCurrentIndex = (pointNum*7) % pointsRandomSize;
+    
     for(int i = 0;  i < MIN(5,checkerCount); i++)
     {
         UIImageView *checkerImageView =  [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, width, width)];
@@ -427,11 +434,6 @@ int pointsRandomCurrentIndex = 0;
     UIGraphicsEndImageContext();
 
     return image;
-}
-
-- (void)initializeCheckerRandomness;
-{
-    pointsRandomCurrentIndex = 0;
 }
 
 @end
