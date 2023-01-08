@@ -52,9 +52,11 @@
     gradient.startPoint = CGPointMake(1, 0);;
     gradient.endPoint = CGPointMake(1, 1);
 
-    gradient.colors = [NSArray arrayWithObjects:(id)UIColor.lightGrayColor.CGColor,
-                      (id)UIColor.grayColor.CGColor,
-                      (id)UIColor.lightGrayColor.CGColor, nil];
+    gradient.colors = [NSArray arrayWithObjects:
+                       (id)[UIColor colorNamed:@"ColorButtonGradientEdge"].CGColor,
+                       (id)[UIColor colorNamed:@"ColorButtonGradientCenter"].CGColor,
+                       (id)[UIColor colorNamed:@"ColorButtonGradientEdge"].CGColor, nil];
+
     [self.layer addSublayer:gradient];
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
