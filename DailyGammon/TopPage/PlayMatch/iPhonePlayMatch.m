@@ -811,6 +811,81 @@ case ROLL:
             }
             break;
         }
+        case ACCEPT_BEAVER_DECLINE:
+        {
+#pragma mark - Button Accept Beaver Pass
+
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
+            [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
+            [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [upperThird addSubview:buttonAccept];
+            
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
+            [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
+            [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
+            [middleThird addSubview:buttonPass];
+            
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count > 2)
+            {
+                buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+
+                for(NSDictionary * dict in attributesArray)
+                {
+                    if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+                    {
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
+                        {
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 thirdY  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyAccept.frame;
+                            frame.origin.y = buttonAccept.frame.origin.y;
+                            verifyAccept.frame = frame;
+
+                            [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
+                            verifyAccept = [design makeNiceSwitch:verifyAccept];
+                            [upperThird addSubview: verifyAccept];
+                            
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
+                                                                                                  thirdY,
+                                                                                                  verifyTextWidth,
+                                                                                                  buttonHeight)];
+                            verifyAcceptText.text = @"Verify";
+                            [upperThird addSubview: verifyAcceptText];
+                        }
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                        {
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 thirdY  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
+
+                            [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
+                            [middleThird addSubview: verifyDecline];
+                            
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                                                   thirdY,
+                                                                                                   verifyTextWidth,
+                                                                                                   buttonHeight)];
+                            verifyDeclineText.text = @"Verify";
+                            [middleThird addSubview: verifyDeclineText];
+                        }
+                        
+                    }
+                }
+            }
+            break;
+        }
+
         case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
@@ -1140,6 +1215,54 @@ case ROLL:
         [self showMatch];
     }
 }
+- (void)actionTakeBeaver
+{
+    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    BOOL verify = FALSE;
+    if(attributesArray.count > 2)
+    {
+        for(NSDictionary * dict in attributesArray)
+        {
+            if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+            {
+                if([[dict objectForKey:@"value"]isEqualToString:@"Accept Beaver"])
+                {
+                    verify = TRUE;
+                }
+            }
+        }
+    }
+    if(verify)
+    {
+        if(self.verifiedPass)
+        {
+            matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver&verify=Decline", [self.actionDict objectForKey:@"action"]];
+            [self showMatch];
+        }
+        else
+        {
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Information"
+                                         message:@"Previous move not verified!"
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* yesButton = [UIAlertAction
+                                        actionWithTitle:@"OK"
+                                        style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action)
+                                        {
+                                            
+                                        }];
+            [alert addAction:yesButton];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }
+    else
+    {
+        matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
+        [self showMatch];
+    }
+}
 - (void)actionPass
 {
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1355,6 +1478,13 @@ case ROLL:
             if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
                 return ACCEPT_DECLINE;
         }
+        if([[dict objectForKey:@"value"] isEqualToString:@"Accept Beaver"])
+        {
+            dict = attributesArray[1];
+            if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
+                return ACCEPT_BEAVER_DECLINE;
+        }
+
         dict = attributesArray[1];
         if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
             return SUBMIT_MOVE;
@@ -1425,7 +1555,11 @@ case ROLL:
         self.playerChat.text = @"";
         self.answerMessage.text = @"";
     }
-
+    if (!([self.chatFinishedMatch.text rangeOfString:@"You may chat with"].location == NSNotFound))
+    {
+        self.chatFinishedMatch.text = @"";
+    }
+    
     return YES;
 }
 - (BOOL)textViewShouldReturn:(UITextView *)textField
@@ -1626,6 +1760,22 @@ shouldChangeTextInRange:(NSRange)range
 #pragma mark - finishedMatch
 - (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
 {
+    // ist es ein "finished match" ohne chat?
+
+    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"<input type=hidden name=commit value=1>"].location == NSNotFound))
+    {
+        NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+        NSString *href = @"";
+        for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+        {
+            href = [dict objectForKey:@"action"];
+        }
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+
+        [self showMatch];
+        return;
+    }
+
     self.matchName.text = @"";
     
     int rand = 5;
@@ -1740,7 +1890,7 @@ shouldChangeTextInRange:(NSRange)range
     NSString *chatString = @"";
     for( NSString *chatZeile in chatArray)
     {
-        if(![chatZeile isEqual:@"\nYou may chat with AppleTestApp here:\n\n "])
+        if(![chatZeile isEqual:[NSString stringWithFormat:@"\nYou may chat with %@ here:\n\n ", playerArray[2]]])
             chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
     }
     self.chatFinishedMatch.text = chatString;
@@ -1784,14 +1934,10 @@ shouldChangeTextInRange:(NSRange)range
 
         [removeView removeFromSuperview];
     }
-    NSString *nextButtonText = @"Next%%20Game";
-    if( [finishedMatchDict objectForKey:@"NextButton"] != nil)
-        nextButtonText = [finishedMatchDict objectForKey:@"NextButton"];
-    
     if([href isEqualToString:@""])
         matchLink = @"/bg/nextgame";
     else
-        matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1&chat=%@", href, nextButtonText, chatText];
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1&chat=%@", href, chatText];
     [self showMatch];
 }
 - (void)actionToTopFinishedMatch
