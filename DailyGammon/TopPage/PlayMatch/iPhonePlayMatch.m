@@ -1775,6 +1775,19 @@ shouldChangeTextInRange:(NSRange)range
         [self showMatch];
         return;
     }
+    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"<u>Score</u>"].location == NSNotFound))
+    {
+        NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+        NSString *href = @"";
+        for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+        {
+            href = [dict objectForKey:@"action"];
+        }
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next&commit=1", href];
+
+        [self showMatch];
+        return;
+    }
 
     self.matchName.text = @"";
     
