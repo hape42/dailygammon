@@ -1281,6 +1281,11 @@
         self.playerChat.text = @"";
         self.answerMessage.text = @"";
     }
+    if (!([self.finishedMatchChat.text rangeOfString:@"You may chat with"].location == NSNotFound))
+    {
+        self.finishedMatchChat.text = @"";
+    }
+
     return YES;
 }
 
@@ -1470,6 +1475,22 @@
 #pragma mark - finishedMatch
 - (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
 {
+    // ist es ein "finished match" ohne chat?
+
+    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"<input type=hidden name=commit value=1>"].location == NSNotFound))
+    {
+        NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+        NSString *href = @"";
+        for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
+        {
+            href = [dict objectForKey:@"action"];
+        }
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+
+        [self showMatch];
+        return;
+    }
+
     int rand = 10;
 
     UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
@@ -1539,7 +1560,8 @@
     NSString *chatString = @"";
     for( NSString *chatZeile in chatArray)
     {
-        chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
+        if(![chatZeile isEqual:[NSString stringWithFormat:@"\nYou may chat with %@ here:\n\n ", playerArray[2]]])
+            chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
     }
     self.finishedMatchChat.text = chatString;
     self.finishedMatchChat.editable = YES;
@@ -1577,16 +1599,13 @@
     {
         [removeView removeFromSuperview];
     }
-    NSString *nextButtonText = @"Next%%20Game";
-    if( [finishedMatchDict objectForKey:@"NextButton"] != nil)
-        nextButtonText = [finishedMatchDict objectForKey:@"NextButton"];
-    
+
     NSString *chatString = [tools cleanChatString:self.finishedMatchChat.text];
 
     if([href isEqualToString:@""])
         matchLink = @"/bg/nextgame";
     else
-        matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1&chat=%@", href, nextButtonText, chatString];
+        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1&chat=%@", href, chatString];
     [self showMatch];
 }
 - (void)actionToTopFinishedMatch
