@@ -63,6 +63,12 @@
     x +=  diceBreite + luecke;
     
 //    UIButton *button1 = [UIButton buttonWithType:UIButtonTypeSystem];
+    for (UIView *view in [self.view subviews])
+    {
+        if(view.tag == 1)
+            [view removeFromSuperview];
+    }
+
     self.topPageButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
     self.topPageButton.tag = 1;
