@@ -609,11 +609,31 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Button Design" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bPu-Cr-gfM">
+                                <rect key="frame" x="35" y="300" width="108" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PO1-xD-Juu">
+                                <rect key="frame" x="173" y="295" width="266" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Flat"/>
+                                    <segment title="Gradient"/>
+                                    <segment title="Combined"/>
+                                </segments>
+                                <connections>
+                                    <action selector="buttonDesignAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="R7e-dl-dlU"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
                         <outlet property="boardSchemeButton" destination="kgI-mC-1eZ" id="y6t-Kd-5pj"/>
+                        <outlet property="buttonDesignOutlet" destination="PO1-xD-Juu" id="Zlq-Na-Kvb"/>
                         <outlet property="iCloudConnected" destination="Uwa-p5-v2v" id="RzB-iI-Lt4"/>
                         <outlet property="iCloudOutlet" destination="eRu-eO-SOx" id="aYS-Pm-zrl"/>
                         <outlet property="preferencesButton" destination="gas-do-YXg" id="cro-GA-nKs"/>
@@ -623,7 +643,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Onj-fl-ZUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1657.3943661971832" y="-99.375"/>
+            <point key="canvasLocation" x="-1657.4514038876891" y="-99.53271028037382"/>
         </scene>
         <!--LoginVC-->
         <scene sceneID="JUx-7f-xny">
@@ -747,7 +767,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
-                                <rect key="frame" x="18" y="12" width="500" height="51"/>
+                                <rect key="frame" x="18" y="11.999999999999996" width="500" height="50.666666666666657"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="500" id="jL6-r1-whc"/>
                                 </constraints>
@@ -764,7 +784,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tqh-Bf-z22">
-                                <rect key="frame" x="38" y="75" width="852" height="210"/>
+                                <rect key="frame" x="38" y="74.666666666666671" width="852" height="210.33333333333331"/>
                                 <color key="backgroundColor" systemColor="systemGray5Color"/>
                                 <string key="text">You are missing a feature?
 You have found a bug?

@@ -82,7 +82,7 @@
                       @"design" : @"Jutta Schneider",
                       @"colorLight" : @"Light",
                       @"colorDark"  : @"Dark"},
-                nil];
+               nil];
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
@@ -291,11 +291,11 @@
     [self.myColor setTitle:[dict objectForKey:@"colorDark"] forSegmentAtIndex:1];
     [self.myColor setTitle:[dict objectForKey:@"colorLight"] forSegmentAtIndex:2];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
     self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
 
     [self.tableView reloadData];
 }

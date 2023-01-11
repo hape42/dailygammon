@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UISwitch *showWinLossOutlet;
 @property (weak, nonatomic) IBOutlet DGButton *preferencesButton;
 @property (weak, nonatomic) IBOutlet UISwitch *iCloudOutlet;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *buttonDesignOutlet;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 
 @end
@@ -61,6 +62,10 @@
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
     else
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
+    
+    int buttonDesign = [[[NSUserDefaults standardUserDefaults] valueForKey:@"buttonDesign"]intValue];
+    self.buttonDesignOutlet.selectedSegmentIndex = buttonDesign;
+
 }
 - (IBAction)doneAction:(id)sender
 {
@@ -195,6 +200,12 @@
         [self.navigationController pushViewController:vc animated:NO];
     }
 
+}
+- (IBAction)buttonDesignAction:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"buttonDesign"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonDesign" object:self];
 }
 
 @end
