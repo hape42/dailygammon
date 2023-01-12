@@ -9,14 +9,62 @@
 #ifndef HeaderTest_h
 #define HeaderTest_h
 
+/*
+update toppagebutton parameter self.view
+headerview mit tag
+ self.view übergeben
+ 
+ subview durchgehen, bis headerview gefunden ist
+ dann alle subviews von headerview durchgehen bis call button mit tag 1 gefunden ist
+ löschen
+ neuer button mit frame von gelschtem
+ count reinschreiben
+*/
+-(void)updateMatchCount:(UIView *)view
+{
+    
+    CGRect frame = self.topPageButton.frame;
 
+    UIView *headerView;
+    for (UIView *subView in [view subviews])
+    {
+        if(subView.tag == 42)
+        {
+            headerView = subView;
+            for (UIView *subSubView in [subView subviews])
+            {
+                if ([subSubView isKindOfClass:[DGButton class]])
+                {
+                    if(subSubView.tag == 1)
+                    {
+                        [subSubView removeFromSuperview];
+                    }
+                }
+            }
+
+        }
+    }
+    
+    self.topPageButton = [[DGButton alloc] initWithFrame:frame];
+    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+    self.topPageButton.tag = 1;
+    [headerView addSubview:self.topPageButton];
+}
 -(UIView *)makeHeader
 {
     design = [[Design alloc] init];
     tools = [[Tools alloc] init];
 
+    for (UIView *subView in [self.view subviews])
+    {
+        if(subView.tag == 42)
+        {
+            return nil;
+        }
+    }
     int maxBreite = [UIScreen mainScreen].bounds.size.width;
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(20, 20, maxBreite - 40, 50)];
+    headerView.tag = 42;
     
     int x = 0;
     int y = 5;

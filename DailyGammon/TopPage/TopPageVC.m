@@ -136,7 +136,11 @@
 -(void) reDrawHeader
 {
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
+    {
+        UIView *header = [self makeHeader];
+        if(header)
+            [self.view addSubview:header];
+    }
     else
     {
         int maxBreite = [UIScreen mainScreen].bounds.size.width;
@@ -683,8 +687,9 @@ didCompleteWithError:(NSError *)error
         self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
 
     }
-    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", (int)self.topPageArray.count] forState: UIControlStateNormal];
 
+    [self updateMatchCount:self.view];
+    
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-dd"];
     NSString *dateDB = [format stringFromDate:[NSDate date]];

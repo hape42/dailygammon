@@ -186,7 +186,8 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
-        [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+        [self updateMatchCount:self.view];
+
     }
 }
 

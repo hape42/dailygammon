@@ -187,8 +187,7 @@
 
 - (void) showMatchCount
 {
-    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", self.matchCount] forState: UIControlStateNormal];
-//    XLog(@"matchCount %d  ",  self.matchCount);
+    [self updateMatchCount:self.view];
 }
 -(void)showMatch
 {
