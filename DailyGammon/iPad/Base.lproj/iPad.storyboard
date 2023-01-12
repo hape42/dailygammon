@@ -595,12 +595,13 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="XXI-Hw-2aS">
-                                <rect key="frame" x="158" y="265" width="266" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="158" y="265" width="319" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Flat"/>
                                     <segment title="Gradient"/>
                                     <segment title="Combined"/>
+                                    <segment title="Karlheinz"/>
                                 </segments>
                                 <connections>
                                     <action selector="buttonDesignAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="zqH-Hz-e8f"/>
@@ -631,7 +632,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Onj-fl-ZUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1454" y="-435"/>
+            <point key="canvasLocation" x="-1454.296875" y="-435.15625"/>
         </scene>
         <!--Player-->
         <scene sceneID="cg8-0z-Exa">

@@ -9,17 +9,6 @@
 #ifndef HeaderTest_h
 #define HeaderTest_h
 
-/*
-update toppagebutton parameter self.view
-headerview mit tag
- self.view übergeben
- 
- subview durchgehen, bis headerview gefunden ist
- dann alle subviews von headerview durchgehen bis call button mit tag 1 gefunden ist
- löschen
- neuer button mit frame von gelschtem
- count reinschreiben
-*/
 -(void)updateMatchCount:(UIView *)view
 {
     

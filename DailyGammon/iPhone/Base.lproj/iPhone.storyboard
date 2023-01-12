@@ -617,12 +617,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PO1-xD-Juu">
-                                <rect key="frame" x="173" y="295" width="266" height="32"/>
+                                <rect key="frame" x="173" y="295" width="362" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Flat"/>
                                     <segment title="Gradient"/>
                                     <segment title="Combined"/>
+                                    <segment title="Karlheinz"/>
                                 </segments>
                                 <connections>
                                     <action selector="buttonDesignAction:" destination="dOO-GA-B0a" eventType="valueChanged" id="R7e-dl-dlU"/>

@@ -78,7 +78,9 @@
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
             [self.layer insertSublayer:gradient below:self.titleLabel.layer];
-
+            break;
+        case 3:
+            self.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientEdge"];
             break;
 
         default:
@@ -156,6 +158,11 @@
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
             [self.layer insertSublayer:gradient below:self.titleLabel.layer];
+
+            break;
+        case 3:
+            self.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientEdge"];
+            self.layer.borderWidth = 0;
 
             break;
 
