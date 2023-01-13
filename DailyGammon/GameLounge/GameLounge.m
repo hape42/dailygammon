@@ -503,8 +503,6 @@ didCompleteWithError:(NSError *)error
         else
         {
             button = [[DGButton alloc]initWithFrame:CGRectMake(x + ((signUpWidth )/2) - 75  , 5, 150 , 35)];
-
-            button = (DGButton *)[design makeReverseButton:button];
         }
 
         [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
