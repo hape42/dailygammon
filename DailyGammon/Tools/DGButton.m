@@ -70,6 +70,8 @@
         case 0:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
+            self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
             break;
         case 1:
             [self.layer insertSublayer:gradient below:self.titleLabel.layer];
@@ -147,7 +149,7 @@
         case 0:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
-            self.backgroundColor = [UIColor clearColor];
+            self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
             break;
         case 1:
             self.layer.borderWidth = 0;
