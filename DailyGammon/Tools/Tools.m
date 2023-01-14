@@ -107,8 +107,9 @@ typedef void(^connection)(BOOL);
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
     
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
+//    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
+    
+    NSString *htmlString = [[NSString alloc]
                   initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
