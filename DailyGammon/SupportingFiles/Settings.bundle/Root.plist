@@ -23,16 +23,18 @@
             <string>1</string>
             <key>Titles</key>
             <array>
-                <string>Flat</string>
-                <string>3D</string>
+                <string>Outline</string>
+                <string>Gradient</string>
                 <string>Combined</string>
+                <string>Flat</string>
             </array>
             <key>Values</key>
             <array>
                 <string>0</string>
                 <string>1</string>
                 <string>2</string>
-            </array>
+                <string>3</string>
+           </array>
         </dict>
 		<dict>
 			<key>Type</key>

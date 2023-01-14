@@ -36,6 +36,7 @@
     
     self.topPageButton = [[DGButton alloc] initWithFrame:frame];
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+    [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     self.topPageButton.tag = 1;
     [headerView addSubview:self.topPageButton];
 }
