@@ -277,6 +277,19 @@ didCompleteWithError:(NSError *)error
 -(void)readTopPage
 {
     XLog(@"readTopPage");
+//    int lastTopPageTime = [[[NSUserDefaults standardUserDefaults] valueForKey:@"lastTopPageTime"]intValue];
+//    NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
+//    
+//    int secondsSinceLastTry = timeStamp - lastTopPageTime;
+//    if(secondsSinceLastTry > (60 * 1))
+//    {
+//        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt: timeStamp] forKey:@"lastTopPageTime"];
+//    }
+//    else
+//    {
+//        XLog(@"pressed unnecessarily or too early %d",secondsSinceLastTry );
+//        return;
+//    }
     [self.indicator startAnimating];
 
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];

@@ -86,6 +86,7 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
     }
+    XLog(@"applicationWillEnterForeground");
 
 }
 
@@ -96,6 +97,8 @@
     {
         [SKStoreReviewController requestReview] ;
     }
+    XLog(@"applicationDidBecomeActive");
+
 }
 
 

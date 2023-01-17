@@ -82,7 +82,22 @@
                       @"design" : @"Jutta Schneider",
                       @"colorLight" : @"Light",
                       @"colorDark"  : @"Dark"},
-               nil];
+//                   @{ @"number" : [NSNumber numberWithInt:9],
+//                      @"name" : @"Golf",
+//                      @"design" : @"Jutta Schneider",
+//                      @"colorLight" : @"Light",
+//                      @"colorDark"  : @"Dark"},
+//                   @{ @"number" : [NSNumber numberWithInt:10],
+//                      @"name" : @"Snooker",
+//                      @"design" : @"Jutta Schneider",
+//                      @"colorLight" : @"Light",
+//                      @"colorDark"  : @"Dark"},
+//                   @{ @"number" : [NSNumber numberWithInt:11],
+//                      @"name" : @"Billiard",
+//                      @"design" : @"Jutta Schneider",
+//                      @"colorLight" : @"Light",
+//                      @"colorDark"  : @"Dark"},
+              nil];
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;

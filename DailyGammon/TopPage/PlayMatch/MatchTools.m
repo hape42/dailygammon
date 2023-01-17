@@ -117,11 +117,19 @@
     UIImage *boardImage = [UIImage imageNamed:[NSString stringWithFormat:@"%d/background",schema]] ;
     if(boardImage != nil)
     {
-        UIGraphicsBeginImageContext(boardView.frame.size);
-        [boardImage drawInRect:boardView.bounds];
-        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        boardView.backgroundColor = [UIColor colorWithPatternImage:image];
+        float imageWidth  = (6 * checkerWidth) + barWidth + (6 * checkerWidth);
+        float imageHeight = pointsHeight + indicatorHeight + checkerWidth + indicatorHeight + pointsHeight;
+        UIImageView *bordImageView = [[UIImageView alloc] initWithFrame:CGRectMake(cubeWidth,
+                                                                          numberHeight,
+                                                                          imageWidth,
+                                                                          imageHeight)];
+        bordImageView.image = boardImage;
+        [boardView addSubview:bordImageView];
+//        UIGraphicsBeginImageContext(boardView.frame.size);
+//        [boardImage drawInRect:boardView.bounds];
+//        UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+//        UIGraphicsEndImageContext();
+//        boardView.backgroundColor = [UIColor colorWithPatternImage:image];
     }
     NSMutableArray *moveArray = [[NSMutableArray alloc]init];
 

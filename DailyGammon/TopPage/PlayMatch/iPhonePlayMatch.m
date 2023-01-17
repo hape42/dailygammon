@@ -144,7 +144,7 @@
     matchTools = [[MatchTools alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+ //   [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
 
 //    [self.view addSubview:self.matchName];
