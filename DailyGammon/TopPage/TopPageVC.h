@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
+@property (readwrite, assign, atomic) int timeRefresh;
+
 @end
 
 NS_ASSUME_NONNULL_END

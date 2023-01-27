@@ -65,6 +65,7 @@
 @implementation TopPageVC
 
 @synthesize design, preferences, rating, tools, ratingTools;
+@synthesize timeRefresh;
 
 - (void)viewDidLoad
 {
@@ -88,6 +89,8 @@
     tools       = [[Tools alloc] init];
     ratingTools = [[RatingTools alloc] init];
 
+    timeRefresh = 60;
+    
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
@@ -197,6 +200,8 @@
     [task resume];
     [self reDrawHeader];
 
+    XLog(@"viewWillAppear");
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -204,6 +209,11 @@
     [super viewDidAppear:animated];
     [self reDrawHeader];
     [self updateTableView];
+    
+    [ self readTopPage];
+
+    XLog(@"viewDidAppear");
+
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -234,6 +244,7 @@ didReceiveResponse:(NSURLResponse *)response
               task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
+    XLog(@"URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error");
     if (error)
     {
         XLog(@"Connection didFailWithError %@", error.localizedDescription);
@@ -268,7 +279,7 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
-        [ self readTopPage];
+ //       [ self readTopPage];
     }
 }
 
@@ -1142,9 +1153,33 @@ didCompleteWithError:(NSError *)error
 }
 - (IBAction)refreshAction:(id)sender
 {
+//    [self readTopPage];
+//    [self reDrawHeader];
+    [NSTimer scheduledTimerWithTimeInterval:60.0f
+    target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
+    timeRefresh = 60;
+    [NSTimer scheduledTimerWithTimeInterval:1.0f
+    target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
+
+}
+
+- (void)automaticRefresh
+{
+    XLog(@"automaticRefresh %ld", self.topPageArray.count);
     [self readTopPage];
     [self reDrawHeader];
+    timeRefresh = 60;
+
 }
+
+-(void)updateRefreshButton
+{
+    if(timeRefresh-- < 0)
+        timeRefresh = 60;
+    self.refreshButton.title = [NSString stringWithFormat:@"%d", timeRefresh];
+    [self.refreshButtonIPAD setTitle:[NSString stringWithFormat:@"%d", timeRefresh] forState: UIControlStateNormal];
+}
+
 #pragma mark - Header
 #include "HeaderInclude.h"
 

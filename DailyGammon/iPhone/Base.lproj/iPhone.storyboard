@@ -231,7 +231,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="TopPage" largeTitleDisplayMode="never" id="SDM-yF-cjv">
-                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="vsw-HK-ZAM">
+                        <barButtonItem key="leftBarButtonItem" title="Refresh" id="vsw-HK-ZAM">
                             <connections>
                                 <action selector="refreshAction:" destination="BYZ-38-t0r" id="R4F-zn-DBU"/>
                             </connections>

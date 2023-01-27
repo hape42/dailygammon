@@ -903,7 +903,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -962,7 +962,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
@@ -985,7 +985,7 @@
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -994,7 +994,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.4.4;
+				MARKETING_VERSION = 1.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1012,7 +1012,7 @@
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1021,7 +1021,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.4.4;
+				MARKETING_VERSION = 1.4.5;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

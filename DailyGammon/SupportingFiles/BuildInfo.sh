@@ -29,7 +29,7 @@ echo -e "DGCommit set to $gitHash"
 settingPlist="${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Settings.bundle/Root.plist"
 if [ -f "${settingPlist}" ]
 then
-    /usr/libexec/PlistBuddy -c "set PreferenceSpecifiers:5:DefaultValue $appVersion ($appBuild)" "${settingPlist}"
+    /usr/libexec/PlistBuddy -c "set PreferenceSpecifiers:7:DefaultValue $appVersion ($appBuild)" "${settingPlist}"
     echo -e "Settings.bundle set to $appVersion ($appBuild)"
 else
     echo -e "Can't find the settings' plist: ${settingPlist}"
