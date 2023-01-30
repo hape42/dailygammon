@@ -1,12 +1,11 @@
 {
   "images" : [
     {
-      "filename" : "checker_lt_4.png",
+      "filename" : "light2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "checker_lt_4_2X.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
