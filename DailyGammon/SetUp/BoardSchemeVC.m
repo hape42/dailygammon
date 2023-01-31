@@ -172,6 +172,7 @@
       
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
+    if(boardSchema > self.boardsArray.count) boardSchema = 4;
     NSDictionary *dict = self.boardsArray[boardSchema-1];
 
     [self.myColor setTitle:[dict objectForKey:@"colorDark"] forSegmentAtIndex:1];
