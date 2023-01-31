@@ -97,6 +97,11 @@
 //                      @"design" : @"Jutta Schneider",
 //                      @"colorLight" : @"Light",
 //                      @"colorDark"  : @"Dark"},
+                   @{ @"number" : [NSNumber numberWithInt:12],
+                      @"name" : @"Steampunk",
+                      @"design" : @"darkhelmet",
+                      @"colorLight" : @"Light",
+                      @"colorDark"  : @"Dark"},
               nil];
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
