@@ -8,16 +8,19 @@
 
 #import "AppDelegate.h"
 #import "Design.h"
+#import "Tools.h"
 #import "DBConnect.h"
 #import <StoreKit/StoreKit.h>
+#import <BackgroundTasks/BackgroundTasks.h>
+#import <UserNotifications/UserNotifications.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
 @end
 
 @implementation AppDelegate
 
-@synthesize design, activeStoryBoard;
+@synthesize design,tools ,activeStoryBoard;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -34,6 +37,7 @@
     [self.window makeKeyAndVisible];
 
     design = [[Design alloc] init];
+    tools = [[Tools alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     if(schemaDict.count == 0)
@@ -54,6 +58,16 @@
     [[NSUserDefaults standardUserDefaults] setInteger:aboutCount+1 forKey:@"AboutCount"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    [UNUserNotificationCenter currentNotificationCenter].delegate = self;
+    UNAuthorizationOptions authOptions =
+    UNAuthorizationOptionAlert
+    | UNAuthorizationOptionSound
+    | UNAuthorizationOptionBadge;
+    [[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:authOptions completionHandler:^(BOOL granted, NSError * _Nullable error) {
+    }];
+
+    [self configureProcessingTask];
+
     return YES;
 }
 
@@ -67,6 +81,9 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    [self scheduleProcessingTask];
+
 }
 
 
@@ -86,7 +103,6 @@
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationDidBecomeActive" object:self];
     }
-    XLog(@"applicationWillEnterForeground");
 
 }
 
@@ -97,7 +113,6 @@
     {
         [SKStoreReviewController requestReview] ;
     }
-    XLog(@"applicationDidBecomeActive");
 
 }
 
@@ -118,4 +133,68 @@
     return _dbConnect;
 }
 
+static NSString* backgroundTask = @"com.dailygammon.TopPage";
+
+-(void)configureProcessingTask
+{
+    [[BGTaskScheduler sharedScheduler] registerForTaskWithIdentifier:backgroundTask
+                                                          usingQueue:nil
+                                                       launchHandler:^(BGTask *task) {
+        [self handleProcessingTask:task];
+    }];
+}
+
+-(void)handleProcessingTask:(BGTask *)task
+{
+    int count = [tools matchCount];
+    //do things with task
+    XLog(@"%d Matches to play", count);
+    [self scheduleProcessingTask];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+    });
+
+    UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
+    content.title = [NSString localizedUserNotificationStringForKey:@"Dailygammon" arguments:nil];
+    content.body = [NSString stringWithFormat:@"There are %d Matches where you can move", count];
+    content.sound = [UNNotificationSound defaultSound];
+     
+    // Deliver the notification in five seconds.
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger
+                triggerWithTimeInterval:5 repeats:NO];
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"FiveSecond"
+                content:content trigger:trigger];
+     
+    // Schedule the notification.
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:request withCompletionHandler:nil];
+
+    [task setTaskCompletedWithSuccess:YES];
+    return;
+}
+
+-(void)scheduleProcessingTask
+{
+    NSError *error = NULL;
+    // cancel existing task (if any)
+    [BGTaskScheduler.sharedScheduler cancelTaskRequestWithIdentifier:backgroundTask];
+    // new task
+    BGProcessingTaskRequest *request = [[BGProcessingTaskRequest alloc] initWithIdentifier:backgroundTask];
+    request.requiresNetworkConnectivity = YES;
+    request.earliestBeginDate = [NSDate dateWithTimeIntervalSinceNow:5];
+    BOOL success = [[BGTaskScheduler sharedScheduler] submitTaskRequest:request error:&error];
+    if (!success)
+    {
+        // Errorcodes https://stackoverflow.com/a/58224050/872051
+        XLog(@"Failed to submit request: %@", error);
+    } else
+    {
+        int count = [tools matchCount];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+        });
+
+        XLog(@"Badge=%d, Success submit request %@",count, request);
+        }
+}
 @end

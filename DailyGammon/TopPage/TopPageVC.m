@@ -380,7 +380,8 @@ didCompleteWithError:(NSError *)error
 
         [self.topPageArray addObject:topPageZeile];
     }
-    [self updateTableView];
+    if(self.topPageArray.count > 0)
+        [self updateTableView];
     
 }
 
