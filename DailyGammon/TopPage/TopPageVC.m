@@ -65,7 +65,7 @@
 @implementation TopPageVC
 
 @synthesize design, preferences, rating, tools, ratingTools;
-@synthesize timeRefresh;
+@synthesize timeRefresh, refreshButtonPressed;
 
 - (void)viewDidLoad
 {
@@ -200,8 +200,6 @@
     [task resume];
     [self reDrawHeader];
 
-    XLog(@"viewWillAppear");
-
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -211,9 +209,8 @@
     [self updateTableView];
     
     [ self readTopPage];
-
-    XLog(@"viewDidAppear");
-
+    refreshButtonPressed = NO;
+    
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -244,7 +241,6 @@ didReceiveResponse:(NSURLResponse *)response
               task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
-    XLog(@"URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error");
     if (error)
     {
         XLog(@"Connection didFailWithError %@", error.localizedDescription);
@@ -253,10 +249,6 @@ didCompleteWithError:(NSError *)error
 
     for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
     {
-//        XLog(@"name: '%@'\n",   [cookie name]);
-//        XLog(@"value: '%@'\n",  [cookie value]);
-//        XLog(@"domain: '%@'\n", [cookie domain]);
-//        XLog(@"path: '%@'\n",   [cookie path]);
         if([[cookie name] isEqualToString:@"USERID"])
             [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
 
@@ -269,7 +261,6 @@ didCompleteWithError:(NSError *)error
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
-    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -287,20 +278,6 @@ didCompleteWithError:(NSError *)error
 
 -(void)readTopPage
 {
-    XLog(@"readTopPage");
-//    int lastTopPageTime = [[[NSUserDefaults standardUserDefaults] valueForKey:@"lastTopPageTime"]intValue];
-//    NSTimeInterval timeStamp = [[NSDate date] timeIntervalSince1970];
-//    
-//    int secondsSinceLastTry = timeStamp - lastTopPageTime;
-//    if(secondsSinceLastTry > (60 * 1))
-//    {
-//        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt: timeStamp] forKey:@"lastTopPageTime"];
-//    }
-//    else
-//    {
-//        XLog(@"pressed unnecessarily or too early %d",secondsSinceLastTry );
-//        return;
-//    }
     [self.indicator startAnimating];
 
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
@@ -359,15 +336,11 @@ didCompleteWithError:(NSError *)error
 
             for (TFHppleElement *child in element.children)
             {
-//                XLog(@"Child %@", child);
-
                 if ([child.tagName isEqualToString:@"a"])
                 {
                    // NSDictionary *href = [child attributes];
                     [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
                     [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-
-//                    XLog(@"gefunden %@", [child attributes]);
                 }
                 else
                 {
@@ -376,7 +349,6 @@ didCompleteWithError:(NSError *)error
             }
             [topPageZeile addObject:topPageZeileSpalte];
         }
-//        XLog(@"%@", topPageZeile);
 
         [self.topPageArray addObject:topPageZeile];
     }
@@ -414,8 +386,6 @@ didCompleteWithError:(NSError *)error
         cellContentView.layer.transform = CATransform3DIdentity;
         cellContentView.layer.opacity = 1;
     } completion:^(BOOL finished) {}];
-   // cell.backgroundColor = [UIColor redColor];
-  //  cell.contentView.backgroundColor = [UIColor redColor];
     cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
     return;
@@ -1154,23 +1124,22 @@ didCompleteWithError:(NSError *)error
 }
 - (IBAction)refreshAction:(id)sender
 {
-//    [self readTopPage];
-//    [self reDrawHeader];
-    [NSTimer scheduledTimerWithTimeInterval:60.0f
-    target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
-    timeRefresh = 60;
-    [NSTimer scheduledTimerWithTimeInterval:1.0f
-    target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
-
+    if(!refreshButtonPressed)
+    {
+        [NSTimer scheduledTimerWithTimeInterval:60.0f
+                                         target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
+        timeRefresh = 60;
+        [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                         target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
+        refreshButtonPressed = YES;
+    }
 }
 
 - (void)automaticRefresh
 {
-    XLog(@"automaticRefresh %ld", self.topPageArray.count);
     [self readTopPage];
     [self reDrawHeader];
     timeRefresh = 60;
-
 }
 
 -(void)updateRefreshButton
