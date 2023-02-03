@@ -195,6 +195,6 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
         });
 
         XLog(@"Badge=%d, Success submit request %@",count, request);
-        }
+    }
 }
 @end
