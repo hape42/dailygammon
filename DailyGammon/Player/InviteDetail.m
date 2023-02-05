@@ -17,6 +17,7 @@
 #import "iPhoneMenue.h"
 #import <SafariServices/SafariServices.h>
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface InviteDetail ()
 

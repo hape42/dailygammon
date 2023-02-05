@@ -26,6 +26,7 @@
 #import "LoginVC.h"
 #import "About.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface RatingVC ()
 

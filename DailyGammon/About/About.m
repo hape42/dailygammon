@@ -24,6 +24,7 @@
 #import <SafariServices/SafariServices.h>
 #import "iPhoneMenue.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface About ()<NSURLSessionDataDelegate>
 

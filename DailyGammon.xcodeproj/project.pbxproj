@@ -14,6 +14,7 @@
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
 		E035538F298987CC002C820C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538E298987CB002C820C /* NotificationCenter.framework */; };
+		E0355393298E775C002C820C /* PlayerLists.m in Sources */ = {isa = PBXBuildFile; fileRef = E0355392298E775C002C820C /* PlayerLists.m */; };
 		E038E502273D67050087C4A4 /* RatingTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E038E501273D67050087C4A4 /* RatingTools.m */; };
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
@@ -96,6 +97,8 @@
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
 		E035538C29898798002C820C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		E035538E298987CB002C820C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		E0355391298E7743002C820C /* PlayerLists.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerLists.h; sourceTree = "<group>"; };
+		E0355392298E775C002C820C /* PlayerLists.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerLists.m; sourceTree = "<group>"; };
 		E038E4FF273D40930087C4A4 /* DailyGammon.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyGammon.entitlements; sourceTree = "<group>"; };
 		E038E500273D67050087C4A4 /* RatingTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RatingTools.h; sourceTree = "<group>"; };
 		E038E501273D67050087C4A4 /* RatingTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RatingTools.m; sourceTree = "<group>"; };
@@ -309,6 +312,15 @@
 				E00EB16821C633580088501C /* Match.m */,
 			);
 			path = ParseDG;
+			sourceTree = "<group>";
+		};
+		E0355390298E694C002C820C /* PlayerLists */ = {
+			isa = PBXGroup;
+			children = (
+				E0355391298E7743002C820C /* PlayerLists.h */,
+				E0355392298E775C002C820C /* PlayerLists.m */,
+			);
+			path = PlayerLists;
 			sourceTree = "<group>";
 		};
 		E06E1C5421B7B2DE003B310F /* SetUp */ = {
@@ -602,6 +614,7 @@
 				E083BAE822B3A2E50035A71E /* Player */,
 				E09871E1293366760043DC8A /* GameLounge */,
 				E09871E52938B91A0043DC8A /* About */,
+				E0355390298E694C002C820C /* PlayerLists */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
@@ -809,6 +822,7 @@
 				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
 				E0AC594922270F5600367EE9 /* RatingVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
+				E0355393298E775C002C820C /* PlayerLists.m in Sources */,
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,

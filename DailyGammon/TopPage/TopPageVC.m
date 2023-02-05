@@ -26,6 +26,7 @@
 #import <SafariServices/SafariServices.h>
 #import "About.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
@@ -283,6 +284,15 @@ didCompleteWithError:(NSError *)error
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
 
+    if(topPageHtmlData == nil)
+    {
+        [self.indicator stopAnimating];
+        self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
+        self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
+
+        return;
+
+    }
     NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
     htmlString = [[NSString alloc]
                   initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];

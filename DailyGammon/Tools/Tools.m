@@ -132,7 +132,7 @@ typedef void(^connection)(BOOL);
     
     queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
     NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
-    
+    int count = MAX(0,(int)zeilen.count - 1 );
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = (int)zeilen.count - 1;
     });

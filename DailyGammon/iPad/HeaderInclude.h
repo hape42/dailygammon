@@ -68,7 +68,7 @@
         countDB = 99;
 
     int minDB = 5;
-    int anzahlButtons = 7;
+    int anzahlButtons = 8;
     if(countDB > minDB)
         anzahlButtons += 1;
     int headerBreite = headerView.frame.size.width;
@@ -164,6 +164,13 @@
     
     x += buttonBreite + luecke;
 
+    DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];
+    [button9 setTitle:@"Lists" forState: UIControlStateNormal];
+    button9.tag = 9;
+    [button9 addTarget:self action:@selector(lists) forControlEvents:UIControlEventTouchUpInside];
+    
+    x += buttonBreite + luecke;
+
     [headerView addSubview:diceView];
     
     [headerView addSubview:self.topPageButton];
@@ -175,6 +182,7 @@
     if(countDB > minDB)
         [headerView addSubview:button7];
     [headerView addSubview:button8];
+    [headerView addSubview:button9];
 
     return headerView;
 }
@@ -264,5 +272,13 @@
 
 }
 
+- (void)lists
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+}
 
 #endif /* HeaderTest_h */

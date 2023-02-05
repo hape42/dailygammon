@@ -24,6 +24,7 @@
 #import "Constants.h"
 #import "MatchTools.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
@@ -595,8 +596,11 @@
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
   
     DGButton *buttonOpponent = [returnDict objectForKey:@"buttonOpponent"];
-    [buttonOpponent addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonOpponent addTarget:self action:@selector(opponent:) forControlEvents:UIControlEventTouchUpInside];
     
+    UIButton *buttonPlayer = [returnDict objectForKey:@"buttonPlayer"];
+    [buttonPlayer addTarget:self action:@selector(playerLists:) forControlEvents:UIControlEventTouchUpInside];
+
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
@@ -1328,9 +1332,18 @@ case ROLL:
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
-#pragma mark - player
+#pragma mark - player details
 
-- (void)player:(DGButton*)sender
+- (void)playerLists:(UIButton*)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
+- (void)opponent:(UIButton*)sender
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     

@@ -19,6 +19,7 @@
 #import "Player.h"
 #import "GameLounge.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface iPhoneMenue ()
 
@@ -154,6 +155,11 @@
     
     x += buttonBreite + luecke;
 
+    DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, 35)];
+    [button9 setTitle:@"Lists" forState: UIControlStateNormal];
+    button9.tag = 9;
+    [button9 addTarget:self action:@selector(lists) forControlEvents:UIControlEventTouchUpInside];
+
     [self.view addSubview:diceView];
     
     [self.view addSubview:button1];
@@ -165,6 +171,7 @@
     if(countDB > minDB)
         [self.view addSubview:button7];
     [self.view addSubview:button8];
+    [self.view addSubview:button9];
 
 }
 -(void) ratingVC
@@ -243,5 +250,13 @@
     }
 }
 
+- (void)lists
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+}
 
 @end

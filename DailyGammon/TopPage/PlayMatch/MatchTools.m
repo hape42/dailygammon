@@ -1031,6 +1031,12 @@
     playerName = [design makeLabelColor:playerName forColor:[boardDict objectForKey:@"playerColor"]  forPlayer:YES];
     playerName = [design makeNiceLabel:playerName];
     [playerName setTextAlignment:NSTextAlignmentCenter];
+    
+    DGButton *buttonPlayer = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, playerName.frame.size.width - 100, playerName.frame.size.height - 4)] ;
+    [buttonPlayer setTitle:playerArray[0] forState: UIControlStateNormal];
+    [buttonPlayer.layer setValue:opponentArray[0] forKey:@"name"];
+    [playerView addSubview:buttonPlayer];
+
     playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
@@ -1055,6 +1061,7 @@
     [returnDict setObject:opponentView forKey:@"opponentView"];
 
     [returnDict setObject:buttonOpponent forKey:@"buttonOpponent"];
+    [returnDict setObject:buttonPlayer forKey:@"buttonPlayer"];
 
     return returnDict;
 

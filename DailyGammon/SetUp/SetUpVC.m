@@ -15,6 +15,7 @@
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface SetUpVC ()
 

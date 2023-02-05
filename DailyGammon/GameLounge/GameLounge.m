@@ -23,6 +23,7 @@
 #import "iPhoneMenue.h"
 #import "About.h"
 #import "DGButton.h"
+#import "PlayerLists.h"
 
 @interface GameLounge ()
 
