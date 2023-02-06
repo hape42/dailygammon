@@ -397,6 +397,75 @@ didCompleteWithError:(NSError *)error
     [self updateTableView];
 }
 
+-(void)finishedMatches
+{
+    [self.indicator startAnimating];
+
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?days_to_view=30&active=1&finished=1", userID]];
+    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
+
+    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
+    self.listArray = [[NSMutableArray alloc]init];
+
+
+    // Create parser
+    
+    //    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
+    
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+    //Get all the cells of the 2nd row of the 3rd table
+    //        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[3]/tr[2]/td"];
+    int tableNo = 4;
+    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+    self.listHeaderArray = [[NSMutableArray alloc]init];
+
+    for(TFHppleElement *element in elementHeader)
+    {
+        //            XLog(@"%@",[element text]);
+        [self.listHeaderArray addObject:[element text]];
+    }
+    self.listArray = [[NSMutableArray alloc]init];
+    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+    for(int row = 2; row <= rows.count; row ++)
+    {
+        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
+
+        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+        for(TFHppleElement *element in elementZeile)
+        {
+            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+            for (TFHppleElement *child in element.children)
+            {
+                if ([child.tagName isEqualToString:@"a"])
+                {
+                   // NSDictionary *href = [child attributes];
+                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                }
+                else
+                {
+                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                }
+            }
+            [topPageZeile addObject:topPageZeileSpalte];
+        }
+
+        [self.listArray addObject:topPageZeile];
+    }
+    [self updateTableView];
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
 {
@@ -601,6 +670,81 @@ didCompleteWithError:(NSError *)error
        }
             break;
         case 3:
+        {
+            float numberWidth   = cellWidth *.05;
+            float eventWidth    = cellWidth *.3;
+            float roundWidth    = cellWidth *.05;
+            float lengthWidth   = cellWidth *.05;
+            float opponentWidth = cellWidth *.3;
+            float reviewWidth   = cellWidth *.15;
+
+            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
+            numberLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *number = row[0];
+            numberLabel.text = [number objectForKey:@"Text"];
+            
+            x += numberWidth;
+            
+            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
+            eventLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *event = row[1];
+            eventLabel.text = [event objectForKey:@"Text"];
+            eventLabel.adjustsFontSizeToFitWidth = YES;
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+
+            x += eventWidth;
+                        
+            UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundWidth,labelHeight)];
+            roundLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *round = row[2];
+            roundLabel.text = [round objectForKey:@"Text"];
+            roundLabel.adjustsFontSizeToFitWidth = YES;
+            
+            x += roundWidth;
+            
+            UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,labelHeight)];
+            lengthLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *length = row[3];
+            lengthLabel.text = [length objectForKey:@"Text"];
+            lengthLabel.adjustsFontSizeToFitWidth = YES;
+            
+            x += lengthWidth;
+            
+            NSDictionary *opponent = row[4];
+            DGButton *opponentButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,opponentWidth-6,labelHeight-6)];
+            [opponentButton setTitle:[opponent objectForKey:@"Text"] forState: UIControlStateNormal];
+            opponentButton.tag = indexPath.row;
+            [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
+            [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
+            
+            x += opponentWidth;
+            
+            DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
+            [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
+            reviewButton.tag = indexPath.row;
+            [reviewButton addTarget:self action:@selector(reviewAction:) forControlEvents:UIControlEventTouchUpInside];
+
+            x += reviewWidth;
+            
+            DGButton *exportButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
+            [exportButton setTitle:@"Export" forState: UIControlStateNormal];
+            exportButton.tag = indexPath.row;
+            [exportButton addTarget:self action:@selector(exportAction:) forControlEvents:UIControlEventTouchUpInside];
+
+            [cell.contentView addSubview:numberLabel];
+            if(event.count == 1)
+                [cell.contentView addSubview:eventLabel];
+            else
+                [cell.contentView addSubview:eventButton];
+            [cell.contentView addSubview:roundLabel];
+            [cell.contentView addSubview:lengthLabel];
+            [cell.contentView addSubview:opponentButton];
+            [cell.contentView addSubview:reviewButton];
+            [cell.contentView addSubview:exportButton];
+       }
             break;
         case 4:
             break;
@@ -644,28 +788,28 @@ didCompleteWithError:(NSError *)error
             
             x += eventWidth;
             
-            DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, graceWidth, 30)];
+            DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, graceWidth-2, 30)];
             graceLabel.textAlignment = NSTextAlignmentCenter;
             graceLabel.text = self.listHeaderArray[2];
             graceLabel.textColor = [UIColor whiteColor];
              
             x += graceWidth;
             
-            DGLabel *poolLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, poolWidth,30)];
+            DGLabel *poolLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, poolWidth-2,30)];
             poolLabel.textAlignment = NSTextAlignmentCenter;
             poolLabel.text = self.listHeaderArray[3];
             poolLabel.textColor = [UIColor whiteColor];
             
             x += poolWidth;
             
-            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, roundWidth,30)];
+            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, roundWidth-2,30)];
             roundLabel.textAlignment = NSTextAlignmentCenter;
             roundLabel.text = self.listHeaderArray[4];
             roundLabel.textColor = [UIColor whiteColor];
             
             x += roundWidth;
             
-            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , lengthWidth,30)];
+            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , lengthWidth-2,30)];
             lengthLabel.textAlignment = NSTextAlignmentCenter;
             lengthLabel.text = self.listHeaderArray[5];
             lengthLabel.textColor = [UIColor whiteColor];
@@ -720,6 +864,52 @@ didCompleteWithError:(NSError *)error
         }
             break;
         case 3:
+        {
+            float numberWidth   = cellWidth *.05;
+            float eventWidth    = cellWidth *.3;
+            float roundWidth    = cellWidth *.05;
+            float lengthWidth   = cellWidth *.05;
+            float opponentWidth = cellWidth *.3;
+            
+            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
+            numberLabel.textAlignment = NSTextAlignmentCenter;
+            numberLabel.text = self.listHeaderArray[0];
+            numberLabel.textColor = [UIColor whiteColor];
+            x += numberWidth;
+            
+            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
+            eventLabel.textAlignment = NSTextAlignmentCenter;
+            eventLabel.text = self.listHeaderArray[1];
+            eventLabel.textColor = [UIColor whiteColor];
+            
+            x += eventWidth;
+            
+            
+            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, roundWidth,30)];
+            roundLabel.textAlignment = NSTextAlignmentCenter;
+            roundLabel.text = self.listHeaderArray[2];
+            roundLabel.textColor = [UIColor whiteColor];
+            
+            x += roundWidth;
+            
+            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , lengthWidth,30)];
+            lengthLabel.textAlignment = NSTextAlignmentCenter;
+            lengthLabel.text = self.listHeaderArray[3];
+            lengthLabel.textColor = [UIColor whiteColor];
+             
+            x += lengthWidth;
+            
+            DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , opponentWidth,30)];
+            opponentLabel.textAlignment = NSTextAlignmentCenter;
+            opponentLabel.text = self.listHeaderArray[4];
+            opponentLabel.textColor = [UIColor whiteColor];
+            
+            [headerView addSubview:numberLabel];
+            [headerView addSubview:eventLabel];
+            [headerView addSubview:roundLabel];
+            [headerView addSubview:lengthLabel];
+            [headerView addSubview:opponentLabel];
+        }
             break;
         case 4:
             break;
@@ -780,7 +970,7 @@ didCompleteWithError:(NSError *)error
 - (IBAction)finishedMatches:(id)sender
 {
     listTyp = 3;
-    [self inProgress];
+    [self finishedMatches];
 
 }
 - (IBAction)tournamentWins:(id)sender
