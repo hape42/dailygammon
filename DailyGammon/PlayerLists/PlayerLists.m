@@ -336,6 +336,66 @@ didCompleteWithError:(NSError *)error
     [self updateTableView];
 }
 
+-(void)readActiveTournaments
+{
+    [self.indicator startAnimating];
+
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userevent/%@", userID]];
+    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
+
+    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
+    self.listArray = [[NSMutableArray alloc]init];
+    
+    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+    int tableNo = 2;
+    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+    self.listHeaderArray = [[NSMutableArray alloc]init];
+
+    for(TFHppleElement *element in elementHeader)
+    {
+        if([element text] != nil)
+            [self.listHeaderArray addObject:[element text]];
+    }
+    self.listArray = [[NSMutableArray alloc]init];
+    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+    for(int row = 2; row <= rows.count; row ++)
+    {
+        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
+
+        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+        for(TFHppleElement *element in elementZeile)
+        {
+            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+            for (TFHppleElement *child in element.children)
+            {
+                if ([child.tagName isEqualToString:@"a"])
+                {
+                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                }
+                else
+                {
+                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                }
+            }
+            [topPageZeile addObject:topPageZeileSpalte];
+        }
+
+        [self.listArray addObject:topPageZeile];
+    }
+    [self updateTableView];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
@@ -472,7 +532,6 @@ didCompleteWithError:(NSError *)error
             
             x += opponentWidth;
             
-            NSDictionary *review = row[7];
             DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
             [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
             reviewButton.tag = indexPath.row;
@@ -492,6 +551,54 @@ didCompleteWithError:(NSError *)error
        }
             break;
         case 2:
+        {
+            float numberWidth   = cellWidth *.1;
+            float eventWidth    = cellWidth *.5;
+            float winsWidth     = cellWidth *.2;
+            float activeWidth   = cellWidth *.2;
+
+            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
+            numberLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *number = row[1];
+            numberLabel.text = [number objectForKey:@"Text"];
+            
+            x += numberWidth;
+            
+            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
+            eventLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *event = row[3];
+            eventLabel.text = [event objectForKey:@"Text"];
+            eventLabel.adjustsFontSizeToFitWidth = YES;
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+
+            x += eventWidth;
+            
+            UILabel *winsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,winsWidth,labelHeight)];
+            winsLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *wins = row[4];
+            winsLabel.text = [wins objectForKey:@"Text"];
+            winsLabel.adjustsFontSizeToFitWidth = YES;
+            
+            x += winsWidth;
+            
+            DGButton *activeGameButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,activeWidth-6,labelHeight-6)];
+
+            if(row.count == 6)
+            {
+                [activeGameButton setTitle:@"Active Game" forState: UIControlStateNormal];
+                activeGameButton.tag = indexPath.row;
+                [activeGameButton addTarget:self action:@selector(activeGameAction:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            [cell.contentView addSubview:numberLabel];
+            [cell.contentView addSubview:eventButton];
+            [cell.contentView addSubview:winsLabel];
+            if(row.count == 6)
+                [cell.contentView addSubview:activeGameButton];
+
+       }
             break;
         case 3:
             break;
@@ -523,7 +630,6 @@ didCompleteWithError:(NSError *)error
             float roundWidth    = cellWidth *.05;
             float lengthWidth   = cellWidth *.05;
             float opponentWidth = cellWidth *.3;
-            float reviewWidth   = cellWidth *.15;
             
             DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
             numberLabel.textAlignment = NSTextAlignmentCenter;
@@ -581,6 +687,37 @@ didCompleteWithError:(NSError *)error
         }
             break;
         case 2:
+        {
+            float numberWidth   = cellWidth *.1;
+            float eventWidth    = cellWidth *.5;
+            float winsWidth     = cellWidth *.2;
+            
+            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
+            numberLabel.textAlignment = NSTextAlignmentCenter;
+            numberLabel.text = self.listHeaderArray[0];
+            numberLabel.textColor = [UIColor whiteColor];
+            x += numberWidth;
+            
+            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
+            eventLabel.textAlignment = NSTextAlignmentCenter;
+            eventLabel.text = self.listHeaderArray[1];
+            eventLabel.textColor = [UIColor whiteColor];
+            
+            x += eventWidth;
+            
+            DGLabel *winsLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, winsWidth, 30)];
+            winsLabel.textAlignment = NSTextAlignmentCenter;
+            NSArray* words = [self.listHeaderArray[2] componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString* nospacestring = [words componentsJoinedByString:@""];
+            winsLabel.text = [nospacestring stringByReplacingOccurrencesOfString:@" " withString:@""];
+            winsLabel.textColor = [UIColor whiteColor];
+             
+            x += winsWidth;
+                        
+            [headerView addSubview:numberLabel];
+            [headerView addSubview:eventLabel];
+            [headerView addSubview:winsLabel];
+        }
             break;
         case 3:
             break;
@@ -638,7 +775,7 @@ didCompleteWithError:(NSError *)error
 - (IBAction)activeTournaments:(id)sender
 {
     listTyp = 2;
-    [self inProgress];
+    [self readActiveTournaments];
 }
 - (IBAction)finishedMatches:(id)sender
 {
@@ -729,6 +866,37 @@ didCompleteWithError:(NSError *)error
                                 handler:^(UIAlertAction * action)
                                 {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [review objectForKey:@"href"]]] options:@{} completionHandler:nil];
+                                }];
+
+    [alert addAction:yesButton];
+    [alert addAction:browserButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
+}
+- (IBAction)activeGameAction:(UIButton*)button
+{
+    NSArray *row = self.listArray[button.tag];
+    NSDictionary *activeGame = row[5];
+
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Information"
+                                 message:@"I am very sorry. This feature is still under development."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    
+                                }];
+    UIAlertAction* browserButton = [UIAlertAction
+                                actionWithTitle:@"Show me in the browser please"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [activeGame objectForKey:@"href"]]] options:@{} completionHandler:nil];
                                 }];
 
     [alert addAction:yesButton];

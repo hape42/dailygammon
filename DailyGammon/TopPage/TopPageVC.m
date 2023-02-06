@@ -519,6 +519,9 @@ didCompleteWithError:(NSError *)error
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
     headerView.backgroundColor = [UIColor lightGrayColor];
+    
+    if(self.topPageHeaderArray.count < 1)
+        return headerView;
 
     int x = 0;
 
