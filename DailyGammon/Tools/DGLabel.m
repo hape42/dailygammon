@@ -34,8 +34,7 @@
 
 - (void)customizeLabel
 {
-
-    self.numberOfLines = 0;
+    self.numberOfLines = 1;
     self.adjustsFontSizeToFitWidth = YES;
     self.minimumScaleFactor = 0.1;
 }
