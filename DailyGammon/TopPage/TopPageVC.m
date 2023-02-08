@@ -27,6 +27,7 @@
 #import "About.h"
 #import "DGButton.h"
 #import "PlayerLists.h"
+#import "Tournament.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
@@ -457,11 +458,14 @@ didCompleteWithError:(NSError *)error
     numberLabel.text = [nummer objectForKey:@"Text"];
     x += self.numberWidth;
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventWidth,labelHeight)];
-    eventLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *event = row[1];
-    eventLabel.text = [event objectForKey:@"Text"];
-    eventLabel.adjustsFontSizeToFitWidth = YES;
+    DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,self.eventWidth-6,labelHeight-6)];
+    [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+    eventButton.tag = indexPath.row;
+    [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+    [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+
+    [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
 
     x += self.eventWidth;
     
@@ -505,7 +509,7 @@ didCompleteWithError:(NSError *)error
     opponentLabel.adjustsFontSizeToFitWidth = YES;
 
     [cell.contentView addSubview:numberLabel];
-    [cell.contentView addSubview:eventLabel];
+    [cell.contentView addSubview:eventButton];
     [cell.contentView addSubview:graceLabel];
     [cell.contentView addSubview:poolLabel];
     [cell.contentView addSubview:roundLabel];
@@ -1146,6 +1150,16 @@ didCompleteWithError:(NSError *)error
                                          target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
         refreshButtonPressed = YES;
     }
+}
+- (IBAction)eventAction:(UIButton*)button
+{
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    Tournament *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"Tournament"];
+    vc.url   = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",(NSString *)[button.layer valueForKey:@"href"]]];
+    vc.name = (NSString *)[button.layer valueForKey:@"Text"];
+    [self.navigationController pushViewController:vc animated:NO];
+
 }
 
 - (void)automaticRefresh
