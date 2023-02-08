@@ -28,6 +28,7 @@
 #import "DGButton.h"
 #import "DGLabel.h"
 #import "TopPageVC.h"
+#import "Tournament.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
@@ -607,6 +608,9 @@ didCompleteWithError:(NSError *)error
             DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
             [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
             eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+
             [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
 
             x += eventWidth;
@@ -692,6 +696,8 @@ didCompleteWithError:(NSError *)error
             DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
             [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
             eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
             [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
 
             x += eventWidth;
@@ -744,6 +750,8 @@ didCompleteWithError:(NSError *)error
             DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
             [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
             eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
             [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
 
             x += eventWidth;
@@ -795,7 +803,7 @@ didCompleteWithError:(NSError *)error
             [cell.contentView addSubview:opponentButton];
             [cell.contentView addSubview:reviewButton];
             [cell.contentView addSubview:exportButton];
-       }
+        }
             break;
         case 4:
         {
@@ -811,6 +819,8 @@ didCompleteWithError:(NSError *)error
             DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
             [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
             eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
             [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
 
             x += eventWidth;
@@ -1124,34 +1134,12 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)eventAction:(UIButton*)button
 {
-    NSArray *row = self.listArray[button.tag];
-    NSDictionary *event = row[1];
 
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    UIAlertAction* browserButton = [UIAlertAction
-                                actionWithTitle:@"Show me in the browser please"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [event objectForKey:@"href"]]] options:@{} completionHandler:nil];
-                                }];
-
-    [alert addAction:yesButton];
-    [alert addAction:browserButton];
-
-    
-    [self presentViewController:alert animated:YES completion:nil];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    Tournament *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"Tournament"];
+    vc.url   = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",(NSString *)[button.layer valueForKey:@"href"]]];
+    vc.name = (NSString *)[button.layer valueForKey:@"Text"];
+    [self.navigationController pushViewController:vc animated:NO];
 
 }
 
@@ -1260,9 +1248,6 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)opponentAction:(UIButton*)button
 {
-    NSArray *row = self.listArray[button.tag];
-    
-    NSMutableDictionary *dict = row[3];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];

@@ -75,6 +75,7 @@
 		E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */; };
 		E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */; };
 		E0F1E4012229353C00494918 /* iPhoneMenue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1E4002229353C00494918 /* iPhoneMenue.m */; };
+		E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F5597A29914B8B00EB5DBE /* Tournament.m */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0F9589221AD168B003DAC01 /* Assets.xcassets */; };
@@ -263,6 +264,8 @@
 		E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+PercentEncodeURLQueryValue.m"; sourceTree = "<group>"; };
 		E0F1E3FF2229353C00494918 /* iPhoneMenue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iPhoneMenue.h; sourceTree = "<group>"; };
 		E0F1E4002229353C00494918 /* iPhoneMenue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhoneMenue.m; sourceTree = "<group>"; };
+		E0F5597929914B8B00EB5DBE /* Tournament.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tournament.h; sourceTree = "<group>"; };
+		E0F5597A29914B8B00EB5DBE /* Tournament.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tournament.m; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -588,6 +591,15 @@
 			path = iPad;
 			sourceTree = "<group>";
 		};
+		E0F5597829914B0600EB5DBE /* Tournament */ = {
+			isa = PBXGroup;
+			children = (
+				E0F5597929914B8B00EB5DBE /* Tournament.h */,
+				E0F5597A29914B8B00EB5DBE /* Tournament.m */,
+			);
+			path = Tournament;
+			sourceTree = "<group>";
+		};
 		E0F9587D21AD1687003DAC01 = {
 			isa = PBXGroup;
 			children = (
@@ -612,6 +624,7 @@
 				E07F021722EED0870065546C /* Rating */,
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
+				E0F5597829914B0600EB5DBE /* Tournament */,
 				E09871E1293366760043DC8A /* GameLounge */,
 				E09871E52938B91A0043DC8A /* About */,
 				E0355390298E694C002C820C /* PlayerLists */,
@@ -826,6 +839,7 @@
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
+				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
