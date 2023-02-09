@@ -29,6 +29,7 @@
 #import "DGButton.h"
 #import "PlayerLists.h"
 #import "DGLabel.h"
+#import "CellConnector.h"
 
 @interface Tournament ()
 
@@ -173,23 +174,26 @@
         s = 0;
     }
     
-    for(NSMutableArray *zeileArray in drawArray) // this is just a test printout
-    {
-        NSString *zeile = @"";
-        for(NSString *spalte in zeileArray)
-        {
-            NSString *tmpText = [spalte stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
-            const char *spalteText = [tmpText UTF8String];
-            zeile = [NSString stringWithFormat:@"%@ \t%15.15s", zeile, spalteText];
-        }
-        XLog(@"%@",zeile);
-    }
+//    for(NSMutableArray *zeileArray in drawArray) // this is just a test printout
+//    {
+//        NSString *zeile = @"";
+//        for(NSString *spalte in zeileArray)
+//        {
+//            NSString *tmpText = [spalte stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+//            const char *spalteText = [tmpText UTF8String];
+//            zeile = [NSString stringWithFormat:@"%@ \t%15.15s", zeile, spalteText];
+//        }
+//        XLog(@"%@",zeile);
+//    }
     return;
 }
 -(void)drawTournament
 {
-    NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
+    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
 
+    NSMutableArray *rootLabelArray = [[NSMutableArray alloc]initWithCapacity:16];
+    NSMutableArray *topLabelArray = [[NSMutableArray alloc]initWithCapacity:16];
+   
     xFound = 0;
     yFound = 0;
     
@@ -218,6 +222,7 @@
             }
             if(position == step)
             {
+
                 DGLabel *namelabel = [[DGLabel alloc]initWithFrame:CGRectMake(x , y ,labelWidth, labelHeight)];
                 namelabel.layer.cornerRadius = 14.0f;
                 namelabel.layer.masksToBounds = YES;
@@ -238,13 +243,29 @@
                   
                 position = 1;
                 y += (((labelHeight+gap) )  * step)  ;
-
+                
+                [topLabelArray addObject:namelabel];
+                if(step > 1)
+                {
+                    int index = (int)topLabelArray.count * 2;
+                    DGLabel *root1 = rootLabelArray[index-2];
+                    DGLabel *root2 = rootLabelArray[index-1];
+                    CellConnector *connector = [[CellConnector alloc]initFromLabels:namelabel rootLabel1:root1 rootLabel2:root2];
+                    [scrollView addSubview:connector];
+                    // draw connector
+                }
             }
             else
             {
                 position++;
             }
+
+            
         }
+
+        rootLabelArray = [topLabelArray mutableCopy];
+        topLabelArray = [[NSMutableArray alloc]initWithCapacity:16];
+
         x += labelWidth + gap;
         y = edge + (((labelHeight+gap) * step ) /2) + yOld;
         yOld = y-edge;
@@ -252,6 +273,7 @@
     }
     
     scrollView.contentSize = CGSizeMake((labelWidth+gap)*rounds.count, (labelHeight+gap)*drawArray.count);
+//    [scrollView setNeedsDisplay];
 }
 - (IBAction)findMe:(id)sender
 {
