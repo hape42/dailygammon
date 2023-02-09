@@ -202,6 +202,10 @@
     
     float y = edge;
     int labelHeight = 30;
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:labelHeight forKey:@"labelHeight"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
     int labelWidth = 150;
     int gap = 20;
     

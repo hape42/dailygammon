@@ -43,6 +43,7 @@
      */
     
     int labelHeight = 30;
+    labelHeight = [[[NSUserDefaults standardUserDefaults] valueForKey:@"labelHeight"]intValue];
 
     // first stroke
     UIBezierPath *path1 = [UIBezierPath bezierPath];
