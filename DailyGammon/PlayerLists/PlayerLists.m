@@ -1059,17 +1059,17 @@ didCompleteWithError:(NSError *)error
     switch(listTyp)
     {
         case 1:
-            headerText = @"active matches";
+            headerText = [NSString stringWithFormat: @"%ld active matches", self.listArray.count];
             break;
         case 2:
-            headerText = @"active tournaments";
-            break;
+            headerText = [NSString stringWithFormat: @"%ld active tournaments", self.listArray.count];
+           break;
         case 3:
-            headerText = @"finished matches";
-            break;
+            headerText = [NSString stringWithFormat: @"%ld finished matches", self.listArray.count];
+           break;
         case 4:
-            headerText = @"tournaments win";
-            break;
+            headerText = [NSString stringWithFormat: @"%ld tournaments win", self.listArray.count];
+           break;
         default:
             headerText = @"unknown";
             break;
