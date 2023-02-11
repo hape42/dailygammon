@@ -459,6 +459,11 @@ didCompleteWithError:(NSError *)error
     x += self.numberWidth;
     
     NSDictionary *event = row[1];
+    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventWidth,labelHeight)];
+    eventLabel.textAlignment = NSTextAlignmentLeft;
+    eventLabel.text = [event objectForKey:@"Text"];
+    eventLabel.adjustsFontSizeToFitWidth = YES;
+
     DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,self.eventWidth-6,labelHeight-6)];
     [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
     eventButton.tag = indexPath.row;
@@ -509,7 +514,10 @@ didCompleteWithError:(NSError *)error
     opponentLabel.adjustsFontSizeToFitWidth = YES;
 
     [cell.contentView addSubview:numberLabel];
-    [cell.contentView addSubview:eventButton];
+    if([event objectForKey:@"href"])
+        [cell.contentView addSubview:eventButton];
+    else
+        [cell.contentView addSubview:eventLabel];
     [cell.contentView addSubview:graceLabel];
     [cell.contentView addSubview:poolLabel];
     [cell.contentView addSubview:roundLabel];
@@ -524,20 +532,17 @@ didCompleteWithError:(NSError *)error
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
     headerView.backgroundColor = [UIColor lightGrayColor];
     
-    if(self.topPageHeaderArray.count < 1)
-        return headerView;
-
     int x = 0;
 
     UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.numberWidth,30)];
     numberLabel.textAlignment = NSTextAlignmentCenter;
-    numberLabel.text = self.topPageHeaderArray[0];
+    numberLabel.text = @"#";
     numberLabel.textColor = [UIColor whiteColor];
     x += self.numberWidth;
     
     UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,self.eventWidth,30)];
     eventLabel.textAlignment = NSTextAlignmentCenter;
-    eventLabel.text = self.topPageHeaderArray[1];
+    eventLabel.text = @"Event";
     eventLabel.textColor = [UIColor whiteColor];
     UIButton *buttonEvent = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonEvent.frame = eventLabel.frame;
@@ -547,7 +552,7 @@ didCompleteWithError:(NSError *)error
 
     UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.graceWidth, 30)];
     graceLabel.textAlignment = NSTextAlignmentCenter;
-    graceLabel.text = self.topPageHeaderArray[2];
+    graceLabel.text =@"Grace";
     graceLabel.textColor = [UIColor whiteColor];
     UIButton *buttonGrace = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonGrace.frame = graceLabel.frame;
@@ -557,7 +562,7 @@ didCompleteWithError:(NSError *)error
     
     UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.poolWidth,30)];
     poolLabel.textAlignment = NSTextAlignmentCenter;
-    poolLabel.text = self.topPageHeaderArray[3];
+    poolLabel.text = @"Time Pool";
     poolLabel.textColor = [UIColor whiteColor];
     UIButton *buttonPool = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonPool.frame = poolLabel.frame;
@@ -567,7 +572,7 @@ didCompleteWithError:(NSError *)error
     
     UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0, self.roundWidth,30)];
     roundLabel.textAlignment = NSTextAlignmentCenter;
-    roundLabel.text = self.topPageHeaderArray[4];
+    roundLabel.text = @"Round";
     roundLabel.textColor = [UIColor whiteColor];
     UIButton *buttonRound = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonRound.frame = roundLabel.frame;
@@ -577,7 +582,7 @@ didCompleteWithError:(NSError *)error
     
     UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.lengthWidth,30)];
     lengthLabel.textAlignment = NSTextAlignmentCenter;
-    lengthLabel.text = self.topPageHeaderArray[5];
+    lengthLabel.text = @"Length";
     lengthLabel.textColor = [UIColor whiteColor];
     UIButton *buttonLength = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonLength.frame = lengthLabel.frame;
@@ -587,7 +592,7 @@ didCompleteWithError:(NSError *)error
     
     UILabel *opponentLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 , self.opponentWidth,30)];
     opponentLabel.textAlignment = NSTextAlignmentCenter;
-    opponentLabel.text = self.topPageHeaderArray[6];
+    opponentLabel.text = @"Opponent";
     opponentLabel.textColor = [UIColor whiteColor];
     UIButton *buttonOpponent = [UIButton buttonWithType:UIButtonTypeSystem];
     buttonOpponent.frame = opponentLabel.frame;
