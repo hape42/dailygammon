@@ -1146,7 +1146,10 @@ didCompleteWithError:(NSError *)error
 - (IBAction)reviewAction:(UIButton*)button
 {
     NSArray *row = self.listArray[button.tag];
-    NSDictionary *review = row[7];
+    int index = 7;
+    if(listTyp == 3)
+        index = 5;
+    NSDictionary *review = row[index];
 
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Information"
@@ -1210,30 +1213,33 @@ didCompleteWithError:(NSError *)error
     NSArray *row = self.listArray[button.tag];
     NSDictionary *activeGame = row[6];
 
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
+    NSString *match = [[activeGame objectForKey:@"href"] lastPathComponent];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/export/%@", match]];
+    NSData *htmlData = [NSData dataWithContentsOfURL:url];
+
+    NSString *htmlString = [NSString stringWithUTF8String:[htmlData bytes]];
+    htmlString = [[NSString alloc]
+                  initWithData:htmlData encoding: NSISOLatin1StringEncoding];
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    UIAlertAction* browserButton = [UIAlertAction
-                                actionWithTitle:@"Show me in the browser please"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [activeGame objectForKey:@"href"]]] options:@{} completionHandler:nil];
-                                }];
+    NSURL *urlExport = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.dg", match]];
+    NSError *error;
 
-    [alert addAction:yesButton];
-    [alert addAction:browserButton];
+    BOOL success = [htmlString writeToURL:urlExport atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (!success) {
+        NSLog(@"oh no! - %@",error.localizedDescription);
+    }
 
-    [self presentViewController:alert animated:YES completion:nil];
+    NSString *matchExport = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.dg", match]];
+
+    UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:matchExport]] applicationActivities:nil];
+    shareVC.popoverPresentationController.sourceView    = self.view;
+    shareVC.popoverPresentationController.sourceRect = button.frame;
+    [self presentViewController:shareVC animated:YES completion:nil];
+
+    return;
 
 }
 
