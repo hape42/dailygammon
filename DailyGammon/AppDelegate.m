@@ -149,14 +149,14 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
     int count = [tools matchCount];
     //do things with task
     XLog(@"%d Matches to play", count);
-    [self scheduleProcessingTask];
+ //   [self scheduleProcessingTask];
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].applicationIconBadgeNumber = count;
     });
 
     UNMutableNotificationContent* content = [[UNMutableNotificationContent alloc] init];
     content.title = [NSString localizedUserNotificationStringForKey:@"Dailygammon" arguments:nil];
-    content.body = [NSString stringWithFormat:@"There are %d Matches where you can move", count];
+    content.body = [NSString stringWithFormat:@"There are Matches where you can move"];
     content.sound = [UNNotificationSound defaultSound];
      
     // Deliver the notification in five seconds.
@@ -165,10 +165,12 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
     UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"FiveSecond"
                 content:content trigger:trigger];
      
-    // Schedule the notification.
-    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    [center addNotificationRequest:request withCompletionHandler:nil];
-
+    if(count > 0)
+    {
+        // Schedule the notification.
+        UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+        [center addNotificationRequest:request withCompletionHandler:nil];
+    }
     [task setTaskCompletedWithSuccess:YES];
     return;
 }

@@ -1224,7 +1224,7 @@ didCompleteWithError:(NSError *)error
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    NSURL *urlExport = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.dg", match]];
+    NSURL *urlExport = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt", match]];
     NSError *error;
 
     BOOL success = [htmlString writeToURL:urlExport atomically:YES encoding:NSUTF8StringEncoding error:&error];
@@ -1232,7 +1232,7 @@ didCompleteWithError:(NSError *)error
         NSLog(@"oh no! - %@",error.localizedDescription);
     }
 
-    NSString *matchExport = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.dg", match]];
+    NSString *matchExport = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt", match]];
 
     UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:matchExport]] applicationActivities:nil];
     shareVC.popoverPresentationController.sourceView    = self.view;

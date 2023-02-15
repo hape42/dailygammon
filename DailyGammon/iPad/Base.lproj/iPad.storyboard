@@ -1135,7 +1135,6 @@ Did we make you curious?</string>
                                         <state key="normal" title="Cancel"/>
                                         <connections>
                                             <action selector="cancelAction:" destination="rym-BK-N8j" eventType="touchUpInside" id="f23-ZR-GGh"/>
-                                            <action selector="inviteAction:" destination="rym-BK-N8j" eventType="touchUpInside" id="phJ-Ul-l1s"/>
                                         </connections>
                                     </button>
                                 </subviews>
