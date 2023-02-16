@@ -242,12 +242,15 @@
 -(void) help
 {
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
-    if ([SFSafariViewController class] != nil) {
-        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
-        [self presentViewController:sfvc animated:YES completion:nil];
-    } else {
-        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-    }
+//    if ([SFSafariViewController class] != nil) {
+//        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+//        [self presentViewController:sfvc animated:YES completion:nil];
+//    } else {
+//        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+//    }
+    
+    [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+
 }
 
 - (void)lists

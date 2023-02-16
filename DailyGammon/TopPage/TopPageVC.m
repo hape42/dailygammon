@@ -416,6 +416,11 @@ didCompleteWithError:(NSError *)error
         {
             [subview removeFromSuperview];
         }
+        if ([subview isKindOfClass:[DGButton class]])
+        {
+            [subview removeFromSuperview];
+        }
+
     }
     
     [cell setTintColor:[UIColor greenColor]];

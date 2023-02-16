@@ -591,7 +591,7 @@ didCompleteWithError:(NSError *)error
             float roundWidth    = cellWidth *.05;
             float lengthWidth   = cellWidth *.05;
             float opponentWidth = cellWidth *.3;
-            float reviewWidth   = cellWidth *.15;
+            float reviewWidth   = cellWidth *.1;
 
             DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
             numberLabel.textAlignment = NSTextAlignmentCenter;
@@ -733,7 +733,7 @@ didCompleteWithError:(NSError *)error
             float roundWidth    = cellWidth *.05;
             float lengthWidth   = cellWidth *.05;
             float opponentWidth = cellWidth *.3;
-            float reviewWidth   = cellWidth *.15;
+            float reviewWidth   = cellWidth *.1;
 
             DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
             numberLabel.textAlignment = NSTextAlignmentCenter;

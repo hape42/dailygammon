@@ -107,6 +107,8 @@ typedef void(^connection)(BOOL);
     NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
     NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
     
+    if(!topPageHtmlData)
+        return 0;;
 //    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
     
     NSString *htmlString = [[NSString alloc]
@@ -134,10 +136,10 @@ typedef void(^connection)(BOOL);
     NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
     int count = MAX(0,(int)zeilen.count - 1 );
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIApplication sharedApplication].applicationIconBadgeNumber = (int)zeilen.count - 1;
+        [UIApplication sharedApplication].applicationIconBadgeNumber = count;
     });
 
-    return (int)zeilen.count - 1;
+    return count;
     }
 
 - (NSString *)readNote:(NSString *)event
