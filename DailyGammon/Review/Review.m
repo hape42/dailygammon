@@ -292,11 +292,24 @@
             break;
         case 2: // Wins xx points
         {
+            NSDictionary *dict = row[0];
+            NSString *text = [dict objectForKey:@"Text"];
+            if([text isEqualToString:@"&nbsp"])
+            {
+                dict = row[1];
+                int x = edge + diceSize + gap + diceSize + gap;
+                DGButton *won = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [won setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [won addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:won];
+                return cell;
+            }
             for(NSDictionary *dict in row)
             {
                 text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"%ld %@",row.count, text];
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here %ld %@",row.count, text];
             cell.contentView.backgroundColor = UIColor.greenColor;
 
             return cell;
@@ -398,18 +411,17 @@
                 UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
                 moveView = [self makeMoveView:moveView playerColor:@"y" dices:row[2] move:row[3]  gap:gap diceSize:diceSize];
                 [cell.contentView addSubview:moveView];
-                
+                return cell;
             }
-            else
+            
+            for(NSDictionary *dict in row)
             {
-                for(NSDictionary *dict in row)
-                {
-                    text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
-                }
-                cell.textLabel.text = [NSString stringWithFormat:@"%ld %@",row.count, text];
-                cell.contentView.backgroundColor = UIColor.brownColor;
-
+                text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
             }
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here  %ld %@",row.count, text];
+            cell.contentView.backgroundColor = UIColor.brownColor;
+
+           
            return cell;
         }
 
