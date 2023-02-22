@@ -282,10 +282,11 @@
             NSDictionary *dict = row[0];
             DGLabel *headerLabel = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,cellWidth,labelHeight)];
             headerLabel.textAlignment = NSTextAlignmentCenter;
-            headerLabel.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
-            headerLabel.backgroundColor = [UIColor colorNamed:@"ColorReviewCellHeader"];
-            headerLabel.layer.cornerRadius = 14.0f;
-            headerLabel.layer.masksToBounds = YES;
+            NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]]];
+            [attr addAttribute:NSFontAttributeName
+                         value:[UIFont systemFontOfSize:30.0]
+                         range:NSMakeRange(0, [attr length])];
+            [headerLabel setAttributedText:attr];
 
             [cell.contentView addSubview:headerLabel];
             return cell;
@@ -303,25 +304,25 @@
             return cell;
         }
             break;
-        case 3: // "hape42:0  opponent:1" or " Doubles => 2    Takes"
+        case 3:
         {
+            // "hape42:0  opponent:1"
+            // or
+            // "Doubles => 2    Takes"
+            
             NSDictionary *dict = row[0];
             NSString *text = [dict objectForKey:@"Text"];
             unichar chr = [text characterAtIndex:0];
             NSLog(@"case 3: ascii value %d %@", chr, row);
             if(chr == 160)
             {
-                DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(edge, y,halfWidth,labelHeight)];
+                int x = edge + diceSize + gap + diceSize + gap;
+                DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
                 player1.textAlignment = NSTextAlignmentCenter;
-                player1.backgroundColor = [UIColor colorNamed:@"ColorReviewCellHeader"];
-                player1.layer.cornerRadius = 14.0f;
-                player1.layer.masksToBounds = YES;
                 
-                DGLabel *player2 = [[DGLabel alloc] initWithFrame:CGRectMake(edge+halfWidth+gap, y ,halfWidth,labelHeight)];
+                x += player1.frame.size.width + gap + diceSize + gap + diceSize + gap;
+                DGLabel *player2 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
                 player2.textAlignment = NSTextAlignmentCenter;
-                player2.backgroundColor = [UIColor colorNamed:@"ColorReviewCellHeader"];
-                player2.layer.cornerRadius = 14.0f;
-                player2.layer.masksToBounds = YES;
                 
                 dict = row[1];
                 player1.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
@@ -345,8 +346,12 @@
         }
 
             break;
-        case 4: // "start with player 2" or "player 2 doubles"
+        case 4:
         {
+            // "start with player 2"
+            // or
+            // "player 2 doubles"
+            
             DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
             number.textAlignment = NSTextAlignmentLeft;
             NSDictionary *dict = row[0];
@@ -381,8 +386,10 @@
         }
 
             break;
-        case 5: // standard move like: 3)    61:    24/23 23/17*    65:    25/20 13/7
+        case 5:
         {
+            // standard move like: 3)    61:    24/23 23/17*    65:    25/20 13/7
+            
             DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
             number.textAlignment = NSTextAlignmentLeft;
             NSDictionary *dict = row[0];
