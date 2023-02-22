@@ -103,7 +103,7 @@
 
         NSDictionary *encodingOptions = @{
             NSStringEncodingDetectionAllowLossyKey : @(NO),
-            NSStringEncodingDetectionSuggestedEncodingsKey : @[@(NSUTF8StringEncoding), @(NSISOLatin1StringEncoding)],
+            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding), @(NSUTF8StringEncoding)],
             NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(NO)
         };
         NSString *responseString;

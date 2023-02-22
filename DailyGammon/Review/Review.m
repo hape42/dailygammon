@@ -271,8 +271,6 @@
     switch (row.count)
     {
         case 0:
-            cell.textLabel.text = @"--------------------------------------";
-            cell.contentView.backgroundColor = UIColor.blueColor;
 
             return cell;
 
@@ -292,7 +290,7 @@
             return cell;
         }
             break;
-        case 2: // Wins 2 points
+        case 2: // Wins xx points
         {
             for(NSDictionary *dict in row)
             {
@@ -313,9 +311,11 @@
             NSDictionary *dict = row[0];
             NSString *text = [dict objectForKey:@"Text"];
             unichar chr = [text characterAtIndex:0];
-            NSLog(@"case 3: ascii value %d %@", chr, row);
+          //  NSLog(@"case 3: ascii value %d %@", chr, row);
             if(chr == 160)
             {
+                // "hape42:0  opponent:1"
+
                 int x = edge + diceSize + gap + diceSize + gap;
                 DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
                 player1.textAlignment = NSTextAlignmentCenter;
@@ -331,17 +331,45 @@
                 
                 [cell.contentView addSubview:player1];
                 [cell.contentView addSubview:player2];
-            }
-            else
-            {
-                for(NSDictionary *dict in row)
-                {
-                    text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
-                }
-                cell.textLabel.text = [NSString stringWithFormat:@"%ld %@",row.count, text];
-                cell.contentView.backgroundColor = UIColor.yellowColor;
+                return cell;
 
             }
+            dict = row[1];
+
+            NSRange player1Double = [[dict objectForKey:@"Text"] rangeOfString:@"Doubles"];
+            if(player1Double.length > 0)
+            {
+                // "Doubles => 2 (4,8,16,32,64)   Takes"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                UIView *doubleView = [[UIView alloc] initWithFrame:CGRectMake(edge, 0 ,halfWidth,CELL_HEIGHT)];
+                doubleView = [self makeDoubleView:doubleView  cube:row[1]   gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:doubleView];
+
+                x = edge + halfWidth + gap + diceSize + gap + diceSize + gap;
+                dict = row[2];
+                DGButton *take = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,doubleView.frame.size.height-10)];
+                [take setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [take addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [take.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:take];
+
+                return cell;
+            }
+
+            // The algorythm should never get here
+            for(NSDictionary *dict in row)
+            {
+                text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
+            }
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here %ld %@",row.count, text];
+            cell.contentView.backgroundColor = UIColor.yellowColor;
+
+            
             return cell;
         }
 
@@ -361,7 +389,7 @@
             dict = row[1];
             NSString *text = [dict objectForKey:@"Text"];
             unichar chr = [text characterAtIndex:0];
-            NSLog(@"case 4: ascii value %d %@", chr, row);
+           // NSLog(@"case 4: ascii value %d %@", chr, row);
             if(chr == 160)
             {
                 // "start with player 2"
@@ -370,7 +398,7 @@
                 UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
                 moveView = [self makeMoveView:moveView playerColor:@"y" dices:row[2] move:row[3]  gap:gap diceSize:diceSize];
                 [cell.contentView addSubview:moveView];
-
+                
             }
             else
             {
@@ -451,11 +479,42 @@
     if(moveText.length < 2)
     {
        // no move, dancing.
+        DGLabel *dancing = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,moveView.frame.size.width - x ,moveView.frame.size.height-10)];
+        dancing.textAlignment = NSTextAlignmentCenter;
+        dancing.text = [NSString stringWithFormat:@"🎼\t🕺\t🎼"];
+        [moveView addSubview:dancing];
     }
     else
         [moveView addSubview:move];
 
     return moveView;
+}
+
+-(UIView *)makeDoubleView:(UIView *)doubleView
+                  cube:(NSDictionary *)cubeDict
+                    gap:(int)gap
+               diceSize:(int)diceSize
+{
+    
+    int x = 0;
+    int y = 5;
+    
+    NSCharacterSet *nonDigitCharacterSet = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    int cube =  [[[[cubeDict objectForKey:@"Text"] componentsSeparatedByCharactersInSet:nonDigitCharacterSet] componentsJoinedByString:@""]intValue];
+
+    NSString *imgName = [NSString stringWithFormat:@"%d/cube%d",[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue],cube] ;
+    UIImageView *cubeView =  [[UIImageView alloc] initWithImage:[UIImage imageNamed:imgName]];
+    cubeView.frame = CGRectMake(x + (diceSize / 2), y,  diceSize + gap , doubleView.frame.size.height - y - y);
+    [doubleView addSubview:cubeView];
+
+
+    x += diceSize + gap + diceSize + gap;
+    DGButton *move = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,doubleView.frame.size.width - x ,doubleView.frame.size.height-10)];
+    [move setTitle:@"Doubles" forState: UIControlStateNormal];
+    [move addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+    [move.layer setValue:[cubeDict objectForKey:@"href"] forKey:@"href"];
+    [doubleView addSubview:move];
+    return doubleView;
 }
 - (IBAction)moreAction:(id)sender
 {
