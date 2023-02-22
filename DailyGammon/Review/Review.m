@@ -277,6 +277,7 @@
             break;
         case 1: // Game #
         {
+#pragma mark Game #
             NSDictionary *dict = row[0];
             DGLabel *headerLabel = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,cellWidth,labelHeight)];
             headerLabel.textAlignment = NSTextAlignmentCenter;
@@ -296,6 +297,7 @@
             NSString *text = [dict objectForKey:@"Text"];
             if([text isEqualToString:@"&nbsp"])
             {
+#pragma mark "Player 1 Wins xx points"
                 dict = row[1];
                 int x = edge + diceSize + gap + diceSize + gap;
                 DGButton *won = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
@@ -304,6 +306,23 @@
                 [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
                 [cell.contentView addSubview:won];
                 return cell;
+            }
+            dict = row[0];
+            text = [dict objectForKey:@"Text"];
+            unichar chr = [text characterAtIndex:0];
+          //  NSLog(@"case 3: ascii value %d %@", chr, row);
+            if(chr == 160)
+            {
+#pragma mark "Player 2 Wins xx points"
+                dict = row[1];
+                int x = edge + halfWidth + gap + diceSize + gap + diceSize + gap;
+                DGButton *won = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [won setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [won addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:won];
+                return cell;
+
             }
             for(NSDictionary *dict in row)
             {
@@ -320,6 +339,8 @@
             // "hape42:0  opponent:1"
             // or
             // "Doubles => 2    Takes"
+            // or
+            // Drops    Wins 1 point
             
             NSDictionary *dict = row[0];
             NSString *text = [dict objectForKey:@"Text"];
@@ -327,7 +348,7 @@
           //  NSLog(@"case 3: ascii value %d %@", chr, row);
             if(chr == 160)
             {
-                // "hape42:0  opponent:1"
+#pragma mark "hape42:0  opponent:1"
 
                 int x = edge + diceSize + gap + diceSize + gap;
                 DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
@@ -352,7 +373,7 @@
             NSRange player1Double = [[dict objectForKey:@"Text"] rangeOfString:@"Doubles"];
             if(player1Double.length > 0)
             {
-                // "Doubles => 2 (4,8,16,32,64)   Takes"
+#pragma mark "Doubles => 2 (4,8,16,32,64)   Takes/Drops"
                 DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
                 number.textAlignment = NSTextAlignmentLeft;
                 NSDictionary *dict = row[0];
@@ -374,6 +395,36 @@
                 return cell;
             }
 
+            dict = row[1];
+            NSRange player1Drops = [[dict objectForKey:@"Text"] rangeOfString:@"Drops"];
+            if(player1Drops.length > 0)
+            {
+#pragma mark "player 1 drops"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+                
+                dict = row[1];
+                int x = edge + diceSize + gap + diceSize + gap;
+                DGButton *drop = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [drop setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [drop addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [drop.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:drop];
+
+                x = edge + halfWidth + gap + diceSize + gap + diceSize + gap;
+                dict = row[2];
+                DGButton *won = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [won setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [won addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:won];
+
+                return cell;
+
+            }
             // The algorythm should never get here
             for(NSDictionary *dict in row)
             {
@@ -405,7 +456,7 @@
            // NSLog(@"case 4: ascii value %d %@", chr, row);
             if(chr == 160)
             {
-                // "start with player 2"
+#pragma mark "start with player 2"
                 x = edge + halfWidth  + gap ;
 
                 UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
@@ -413,7 +464,83 @@
                 [cell.contentView addSubview:moveView];
                 return cell;
             }
+            dict = row[3];
+            NSRange player1Double = [[dict objectForKey:@"Text"] rangeOfString:@"Doubles"];
+            if(player1Double.length > 0)
+            {
+#pragma mark "player 2 doubles"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                x = edge;
+                UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
+                moveView = [self makeMoveView:moveView playerColor:@"b" dices:row[1] move:row[2]  gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:moveView];
+
+                x += halfWidth + gap;
+                UIView *doubleView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
+                doubleView = [self makeDoubleView:doubleView  cube:row[3]   gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:doubleView];
+
+                return cell;
+            }
             
+            dict = row[1];
+            NSRange player1Takes = [[dict objectForKey:@"Text"] rangeOfString:@"Takes"];
+            if(player1Takes.length > 0)
+            {
+#pragma mark "player 1 takes"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                dict = row[1];
+                x = edge + diceSize + gap + diceSize + gap;
+                DGButton *take = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [take setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [take addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [take.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:take];
+
+                x = edge + halfWidth + gap;
+                UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
+                moveView = [self makeMoveView:moveView playerColor:@"y" dices:row[2] move:row[3]  gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:moveView];
+
+                return cell;
+            }
+            dict = row[3];
+            NSRange player2wins = [[dict objectForKey:@"Text"] rangeOfString:@"Wins"];
+            if(player2wins.length > 0)
+            {
+#pragma mark "player 2 wins xx points"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                x = edge;
+                UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
+                moveView = [self makeMoveView:moveView playerColor:@"b" dices:row[1] move:row[2]  gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:moveView];
+
+                x = edge + halfWidth + gap + diceSize + gap + diceSize + gap;
+                dict = row[3];
+                DGButton *won = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,halfWidth - (diceSize + gap +diceSize + gap) ,labelHeight)];
+                [won setTitle:[dict objectForKey:@"Text"] forState: UIControlStateNormal];
+                [won addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
+                [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
+                [cell.contentView addSubview:won];
+
+                return cell;
+
+            }
             for(NSDictionary *dict in row)
             {
                 text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
@@ -428,7 +555,7 @@
             break;
         case 5:
         {
-            // standard move like: 3)    61:    24/23 23/17*    65:    25/20 13/7
+#pragma mark standard move like: 3)    61:    24/23 23/17*    65:    25/20 13/7
             
             DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
             number.textAlignment = NSTextAlignmentLeft;
