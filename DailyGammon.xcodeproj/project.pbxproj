@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E002F19E29A0F08C0028098C /* DGRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E002F19D29A0F08C0028098C /* DGRequest.m */; };
+		E002F1A229A0F9740028098C /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = E002F1A129A0F9740028098C /* Review.m */; };
 		E00654D722A6784000194435 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* Player.m */; };
 		E00A3D832700CB7D008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D822700CB7D008B526B /* NoInternet.m */; };
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
@@ -89,6 +91,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E002F19C29A0F08C0028098C /* DGRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGRequest.h; sourceTree = "<group>"; };
+		E002F19D29A0F08C0028098C /* DGRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGRequest.m; sourceTree = "<group>"; };
+		E002F1A029A0F9740028098C /* Review.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
+		E002F1A129A0F9740028098C /* Review.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
 		E00654D522A6784000194435 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		E00654D622A6784000194435 /* Player.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		E00A3D812700CB7D008B526B /* NoInternet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoInternet.h; sourceTree = "<group>"; };
@@ -307,6 +313,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		E002F19F29A0F8DC0028098C /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				E002F1A029A0F9740028098C /* Review.h */,
+				E002F1A129A0F9740028098C /* Review.m */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
 		E00EB16621C632220088501C /* ParseDG */ = {
 			isa = PBXGroup;
 			children = (
@@ -633,6 +648,7 @@
 				E09871E1293366760043DC8A /* GameLounge */,
 				E09871E52938B91A0043DC8A /* About */,
 				E0355390298E694C002C820C /* PlayerLists */,
+				E002F19F29A0F8DC0028098C /* Review */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
@@ -654,6 +670,8 @@
 				E0FA69362969CE0900D88C26 /* DGLabel.m */,
 				E0FA69322964463200D88C26 /* DGButton.h */,
 				E0FA69332964463200D88C26 /* DGButton.m */,
+				E002F19C29A0F08C0028098C /* DGRequest.h */,
+				E002F19D29A0F08C0028098C /* DGRequest.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
 				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
@@ -828,6 +846,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E002F1A229A0F9740028098C /* Review.m in Sources */,
 				E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */,
 				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
 				E05325012271D42A0080D504 /* Tools.m in Sources */,
@@ -842,6 +861,7 @@
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
 				E0355393298E775C002C820C /* PlayerLists.m in Sources */,
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
+				E002F19E29A0F08C0028098C /* DGRequest.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,

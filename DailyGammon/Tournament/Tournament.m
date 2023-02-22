@@ -58,6 +58,11 @@
     tools       = [[Tools alloc] init];
     ratingTools = [[RatingTools alloc] init];
 
+    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.moreButton setImage:image forState:UIControlStateNormal];
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -234,16 +239,22 @@
                 namelabel.layer.borderWidth = 1;
                 namelabel.textAlignment = NSTextAlignmentCenter;
                 namelabel.text = labeltext;
+                if([labeltext caseInsensitiveCompare:userName] == NSOrderedSame)
+                {
+                    namelabel.backgroundColor = [UIColor colorNamed:@"ColorTournamentCell"];
+                    xFound = x;
+                    yFound = y;
+                }
                 if ([labeltext rangeOfString:userName].location == NSNotFound)
                 {
                 }
                 else
                 {
                     namelabel.backgroundColor = [UIColor colorNamed:@"ColorTournamentCell"];
-                //    namelabel.textColor = [UIColor whiteColor];
                     xFound = x;
                     yFound = y;
                 }
+
                 [scrollView addSubview:namelabel];
                   
                 position = 1;

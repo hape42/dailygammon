@@ -29,6 +29,7 @@
 #import "DGLabel.h"
 #import "TopPageVC.h"
 #import "Tournament.h"
+#import "Review.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
@@ -1040,7 +1041,6 @@ didCompleteWithError:(NSError *)error
             dateLabel.text = [nospacestring stringByReplacingOccurrencesOfString:@" " withString:@""];
             dateLabel.textColor = [UIColor whiteColor];
              
-                        
             [headerView addSubview:eventLabel];
             [headerView addSubview:dateLabel];
         }
@@ -1151,6 +1151,29 @@ didCompleteWithError:(NSError *)error
         index = 5;
     NSDictionary *review = row[index];
 
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    Review *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"Review"];
+    vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [review objectForKey:@"href"]]];
+    switch(listTyp)
+    {
+        case 1:
+        {
+            NSDictionary *length = row[5];
+            vc.matchLength = [[length objectForKey:@"Text"]intValue];
+            break;
+        }
+        case 3:
+        {
+            NSDictionary *length = row[3];
+            vc.matchLength = [[length objectForKey:@"Text"]intValue];
+            break;
+        }
+    }
+    [self.navigationController pushViewController:vc animated:NO];
+
+    return;
+    
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Information"
                                  message:@"I am very sorry. This feature is still under development."
