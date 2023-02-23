@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readwrite, retain, nonatomic) NSURL *reviewURL;
 @property (readwrite, assign, atomic) int matchLength;
+@property (readwrite, assign, atomic) bool player1wonGame;
 
 @property (readwrite, retain, nonatomic) NSMutableArray *listArray;
 

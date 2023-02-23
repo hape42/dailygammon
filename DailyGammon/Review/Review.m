@@ -52,6 +52,7 @@
 @synthesize listArray;
 
 @synthesize design,tools;
+@synthesize player1wonGame;
 
 - (void)viewDidLoad
 {
@@ -88,6 +89,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
 
+    player1wonGame = FALSE;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -422,6 +424,25 @@
                 [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
                 [cell.contentView addSubview:won];
 
+                return cell;
+
+            }
+            dict = row[1];
+#pragma mark "only player 1 has a move (last move of game)"
+            int dice1 = [[[dict objectForKey:@"Text"]substringWithRange:NSMakeRange(0, 1)]intValue];
+            if(dice1 > 0)
+            {
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                x = edge;
+                UIView *moveView = [[UIView alloc] initWithFrame:CGRectMake(x, 0 ,halfWidth,CELL_HEIGHT)];
+                moveView = [self makeMoveView:moveView playerColor:@"b" dices:row[1] move:row[2]  gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:moveView];
+                                
                 return cell;
 
             }
