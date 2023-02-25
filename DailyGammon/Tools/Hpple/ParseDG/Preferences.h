@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Preferences : NSObject
 
 - (NSMutableArray *)readPreferences;
-- (int)readNextMatchOrdering;
+- (void)readNextMatchOrdering;
 - (bool)isMiniBoard;
 
 @end

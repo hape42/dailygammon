@@ -57,7 +57,7 @@
     // First reponse, initialize the data object to hold chunks
 
     NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    NSLog(@"... Received header from \"%@\" (status: %lu, fields: %@)", httpResponse.URL, httpResponse.statusCode, httpResponse.allHeaderFields);
+//    NSLog(@"... Received header from \"%@\" (status: %lu, fields: %@)", httpResponse.URL, httpResponse.statusCode, httpResponse.allHeaderFields);
     self.responseData = [NSMutableData data];
     completionHandler(NSURLSessionResponseAllow);
 }
@@ -112,7 +112,7 @@
         // Let Foundation determin the stringEncoding, indicating if it was a lossy conversion, refer to "NSString.h" & <https://developer.apple.com/documentation/foundation/nsstringencoding>
 
         NSStringEncoding stringEncoding = [NSString stringEncodingForData:self.responseData encodingOptions:encodingOptions convertedString:&responseString usedLossyConversion:&usedLossyConverted];
-        NSLog(@"... Ended sucessfully, result converted to string (length: %lu, encoding: %lu, wasLossyConverted: %i)", self.responseData.length, stringEncoding, usedLossyConverted);
+ //       NSLog(@"... Ended sucessfully, result converted to string (length: %lu, encoding: %lu, wasLossyConverted: %i)", self.responseData.length, stringEncoding, usedLossyConverted);
         if (self.completionHandler) self.completionHandler(TRUE, nil, responseString);
     }
 }

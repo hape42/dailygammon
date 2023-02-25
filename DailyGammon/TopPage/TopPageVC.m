@@ -28,6 +28,7 @@
 #import "DGButton.h"
 #import "PlayerLists.h"
 #import "Tournament.h"
+#import "DGRequest.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
@@ -281,9 +282,23 @@ didCompleteWithError:(NSError *)error
 -(void)readTopPage
 {
     [self.indicator startAnimating];
-
-    NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
+    
+    DGRequest *request = [[DGRequest alloc] initWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/top"] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [ self analyzeHTML:result];
+            
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+}
+-(void)analyzeHTML:(NSString *)htmlString
+{
+    NSData *topPageHtmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
 
     if(topPageHtmlData == nil)
     {
@@ -294,9 +309,6 @@ didCompleteWithError:(NSError *)error
         return;
 
     }
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     self.topPageArray = [[NSMutableArray alloc]init];
 
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
@@ -365,7 +377,8 @@ didCompleteWithError:(NSError *)error
     }
     if(self.topPageArray.count > 0)
         [self updateTableView];
-    
+    [self.indicator stopAnimating];
+
 }
 
 
@@ -603,8 +616,9 @@ didCompleteWithError:(NSError *)error
     buttonOpponent.frame = opponentLabel.frame;
     [buttonOpponent addTarget:self action:@selector(sortOpponent) forControlEvents:UIControlEventTouchUpInside];
 
-    int order = [preferences readNextMatchOrdering];
-                 
+    [preferences readNextMatchOrdering];
+    int order = [[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue];
+    
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
         case 4:
@@ -835,6 +849,16 @@ didCompleteWithError:(NSError *)error
 
     [[NSUserDefaults standardUserDefaults] setInteger:typ forKey:@"orderTyp"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self readTopPage];
+    [self reDrawHeader];
+
+    [self.tableView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
+                                                inSection:0];
+    [self.tableView scrollToRowAtIndexPath:indexPath
+                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
 
 }
 

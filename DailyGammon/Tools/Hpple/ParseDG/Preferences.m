@@ -8,6 +8,7 @@
 
 #import "Preferences.h"
 #import "TFHpple.h"
+#import "DGRequest.h"
 
 @implementation Preferences
 
@@ -40,30 +41,47 @@
     return preferencesArray;
 }
 
-- (int)readNextMatchOrdering
+- (void)readNextMatchOrdering
 {
-    int order = 0;
-    NSURL *url = [NSURL URLWithString:@"http://dailygammon.com/bg/profile"];
-    NSData *htmlData = [NSData dataWithContentsOfURL:url];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[3]/table[2]/tr"];
-    
-    for(TFHppleElement *element in elements)
+    // check if orderTyp exists
+    if( [[NSUserDefaults standardUserDefaults] objectForKey:@"orderTyp"] == nil)
     {
-        TFHppleElement *child = [element firstChild];
-        for (TFHppleElement *grandChild in child.children)
+        NSURL *url = [NSURL URLWithString:@"http://dailygammon.com/bg/profile"];
+        DGRequest *request = [[DGRequest alloc] initWithURL:url completionHandler:^(BOOL success, NSError *error, NSString *result)
         {
-            NSDictionary *dict = [grandChild attributes];
-     //       XLog(@"%@",dict);
-            if([[dict objectForKey:@"checked"] isEqualToString:@"checked"])
-               return order;
-        }
-        order++;
+            if (success)
+            {
+                NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+
+                int order = 0;
+
+                TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+                NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[3]/table[2]/tr"];
+
+                for(TFHppleElement *element in elements)
+                {
+                    TFHppleElement *child = [element firstChild];
+                    for (TFHppleElement *grandChild in child.children)
+                    {
+                        NSDictionary *dict = [grandChild attributes];
+                 //       XLog(@"%@",dict);
+                        if([[dict objectForKey:@"checked"] isEqualToString:@"checked"])
+                        {
+                            [[NSUserDefaults standardUserDefaults] setInteger:order forKey:@"orderTyp"];
+                            [[NSUserDefaults standardUserDefaults] synchronize];
+
+                        }
+                    }
+                    order++;
+                }
+            }
+            else
+            {
+                NSLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
     }
-    
-    return order;
 }
 
 - (bool)isMiniBoard
