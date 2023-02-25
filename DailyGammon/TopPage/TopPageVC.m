@@ -29,6 +29,7 @@
 #import "PlayerLists.h"
 #import "Tournament.h"
 #import "DGRequest.h"
+#import "Constants.h"
 
 @interface TopPageVC ()<NSURLSessionDataDelegate>
 
@@ -83,7 +84,7 @@
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
 
     design      = [[Design alloc] init];
@@ -283,7 +284,7 @@ didCompleteWithError:(NSError *)error
 {
     [self.indicator startAnimating];
     
-    DGRequest *request = [[DGRequest alloc] initWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/top"] completionHandler:^(BOOL success, NSError *error, NSString *result)
+    DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
         if (success)
         {
@@ -854,10 +855,6 @@ didCompleteWithError:(NSError *)error
     [self reDrawHeader];
 
     [self.tableView reloadData];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0
-                                                inSection:0];
-    [self.tableView scrollToRowAtIndexPath:indexPath
-                          atScrollPosition:UITableViewScrollPositionTop animated:NO];
     
 
 }

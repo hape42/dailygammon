@@ -27,10 +27,11 @@
 #import "About.h"
 #import "DGButton.h"
 
-#import "Constants.h"
+#import "ConstantsMatch.h"
 #import "MatchTools.h"
 
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @interface PlayMatch ()
 
@@ -128,7 +129,7 @@
     matchTools = [[MatchTools alloc] init];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(drawPlayingAreas) name:@"changeSchemaNotification" object:nil];
+    [nc addObserver:self selector:@selector(drawPlayingAreas) name:changeSchemaNotification object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
 
     [self.view addSubview:[self makeHeader]];

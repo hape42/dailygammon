@@ -24,6 +24,7 @@
 #import "About.h"
 #import "DGButton.h"
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @interface GameLounge ()
 
@@ -63,7 +64,7 @@
 
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
 
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];

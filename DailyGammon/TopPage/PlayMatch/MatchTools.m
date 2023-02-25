@@ -8,7 +8,7 @@
 
 #import "MatchTools.h"
 #import "Design.h"
-#import "Constants.h"
+#import "ConstantsMatch.h"
 #import "Rating.h"
 #import "BoardElements.h"
 #import "DGButton.h"

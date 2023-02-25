@@ -27,6 +27,7 @@
 #import "About.h"
 #import "DGButton.h"
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @interface RatingVC ()
 
@@ -62,7 +63,7 @@
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:changeSchemaNotification object:nil];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];

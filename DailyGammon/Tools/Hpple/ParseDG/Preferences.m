@@ -70,7 +70,6 @@
                         {
                             [[NSUserDefaults standardUserDefaults] setInteger:order forKey:@"orderTyp"];
                             [[NSUserDefaults standardUserDefaults] synchronize];
-
                         }
                     }
                     order++;

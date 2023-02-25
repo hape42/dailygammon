@@ -16,6 +16,7 @@
 #import "RatingTools.h"
 #import "DGButton.h"
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @interface SetUpVC ()
 
@@ -41,7 +42,7 @@
     design      = [[Design alloc]      init];
     ratingTools = [[RatingTools alloc] init];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:changeSchemaNotification object:nil];
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
 }

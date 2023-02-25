@@ -8,6 +8,7 @@
 
 #import "DGButton.h"
 #import "Design.h"
+#import "Constants.h"
 
 @implementation DGButton
 
@@ -15,7 +16,7 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:changeSchemaNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeDesign) name:@"buttonDesign" object:nil];
 
     self = [super initWithFrame:frame];
@@ -28,7 +29,7 @@
 
 - (id)initWithCoder:(NSCoder*)aDecoder
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonColor) name:changeSchemaNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeDesign) name:@"buttonDesign" object:nil];
 
     self = [super initWithCoder:aDecoder];

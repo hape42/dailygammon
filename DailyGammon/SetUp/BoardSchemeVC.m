@@ -10,6 +10,7 @@
 #import "Design.h"
 #import <SafariServices/SafariServices.h>
 #import "DGButton.h"
+#import "Constants.h"
 
 @interface BoardSchemeVC ()
 
@@ -200,7 +201,7 @@
 {
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"sameColor"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:changeSchemaNotification object:self];
 
 }
 
@@ -321,7 +322,7 @@
     [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
     self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"changeSchemaNotification" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:changeSchemaNotification object:self];
 
     [self.tableView reloadData];
 }

@@ -29,6 +29,7 @@
 #import "TopPageVC.h"
 #import "About.h"
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @interface Review ()
 
@@ -87,7 +88,7 @@
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorTableView"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:@"changeSchemaNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
 
     player1wonGame = FALSE;
 }

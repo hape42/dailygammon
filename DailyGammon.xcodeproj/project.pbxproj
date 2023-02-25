@@ -88,6 +88,7 @@
 		E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F958AF21ADA304003DAC01 /* TopPageVC.m */; };
 		E0FA69342964463200D88C26 /* DGButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69332964463200D88C26 /* DGButton.m */; };
 		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
+		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -136,7 +137,7 @@
 		E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = iPhonePlayMatch.m; sourceTree = "<group>"; };
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		E09871E329372B980043DC8A /* GitHub-Mark-32px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GitHub-Mark-32px.png"; sourceTree = "<group>"; };
-		E09871E629448DA90043DC8A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E09871E629448DA90043DC8A /* ConstantsMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantsMatch.h; sourceTree = "<group>"; };
 		E09871E8294870E60043DC8A /* MatchTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchTools.h; sourceTree = "<group>"; };
 		E09871E9294870E60043DC8A /* MatchTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchTools.m; sourceTree = "<group>"; };
 		E09C007221B042020056D2A2 /* PlayMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatch.h; sourceTree = "<group>"; };
@@ -292,6 +293,8 @@
 		E0FA69332964463200D88C26 /* DGButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGButton.m; sourceTree = "<group>"; };
 		E0FA69352969CE0900D88C26 /* DGLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGLabel.h; sourceTree = "<group>"; };
 		E0FA69362969CE0900D88C26 /* DGLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGLabel.m; sourceTree = "<group>"; };
+		E0FB9E4129AA35B900E668B9 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		E0FB9E4229AA35B900E668B9 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -418,7 +421,7 @@
 				E0777D61294E24DB00712C76 /* BoardElements.m */,
 				E07B0A8F222A73AD00733D16 /* iPhonePlayMatch.h */,
 				E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */,
-				E09871E629448DA90043DC8A /* Constants.h */,
+				E09871E629448DA90043DC8A /* ConstantsMatch.h */,
 			);
 			path = PlayMatch;
 			sourceTree = "<group>";
@@ -678,6 +681,8 @@
 				E09C008A21B2FAA40056D2A2 /* Hpple */,
 				E0F958A021AD1884003DAC01 /* Design.h */,
 				E0F958A121AD1884003DAC01 /* Design.m */,
+				E0FB9E4129AA35B900E668B9 /* Constants.h */,
+				E0FB9E4229AA35B900E668B9 /* Constants.m */,
 				E00A3D812700CB7D008B526B /* NoInternet.h */,
 				E00A3D822700CB7D008B526B /* NoInternet.m */,
 				E05324FF2271D40C0080D504 /* Tools.h */,
@@ -883,6 +888,7 @@
 				E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */,
 				E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */,
 				E00EB16921C633580088501C /* Match.m in Sources */,
+				E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
