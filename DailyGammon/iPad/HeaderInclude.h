@@ -33,9 +33,10 @@
 
         }
     }
-    
+    [tools matchCount];
+    XLog(@"matchCount %d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]);
     self.topPageButton = [[DGButton alloc] initWithFrame:frame];
-    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [tools matchCount]] forState: UIControlStateNormal];
+    [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
     [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     self.topPageButton.tag = 1;
     [headerView addSubview:self.topPageButton];

@@ -234,6 +234,8 @@
         [self.view addSubview:filterButton];
 
         self.iPad = TRUE;
+        [self updateMatchCount:self.view];
+
     }
     else
     {

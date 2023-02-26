@@ -129,6 +129,7 @@
     [task resume];
 
     [self reDrawHeader    ];
+    [self updateMatchCount:self.view];
 
 }
 #pragma mark - NSURLSessionDataDelegate

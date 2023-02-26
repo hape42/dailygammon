@@ -130,7 +130,7 @@
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(drawPlayingAreas) name:changeSchemaNotification object:nil];
-    [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
+    [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
 
     [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
@@ -194,17 +194,11 @@
 }
 -(void)showMatch
 {
-    dispatch_async(dispatch_get_main_queue(),
-                   ^{
-                       int matchCount = [self->tools matchCount];
-                       if(matchCount != self.matchCount)
-                       {
-                           self.matchCount = matchCount;
-                           [[NSNotificationCenter defaultCenter] postNotificationName:@"changeMatchCount" object:self];
-                       }
-//                       XLog(@"matchCount %d %d ", matchCount, self.matchCount);
-                   });
-
+//    dispatch_async(dispatch_get_main_queue(),
+//                   ^{
+//                       [self->tools matchCount];
+//                   });
+    [self showMatchCount];
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
     self.isMessageAnswerView = FALSE;

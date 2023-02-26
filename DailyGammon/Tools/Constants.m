@@ -9,4 +9,5 @@
 #import "Constants.h"
 
 NSString * const changeSchemaNotification   = @"changeSchemaNotification";
+NSString * const matchCountChangedNotification   = @"matchCountChangedNotification";
 

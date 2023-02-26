@@ -143,6 +143,8 @@
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
 
+    [self updateMatchCount:self.view];
+
 }
 
 #pragma mark - NSURLSessionDataDelegate

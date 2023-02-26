@@ -137,6 +137,7 @@
                                       target:self action:@selector(messageDoneButtonPressed)];
     keyboardToolbar.items = @[flexBarButton, doneBarButton];
     self.message.inputAccessoryView = keyboardToolbar;
+    [self updateMatchCount:self.view];
 
 }
 -(void) reDrawHeader

@@ -195,6 +195,8 @@
     [task resume];
     [self reDrawHeader];
 
+    [self updateMatchCount:self.view];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated

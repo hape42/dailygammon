@@ -46,8 +46,7 @@
     // check if orderTyp exists
     if( [[NSUserDefaults standardUserDefaults] objectForKey:@"orderTyp"] == nil)
     {
-        NSURL *url = [NSURL URLWithString:@"http://dailygammon.com/bg/profile"];
-        DGRequest *request = [[DGRequest alloc] initWithURL:url completionHandler:^(BOOL success, NSError *error, NSString *result)
+        DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/profile" completionHandler:^(BOOL success, NSError *error, NSString *result)
         {
             if (success)
             {

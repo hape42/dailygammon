@@ -9,4 +9,5 @@
 
 
 extern NSString * const changeSchemaNotification;
+extern NSString * const matchCountChangedNotification;
 

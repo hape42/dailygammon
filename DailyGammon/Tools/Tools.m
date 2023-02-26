@@ -15,8 +15,11 @@
 #import <SystemConfiguration/SystemConfiguration.h>
 #import "Preferences.h"
 #include <unicode/utf8.h>
+#import "DGRequest.h"
+#import "Constants.h"
 
 @interface Tools ()
+
 @end
 
 @implementation Tools
@@ -102,44 +105,59 @@ typedef void(^connection)(BOOL);
 }
 
 
--(int)matchCount
+-(void)matchCount
 {
-    NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/top"];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
     
-    if(!topPageHtmlData)
-        return 0;;
-//    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    
-    NSString *htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
-    
-    if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
+    DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
     {
-        return 0;
-    }
-    
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    
-    int tableNo = 1;
-    preferences = [[Preferences alloc] init];
+        if (success)
+        {
+            int matchCountValue = [[[NSUserDefaults standardUserDefaults] objectForKey:@"matchCount"]intValue];
+            if ([result rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
+            {
+                if(matchCountValue != 0)
+                {
+                    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"matchCount"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:matchCountChangedNotification object:self];
+                }
+            }
+            else
+            {
+                NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+                
+                TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+                
+                int tableNo = 1;
+                self->preferences = [[Preferences alloc] init];
+                
+                if([self->preferences isMiniBoard])
+                    tableNo = 1;
+                else
+                    tableNo = 2;
+                NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+                
+                queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+                NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
+                int count = MAX(0,(int)zeilen.count - 1 );
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+                });
+                
+                if(matchCountValue != count)
+                {
+                    [[NSUserDefaults standardUserDefaults] setInteger:count forKey:@"matchCount"];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:matchCountChangedNotification object:self];
+                }
+            }
+        }
+        else
+        {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
 
-    if([preferences isMiniBoard])
-        tableNo = 1;
-    else
-        tableNo = 2;
-    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
-    
-    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *zeilen  = [xpathParser searchWithXPathQuery:queryString];
-    int count = MAX(0,(int)zeilen.count - 1 );
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [UIApplication sharedApplication].applicationIconBadgeNumber = count;
-    });
-
-    return count;
     }
 
 - (NSString *)readNote:(NSString *)event

@@ -86,6 +86,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readTopPage) name:@"applicationDidBecomeActive" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMatchCount) name:matchCountChangedNotification object:nil];
 
     design      = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
@@ -209,10 +210,11 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [ self readTopPage];
+
     [self reDrawHeader];
     [self updateTableView];
     
-    [ self readTopPage];
     refreshButtonPressed = NO;
     
 }
@@ -274,7 +276,7 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
- //       [ self readTopPage];
+        [ self readTopPage];
     }
 }
 
@@ -711,7 +713,10 @@ didCompleteWithError:(NSError *)error
     return headerView;
     
 }
-
+-(void)updateMatchCount
+{
+    [self updateMatchCount:self.view];
+}
 - (void)updateTableView
 {
     
@@ -725,7 +730,7 @@ didCompleteWithError:(NSError *)error
 
     }
 
-    [self updateMatchCount:self.view];
+    [self updateMatchCount];
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-dd"];
