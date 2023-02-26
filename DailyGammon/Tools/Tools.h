@@ -18,7 +18,7 @@
 -(BOOL)hasConnectivity;
 - (void)noInternet: (UIViewController *)vc;
 
--(int)matchCount;
+-(void)matchCount;
 - (NSString *)readPlayers:(NSString *)event;
 - (NSString *)readNote:(NSString *)event;
 

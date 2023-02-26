@@ -199,15 +199,15 @@
         frame.origin.x += 20;
         self.matchName.frame = frame;
     }
-
-    self.matchCount = [tools matchCount];
+    [tools matchCount];
+    self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
 
     self.matchCountLabel = [[UILabel alloc]init];
     CGRect frame = self.moreButton.frame;
     frame.origin.x  -= 85;
     frame.size.width = 80;
     self.matchCountLabel.frame = frame;
-    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", self.matchCount]];
 
     self.matchCountLabel.textAlignment = NSTextAlignmentRight;
 
@@ -224,22 +224,12 @@
 
 - (void) showMatchCount
 {
-    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [tools matchCount]]];
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]]];
 //    XLog(@"matchCount %d  ",  self.matchCount);
 }
 -(void)showMatch
 {
     
-    dispatch_async(dispatch_get_main_queue(),
-                   ^{
-                       int matchCount = [self->tools matchCount];
-                       if(matchCount != self.matchCount)
-                       {
-                           self.matchCount = matchCount;
-                           [[NSNotificationCenter defaultCenter] postNotificationName:@"changeMatchCount" object:self];
-                       }
-                       //                       XLog(@"matchCount %d %d ", matchCount, self.matchCount);
-                   });
 
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;

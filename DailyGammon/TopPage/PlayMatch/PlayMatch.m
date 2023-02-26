@@ -175,7 +175,7 @@
     self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
 
-    self.matchCount = [tools matchCount];
+    self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -194,10 +194,6 @@
 }
 -(void)showMatch
 {
-//    dispatch_async(dispatch_get_main_queue(),
-//                   ^{
-//                       [self->tools matchCount];
-//                   });
     [self showMatchCount];
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;

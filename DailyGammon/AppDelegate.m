@@ -146,7 +146,8 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
 
 -(void)handleProcessingTask:(BGTask *)task
 {
-    int count = [tools matchCount];
+    [tools matchCount];
+    int count = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
     //do things with task
     XLog(@"%d Matches to play", count);
  //   [self scheduleProcessingTask];
@@ -191,12 +192,12 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
         XLog(@"Failed to submit request: %@", error);
     } else
     {
-        int count = [tools matchCount];
+       [tools matchCount];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [UIApplication sharedApplication].applicationIconBadgeNumber = count;
+            [UIApplication sharedApplication].applicationIconBadgeNumber = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
         });
 
-        XLog(@"Badge=%d, Success submit request %@",count, request);
+        XLog(@"Badge=%d, Success submit request %@",[[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue], request);
     }
 }
 @end
