@@ -69,7 +69,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
+  //  [self.navigationController setNavigationBarHidden:YES animated:animated];
 
     self.nameTournament.text = name;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)

@@ -173,7 +173,7 @@
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     else
         [self.navigationController setNavigationBarHidden:NO animated:animated];
-
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
     NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
 

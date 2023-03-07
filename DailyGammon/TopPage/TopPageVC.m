@@ -395,28 +395,28 @@ didCompleteWithError:(NSError *)error
 {
     return self.topPageArray.count;
 }
-//This function is where all the magic happens
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
-    UIView *cellContentView = [cell contentView];
-    CGFloat rotationAngleDegrees = -30;
-    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
-    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
-    CATransform3D transform = CATransform3DIdentity;
-    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
-    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
-    cellContentView.layer.transform = transform;
-    cellContentView.layer.opacity = 0.8;
-    
-    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
-        cellContentView.layer.transform = CATransform3DIdentity;
-        cellContentView.layer.opacity = 1;
-    } completion:^(BOOL finished) {}];
-    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
-
-    return;
-}
+////This function is where all the magic happens
+//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
+//
+//    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
+//    UIView *cellContentView = [cell contentView];
+//    CGFloat rotationAngleDegrees = -30;
+//    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
+//    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
+//    CATransform3D transform = CATransform3DIdentity;
+//    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
+//    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
+//    cellContentView.layer.transform = transform;
+//    cellContentView.layer.opacity = 0.8;
+//
+//    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
+//        cellContentView.layer.transform = CATransform3DIdentity;
+//        cellContentView.layer.opacity = 1;
+//    } completion:^(BOOL finished) {}];
+//    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+//
+//    return;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -445,6 +445,7 @@ didCompleteWithError:(NSError *)error
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1)
         boardSchema = 4;
+    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
     NSString *imageName = @"pfeil_rot.png";
     switch(boardSchema)
     {
