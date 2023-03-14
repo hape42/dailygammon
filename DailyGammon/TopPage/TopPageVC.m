@@ -291,13 +291,13 @@ didCompleteWithError:(NSError *)error
         if (success)
         {
             [ self analyzeHTML:result];
-            
         }
         else
         {
             XLog(@"Error: %@", error.localizedDescription);
         }
     }];
+    request = nil;
 }
 -(void)analyzeHTML:(NSString *)htmlString
 {

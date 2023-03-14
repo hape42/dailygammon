@@ -56,7 +56,7 @@
 {
     // First reponse, initialize the data object to hold chunks
 
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+//    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
 //    NSLog(@"... Received header from \"%@\" (status: %lu, fields: %@)", httpResponse.URL, httpResponse.statusCode, httpResponse.allHeaderFields);
     self.responseData = [NSMutableData data];
     completionHandler(NSURLSessionResponseAllow);
@@ -69,24 +69,6 @@
     [self.responseData appendData:data];
 }
 
-//- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
-//{
-//    // Response has been finished, use the completionHandler property to loop back to the caller with results
-//
-//    if (error)
-//    {
-//        self.responseData = nil;
-//        if (self.completionHandler) self.completionHandler(FALSE, error, nil);
-//    }
-//    else
-//    {
-//        NSString *responseString = [[NSString alloc] initWithData:self.responseData encoding:NSUTF8StringEncoding];
-//        if(responseString == nil)
-//            responseString = [[NSString alloc]initWithData:self.responseData encoding: NSISOLatin1StringEncoding];
-//
-//        if (self.completionHandler) self.completionHandler(TRUE, nil, responseString);
-//    }
-//}
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     // Response has been finished, use the completionHandler property to loop back to the caller with results
