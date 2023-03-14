@@ -34,7 +34,7 @@
         }
     }
     [tools matchCount];
-    XLog(@"matchCount %d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]);
+   // XLog(@"matchCount %d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]);
     self.topPageButton = [[DGButton alloc] initWithFrame:frame];
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
     [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];

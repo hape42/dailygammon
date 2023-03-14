@@ -213,7 +213,7 @@
     [ self readTopPage];
 
     [self reDrawHeader];
-    [self updateTableView];
+//    [self updateTableView];
     
     refreshButtonPressed = NO;
     
