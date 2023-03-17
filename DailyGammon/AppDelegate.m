@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "Design.h"
 #import "Tools.h"
+#import "Preferences.h"
 #import "DBConnect.h"
 #import <StoreKit/StoreKit.h>
 #import <BackgroundTasks/BackgroundTasks.h>
@@ -20,7 +21,7 @@
 
 @implementation AppDelegate
 
-@synthesize design,tools ,activeStoryBoard;
+@synthesize design,tools, preferences,activeStoryBoard;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -36,8 +37,9 @@
     self.window.rootViewController = rootController;
     [self.window makeKeyAndVisible];
 
-    design = [[Design alloc] init];
-    tools = [[Tools alloc] init];
+    design      = [[Design alloc] init];
+    tools       = [[Tools alloc] init];
+    preferences = [[Preferences alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     if(schemaDict.count == 0)
@@ -46,6 +48,7 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
         schemaDict = [design schema:4];
     }
+    
  //   [self.window setTintColor:[schemaDict objectForKey:@"TintColor"]];
     [self.window setTintColor:[UIColor colorNamed:@"ColorSwitch"]];
 

@@ -275,6 +275,8 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
+        [preferences initPreferences];
+
         [ self readTopPage];
     }
 }
