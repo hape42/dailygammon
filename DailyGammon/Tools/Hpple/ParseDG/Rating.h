@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@class RatingTools;
 
 @interface Rating : NSObject
 
+@property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
+
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID;
-- (float)readRatingForUser:(NSString *)userID;
-- (void)writeRating;
+- (void)updateRating;
 
 @end
 

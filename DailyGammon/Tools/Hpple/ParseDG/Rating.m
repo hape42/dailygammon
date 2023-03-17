@@ -10,8 +10,12 @@
 #import "TFHpple.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
+#import "DGRequest.h"
+#import "RatingTools.h"
 
 @implementation Rating
+
+@synthesize ratingTools;
 
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID
 {
@@ -102,38 +106,44 @@
     return ratingDict;
 }
 
-- (float)readRatingForUser:(NSString *)userID
+- (void)updateRating
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@", userID]];
-    NSData *htmlData = [NSData dataWithContentsOfURL:url];
-    NSString *ratingPlayer = @"?";
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-    
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[2]/tr[1]/td[3]/table[1]/tr[1]/td[2]"];
-    for(TFHppleElement *element in elements)
-    {
-        TFHppleElement *child = [element firstChild];
-        ratingPlayer = [child content];
-    }
-    
-    return [ratingPlayer floatValue];
-}
+    ratingTools = [[RatingTools alloc] init];
 
-- (void)writeRating
-{
-    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-    float ratingUser = [self readRatingForUser:userID];
-    
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"yyyy-MM-dd"];
     NSString *dateDB = [format stringFromDate:[NSDate date]];
-    
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
-    if(ratingUser > ratingDB)
-        [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
-//    XLog(@"%@ %5.1f %@", dateDB, ratingUser, userID);
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            NSString *ratingPlayer = @"?";
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+            
+            NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[2]/tr[1]/td[3]/table[1]/tr[1]/td[2]"];
+            for(TFHppleElement *element in elements)
+            {
+                TFHppleElement *child = [element firstChild];
+                ratingPlayer = [child content];
+            }
+            float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
+            if([ratingPlayer floatValue] > ratingDB)
+                [app.dbConnect saveRating:dateDB withRating:[ratingPlayer floatValue] forUser:userID];
+            if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+                [self->ratingTools saveRating:dateDB withRating:[ratingPlayer floatValue]] ;
+
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+        
+    }];
+    request = nil;
 
 }
 
