@@ -293,8 +293,16 @@
 }
 - (IBAction)findMe:(id)sender
 {
+    int width = self.view.bounds.size.width;
+    int height = self.view.bounds.size.height;
+    int labelWidth = 150;
+    int labelHeight = 30;
+    
+    int centerX = width/2 - labelWidth/2;
+    int centerY = height/2 - labelHeight/2;
+    
     [UIView animateWithDuration:2.0f delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-        self->scrollView.contentOffset = CGPointMake(self->xFound, self->yFound);
+        self->scrollView.contentOffset = CGPointMake(self->xFound-centerX, self->yFound-centerY);
     } completion:NULL];
 
 }
