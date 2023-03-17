@@ -10,11 +10,13 @@
 @class Design;
 @class DbConnect;
 @class Tools;
+@class Preferences;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;
+@property (strong, readwrite, retain, atomic) Preferences *preferences;
 
 @property (nonatomic, strong) DbConnect *dbConnect;
 
