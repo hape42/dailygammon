@@ -62,24 +62,18 @@
 
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
-@property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
-
 @end
 
 @implementation TopPageVC
 
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize timeRefresh, refreshButtonPressed;
+@synthesize waitView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
-    self.indicator.color = [design schemaColor];
-    self.indicator.center = self.view.center;
-    [self.view addSubview:self.indicator];
-    
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
@@ -130,17 +124,7 @@
     self.eventWidth = self.opponentWidth;
 
 }
-- (UIActivityIndicatorView *)indicator
-{
-    if (!_indicator)
-    {
-        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-        self.indicator.color = [schemaDict objectForKey:@"TintColor"];
 
-    }
-    return _indicator;
-}
 -(void) reDrawHeader
 {
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -177,8 +161,8 @@
 {
     [super viewWillAppear:animated];
 
-    [self.indicator startAnimating];
-
+    [self startActivityIndicator:self.view];
+    
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     else
@@ -217,6 +201,21 @@
     
     refreshButtonPressed = NO;
     
+}
+#pragma mark - WaitView
+
+- (void)startActivityIndicator:(UIView*)view
+{
+    if(!waitView)
+    {
+        waitView = [[WaitView alloc]initWithText:[NSString stringWithFormat: @"Get TopPage data from www.dailygammon.com"]];
+        [waitView showInView:view];
+    }
+}
+
+- (void)stopActivityIndicator
+{
+    [waitView dismiss];
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -284,8 +283,8 @@ didCompleteWithError:(NSError *)error
 
 -(void)readTopPage
 {
-    [self.indicator startAnimating];
-    
+    [self startActivityIndicator:self.view];
+
     DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
         if (success)
@@ -305,7 +304,7 @@ didCompleteWithError:(NSError *)error
 
     if(topPageHtmlData == nil)
     {
-        [self.indicator stopAnimating];
+        [self stopActivityIndicator];
         self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
         self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
 
@@ -316,7 +315,7 @@ didCompleteWithError:(NSError *)error
 
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
     {
-        [self.indicator stopAnimating];
+        [self stopActivityIndicator];
         self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
         self.navigationBar.title = [NSString stringWithFormat:@"There are no matches where you can move."];
 
@@ -324,9 +323,7 @@ didCompleteWithError:(NSError *)error
     }
 
     // Create parser
-    
-    //    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
-    
+        
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
@@ -380,7 +377,8 @@ didCompleteWithError:(NSError *)error
     }
     if(self.topPageArray.count > 0)
         [self updateTableView];
-    [self.indicator stopAnimating];
+    
+    [self stopActivityIndicator];
 
 }
 
@@ -395,28 +393,6 @@ didCompleteWithError:(NSError *)error
 {
     return self.topPageArray.count;
 }
-////This function is where all the magic happens
-//-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-//
-//    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
-//    UIView *cellContentView = [cell contentView];
-//    CGFloat rotationAngleDegrees = -30;
-//    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
-//    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
-//    CATransform3D transform = CATransform3DIdentity;
-//    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
-//    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
-//    cellContentView.layer.transform = transform;
-//    cellContentView.layer.opacity = 0.8;
-//
-//    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
-//        cellContentView.layer.transform = CATransform3DIdentity;
-//        cellContentView.layer.opacity = 1;
-//    } completion:^(BOOL finished) {}];
-//    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
-//
-//    return;
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -720,7 +696,6 @@ didCompleteWithError:(NSError *)error
 }
 - (void)updateTableView
 {
-    
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
     self.navigationBar.title = [NSString stringWithFormat:@"%d Matches where you can move" ,(int)self.topPageArray.count];
@@ -771,7 +746,7 @@ didCompleteWithError:(NSError *)error
             [self.tableView reloadData];
             break;
     }
-    [self.indicator stopAnimating];
+    [self stopActivityIndicator];
 }
 
 #pragma mark - Table view delegate

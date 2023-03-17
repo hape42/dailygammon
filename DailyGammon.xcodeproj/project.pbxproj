@@ -13,6 +13,7 @@
 		E00A3D832700CB7D008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D822700CB7D008B526B /* NoInternet.m */; };
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
+		E02C7BC729C4461E003B6357 /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = E02C7BC629C4461E003B6357 /* WaitView.m */; };
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
 		E035538F298987CC002C820C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538E298987CB002C820C /* NotificationCenter.framework */; };
@@ -103,6 +104,8 @@
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
+		E02C7BC529C4461E003B6357 /* WaitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitView.h; sourceTree = "<group>"; };
+		E02C7BC629C4461E003B6357 /* WaitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitView.m; sourceTree = "<group>"; };
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
 		E035538C29898798002C820C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		E035538E298987CB002C820C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -675,6 +678,8 @@
 				E0FA69332964463200D88C26 /* DGButton.m */,
 				E002F19C29A0F08C0028098C /* DGRequest.h */,
 				E002F19D29A0F08C0028098C /* DGRequest.m */,
+				E02C7BC529C4461E003B6357 /* WaitView.h */,
+				E02C7BC629C4461E003B6357 /* WaitView.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
 				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
@@ -872,6 +877,7 @@
 				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
+				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "WaitView.h"
 
 @class Design;
 @class Preferences;
@@ -27,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readwrite, assign, atomic) int timeRefresh;
 @property (readwrite, assign, atomic) bool refreshButtonPressed;
+
+@property (strong, nonatomic, readwrite) WaitView *waitView;
 
 @end
 
