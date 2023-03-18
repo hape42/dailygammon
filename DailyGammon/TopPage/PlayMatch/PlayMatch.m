@@ -228,6 +228,30 @@
 
     self.boardDict = [match readMatch:matchLink];
     
+    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"cubedr.gif"].location == NSNotFound))
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Double Repeat"
+                                     message:@"Unfortunately, this app does not support \"Double Repeat\" matches."
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"TopPage"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            [self.navigationController pushViewController:vc animated:NO];
+                                     }];
+ 
+        [alert addAction:okButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+
+        return;
+    }
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -236,7 +260,6 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-    
     if([[self.boardDict objectForKey:@"unknown"] length] != 0)
         [self errorAction:1];
 
