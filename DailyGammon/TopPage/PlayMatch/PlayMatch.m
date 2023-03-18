@@ -228,7 +228,7 @@
 
     self.boardDict = [match readMatch:matchLink];
     
-    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"cubedr.gif"].location == NSNotFound))
+    if ([[self.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Double Repeat"
