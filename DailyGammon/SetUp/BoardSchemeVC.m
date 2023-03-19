@@ -108,6 +108,11 @@
                       @"design" : @"darkhelmet",
                       @"colorLight" : @"White",
                       @"colorDark"  : @"Blue"},
+                   @{ @"number" : [NSNumber numberWithInt:14],
+                      @"name" : @"Traditional",
+                      @"design" : @"darkhelmet",
+                      @"colorLight" : @"White",
+                      @"colorDark"  : @"Black"},
               nil];
     
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
