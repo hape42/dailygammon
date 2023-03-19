@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "WaitView.h"
 
 @class Design;
 @class Preferences;
@@ -26,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
 @property (readwrite, assign, atomic) int listTyp;
+
+@property (strong, nonatomic, readwrite) WaitView *waitView;
 
 @end
 

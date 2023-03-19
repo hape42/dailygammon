@@ -28,6 +28,7 @@
 #import "DGButton.h"
 #import "PlayerLists.h"
 #import "Constants.h"
+#import "DGLabel.h"
 
 @interface RatingVC ()
 
@@ -40,7 +41,7 @@
 @property (readwrite, atomic) int average, dataRange;
 @property (readwrite, atomic) BOOL iPad;
 
-@property (weak, nonatomic) IBOutlet UILabel *header;
+@property (weak, nonatomic) IBOutlet DGLabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 @property (weak, nonatomic) IBOutlet DGButton *iCloud;

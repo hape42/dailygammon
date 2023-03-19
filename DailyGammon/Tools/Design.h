@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DGLabel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,10 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down;
 
-- (UILabel *) makeNiceLabel: (UILabel*)label;
+- (DGLabel *) makeNiceLabel: (DGLabel*)label;
 - (UILabel *) makeNiceTextField: (UILabel*)text;
 
-- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color forPlayer:(BOOL)player;
+- (DGLabel *) makeLabelColor: (DGLabel*)label forColor: (NSString *)color forPlayer:(BOOL)player;
 
 - (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
 

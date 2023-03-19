@@ -709,24 +709,9 @@ didCompleteWithError:(NSError *)error
     }
 
     [self updateMatchCount];
+    
     [rating updateRating];
     
-//    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-//    [format setDateFormat:@"yyyy-MM-dd"];
-//    NSString *dateDB = [format stringFromDate:[NSDate date]];
-//    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-//    float ratingUser = [self->rating readRatingForUser:userID];
-//
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-//                   ^{
-//                        float ratingDB = [app.dbConnect readRatingForDatum:dateDB andUser:userID];
-//                        if(ratingUser > ratingDB)
-//                            [app.dbConnect saveRating:dateDB withRating:ratingUser forUser:userID];
-//                   });
-//    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
-//        [ratingTools saveRating:dateDB withRating:ratingUser] ;
-
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
         case 4:

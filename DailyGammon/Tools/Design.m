@@ -170,7 +170,7 @@
     return label;
 }
 
-- (UILabel *) makeNiceLabel: (UILabel*)label
+- (DGLabel *) makeNiceLabel: (DGLabel*)label
 {
     [label setFont:[label.font fontWithSize: 50]];
     label.adjustsFontSizeToFitWidth = YES;
@@ -180,7 +180,7 @@
     return label;
 }
 
-- (UILabel *) makeLabelColor: (UILabel*)label forColor: (NSString *)color forPlayer:(BOOL)player
+- (DGLabel *) makeLabelColor: (DGLabel*)label forColor: (NSString *)color forPlayer:(BOOL)player
 {
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;

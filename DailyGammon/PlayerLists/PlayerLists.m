@@ -31,6 +31,7 @@
 #import "Tournament.h"
 #import "Review.h"
 #import "Constants.h"
+#import "DGRequest.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
@@ -52,11 +53,8 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 
-
-
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
-@property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
 
 @end
 
@@ -64,16 +62,12 @@
 
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize listTyp;
+@synthesize waitView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
-    self.indicator.color = [design schemaColor];
-    self.indicator.center = self.view.center;
-    [self.view addSubview:self.indicator];
-    
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
@@ -104,17 +98,23 @@
     }
 
 }
-- (UIActivityIndicatorView *)indicator
-{
-    if (!_indicator)
-    {
-        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-        self.indicator.color = [schemaDict objectForKey:@"TintColor"];
 
+#pragma mark - WaitView
+
+- (void)startActivityIndicator:(NSString *)text
+{
+    if(!waitView)
+    {
+        waitView = [[WaitView alloc]initWithText:text];
+        [waitView showInView:self.view];
     }
-    return _indicator;
 }
+
+- (void)stopActivityIndicator
+{
+    [waitView dismiss];
+}
+
 -(void) reDrawHeader
 {
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -166,8 +166,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    [self.indicator startAnimating];
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
@@ -268,7 +266,7 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
- //       [ self readTopPage];
+        return;
     }
 }
 
@@ -276,252 +274,267 @@ didCompleteWithError:(NSError *)error
 
 -(void)readActiveMatches
 {
-    [self.indicator startAnimating];
+    [self startActivityIndicator:@"Get active matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?days_to_view=30&active=1&finished=1", userID]];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     self.listArray = [[NSMutableArray alloc]init];
 
-
-    // Create parser
-    
-    //    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
-    
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-
-    //Get all the cells of the 2nd row of the 3rd table
-    //        NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[3]/tr[2]/td"];
-    int tableNo = 3;
-    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
-    self.listHeaderArray = [[NSMutableArray alloc]init];
-
-    for(TFHppleElement *element in elementHeader)
-    {
-        //            XLog(@"%@",[element text]);
-        [self.listHeaderArray addObject:[element text]];
-    }
-    self.listArray = [[NSMutableArray alloc]init];
-    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
-    for(int row = 2; row <= rows.count; row ++)
-    {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
-
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?days_to_view=30&active=1&finished=1", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
 
-            for (TFHppleElement *child in element.children)
+            int tableNo = 3;
+            NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+            self.listHeaderArray = [[NSMutableArray alloc]init];
+
+            for(TFHppleElement *element in elementHeader)
             {
-                if ([child.tagName isEqualToString:@"a"])
-                {
-                   // NSDictionary *href = [child attributes];
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-                }
-                else
-                {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-                }
+                [self.listHeaderArray addObject:[element text]];
             }
-            [topPageZeile addObject:topPageZeileSpalte];
-        }
+            self.listArray = [[NSMutableArray alloc]init];
+            queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+            NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+            for(int row = 2; row <= rows.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
-        [self.listArray addObject:topPageZeile];
-    }
-    [self updateTableView];
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+                }
+
+                [self.listArray addObject:topPageZeile];
+            }
+            [self updateTableView];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+
 }
 
 -(void)readActiveTournaments
 {
-    [self.indicator startAnimating];
+    [self startActivityIndicator:@"Get active tournaments from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userevent/%@", userID]];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     self.listArray = [[NSMutableArray alloc]init];
-    
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-
-    int tableNo = 2;
-    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
-    self.listHeaderArray = [[NSMutableArray alloc]init];
-
-    for(TFHppleElement *element in elementHeader)
-    {
-        if([element text] != nil)
-            [self.listHeaderArray addObject:[element text]];
-    }
-    self.listArray = [[NSMutableArray alloc]init];
-    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
-    for(int row = 2; row <= rows.count; row ++)
-    {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
-
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userevent/%@", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
-
-            for (TFHppleElement *child in element.children)
+            
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+            
+            int tableNo = 2;
+            NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+            self.listHeaderArray = [[NSMutableArray alloc]init];
+            
+            for(TFHppleElement *element in elementHeader)
             {
-                if ([child.tagName isEqualToString:@"a"])
-                {
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-                }
-                else
-                {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-                }
+                if([element text] != nil)
+                    [self.listHeaderArray addObject:[element text]];
             }
-            [topPageZeile addObject:topPageZeileSpalte];
+            self.listArray = [[NSMutableArray alloc]init];
+            queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+            NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+            for(int row = 2; row <= rows.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
+                
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+                    
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+                }
+                
+                [self.listArray addObject:topPageZeile];
+            }
+            [self updateTableView];
         }
-
-        [self.listArray addObject:topPageZeile];
-    }
-    [self updateTableView];
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
 }
 
 -(void)readFinishedMatches
 {
-    [self.indicator startAnimating];
+    [self startActivityIndicator:@"Get finished matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?days_to_view=30&active=1&finished=1", userID]];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     self.listArray = [[NSMutableArray alloc]init];
     
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-
-    int tableNo = 4;
-    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
-    self.listHeaderArray = [[NSMutableArray alloc]init];
-
-    for(TFHppleElement *element in elementHeader)
-    {
-        [self.listHeaderArray addObject:[element text]];
-    }
-    self.listArray = [[NSMutableArray alloc]init];
-    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
-    for(int row = 2; row <= rows.count; row ++)
-    {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
-
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?days_to_view=30&active=1&finished=1", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
 
-            for (TFHppleElement *child in element.children)
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+            int tableNo = 4;
+            NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+            self.listHeaderArray = [[NSMutableArray alloc]init];
+
+            for(TFHppleElement *element in elementHeader)
             {
-                if ([child.tagName isEqualToString:@"a"])
-                {
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-                }
-                else
-                {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-                }
+                [self.listHeaderArray addObject:[element text]];
             }
-            [topPageZeile addObject:topPageZeileSpalte];
-        }
+            self.listArray = [[NSMutableArray alloc]init];
+            queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+            NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+            for(int row = 2; row <= rows.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
-        [self.listArray addObject:topPageZeile];
-    }
-    [self updateTableView];
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+                }
+
+                [self.listArray addObject:topPageZeile];
+            }
+            [self updateTableView];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+
 }
 
 -(void)readTournamentWins
 {
-    [self.indicator startAnimating];
+    [self startActivityIndicator:@"Get tournament wins matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
-    NSURL *urlTopPage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userwins/%@", userID]];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
     self.listArray = [[NSMutableArray alloc]init];
     
-    NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
-    
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
-
-    int tableNo = 2;
-    NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
-    self.listHeaderArray = [[NSMutableArray alloc]init];
-
-    for(TFHppleElement *element in elementHeader)
-    {
-        [self.listHeaderArray addObject:[element text]];
-    }
-    self.listArray = [[NSMutableArray alloc]init];
-    queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
-    NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
-    for(int row = 2; row <= rows.count; row ++)
-    {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
-
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userwins/%@", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
 
-            for (TFHppleElement *child in element.children)
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+            int tableNo = 2;
+            NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+            self.listHeaderArray = [[NSMutableArray alloc]init];
+
+            for(TFHppleElement *element in elementHeader)
             {
-                if ([child.tagName isEqualToString:@"a"])
-                {
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-                }
-                else
-                {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-                }
+                [self.listHeaderArray addObject:[element text]];
             }
-            [topPageZeile addObject:topPageZeileSpalte];
-        }
+            self.listArray = [[NSMutableArray alloc]init];
+            queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+            NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+            for(int row = 2; row <= rows.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
-        [self.listArray addObject:topPageZeile];
-    }
-    [self updateTableView];
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+                }
+
+                [self.listArray addObject:topPageZeile];
+            }
+            [self updateTableView];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
 }
 
 #pragma mark - UITableViewDataSource
@@ -1083,7 +1096,7 @@ didCompleteWithError:(NSError *)error
     self.navigationBar.title = headerText;
     [self.tableView reloadData];
 
-    [self.indicator stopAnimating];
+    [self stopActivityIndicator];
 }
 
 #pragma mark - Table view delegate
@@ -1178,32 +1191,6 @@ didCompleteWithError:(NSError *)error
     [self.navigationController pushViewController:vc animated:NO];
 
     return;
-    
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    UIAlertAction* browserButton = [UIAlertAction
-                                actionWithTitle:@"Show me in the browser please"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [review objectForKey:@"href"]]] options:@{} completionHandler:nil];
-                                }];
-
-    [alert addAction:yesButton];
-    [alert addAction:browserButton];
-
-    [self presentViewController:alert animated:YES completion:nil];
-
 }
 - (IBAction)activeGameAction:(UIButton*)button
 {
