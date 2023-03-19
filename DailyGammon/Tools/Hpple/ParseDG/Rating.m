@@ -48,6 +48,8 @@
     BOOL lost = FALSE;
     for(TFHppleElement *element in finishedMatches)
     {
+        // all games below a line containing "won" are won until until we hit a "lost" or
+        // we come to the end
         NSString *zeile = [element content];
         if([zeile isEqualToString:@"won"])
         {
@@ -63,7 +65,16 @@
         if(lost)
             lostMatches++;
     }
-    wonMatches -= 3; // won, header, leerzeile
+    
+    
+    if (won)
+    {
+        wonMatches -= 2;
+    }
+    else
+    {
+        wonMatches -= 3; // won, header, leerzeile
+    }
     lostMatches -= 1; //  header
     wonMatches = MAX(0, wonMatches);
     lostMatches = MAX(0, lostMatches);
