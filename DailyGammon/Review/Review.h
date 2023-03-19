@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WaitView.h"
 
 @class Design;
 @class Tools;
@@ -23,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) bool player1wonGame;
 
 @property (readwrite, retain, nonatomic) NSMutableArray *listArray;
+
+@property (strong, nonatomic, readwrite) WaitView *waitView;
 
 @end
 

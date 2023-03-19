@@ -55,6 +55,8 @@
 @synthesize design,tools;
 @synthesize player1wonGame;
 
+@synthesize waitView;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -104,6 +106,8 @@
     [super viewDidAppear:animated];
     [self reDrawHeader];
 
+    [self startActivityIndicator:@"Get moves from www.dailygammon.com"];
+
     DGRequest *request = [[DGRequest alloc] initWithURL:reviewURL completionHandler:^(BOOL success, NSError *error, NSString *result)
     {
         if (success)
@@ -115,8 +119,25 @@
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
+    request = nil;
 
     self.matchLengthLabel.text = [NSString stringWithFormat:@"%d point match",matchLength];
+}
+
+#pragma mark - WaitView
+
+- (void)startActivityIndicator:(NSString *)text
+{
+    if(!waitView)
+    {
+        waitView = [[WaitView alloc]initWithText:text];
+        [waitView showInView:self.view];
+    }
+}
+
+- (void)stopActivityIndicator
+{
+    [waitView dismiss];
 }
 
 -(void) reDrawHeader
@@ -192,7 +213,8 @@
 
         [listArray addObject:topPageZeile];
     }
-    
+    [self stopActivityIndicator];
+
     [self.tableView reloadData];
 }
 
