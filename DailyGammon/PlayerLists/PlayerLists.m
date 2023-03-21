@@ -1195,6 +1195,28 @@ didCompleteWithError:(NSError *)error
 - (IBAction)activeGameAction:(UIButton*)button
 {
     NSArray *row = self.listArray[button.tag];
+    
+    NSDictionary *match = row[5];
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+        vc.matchLink = [match objectForKey:@"href"];
+        vc.isReview = TRUE;
+        vc.topPageArray = [[NSMutableArray alloc]init];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    else
+    {
+        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
+        vc.matchLink = [match objectForKey:@"href"];
+        vc.isReview = TRUE;
+        vc.topPageArray = [[NSMutableArray alloc]init];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    return;
     NSDictionary *activeGame = row[5];
 
     UIAlertController * alert = [UIAlertController

@@ -124,6 +124,7 @@
                         <outlet property="chatHeaderText" destination="EVp-wB-iQf" id="ypn-Jr-n6W"/>
                         <outlet property="chatView" destination="Blz-DR-iBs" id="3cw-Vv-Ozp"/>
                         <outlet property="infoLabel" destination="wOG-gN-yFy" id="IDd-ye-C4E"/>
+                        <outlet property="makeYourMove" destination="2BS-uq-SCo" id="RSF-et-X4z"/>
                         <outlet property="matchName" destination="hxE-0z-UNT" id="gw6-sf-wYC"/>
                         <outlet property="opponentChat" destination="tU9-zq-D7B" id="NWX-nZ-0js"/>
                         <outlet property="playerChat" destination="iEr-Dz-bJe" id="WfQ-Bh-D1Z"/>

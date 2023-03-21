@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) NSString *matchLink;
 @property (strong, readwrite, retain, atomic) NSMutableArray *topPageArray;
 
+@property (readwrite, assign, atomic) BOOL isReview;
+
 @end
 
 NS_ASSUME_NONNULL_END
