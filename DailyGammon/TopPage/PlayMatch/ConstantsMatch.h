@@ -25,6 +25,15 @@
 #define NEXTGAME 14
 #define ACCEPT_BEAVER_DECLINE 15
 
+// review match
+
+#define REVIEW 100
+#define FIRST_MOVE 101
+#define PREV_MOVE 102
+#define NEXT_MOVE 103
+#define LAST_MOVE 104
+
+
 #define FINISHED_MATCH_VIEW 43
 #define CHAT_VIEW 42
 #define ACTION_VIEW 44

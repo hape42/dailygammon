@@ -33,11 +33,14 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 
+#import "Review.h"
+
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
 @property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
+@property (weak, nonatomic) IBOutlet UILabel *makeYourMove;
 
 @property (weak, nonatomic) IBOutlet UIView *chatView;
 @property (weak, nonatomic) IBOutlet UIButton *transparentButton;
@@ -101,7 +104,7 @@
 @implementation PlayMatch
 
 @synthesize design, match, rating, tools;
-@synthesize matchLink;
+@synthesize matchLink, isReview;
 @synthesize ratingDict;
 
 @synthesize topPageArray;
@@ -176,6 +179,11 @@
     self.first = TRUE;
 
     self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
+    if(isReview)
+    {
+        self.unexpectedMove.text = @"";
+        self.makeYourMove.text = @"";
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -226,7 +234,7 @@
     self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
-    self.boardDict = [match readMatch:matchLink];
+    self.boardDict = [match readMatch:matchLink reviewMatch:isReview];
     
     if ([[self.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
     {
@@ -835,6 +843,39 @@
 //            XLog(@"ONLY_MESSAGE");
             break;
         }
+        case REVIEW:
+        {
+#pragma mark - preview match
+            NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
+            float width = 150;
+            float height = 35;
+            float gap = 20;
+            float x = (actionView.frame.size.width/2) - (width / 2);
+            float y = 20;
+            NSArray *reviewText = [NSArray arrayWithObjects: @"First Move", @"Prev Move", @"Next Move", @"Last Move",nil];
+            for(int i = 0; i < reviewText.count; i++)
+            {
+                NSString *url = reviewArray[i];
+                if(!url.length)
+                {
+                    DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    label.text = reviewText[i];
+                    label.textAlignment = NSTextAlignmentCenter;
+                    [actionView addSubview:label];
+                }
+                else
+                {
+                    DGButton *buttonReview = [[DGButton alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    [buttonReview setTitle:reviewText[i] forState: UIControlStateNormal];
+                    [buttonReview addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
+                    [buttonReview.layer setValue:url forKey:@"href"];
+                    [actionView addSubview:buttonReview];
+                }
+                y += height + gap;
+            }
+
+            break;
+        }
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
@@ -858,15 +899,27 @@
     }
 
 #pragma mark - Button Skip Game
-    DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35)];
-    [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
-    [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
-    [actionView addSubview:buttonSkipGame];
+    
     UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, actionView.frame.size.height - 40 - 10, actionView.frame.size.width - 10, 1)];
     linie.backgroundColor = [UIColor blackColor];
     [actionView addSubview:linie];
 
+    if(isReview)
+    {
+        DGButton *buttonAllMoves = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, actionView.frame.size.height - 45, 150, 35)];
+        [buttonAllMoves setTitle:@"List of Moves" forState: UIControlStateNormal];
+        [buttonAllMoves addTarget:self action:@selector(actionAllMoves:) forControlEvents:UIControlEventTouchUpInside];
+        [buttonAllMoves.layer setValue: [self.actionDict objectForKey:@"List of Moves"] forKey:@"href"];
+        [actionView addSubview:buttonAllMoves];
 
+    }
+    else
+    {
+        DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35)];
+        [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
+        [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
+        [actionView addSubview:buttonSkipGame];
+    }
 }
 
 #pragma mark - actions
@@ -1078,6 +1131,22 @@
     [self showMatch];
 }
 
+- (void)actionReview:(UIButton*)button
+{
+    matchLink = (NSString *)[button.layer valueForKey:@"href"];
+    [self showMatch];
+}
+
+- (void)actionAllMoves:(UIButton*)button
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Review *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"Review"];
+    vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]];
+
+    [self.navigationController pushViewController:vc animated:NO];
+}
+
 #pragma mark - player details
 
 - (void)playerLists:(UIButton*)sender
@@ -1212,6 +1281,8 @@
     if([self isChat])
         return CHAT;
 
+    if(isReview)
+        return REVIEW;
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 1)
     {

@@ -31,6 +31,9 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 
+#import "PlayMatch.h"
+#import "iPhonePlayMatch.h"
+
 @interface Review ()
 
 @property (weak, nonatomic) IBOutlet DGLabel *header;
@@ -710,31 +713,26 @@
 
 - (IBAction)moveAction:(UIButton*)button
 {
-    
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    UIAlertAction* browserButton = [UIAlertAction
-                                actionWithTitle:@"Show me in the browser please"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]] options:@{} completionHandler:nil];
-                                }];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    [alert addAction:yesButton];
-    [alert addAction:browserButton];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+        vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
+        vc.isReview = TRUE;
+        vc.topPageArray = [[NSMutableArray alloc]init];
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    else
+    {
+        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
+        vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
+        vc.topPageArray = [[NSMutableArray alloc]init];
+        vc.isReview = TRUE;
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    return;
 
-    [self presentViewController:alert animated:YES completion:nil];
 
 }
 #pragma mark - Header

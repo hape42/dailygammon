@@ -13,8 +13,11 @@
 @end
 @implementation Match
 
--(NSMutableDictionary *) readMatch:(NSString *)matchLink
+-(NSMutableDictionary *) readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview
 {
+    int tableToAnalyze = 1;
+    if(isReview)
+        tableToAnalyze = 2;
     NSMutableDictionary *boardDict = [[NSMutableDictionary alloc]init];
     
 #pragma mark - matchName
@@ -130,7 +133,8 @@
         for (TFHppleElement *child in element.children)
         {
             [matchName appendString:[child content]];
-        }
+            [matchName appendString:@" "];
+       }
     }
     [boardDict setObject:matchName forKey:@"matchName"];
     [boardDict setObject:chat forKey:@"chat"];
@@ -216,12 +220,12 @@
 #pragma mark - unbekanntes HTML.
     if ([htmlString rangeOfString:@"Review Game"].location == NSNotFound)
     {
-        [boardDict setObject:htmlString forKey:@"unknown"];
-        return boardDict;
+ //       [boardDict setObject:htmlString forKey:@"unknown"];
+ //       return boardDict;
     }
 
 #pragma mark - obere Nummern Reihe
-    NSArray *elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[1]/td"];
+    NSArray *elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat: @"//table[%d]/tr[1]/td",tableToAnalyze]];
     NSMutableArray *elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -231,7 +235,7 @@
     [boardDict setObject:elementArray forKey:@"nummernOben"];
     
 #pragma mark - obere Grafik Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[2]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[2]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -265,7 +269,7 @@
     [boardDict setObject:elementArray forKey:@"grafikOben"];
     
 #pragma mark - opponent
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[2]/td[17]"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[2]/td[17]",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     NSString *opponentID = @"";
     for(TFHppleElement *element in elements)
@@ -283,7 +287,7 @@
     [boardDict setObject:opponentID forKey:@"opponentID"];
 
 #pragma mark - obere Reihe moveIndicator
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[3]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[3]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -301,7 +305,7 @@
     [boardDict setObject:elementArray forKey:@"moveIndicatorOben"];
     
 #pragma mark - Würfel Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[4]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[4]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     NSString *matchLaengeText = @"?";
     for(TFHppleElement *element in elements)
@@ -322,7 +326,7 @@
     [boardDict setObject:elementArray forKey:@"dice"];
     
 #pragma mark - untere Reihe moveIndicator
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[5]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[5]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -340,7 +344,7 @@
     [boardDict setObject:elementArray forKey:@"moveIndicatorUnten"];
     
 #pragma mark - untere Grafik Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[6]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[6]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -373,7 +377,7 @@
     [boardDict setObject:elementArray forKey:@"grafikUnten"];
     
 #pragma mark - player
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[6]/td[17]"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[6]/td[17]",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -388,7 +392,7 @@
     [boardDict setObject:elementArray forKey:@"player"];
     
 #pragma mark - untere Nummern Reihe
-    elements  = [xpathParser searchWithXPathQuery:@"//table[1]/tr[7]/td"];
+    elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[7]/td",tableToAnalyze]];
     elementArray = [[NSMutableArray alloc]init];
     
     for(TFHppleElement *element in elements)
@@ -469,6 +473,11 @@
     }
 
     elements  = [xpathParser searchWithXPathQuery:@"//a"];
+    NSMutableArray *reviewArray = [[NSMutableArray alloc]initWithCapacity:4];
+    for(int i = 0; i < 4; i++)
+    {
+        reviewArray[i] = @"";
+    }
     for(TFHppleElement *element in elements)
     {
         if([[element content] isEqualToString:@"Skip Game"])
@@ -487,8 +496,30 @@
         {
             [actionDict setObject:[element objectForKey:@"href"] forKey:@"Next Game>>"];
         }
+#pragma mark - Review Match
+        if([[element content] isEqualToString:@"First"])
+        {
+            reviewArray[0] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Prev"])
+        {
+            reviewArray[1] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Next"])
+        {
+            reviewArray[2] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Last"])
+        {
+            reviewArray[3] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"List of Moves"])
+        {
+            [actionDict setObject:[element objectForKey:@"href"] forKey:@"List of Moves"];
+        }
     }
     [actionDict setObject:elements forKey:@"a"];
+    [actionDict setObject:reviewArray forKey:@"review"];
 
     return actionDict;
 

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Match : UIViewController
 
-- (NSMutableDictionary *) readMatch:(NSString *)matchLink;
+- (NSMutableDictionary *) readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview;
 - (NSMutableDictionary *) readActionForm:(NSData *)matchLink withChat:(NSString *)chat;
 
 @end
