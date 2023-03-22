@@ -84,13 +84,18 @@
 
 #pragma mark - WaitView
 
-- (void)startActivityIndicator
+- (void)startActivityIndicator:(NSString *)text
 {
     if(!waitView)
     {
-        waitView = [[WaitView alloc]initWithText:[NSString stringWithFormat: @"Get Game Lounge data from www.dailygammon.com"]];
-        [waitView showInView:self.view];
+        waitView = [[WaitView alloc]initWithText:text];
     }
+    else
+    {
+        waitView.messageText = text;
+    }
+    [waitView showInView:self.view];
+
 }
 
 - (void)stopActivityIndicator
@@ -138,7 +143,7 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
 
-    [self startActivityIndicator];
+    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
@@ -737,16 +742,21 @@ didCompleteWithError:(NSError *)error
     NSArray *row = self.gameLoungeArray[sender.tag];
     NSDictionary *signUp = row[7];
 
-    NSURL *urlSignUp = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]]];
-    
-    NSError *error = nil;
-    NSStringEncoding encoding = 0;
-    self.matchString = [[NSString alloc] initWithContentsOfURL:urlSignUp
-                                                       usedEncoding:&encoding
-                                                              error:&error];
-    if(error)
-        XLog(@"%@ %@", urlSignUp, error.localizedDescription);
-    [self readGameLounge];
+    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
+
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [self readGameLounge];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+
 }
 
 - (UIButton *)makeInfoButton

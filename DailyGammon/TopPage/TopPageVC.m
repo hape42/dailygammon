@@ -161,7 +161,7 @@
 {
     [super viewWillAppear:animated];
 
-    [self startActivityIndicator:self.view];
+    [self startActivityIndicator: @"Get TopPage data from www.dailygammon.com"];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
@@ -204,13 +204,18 @@
 }
 #pragma mark - WaitView
 
-- (void)startActivityIndicator:(UIView*)view
+- (void)startActivityIndicator:(NSString *)text
 {
     if(!waitView)
     {
-        waitView = [[WaitView alloc]initWithText:[NSString stringWithFormat: @"Get TopPage data from www.dailygammon.com"]];
-        [waitView showInView:view];
+        waitView = [[WaitView alloc]initWithText:text];
     }
+    else
+    {
+        waitView.messageText = text;
+    }
+    [waitView showInView:self.view];
+
 }
 
 - (void)stopActivityIndicator
@@ -285,7 +290,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readTopPage
 {
-    [self startActivityIndicator:self.view];
+    [self startActivityIndicator: @"Get TopPage data from www.dailygammon.com"];
 
     DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
