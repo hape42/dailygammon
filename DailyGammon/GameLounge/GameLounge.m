@@ -25,6 +25,7 @@
 #import "DGButton.h"
 #import "PlayerLists.h"
 #import "Constants.h"
+#import "DGRequest.h"
 
 @interface GameLounge ()
 
@@ -42,23 +43,16 @@
 
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
-@property (nonatomic, retain, readwrite) UIActivityIndicatorView *indicator;
-
 @end
 
 @implementation GameLounge
 
 @synthesize design, preferences, rating, tools;
+@synthesize waitView;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    
-    self.indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleMedium];
-    self.indicator.color = [design schemaColor];
-    self.indicator.center = self.view.center;
-    [self.view addSubview:self.indicator];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
@@ -87,16 +81,26 @@
     }
 
 }
-- (UIActivityIndicatorView *)indicator
-{
-    if (!_indicator)
-    {
-        _indicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-        self.indicator.color = [schemaDict objectForKey:@"TintColor"];
 
+#pragma mark - WaitView
+
+- (void)startActivityIndicator:(NSString *)text
+{
+    if(!waitView)
+    {
+        waitView = [[WaitView alloc]initWithText:text];
     }
-    return _indicator;
+    else
+    {
+        waitView.messageText = text;
+    }
+    [waitView showInView:self.view];
+
+}
+
+- (void)stopActivityIndicator
+{
+    [waitView dismiss];
 }
 
 -(void) reDrawHeader
@@ -106,7 +110,7 @@
 
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
-    [self updateTableView];
+ //   [self updateTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,7 +143,8 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
 
-    [self.indicator startAnimating];
+    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
+    
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
 
@@ -209,7 +214,7 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
-        [self reDrawHeader];
+        [self readGameLounge];
     }
 }
 
@@ -218,73 +223,87 @@ didCompleteWithError:(NSError *)error
 
 -(void)readGameLounge
 {
-    XLog(@"readGameLounge");
-    NSURL *urlTopPage = [NSURL URLWithString:@"http://dailygammon.com/bg/lounge"];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-
-    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
-    
-    // sind "waiting games "da, dann stehen die Turniere in der 3 tabelle, sonst in der 2.
-    //  Header, Waiting, Turniere, Footer = 4 Tabellen
-    //  Header, Turniere, Footer = 3 Tabellen
-    NSArray *tableArray  = [xpathParser searchWithXPathQuery:@"//table"];
-    int tabelleNummer = tableArray.count == 4 ? 3 : 2;
-
-    NSString *searchString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tabelleNummer];
-    NSArray *elementHeader  = [xpathParser searchWithXPathQuery:searchString];
-    self.gameLoungeHeaderArray = [[NSMutableArray alloc]init];
-
-    for(TFHppleElement *element in elementHeader)
-    {
-        //            XLog(@"%@",[element text]);
-        [self.gameLoungeHeaderArray addObject:[element text]];
-    }
-    self.gameLoungeArray = [[NSMutableArray alloc]init];
-    searchString = [NSString stringWithFormat:@"//table[%d]/tr",tabelleNummer];
-    NSArray *rown  = [xpathParser searchWithXPathQuery:searchString];
-    for(int row = 2; row <= rown.count; row ++)
-    {
-        NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
-
-        NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tabelleNummer, row];
-        NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
-        for(TFHppleElement *element in elementZeile)
+    DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/lounge" completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
         {
-            NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
 
-            for (TFHppleElement *child in element.children)
+            NSData *topPageHtmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:topPageHtmlData];
+            
+            // sind "waiting games "da, dann stehen die Turniere in der 3 tabelle, sonst in der 2.
+            //  Header, Waiting, Turniere, Footer = 4 Tabellen
+            //  Header, Turniere, Footer = 3 Tabellen
+            NSArray *tableArray  = [xpathParser searchWithXPathQuery:@"//table"];
+            int tabelleNummer = tableArray.count == 4 ? 3 : 2;
+
+            NSString *searchString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tabelleNummer];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:searchString];
+            self.gameLoungeHeaderArray = [[NSMutableArray alloc]init];
+
+            for(TFHppleElement *element in elementHeader)
             {
-//                XLog(@"Child %@", child);
-
-                if ([child.tagName isEqualToString:@"a"])
-                {
-                   // NSDictionary *href = [child attributes];
-                    [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
-                    [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
-
-//                    XLog(@"gefunden %@", [child attributes]);
-                }
-                else
-                {
-                    [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
-
-                }
+                //            XLog(@"%@",[element text]);
+                [self.gameLoungeHeaderArray addObject:[element text]];
             }
-            [topPageZeile addObject:topPageZeileSpalte];
+            self.gameLoungeArray = [[NSMutableArray alloc]init];
+            searchString = [NSString stringWithFormat:@"//table[%d]/tr",tabelleNummer];
+            NSArray *rown  = [xpathParser searchWithXPathQuery:searchString];
+            for(int row = 2; row <= rown.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
 
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tabelleNummer, row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+
+                    for (TFHppleElement *child in element.children)
+                    {
+        //                XLog(@"Child %@", child);
+
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                           // NSDictionary *href = [child attributes];
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+
+        //                    XLog(@"gefunden %@", [child attributes]);
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+
+                }
+        //        XLog(@"%@", topPageZeile);
+                NSMutableDictionary *event = topPageZeile[0];
+                [event setObject:[self->tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
+
+                [self.gameLoungeArray addObject:topPageZeile];
+                if(topPageZeile.count == 9)
+                {
+                    NSMutableDictionary *note = topPageZeile[8];
+                    [note setObject:[self->tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
+                }
+                [self.tableView reloadData];
+                [self stopActivityIndicator];
+
+            }
         }
-//        XLog(@"%@", topPageZeile);
-        NSMutableDictionary *event = topPageZeile[0];
-        [event setObject:[tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
-
-        [self.gameLoungeArray addObject:topPageZeile];
-        if(topPageZeile.count == 9)
+        else
         {
-            NSMutableDictionary *note = topPageZeile[8];
-            [note setObject:[tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
+            XLog(@"Error: %@", error.localizedDescription);
         }
-    }
-    [self.indicator stopAnimating];
+                
+    }];
+    request = nil;
+
 
 }
 
@@ -674,11 +693,6 @@ didCompleteWithError:(NSError *)error
         return 40;
 
 }
-- (void)updateTableView
-{
-    [self readGameLounge];
-    [self.tableView reloadData];
-}
 
 #pragma mark - Table view delegate
 
@@ -728,16 +742,21 @@ didCompleteWithError:(NSError *)error
     NSArray *row = self.gameLoungeArray[sender.tag];
     NSDictionary *signUp = row[7];
 
-    NSURL *urlSignUp = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]]];
-    
-    NSError *error = nil;
-    NSStringEncoding encoding = 0;
-    self.matchString = [[NSString alloc] initWithContentsOfURL:urlSignUp
-                                                       usedEncoding:&encoding
-                                                              error:&error];
-    if(error)
-        XLog(@"%@ %@", urlSignUp, error.localizedDescription);
-    [self updateTableView];
+    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
+
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [self readGameLounge];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+
 }
 
 - (UIButton *)makeInfoButton

@@ -134,8 +134,12 @@
     if(!waitView)
     {
         waitView = [[WaitView alloc]initWithText:text];
-        [waitView showInView:self.view];
     }
+    else
+    {
+        waitView.messageText = text;
+    }
+    [waitView showInView:self.view];
 }
 
 - (void)stopActivityIndicator
