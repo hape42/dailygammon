@@ -1257,6 +1257,10 @@ didCompleteWithError:(NSError *)error
 {
     NSArray *row = self.listArray[button.tag];
     NSDictionary *activeGame = row[6];
+    
+    NSDictionary *oppNameDict = row[4];
+    NSString *oppName = [oppNameDict objectForKey:@"Text"];
+    
 
     NSString *match = [[activeGame objectForKey:@"href"] lastPathComponent];
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/export/%@", match]];
@@ -1269,7 +1273,16 @@ didCompleteWithError:(NSError *)error
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
-    NSURL *urlExport = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt", match]];
+    NSMutableString *filtered = [NSMutableString stringWithCapacity:[oppName length]];
+
+    // remove all characters from oppName except for alnums
+    for (int i = 0; i < [oppName length]; i++) {
+        unichar c = [oppName characterAtIndex:i];
+        if (isalnum(c)) {
+            [filtered appendFormat:@"%C", c];
+        }
+    }
+    NSURL *urlExport = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"dg_%@_%@.txt", match, filtered]];
     NSError *error;
 
     BOOL success = [htmlString writeToURL:urlExport atomically:YES encoding:NSUTF8StringEncoding error:&error];
@@ -1277,7 +1290,7 @@ didCompleteWithError:(NSError *)error
         NSLog(@"oh no! - %@",error.localizedDescription);
     }
 
-    NSString *matchExport = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.txt", match]];
+    NSString *matchExport = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"dg_%@_%@.txt", match, filtered]];
 
     UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL fileURLWithPath:matchExport]] applicationActivities:nil];
     shareVC.popoverPresentationController.sourceView    = self.view;
