@@ -149,7 +149,7 @@
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
  //   [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
-    [nc addObserver:self selector:@selector(showMatchCount) name:@"changeMatchCount" object:nil];
+    [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
 
 //    [self.view addSubview:self.matchName];
     
@@ -238,7 +238,8 @@
 }
 -(void)showMatch
 {
-    
+    [tools matchCount];
+
 
     self.isChatView = FALSE;
     self.isFinishedMatch = FALSE;
