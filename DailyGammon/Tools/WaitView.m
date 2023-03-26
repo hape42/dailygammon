@@ -51,7 +51,15 @@
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
     indicator.center = CGPointMake(self.bounds.size.width / 2.0f, self.bounds.size.height / 2.0f - 10.0f);
     indicator.tag = 99;
-    indicator.color = UIColor.whiteColor;
+    
+    // dark mode => light tintColor background => indicator should be black. Otherwise white.
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        indicator.color = [UIColor blackColor];
+    }
+    else {
+        indicator.color = [UIColor whiteColor];
+    }
+    
     [self addSubview:indicator];
     [indicator startAnimating];
 
@@ -102,8 +110,16 @@
 
     UIFont *font = [UIFont systemFontOfSize:16.0f];
     CGFloat fontHeight = [font pointSize];
-    UIColor *fontColor = [UIColor whiteColor];
-
+    
+    // assumption: on dark background we have a light TintColor => we need a black font in dark mode and a white font in light mode
+    // unsure where we set the color for the "thinking" wheel
+    UIColor *fontColor;
+    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
+        fontColor = [UIColor blackColor];
+    }
+    else {
+        fontColor = [UIColor whiteColor];
+    }
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setAlignment:NSTextAlignmentCenter];
     [paragraphStyle setLineBreakMode:NSLineBreakByWordWrapping];
