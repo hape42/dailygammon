@@ -157,7 +157,7 @@ typedef void(^connection)(BOOL);
             NSLog(@"Error: %@", error.localizedDescription);
         }
     }];
-
+    request = nil;
     }
 
 - (NSString *)readNote:(NSString *)event
