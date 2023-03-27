@@ -46,23 +46,31 @@
     fr.origin.y    = superFrame.origin.y + superFrame.size.height / 2.0f - fr.size.height / 2.0f;
     self.frame = fr;
     
-    // Add the activity indicator
+    float x = (self.bounds.size.width / 2.0f) - 15;
+    UIImageView *dicesView = [[UIImageView alloc]initWithFrame:CGRectMake(x,50,30,30  )];
     
-    UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-    indicator.center = CGPointMake(self.bounds.size.width / 2.0f, self.bounds.size.height / 2.0f - 10.0f);
-    indicator.tag = 99;
-    
-    // dark mode => light tintColor background => indicator should be black. Otherwise white.
-    if (self.traitCollection.userInterfaceStyle == UIUserInterfaceStyleDark) {
-        indicator.color = [UIColor blackColor];
-    }
-    else {
-        indicator.color = [UIColor whiteColor];
-    }
-    
-    [self addSubview:indicator];
-    [indicator startAnimating];
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
 
+    NSArray *animateImagesArray = [NSArray arrayWithObjects:
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y1",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y2",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y3",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y4",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y5",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_y6",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b1",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b2",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b3",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b4",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b5",boardSchema]],
+                                   [UIImage imageNamed:[NSString stringWithFormat:@"%d/die_b6",boardSchema]],
+                                  nil];
+    dicesView.animationImages      = animateImagesArray;
+    dicesView.animationDuration    = 1.0f;
+    dicesView.animationRepeatCount = 0; // Repeat forever
+    [dicesView startAnimating];
+
+    [self addSubview:dicesView];
     // Add the view at the front of the app's windows
     self.backgroundColor = UIColor.clearColor;
     [view addSubview:self];
