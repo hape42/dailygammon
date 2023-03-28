@@ -110,7 +110,9 @@
     [self reDrawHeader];
 
     [self startActivityIndicator:@"Get moves from www.dailygammon.com"];
-
+    
+//    reviewURL = [NSURL URLWithString:@"http://dailygammon.com/bg/game/4796082/1/list"]; // This line is important. It can be used to quickly test certain matches that show strange behavior. Do not delete!
+    
     DGRequest *request = [[DGRequest alloc] initWithURL:reviewURL completionHandler:^(BOOL success, NSError *error, NSString *result)
     {
         if (success)
@@ -298,8 +300,6 @@
     float halfWidth = (cellWidth - edge - gap -edge) / 2;
     int diceSize = 30;
     
-    NSString *text = [NSString stringWithFormat:@"%d ",cellWidth];
-
     switch (row.count)
     {
         case 0:
@@ -354,13 +354,31 @@
                 [won.layer setValue:[dict objectForKey:@"href"] forKey:@"href"];
                 [cell.contentView addSubview:won];
                 return cell;
-
             }
+            dict = row[1];
+
+            NSRange player1Double = [[dict objectForKey:@"Text"] rangeOfString:@"Doubles"];
+            if(player1Double.length > 0)
+            {
+#pragma mark "Doubles => 2 (4,8,16,32,64) Opponents move not done yet"
+                DGLabel *number = [[DGLabel alloc] initWithFrame:CGRectMake(0, y ,edge,labelHeight)];
+                number.textAlignment = NSTextAlignmentLeft;
+                NSDictionary *dict = row[0];
+                number.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                [cell.contentView addSubview:number];
+
+                UIView *doubleView = [[UIView alloc] initWithFrame:CGRectMake(edge, 0 ,halfWidth,CELL_HEIGHT)];
+                doubleView = [self makeDoubleView:doubleView  cube:row[1]   gap:gap diceSize:diceSize];
+                [cell.contentView addSubview:doubleView];
+
+                return cell;
+            }
+
             for(NSDictionary *dict in row)
             {
                 text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here %ld %@",row.count, text];
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorithm should never get here %ld %@",row.count, text];
             cell.contentView.backgroundColor = UIColor.greenColor;
 
             return cell;
@@ -481,7 +499,7 @@
             {
                 text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here %ld %@",row.count, text];
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorithm should never get here %ld %@",row.count, text];
             cell.contentView.backgroundColor = UIColor.yellowColor;
 
             
@@ -596,7 +614,7 @@
             {
                 text = [NSString stringWithFormat:@"%@ >%@<",text, [dict objectForKey:@"Text"]];
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"The algorythm should never get here  %ld %@",row.count, text];
+            cell.textLabel.text = [NSString stringWithFormat:@"The algorithm should never get here  %ld %@",row.count, text];
             cell.contentView.backgroundColor = UIColor.brownColor;
 
            
