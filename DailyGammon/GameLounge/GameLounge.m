@@ -143,7 +143,7 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
 
-    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
@@ -742,7 +742,7 @@ didCompleteWithError:(NSError *)error
     NSArray *row = self.gameLoungeArray[sender.tag];
     NSDictionary *signUp = row[7];
 
-    [self startActivityIndicator:@"Get Game Lounge data from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
 
     DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {

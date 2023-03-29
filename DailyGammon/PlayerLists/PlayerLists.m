@@ -282,7 +282,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readActiveMatches
 {
-    [self startActivityIndicator:@"Get active matches from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting active matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
@@ -348,7 +348,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readActiveTournaments
 {
-    [self startActivityIndicator:@"Get active tournaments from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting active tournaments from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
@@ -414,7 +414,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readFinishedMatches
 {
-    [self startActivityIndicator:@"Get finished matches from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting finished matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
@@ -481,7 +481,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readTournamentWins
 {
-    [self startActivityIndicator:@"Get tournament wins matches from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting tournament wins matches from www.dailygammon.com"];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 

@@ -161,7 +161,7 @@
 {
     [super viewWillAppear:animated];
 
-    [self startActivityIndicator: @"Get TopPage data from www.dailygammon.com"];
+    [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
     
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
@@ -290,7 +290,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)readTopPage
 {
-    [self startActivityIndicator: @"Get TopPage data from www.dailygammon.com"];
+    [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
 
     DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {

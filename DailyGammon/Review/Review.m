@@ -109,7 +109,7 @@
     [super viewDidAppear:animated];
     [self reDrawHeader];
 
-    [self startActivityIndicator:@"Get moves from www.dailygammon.com"];
+    [self startActivityIndicator:@"Getting moves from www.dailygammon.com"];
     
 //    reviewURL = [NSURL URLWithString:@"http://dailygammon.com/bg/game/4796082/1/list"]; // This line is important. It can be used to quickly test certain matches that show strange behavior. Do not delete!
     

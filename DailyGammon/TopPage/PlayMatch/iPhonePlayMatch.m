@@ -1068,10 +1068,12 @@ case ROLL:
         case REVIEW:
         {
 #pragma mark - preview match
+            float gap = 20;
+
+            float reviewButtonHeight  = MIN(30,(actionView.layer.frame.size.height / 4) - gap - 5);
+            
             NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
             float width = 150;
-            float height = buttonHeight;
-            float gap = 20;
             float x = (actionView.frame.size.width/2) - (width / 2);
             float y = 20;
             NSArray *reviewText = [NSArray arrayWithObjects: @"First Move", @"Prev Move", @"Next Move", @"Last Move",nil];
@@ -1080,20 +1082,20 @@ case ROLL:
                 NSString *url = reviewArray[i];
                 if(!url.length)
                 {
-                    DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, width, reviewButtonHeight)];
                     label.text = reviewText[i];
                     label.textAlignment = NSTextAlignmentCenter;
                     [actionView addSubview:label];
                 }
                 else
                 {
-                    DGButton *buttonReview = [[DGButton alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    DGButton *buttonReview = [[DGButton alloc] initWithFrame:CGRectMake(x, y, width, reviewButtonHeight)];
                     [buttonReview setTitle:reviewText[i] forState: UIControlStateNormal];
                     [buttonReview addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
                     [buttonReview.layer setValue:url forKey:@"href"];
                     [actionView addSubview:buttonReview];
                 }
-                y += height + gap;
+                y += reviewButtonHeight + gap;
             }
 
             break;

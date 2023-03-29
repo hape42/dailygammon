@@ -134,7 +134,6 @@
 - (UILabel *) makeSortLabel: (UILabel*)label sortOrderDown: (BOOL) down
 {
     if(label.text == nil) return label;
-
     int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(boardSchema < 1) boardSchema = 4;
     
