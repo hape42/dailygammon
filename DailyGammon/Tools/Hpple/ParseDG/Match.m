@@ -92,18 +92,21 @@
     [boardDict setObject:htmlString forKey:@"htmlString"];
 
     NSArray *caption  = [xpathParser searchWithXPathQuery:@"//table/caption"];
-    if(caption.count > 0)
+    if(!isReview) // Ends at review match "last move" with exit to Toppage. Cause is not yet clear, but this is how to prevent it
     {
-        for(TFHppleElement *element in caption)
+        if(caption.count > 0)
         {
-            if([[element content] isEqualToString:@"Score"])
+            for(TFHppleElement *element in caption)
             {
-                NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
-
-                finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
-                [boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
-
-                return boardDict;
+                if([[element content] isEqualToString:@"Score"])
+                {
+                    NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
+                    
+                    finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
+                    [boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
+                    
+                    return boardDict;
+                }
             }
         }
     }
