@@ -1,0 +1,517 @@
+//
+//  NoBoard.m
+//  DailyGammon
+//
+/*
+ During a game html pages keep coming up that do not contain a board.
+
+ I had initially tried to handle everything in a routine. But this routine "showMatch" has grown more and more to handle all special cases.
+
+ This routine is hardly maintainable.
+
+ I now try to handle everything in the "noBoard". The change is large and therefore unfortunately also susceptible to errors or to overlook something.
+
+ The outsourcing to "noBoard" is also a very good opportunity to streamline "PlayMatch" and" iPhonePlayMatch", which will eventually make it easier to merge the two "playMatch".
+
+
+ Translated with www.DeepL.com/Translator (free version)
+ */
+ 
+//  Created by Peter Schneider on 31.03.23.
+//  Copyright © 2023 Peter Schneider. All rights reserved.
+//
+
+#import "NoBoard.h"
+#import <WebKit/WebKit.h>
+#import "Design.h"
+#import "TFHpple.h"
+#import "PlayMatch.h"
+#import "iPhonePlayMatch.h"
+#import "Preferences.h"
+#import "Rating.h"
+#import "LoginVC.h"
+#import "TopPageVC.h"
+#import "AppDelegate.h"
+#import "DbConnect.h"
+#import "RatingVC.h"
+#import "Player.h"
+#import "Tools.h"
+#import <SafariServices/SafariServices.h>
+#import "iPhoneMenue.h"
+#import "About.h"
+#import "DGButton.h"
+#import "PlayerLists.h"
+#import "Constants.h"
+#import "DGRequest.h"
+#import "GameLounge.h"
+#import "DGLabel.h"
+
+@interface NoBoard ()
+
+@property (readwrite, retain, nonatomic) DGButton *topPageButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+
+@end
+
+@implementation NoBoard
+
+@synthesize boardDict;
+
+@synthesize design, preferences, rating, tools;
+@synthesize waitView;
+
+@synthesize finishedMatchChat, finishedmatchChatViewFrame;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    design = [[Design alloc] init];
+    preferences = [[Preferences alloc] init];
+    rating = [[Rating alloc] init];
+    tools = [[Tools alloc] init];
+
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+
+    UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardDidHide:)];
+    oneFingerTap.numberOfTapsRequired = 1;
+    oneFingerTap.numberOfTouchesRequired = 1;
+    [self.view addGestureRecognizer:oneFingerTap];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    else
+        [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationItem.hidesBackButton = YES;
+    
+    [self reDrawHeader];
+    [self analyze];
+}
+
+-(void) reDrawHeader
+{
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        [self.view addSubview:[self makeHeader]];
+
+    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+
+}
+
+-(void)analyze
+{
+#pragma mark finishedMatch
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    if( finishedMatchDict != nil)
+    {
+        [self finishedMatch];
+        return;
+    }
+#pragma mark TopPage
+    if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+        return;
+    }
+#pragma mark telegramm message
+    if([[self.boardDict objectForKey:@"message"] length] != 0)
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:[self.boardDict objectForKey:@"message"]
+                                     message:[self.boardDict objectForKey:@"chat"]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* yesButton = [UIAlertAction
+                                    actionWithTitle:@"NEXT"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
+                                      }];
+
+        [alert addAction:yesButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+#pragma mark messageSent
+    if([[self.boardDict objectForKey:@"messageSent"] length] != 0)
+    {
+        // just do nothing, go ahead
+        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
+        return;
+    }
+#pragma mark unknown HTML found
+    [self unknownHTML];
+
+}
+
+#pragma mark - back to playMatch
+
+-(void)playMatch:(NSString *)matchLink
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+        vc.matchLink = matchLink;
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    else
+    {
+        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
+        vc.matchLink = matchLink;
+        [self.navigationController pushViewController:vc animated:NO];
+    }
+    return;
+}
+#pragma mark - unknown HTML
+
+-(void)unknownHTML
+{
+    int y = 10;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        y = 70;
+    DGLabel *label  = [[DGLabel alloc] initWithFrame:CGRectMake(10, y, 250, 30)];
+    label.textColor = [UIColor redColor];
+    [label setFont:[UIFont boldSystemFontOfSize: label.font.pointSize]];
+    label.text = @"unknown HTML Page found";
+
+    DGButton *sendHTML = [[DGButton alloc] initWithFrame:CGRectMake(270,y, 300, 30)];
+    [sendHTML setTitle:@"send unkonwn HTML to support" forState: UIControlStateNormal];
+    [sendHTML addTarget:self action:@selector(sendEmail:) forControlEvents:UIControlEventTouchUpInside];
+
+    y += 40;
+    WKWebView *htmlView = [[WKWebView alloc] initWithFrame:CGRectMake(10, y, self.view.bounds.size.width - 20,  self.view.bounds.size.height - 110)];
+    [htmlView loadHTMLString:[self.boardDict objectForKey:@"htmlString"] baseURL:nil];
+
+    [self.view addSubview:label];
+    [self.view addSubview:sendHTML];
+    [self.view addSubview:htmlView];
+
+}
+#pragma mark - Support Email
+- (IBAction)sendEmail:(id)sender
+{
+    if (![MFMailComposeViewController canSendMail])
+    {
+        UIAlertController * alert = [UIAlertController
+                                      alertControllerWithTitle:@"Problem found"
+                                      message:@"Normally the email is sent with Apple Mail. There seems to be a problem with Apple Mail. Please select your email program and send a screenshot of the problem to DG@hape42.de"
+                                      preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction* cancelButton = [UIAlertAction
+                                    actionWithTitle:@"OK"
+                                    style:UIAlertActionStyleCancel
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        return;
+                                    }];
+
+        [alert addAction:cancelButton];
+        [self presentViewController:alert animated:YES completion:nil];
+        XLog(@"Fehler: Mail kann nicht versendet werden");
+        return;
+    }
+    NSString *betreff = [NSString stringWithFormat:@"found unknown HTML"];
+    
+    NSString *emailText = [self.boardDict objectForKey:@"htmlString"];
+    
+    
+    MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+    emailController.mailComposeDelegate = self;
+    NSArray *toSupport = [NSArray arrayWithObjects:@"dg@hape42.de",nil];
+    
+    [emailController setToRecipients:toSupport];
+    [emailController setSubject:betreff];
+    [emailController setMessageBody:emailText isHTML:YES];
+    
+    NSString *dictPath = @"";
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                         NSUserDomainMask, YES);
+    dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
+    NSError *error;
+
+    [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES ];
+    NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+    [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
+
+    [self presentViewController:emailController animated:YES completion:NULL];
+}
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    if (error)
+    {
+        XLog(@"Fehler MFMailComposeViewController: %@", error);
+    }
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - finishedMatch
+- (void)finishedMatch
+{
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    NSString *href = @"";
+
+    for(NSDictionary *dict in [finishedMatchDict objectForKey:@"attributes"])
+    {
+        href = [dict objectForKey:@"action"];
+    }
+
+    int edge = 10;
+    int gap = 10;
+    int x = 50;
+    int y = edge;
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+        y = 70;
+
+    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(x, y, self.view.bounds.size.width - 150 - edge,  self.view.bounds.size.height - y - edge)];
+    
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
+    y = 0;
+    UILabel * matchName = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+    matchName.text = [finishedMatchDict objectForKey:@"matchName"];
+    matchName.textAlignment = NSTextAlignmentCenter;
+
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
+    [attr addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:40.0]
+                  range:NSMakeRange(0, [attr length])];
+    [matchName setAttributedText:attr];
+    matchName.adjustsFontSizeToFitWidth = YES;
+    matchName.numberOfLines = 0;
+    matchName.minimumScaleFactor = 0.5;
+    matchName.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:matchName];
+    
+    NSString *htmlString = [self.boardDict objectForKey:@"htmlString"];
+    NSString *winnerText = [finishedMatchDict objectForKey:@"winnerName"];
+    if([htmlString containsString:@"Predicted"])
+        winnerText = [NSString stringWithFormat:@"(Predicted result) %@", winnerText];
+    y += matchName.frame.size.height;
+    UILabel * winner = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+    winner.textAlignment = NSTextAlignmentLeft;
+    attr = [[NSMutableAttributedString alloc] initWithString:winnerText];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:30.0]
+                 range:NSMakeRange(0, [attr length])];
+    [winner setAttributedText:attr];
+    winner.adjustsFontSizeToFitWidth = YES;
+    winner.numberOfLines = 0;
+    winner.minimumScaleFactor = 0.5;
+    winner.adjustsFontSizeToFitWidth = YES;
+    [infoView addSubview:winner];
+
+    y += winner.frame.size.height;
+    UILabel * length = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width, 30)];
+    length.textAlignment = NSTextAlignmentLeft;
+    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
+    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
+    [infoView addSubview:length];
+
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+
+    y += length.frame.size.height;
+    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
+    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.origin.x +  player1Name.layer.frame.size.width + gap, y , 100, 30)];
+    player1Name.textAlignment = NSTextAlignmentLeft;
+    player1Name.text = playerArray[0];
+    [infoView addSubview:player1Name];
+    player1Score.textAlignment = NSTextAlignmentRight;
+    player1Score.text = playerArray[1];
+    [infoView addSubview:player1Score];
+
+    y += player1Name.frame.size.height;
+
+    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
+    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.origin.x +  player2Name.layer.frame.size.width + gap, y , 100, 30)];
+    player2Name.textAlignment = NSTextAlignmentLeft;
+    player2Name.text = playerArray[2];
+    [infoView addSubview:player2Name];
+    player2Score.textAlignment = NSTextAlignmentRight;
+    player2Score.text = playerArray[3];
+    [infoView addSubview:player2Score];
+
+    y += player2Name.frame.size.height;
+
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    if([chatArray[0] containsString:@"chat"])
+    {
+        // Calculate maximum window height
+        float height = infoView.frame.size.height - y - 35 - gap;
+        XLog(@"with chat");
+        finishedMatchChat  = [[UITextView alloc] initWithFrame:CGRectMake(10, y, infoView.layer.frame.size.width - 20, MIN(250, height) )];
+        finishedmatchChatViewFrame = finishedMatchChat.frame;
+        finishedMatchChat.textAlignment = NSTextAlignmentLeft;
+        NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+        NSString *chatString = @"";
+        for( NSString *chatZeile in chatArray)
+        {
+            if(![chatZeile containsString:@"You may chat with"])
+                chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
+        }
+        finishedMatchChat.text = chatString;
+        finishedMatchChat.editable = YES;
+        [finishedMatchChat setDelegate:self];
+        finishedMatchChat.tag = 1000;
+        [finishedMatchChat setFont:[UIFont systemFontOfSize:20]];
+        [infoView addSubview:finishedMatchChat];
+
+        y += finishedMatchChat.frame.size.height + gap;
+
+    }
+    else
+    {
+        XLog(@"no chat");
+    }
+
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50,y, 100, 35)];
+    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
+    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonNext.layer setValue:href forKey:@"href"];
+    [buttonNext.layer setValue:finishedMatchChat.text forKey:@"chat"];
+
+    [infoView addSubview:buttonNext];
+ 
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(50 + 100 + 50, y, 100, 35)];
+    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
+    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonToTop.layer setValue:href forKey:@"href"];
+    [buttonToTop.layer setValue:finishedMatchChat.text forKey:@"chat"];
+    [infoView addSubview:buttonToTop];
+
+    [self.view addSubview:infoView];
+    return;
+}
+
+#pragma mark - textView
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    if (!([textField.text rangeOfString:@"You may chat with"].location == NSNotFound))
+    {
+        textField.text = @"";
+    }
+
+    return YES;
+}
+
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    [textField endEditing:YES];
+    return YES;
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    CGRect frame = finishedmatchChatViewFrame;
+    frame.origin.y = 50;
+    finishedMatchChat.frame = frame;
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+    [self.view endEditing:YES];
+    finishedMatchChat.frame = finishedmatchChatViewFrame;
+}
+
+
+- (void)actionNextFinishedMatch:(UIButton*)button
+{
+    [finishedMatchChat endEditing:YES];
+
+    NSString *href = (NSString *)[button.layer valueForKey:@"href"];
+    NSString * matchLink = @"";
+
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    if([chatArray[0] containsString:@"chat"])
+    {
+        NSString *chatString = finishedMatchChat.text;
+
+        if(chatString)
+            chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
+        if([href isEqualToString:@""])
+            matchLink = @"/bg/nextgame";
+        else
+            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@", href, chatString];
+    }
+    else
+    {
+        if([href isEqualToString:@""])
+            matchLink = @"/bg/nextgame";
+        else
+            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+    }
+
+    [self playMatch:matchLink];
+}
+
+- (void)actionToTopFinishedMatch:(UIButton*)button
+{
+    [finishedMatchChat endEditing:YES];
+
+    NSString *href = (NSString *)[button.layer valueForKey:@"href"];
+    NSString *chatString = finishedMatchChat.text;
+    if(chatString)
+        chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
+
+    NSString *matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1&chat=%@", href, chatString];
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+    
+    DGRequest *request = [[DGRequest alloc] initWithURL:urlMatch completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+            {
+                [self topPageVC];
+            }
+            else
+            {
+                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                
+                [self.navigationController pushViewController:vc animated:NO];
+            }
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+
+}
+
+
+#pragma mark - Header
+
+- (IBAction)moreAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+}
+
+#include "HeaderInclude.h"
+
+@end

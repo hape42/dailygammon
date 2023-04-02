@@ -28,7 +28,7 @@
 #import "Constants.h"
 
 #import "Review.h"
-
+#import "NoBoard.h"
 @interface iPhonePlayMatch () <NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -291,6 +291,17 @@
     
     self.boardDict = [match readMatch:matchLink reviewMatch:isReview];
     
+    if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        NoBoard *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"NoBoard"];
+        vc.boardDict = self.boardDict;
+        [self.navigationController pushViewController:vc animated:NO];
+        return;
+    }
+
+
     if ([[self.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
     {
         UIAlertController * alert = [UIAlertController
@@ -388,32 +399,7 @@
         self.isFinishedMatch = TRUE;
         [self finishedMatchView:finishedMatchDict];
     }
-    else if([[self.boardDict objectForKey:@"message"] length] != 0)
-    {
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:[self.boardDict objectForKey:@"message"]
-                                     message:[self.boardDict objectForKey:@"chat"]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* yesButton = [UIAlertAction
-                                    actionWithTitle:@"NEXT"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-                                        [self showMatch];
-                                    }];
-        
-        [alert addAction:yesButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else if([[self.boardDict objectForKey:@"messageSent"] length] != 0)
-    {
-        self.matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-        [self showMatch];
-    }
-    else if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
+    else  if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:[self.boardDict objectForKey:@"quickMessage"]

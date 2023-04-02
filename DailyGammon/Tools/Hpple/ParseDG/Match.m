@@ -10,11 +10,16 @@
 #import "TFHpple.h"
 
 @interface Match ()
+
 @end
+
 @implementation Match
+
+@synthesize noBoard;
 
 -(NSMutableDictionary *) readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview
 {
+    noBoard = FALSE;
     int tableToAnalyze = 1;
     if(isReview)
         tableToAnalyze = 2;
@@ -39,6 +44,13 @@
     NSString *htmlString = [[NSString alloc]
               initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
     
+    if ([htmlString rangeOfString:@"<TD ALIGN=CENTER>13</TD>"].location == NSNotFound)
+    {
+        noBoard = TRUE;
+        [boardDict setObject:htmlString forKey:@"htmlString"];
+        [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+ //       return boardDict;
+    }
     if ([htmlString rangeOfString:@"Next Game>&gt"].location != NSNotFound)
     {
         XLog(@"1 Next Game>> %@", urlMatch);
@@ -65,21 +77,21 @@
     {
         XLog(@"Welcome to DailyGammon %@", urlMatch);
         [boardDict setObject:@"TopPage" forKey:@"TopPage"];
-        return boardDict;
+//        return boardDict;
     }
     if ([htmlString rangeOfString:@"invites you to play"].location != NSNotFound)
     {
         XLog(@"invites you to play %@", urlMatch);
         [boardDict setObject:@"Invite" forKey:@"Invite"];
         [boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
-        return boardDict;
+//        return boardDict;
     }
 //    htmlString = @"DailyGammon Backups";
     if ([htmlString rangeOfString:@"DailyGammon Backups"].location != NSNotFound)
     {
         XLog(@"invites you to play %@", urlMatch);
         [boardDict setObject:@"Backups" forKey:@"Backups"];
-        return boardDict;
+ //       return boardDict;
     }
 
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
@@ -105,7 +117,7 @@
                     finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
                     [boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
                     
-                    return boardDict;
+                 //   return boardDict;
                 }
             }
         }
@@ -126,7 +138,7 @@
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:errorText forKey:@"error"];
-        return boardDict;
+  //      return boardDict;
     }
 //
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
@@ -153,7 +165,7 @@
         {
             [boardDict setObject:[element content] forKey:@"chat"];
         }
-        return boardDict;
+//        return boardDict;
     }
     
 #pragma mark - You have received the following quick message from
@@ -199,7 +211,7 @@
 
         [boardDict setObject:messageDict forKey:@"messageDict"];
         
-        return boardDict;
+   //     return boardDict;
     }
     if ([htmlString rangeOfString:@"Your message has been sent"].location != NSNotFound)
     {
@@ -216,7 +228,7 @@
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
     {
         [boardDict setObject:@"noMatches" forKey:@"noMatches"];
-        return boardDict;
+ //       return boardDict;
     }
 
     // prüfen ob jetzt tatsächlich ein Board abgearbeitet wird, oder ob noch etwas unvorhergesehenes passiert
@@ -226,7 +238,9 @@
  //       [boardDict setObject:htmlString forKey:@"unknown"];
  //       return boardDict;
     }
-
+// hier könnte ein return boardDict kommen, wenn noBoard == True 🤔
+    if(noBoard)
+        return boardDict;
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat: @"//table[%d]/tr[1]/td",tableToAnalyze]];
     NSMutableArray *elementArray = [[NSMutableArray alloc]init];

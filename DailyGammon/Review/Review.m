@@ -111,7 +111,7 @@
 
     [self startActivityIndicator:@"Getting moves from www.dailygammon.com"];
     
-//    reviewURL = [NSURL URLWithString:@"http://dailygammon.com/bg/game/4796082/1/list"]; // This line is important. It can be used to quickly test certain matches that show strange behavior. Do not delete!
+//    reviewURL = [NSURL URLWithString:@"http://dailygammon.com/bg/game/4798097/1/list"]; // This line is important. It can be used to quickly test certain matches that show strange behavior. Do not delete!
     
     DGRequest *request = [[DGRequest alloc] initWithURL:reviewURL completionHandler:^(BOOL success, NSError *error, NSString *result)
     {
