@@ -290,27 +290,6 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-    if([[self.boardDict objectForKey:@"Backups"] length] != 0)
-    {
-
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"DailyGammon Backups"
-                                     message:@"DailyGammon is sleeping -- SHH!!\n\nCome back in half an hour or so when the daily backups are done, and your games will be here waiting. Gwan! Scoot!"
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"OK"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        exit(0);
-                                     }];
- 
-        [alert addAction:okButton];
-
-        [self presentViewController:alert animated:YES completion:nil];
-        
-    }
 
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
@@ -326,19 +305,7 @@
     self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
-    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
-    if( finishedMatchDict != nil)
-    {
-//        XLog(@"%@", finishedMatchDict);
-        self.isFinishedMatch = TRUE;
-        [self finishedMatchView:finishedMatchDict];
-    }
-    else if([[self.boardDict objectForKey:@"messageSent"] length] != 0)
-    {
-        self.matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-        [self showMatch];
-    }
-   else if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
+    if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:[self.boardDict objectForKey:@"quickMessage"]

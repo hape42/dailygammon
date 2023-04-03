@@ -150,6 +150,29 @@
         [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
         return;
     }
+#pragma mark DailyGammon Backups
+    if([[self.boardDict objectForKey:@"Backups"] length] != 0)
+    {
+
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"DailyGammon Backups"
+                                     message:@"DailyGammon is sleeping -- SHH!!\n\nCome back in half an hour or so when the daily backups are done, and your games will be here waiting. Gwan! Scoot!"
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                    actionWithTitle:@"OK"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        exit(0);
+                                     }];
+ 
+        [alert addAction:okButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+
 #pragma mark unknown HTML found
     [self unknownHTML];
 
@@ -376,9 +399,12 @@
     {
         XLog(@"no chat");
     }
-
+    NSString *nextButtonText = @"Next Game";
+    if([[finishedMatchDict objectForKey:@"NextButton"] isEqualToString:@"Next"])
+        nextButtonText = @"Next";
+ 
     DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50,y, 100, 35)];
-    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
+    [buttonNext setTitle:nextButtonText forState: UIControlStateNormal];
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
     [buttonNext.layer setValue:href forKey:@"href"];
     [buttonNext.layer setValue:finishedMatchChat.text forKey:@"chat"];
@@ -436,9 +462,14 @@
     [finishedMatchChat endEditing:YES];
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
+    NSString *nextButtonText = @"Next%%20Game";
     NSString * matchLink = @"";
 
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    
+    if([[finishedMatchDict objectForKey:@"NextButton"] isEqualToString:@"Next"])
+        nextButtonText = @"Next";
+    
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     if([chatArray[0] containsString:@"chat"])
     {
@@ -449,14 +480,14 @@
         if([href isEqualToString:@""])
             matchLink = @"/bg/nextgame";
         else
-            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@", href, chatString];
+            matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1%@", href,nextButtonText, chatString];
     }
     else
     {
         if([href isEqualToString:@""])
             matchLink = @"/bg/nextgame";
         else
-            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
+            matchLink = [NSString stringWithFormat:@"%@?submit=%@&commit=1", href, nextButtonText];
     }
 
     [self playMatch:matchLink];
