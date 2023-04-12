@@ -83,11 +83,17 @@
     {
         // Enforce a lossless encoding and prefer UTF-8, 8-bit ISO Latin 1, but try others; toggle flags for testing
 
+//        NSDictionary *encodingOptions = @{
+//            NSStringEncodingDetectionAllowLossyKey : @(NO),
+//            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding), @(NSUTF8StringEncoding)],
+//            NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(NO)
+//        };
         NSDictionary *encodingOptions = @{
             NSStringEncodingDetectionAllowLossyKey : @(NO),
-            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding), @(NSUTF8StringEncoding)],
+            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding)],
             NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(NO)
         };
+
         NSString *responseString;
         BOOL usedLossyConverted;
 
