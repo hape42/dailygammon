@@ -213,6 +213,19 @@
 
 -(void)unknownHTML
 {
+    if([ [self.boardDict objectForKey:@"htmlString"] isEqualToString:@""])
+    {
+        XLog(@"---------> empty htmlString");
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        TopPageVC *vc;
+        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        else
+            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+
+        [self.navigationController pushViewController:vc animated:NO];
+        return;
+    }
     int y = 10;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         y = 70;
@@ -616,7 +629,7 @@
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     if([chatArray[0] containsString:@"chat"])
     {
-        NSString *chatString = finishedMatchChat.text;
+        NSString *chatString = [tools cleanChatString:finishedMatchChat.text];
 
         if(chatString)
             chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
@@ -641,7 +654,7 @@
     [finishedMatchChat endEditing:YES];
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
-    NSString *chatString = finishedMatchChat.text;
+    NSString *chatString = [tools cleanChatString:finishedMatchChat.text];
     if(chatString)
         chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
 
