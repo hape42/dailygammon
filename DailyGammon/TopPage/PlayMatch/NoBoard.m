@@ -61,7 +61,8 @@
 @synthesize design, preferences, rating, tools;
 @synthesize waitView;
 
-@synthesize finishedMatchChat, finishedmatchChatViewFrame;
+@synthesize finishedMatchChat, finishedmatchChatViewFrame, isFinishedMatch;
+@synthesize quickmessageChat, quickmessageChatViewFrame, isQuickmessage;
 
 - (void)viewDidLoad
 {
@@ -117,8 +118,12 @@
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        TopPageVC *vc;
+        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        else
+            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
 
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -170,6 +175,12 @@
         [alert addAction:okButton];
 
         [self presentViewController:alert animated:YES completion:nil];
+        return;
+    }
+#pragma mark You have received the following quick message from
+    if([[self.boardDict objectForKey:@"quickMessage"] length] != 0)
+    {
+        [self quickMessage];
         return;
     }
 
@@ -291,7 +302,7 @@
     {
         href = [dict objectForKey:@"action"];
     }
-
+    isFinishedMatch = YES;
     int edge = 10;
     int gap = 10;
     int x = 50;
@@ -397,7 +408,15 @@
     }
     else
     {
-        XLog(@"no chat");
+        XLog(@"no chat, just a message");
+        UILabel *chatLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+        chatLabel.text = chatArray[0];
+        chatLabel.adjustsFontSizeToFitWidth = YES;
+        chatLabel.numberOfLines = 0;
+        chatLabel.minimumScaleFactor = 0.1;
+        [infoView addSubview:chatLabel];
+        y += chatLabel.frame.size.height + gap;
+
     }
     NSString *nextButtonText = @"Next Game";
     if([[finishedMatchDict objectForKey:@"NextButton"] isEqualToString:@"Next"])
@@ -422,47 +441,171 @@
     return;
 }
 
+#pragma mark - quickMessage
+
+-(void) quickMessage
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:[self.boardDict objectForKey:@"quickMessage"]
+                                 message:[self.boardDict objectForKey:@"chat"]
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"NEXT"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
+                                }];
+    UIAlertAction* answerButton = [UIAlertAction
+                                actionWithTitle:@"Answer"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    isQuickmessage = YES;
+                                    int gap = 5;
+                                    int edge = 5;
+                                    int titleHeight = 50; int messageHeight = 100; int chatHeight = 100;
+                                    int maxWidth = [UIScreen mainScreen].bounds.size.width;
+                                    int maxHeight  = [UIScreen mainScreen].bounds.size.height;
+                                    float viewWidth = maxWidth * 0.6;
+                                    float viewHeight = edge + titleHeight + gap + messageHeight + gap + chatHeight + gap + 50;
+                                    float x = edge;
+                                    float y = edge;
+
+                                    UIView *messageAnswerView = [[UIView alloc] initWithFrame:CGRectMake((maxWidth - viewWidth)/2,
+                                                                                                         (maxHeight - viewHeight)/2,
+                                                                                                         viewWidth,
+                                                                                                         viewHeight)];
+                                  //  messageAnswerView.tag = ANSWERREPLY_VIEW;
+                                    messageAnswerView.backgroundColor = [UIColor colorNamed:@"ColorAnswerView"];
+                                    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(x,
+                                                                                               y,
+                                                                                               viewWidth - edge - edge,
+                                                                                               titleHeight)];
+                                    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[self.boardDict objectForKey:@"quickMessage"]];
+                                    [attr addAttribute:NSFontAttributeName
+                                                 value:[UIFont systemFontOfSize:30.0]
+                                                 range:NSMakeRange(0, [attr length])];
+                                    [title setAttributedText:attr];
+
+                                    title.adjustsFontSizeToFitWidth = YES;
+                                    title.numberOfLines = 0;
+                                    title.minimumScaleFactor = 0.5;
+                                    title.backgroundColor = [UIColor colorNamed:@"ColorAnswerTitle"];
+                                    title.textAlignment = NSTextAlignmentCenter;
+                                    y += titleHeight + gap;
+                                    UILabel *message = [[UILabel alloc] initWithFrame:CGRectMake(x,
+                                                                                               y,
+                                                                                               viewWidth - edge - edge,
+                                                                                               messageHeight)];
+                                    attr = [[NSMutableAttributedString alloc] initWithString:[self.boardDict objectForKey:@"chat"]];
+                                    [attr addAttribute:NSFontAttributeName
+                                                 value:[UIFont systemFontOfSize:20.0]
+                                                 range:NSMakeRange(0, [attr length])];
+                                    [message setAttributedText:attr];
+                                    message.backgroundColor = [UIColor colorNamed:@"ColorAnswerMessage"];
+                                    message.adjustsFontSizeToFitWidth = YES;
+                                    message.numberOfLines = 0;
+                                    message.minimumScaleFactor = 0.5;
+                                    message.textAlignment = NSTextAlignmentCenter;
+                                    y += messageHeight + gap;
+        
+                                    self->quickmessageChat = [[UITextView alloc] initWithFrame:CGRectMake(x,
+                                                                                                          y,
+                                                                                                          viewWidth - edge - edge,
+                                                                                                          chatHeight)];
+                                    [self->quickmessageChat setFont:[UIFont systemFontOfSize:20]];
+                                    self->quickmessageChat.text = @"You may chat here";
+                                    self->quickmessageChat.delegate = self;
+                                    self->quickmessageChat.backgroundColor = [UIColor colorNamed:@"ColorAnswerChat"];
+                                    self->quickmessageChatViewFrame = self->quickmessageChat.frame;
+                                    y += chatHeight + gap + gap;
+
+                                    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(messageAnswerView.frame.size.width - 120 - edge - gap, y, 120, 35)];
+                                    [buttonNext setTitle:@"Send Reply" forState: UIControlStateNormal];
+                                    [buttonNext addTarget:self action:@selector(actionSendReplay) forControlEvents:UIControlEventTouchUpInside];
+
+                                    DGButton *buttonCancel = [[DGButton alloc] initWithFrame:CGRectMake(x + gap, y, 120, 35)];
+                                    [buttonCancel setTitle:@"Cancel" forState: UIControlStateNormal];
+                                    [buttonCancel addTarget:self action:@selector(actionCancelReplay) forControlEvents:UIControlEventTouchUpInside];
+
+                                    [messageAnswerView addSubview:buttonCancel];
+                                    [messageAnswerView addSubview:buttonNext];
+                                    [messageAnswerView addSubview:title];
+                                    [messageAnswerView addSubview:message];
+                                    [messageAnswerView addSubview:self->quickmessageChat];
+                                    messageAnswerView.layer.borderWidth = 1.0;
+
+                                    [self.view addSubview:messageAnswerView];
+                                }];
+
+    [alert addAction:yesButton];
+    [alert addAction:answerButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
+    return;
+
+}
+
 #pragma mark - textView
--(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    if (!([textField.text rangeOfString:@"You may chat with"].location == NSNotFound))
+    if (!([textView.text rangeOfString:@"You may chat with"].location == NSNotFound))
     {
-        textField.text = @"";
+        textView.text = @"";
+    }
+    if (!([textView.text rangeOfString:@"You may chat here"].location == NSNotFound))
+    {
+        textView.text = @"";
     }
 
     return YES;
 }
 
 
-- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    [textField endEditing:YES];
+    [textView endEditing:YES];
     return YES;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
-    CGRect frame = finishedmatchChatViewFrame;
-    frame.origin.y = 50;
-    finishedMatchChat.frame = frame;
+    if(isQuickmessage)
+    {
+        CGRect frame = quickmessageChatViewFrame;
+        frame.origin.y = 50;
+        quickmessageChat.frame = frame;
+    }
+    if(isFinishedMatch)
+    {
+        CGRect frame = finishedmatchChatViewFrame;
+        frame.origin.y = 50;
+        finishedMatchChat.frame = frame;
+    }
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     [self.view endEditing:YES];
-    finishedMatchChat.frame = finishedmatchChatViewFrame;
+    if(isFinishedMatch)
+        finishedMatchChat.frame = finishedmatchChatViewFrame;
+    if(isQuickmessage)
+        quickmessageChat.frame = quickmessageChatViewFrame;
+
 }
 
-
+#pragma mark - actions textView finished match
 - (void)actionNextFinishedMatch:(UIButton*)button
 {
     [finishedMatchChat endEditing:YES];
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
-    NSString *nextButtonText = @"Next%%20Game";
+    NSString *nextButtonText = @"Next%20Game";
     NSString * matchLink = @"";
 
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
@@ -531,6 +674,32 @@
 
 }
 
+#pragma mark - actions textView reply quickmessage
+
+- (void) actionSendReplay
+{
+
+    [quickmessageChat endEditing:YES];
+
+    NSMutableDictionary *actionDict = [self.boardDict objectForKey:@"messageDict"];
+    NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+
+    NSString *chatString = [tools cleanChatString:quickmessageChat.text];
+    NSString *matchLink = @"";
+
+    matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
+                 [dict objectForKey:@"action"],
+                 chatString];
+    [self playMatch:matchLink];
+}
+- (void) actionCancelReplay
+{
+    [quickmessageChat endEditing:YES];
+
+    NSString *matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
+    [self playMatch:matchLink];
+}
 
 #pragma mark - Header
 

@@ -127,9 +127,21 @@
     if(preStart.length > 0)
     {
         NSRange preEnd = [htmlString rangeOfString:@"</PRE>"];
-        NSRange rangeChat = NSMakeRange(preStart.location + preStart.length, preEnd.location - preStart.location - preStart.length);
-        chat = [htmlString substringWithRange:rangeChat];
-        chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+        if(preEnd.length > 1)
+        {
+            NSRange rangeChat = NSMakeRange(preStart.location + preStart.length, preEnd.location - preStart.location - preStart.length);
+            chat = [htmlString substringWithRange:rangeChat];
+            chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+        }
+        else
+        {
+            preEnd.length = 80;
+            preEnd.location = preStart.location + preEnd.length;
+            NSRange rangeChat = NSMakeRange(preStart.location + preStart.length, preEnd.location - preStart.location - preStart.length);
+            chat = [htmlString substringWithRange:rangeChat];
+            chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+
+        }
     }
 
 #pragma mark - The http request you submitted was in error.
