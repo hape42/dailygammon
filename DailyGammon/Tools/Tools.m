@@ -270,7 +270,7 @@ typedef void(^connection)(BOOL);
     [chatString enumerateSubstringsInRange:NSMakeRange(0, chatString.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
      {
          
-         NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
+       //  NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
          if([substring isEqualToString:@"‘"])
              str = [NSString stringWithFormat:@"%@%@",str, @"'"];
          else if([substring isEqualToString:@"„"])

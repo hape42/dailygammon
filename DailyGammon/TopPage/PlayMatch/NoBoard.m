@@ -183,6 +183,13 @@
         [self quickMessage];
         return;
     }
+#pragma mark invite
+    NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
+    if( inviteDict != nil)
+    {
+        [self invite];
+        return;
+    }
 
 #pragma mark unknown HTML found
     [self unknownHTML];
@@ -453,7 +460,90 @@
     [self.view addSubview:infoView];
     return;
 }
+#pragma mark - invite
+-(void)invite
+{
+    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
+    {
+        NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
+        NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
+        
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Message"
+                                     message:inviteArray[1]
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",inviteArray[0],inviteArray[1]]];
+        [message addAttribute:NSFontAttributeName
+                        value:[UIFont systemFontOfSize:15.0]
+                        range:NSMakeRange(0, [message length])];
+        [alert setValue:message forKey:@"attributedMessage"];
+        
+        UIAlertAction* okButton = [UIAlertAction
+                                   actionWithTitle:@"Accept"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"AcceptButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Accept%%20Invitation&action=accept",
+                                                                               [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                           usedEncoding:&encoding
+                                                                                                  error:&error];
+                                       [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
 
+                                   }];
+        
+        UIAlertAction* noButton = [UIAlertAction
+                                   actionWithTitle:@"Decline"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
+                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"DeclineButton"];
+                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Decline%%20Invitation&action=decline",
+                                                                               [acceptDict objectForKey:@"action"]]];
+                                       
+                                       NSError *error = nil;
+                                       NSStringEncoding encoding = 0;
+                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
+                                                                                           usedEncoding:&encoding
+                                                                                                  error:&error];
+                                       [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
+                                   }];
+        
+        UIAlertAction* webButton = [UIAlertAction
+                                    actionWithTitle:@"Go to Website"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+                                        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/nextgame"]];
+                                        if ([SFSafariViewController class] != nil) {
+                                            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
+                                            [self presentViewController:sfvc animated:YES completion:nil];
+                                        } else {
+                                            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+                                        }
+                                                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                                                TopPageVC *vc;
+                                                if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+                                                    vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+                                                else
+                                                    vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+
+                                                [self.navigationController pushViewController:vc animated:NO];
+
+                                    }];
+        
+        [alert addAction:okButton];
+        [alert addAction:noButton];
+        [alert addAction:webButton];
+        
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+
+}
 #pragma mark - quickMessage
 
 -(void) quickMessage
@@ -475,7 +565,7 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    isQuickmessage = YES;
+                                    self->isQuickmessage = YES;
                                     int gap = 5;
                                     int edge = 5;
                                     int titleHeight = 50; int messageHeight = 100; int chatHeight = 100;

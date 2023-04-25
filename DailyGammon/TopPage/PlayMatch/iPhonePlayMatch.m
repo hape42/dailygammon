@@ -94,26 +94,16 @@
 
 @property (weak, nonatomic) UIPopoverController *presentingPopoverController;
 
-@property (readwrite, retain, nonatomic) UIView *finishedMatchView;
-
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
-@property (assign, atomic) BOOL isChatView, isFinishedMatch;
-@property (assign, atomic) CGRect finishedMatchFrame;
+@property (assign, atomic) BOOL isChatView;
 
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
 
-@property (readwrite, retain, nonatomic) UIView *messageAnswerView;
-@property (readwrite, retain, nonatomic) UITextView *answerMessage;
-@property (assign, atomic) CGRect answerMessageFrameSave;
-@property (assign, atomic) BOOL isMessageAnswerView;
-
 @property (readwrite, retain, nonatomic) UILabel *matchCountLabel;
 
 @property (assign, atomic) int matchCount;
-
-@property (readwrite, retain, nonatomic) UITextView *chatFinishedMatch;
 
 @end
 
@@ -140,18 +130,17 @@
     
     UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.moreButton setImage:image forState:UIControlStateNormal];
-
+    
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
     matchTools = [[MatchTools alloc] init];
-
+    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
- //   [nc addObserver:self selector:@selector(viewWillAppear:) name:@"changeSchemaNotification" object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
-
-//    [self.view addSubview:self.matchName];
+    
+    //    [self.view addSubview:self.matchName];
     
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
     oneFingerTap.numberOfTapsRequired = 1;
@@ -159,8 +148,7 @@
     [self.view addGestureRecognizer:oneFingerTap];
     
     [self.playerChat setDelegate:self];
-    [self.answerMessage setDelegate:self];
-
+    
     self.quoteSwitchFrame  = self.quoteSwitch.frame;
     self.quoteMessageFrame = self.quoteMessage.frame;
     
@@ -169,58 +157,40 @@
     self.opponentChatViewFrame  = self.opponentChat.frame;
     self.playerChatViewFrame    = self.playerChat.frame;
     self.chatViewFrameSave      = self.chatView.frame;
-
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
-    
+        
     self.chatIsTransparent = FALSE;
     [self.transparentButton setTitle:@"" forState: UIControlStateNormal];
     image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.transparentButton setImage:image forState:UIControlStateNormal];
     self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     
-
-    float breite = maxBreite * 0.6;
-    float hoehe = 5+50+5+50+5+50+5+50;
-    self.messageAnswerView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - breite)/2,
-                                                                      (maxHoehe - hoehe)/2,
-                                                                      breite,
-                                                                      hoehe)];
-    
-    self.answerMessageFrameSave = self.messageAnswerView.frame;
-    
-
-    self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(10, 40, maxBreite - 20,  maxHoehe - 50)];
-    self.finishedMatchFrame = self.finishedMatchView.frame;
     self.first = TRUE;
     
     if([design isX])
     {
-        self.finishedMatchView = [[UIView alloc] initWithFrame:CGRectMake(20, 40, maxBreite - 100,  maxHoehe - 50)];
         CGRect frame = self.matchName.frame;
         frame.origin.x += 20;
         self.matchName.frame = frame;
     }
     [tools matchCount];
     self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
-
+    
     self.matchCountLabel = [[UILabel alloc]init];
     CGRect frame = self.moreButton.frame;
     frame.origin.x  -= 85;
     frame.size.width = 80;
     self.matchCountLabel.frame = frame;
     [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", self.matchCount]];
-
+    
     self.matchCountLabel.textAlignment = NSTextAlignmentRight;
-
+    
     [self.view addSubview:self.matchCountLabel];
     
     if(isReview)
     {
         self.unexpectedMove.text = @"";
-//        self.makeYourMove.text = @"";
     }
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -234,17 +204,13 @@
 - (void) showMatchCount
 {
     [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]]];
-//    XLog(@"matchCount %d  ",  self.matchCount);
 }
 -(void)showMatch
 {
     [tools matchCount];
-
-
+    
     self.isChatView = FALSE;
-    self.isFinishedMatch = FALSE;
-    self.isMessageAnswerView = FALSE;
-
+    
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
     {
@@ -262,14 +228,14 @@
         }
         [removeView removeFromSuperview];
     }
-
+    
     // schieb den chatView aus dem sichtbaren bereich
     CGRect frame = self.chatView.frame;
     frame.origin.x = 5000;
     frame.origin.y = 5000;
     self.chatView.frame = frame;
     self.infoLabel.frame = frame;
-
+    
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
     
@@ -294,14 +260,14 @@
     if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+        
         NoBoard *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"NoBoard"];
         vc.boardDict = self.boardDict;
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-
-
+    
+    
     if ([[self.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
     {
         UIAlertController * alert = [UIAlertController
@@ -310,23 +276,23 @@
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction* okButton = [UIAlertAction
-                                    actionWithTitle:@"TopPage"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
+                                   actionWithTitle:@"TopPage"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action)
+                                   {
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
+            
             TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
             [self.navigationController pushViewController:vc animated:NO];
-                                     }];
- 
+        }];
+        
         [alert addAction:okButton];
-
+        
         [self presentViewController:alert animated:YES completion:nil];
-
+        
         return;
     }
-
+    
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -335,7 +301,7 @@
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-
+    
     if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -347,7 +313,7 @@
     if([[self.boardDict objectForKey:@"unknown"] length] != 0)
         [self errorAction:1];
     
-
+    
     self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
     {
@@ -359,123 +325,41 @@
                                [self.boardDict objectForKey:@"matchName"],
                                [self.boardDict objectForKey:@"matchLaengeText"]] ;
     }
-
+    
     self.matchName.adjustsFontSizeToFitWidth = YES;
     
-  //  self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
+    //  self.matchName.textColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
     [self.moreButton setTitleColor:[schemaDict objectForKey:@"TintColor"] forState:UIControlStateNormal];
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
-
+    
+    
     self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
-    if([[self.boardDict objectForKey:@"Invite"] length] != 0)
-    {
-        NSMutableDictionary *inviteDict = [self.boardDict objectForKey:@"inviteDict"] ;
-        NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
-        
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Message"
-                                     message:inviteArray[1]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",inviteArray[0],inviteArray[1]]];
-        [message addAttribute:NSFontAttributeName
-                        value:[UIFont systemFontOfSize:15.0]
-                        range:NSMakeRange(0, [message length])];
-        [alert setValue:message forKey:@"attributedMessage"];
-
-        UIAlertAction* okButton = [UIAlertAction
-                                   actionWithTitle:@"Accept"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action)
-                                   {
-                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"AcceptButton"];
-                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Accept%%20Invitation&action=accept",
-                                                          [acceptDict objectForKey:@"action"]]];
-                                       
-                                       NSError *error = nil;
-                                       NSStringEncoding encoding = 0;
-                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                                                          usedEncoding:&encoding
-                                                                                                 error:&error];
-                                       XLog(@"matchString:%@",returnString);
-                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-                                       [self showMatch];
-
-                                   }];
- 
-        UIAlertAction* noButton = [UIAlertAction
-                                   actionWithTitle:@"Decline"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action)
-                                   {
-                                       NSMutableDictionary * acceptDict = [inviteDict objectForKey:@"DeclineButton"];
-                                       NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@?submit=Decline%%20Invitation&action=decline",
-                                                                               [acceptDict objectForKey:@"action"]]];
-                                       
-                                       NSError *error = nil;
-                                       NSStringEncoding encoding = 0;
-                                       NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                                                           usedEncoding:&encoding
-                                                                                                  error:&error];
-                                       XLog(@"matchString:%@",returnString);
-                                       self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-                                       [self showMatch];
-                                }];
-
-        UIAlertAction* webButton = [UIAlertAction
-                                    actionWithTitle:@"Go to Website"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/nextgame"]];
-                                        if ([SFSafariViewController class] != nil) {
-                                            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
-                                            [self presentViewController:sfvc animated:YES completion:nil];
-                                        } else {
-                                            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-                                        }
-                                        
-                                        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-                                        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-                                        [self.navigationController pushViewController:vc animated:NO];
-                                        
-                                    }];
-        
-        [alert addAction:okButton];
-        [alert addAction:noButton];
-        [alert addAction:webButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-    else
-    {
-        [self drawPlayingAreas];
-    }
+    [self drawPlayingAreas];
+    
 }
 
 -(void)drawPlayingAreas
 {
-
+    
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
     UIView *boardView = [returnDict objectForKey:@"boardView"];
     self.moveArray = [returnDict objectForKey:@"moveArray"];
-
+    
     UIView *removeView;
-
+    
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
         {
             [subUIView removeFromSuperview];
         }
-
+        
         [removeView removeFromSuperview];
     }
-
+    
     [self.view addSubview:boardView];
     
     
@@ -483,13 +367,13 @@
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
-  
+    
     DGButton *buttonOpponent = [returnDict objectForKey:@"buttonOpponent"];
     [buttonOpponent addTarget:self action:@selector(opponent:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *buttonPlayer = [returnDict objectForKey:@"buttonPlayer"];
     [buttonPlayer addTarget:self action:@selector(playerLists:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
@@ -501,10 +385,10 @@
     [self.view addSubview:actionView];
     [self.view addSubview:playerView];
     [self.view addSubview:opponentView];
-
+    
     float actionViewHeight  = actionView.layer.frame.size.height;
     float actionViewWidth = actionView.layer.frame.size.width;
-
+    
     UIView *upperThird = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  actionViewWidth, actionViewHeight /3)];
     //upperThird.backgroundColor = UIColor.redColor;
     [actionView addSubview:upperThird];
@@ -512,15 +396,15 @@
     UIView *middleThird = [[UIView alloc]initWithFrame:CGRectMake(0, upperThird.frame.origin.y + upperThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
     //middleThird.backgroundColor = UIColor.yellowColor;
     [actionView addSubview:middleThird];
-
+    
     UIView *lowerThird = [[UIView alloc]initWithFrame:CGRectMake(0, middleThird.frame.origin.y + middleThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
     //lowerThird.backgroundColor = UIColor.greenColor;
     [actionView addSubview:lowerThird];
-
+    
     int buttonHeight = 0;
     int buttonWidth = 100;
     float buttonLargeWidth = MIN(buttonWidth *2, actionViewWidth - 10);
-
+    
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         buttonHeight = 35;
@@ -532,11 +416,11 @@
     float switchWidth = 50;
     float verifyTextWidth = 50;
     float gap = 10;
-
+    
     float thirdX = (actionViewWidth / 2) - (buttonWidth / 2); // center button
     float thirdXForLargeButton = (actionViewWidth / 2) - (buttonLargeWidth / 2); // center button
     float thirdXwithVerify = (actionViewWidth / 2) - (buttonWidth / 2) - (gap / 2) - (switchWidth / 2) - (gap / 2) - (verifyTextWidth / 2); // center button
-
+    
     float thirdY = (upperThird.frame.size.height / 2) - (buttonHeight / 2); // center button
     
     CGRect frame;
@@ -563,22 +447,22 @@
 #pragma mark - Button NextGame
         case NEXTGAME:
         {
-                // seltsamer -0- Something unexpected happend!
-
-                matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
-                NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-                //    XLog(@"%@",urlMatch);
-                NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-
+            // seltsamer -0- Something unexpected happend!
+            
+            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
+            NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+            //    XLog(@"%@",urlMatch);
+            NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
+            
             //    [match readMatch:matchLink];
-                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-                [self.navigationController pushViewController:vc animated:NO];
-                return;
-
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+            [self.navigationController pushViewController:vc animated:NO];
+            return;
+            
         }
-case ROLL:
+        case ROLL:
         {
 #pragma mark - Button Roll
             DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
@@ -590,11 +474,11 @@ case ROLL:
         case ROLL_DOUBLE:
         {
 #pragma mark - Button Roll Double
-
+            
             DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
-
+            
             [upperThird addSubview:buttonRoll];
             
             DGButton *buttonDouble = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
@@ -606,12 +490,12 @@ case ROLL:
             if(attributesArray.count == 3) // verify double
             {
                 buttonDouble.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
-
+                
                 UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
                                           CGRectMake(buttonDouble.frame.origin.x + buttonWidth + gap,
-                                                                                     thirdY  ,
-                                                                                     switchWidth,
-                                                                                     buttonHeight)];
+                                                     thirdY  ,
+                                                     switchWidth,
+                                                     buttonHeight)];
                 verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
                 frame = verifyDouble.frame;
                 frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
@@ -633,7 +517,7 @@ case ROLL:
         case ACCEPT_DECLINE:
         {
 #pragma mark - Button Accept Pass
-
+            
             DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
@@ -649,7 +533,7 @@ case ROLL:
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
-
+                
                 for(NSDictionary * dict in attributesArray)
                 {
                     if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
@@ -657,14 +541,14 @@ case ROLL:
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
                             UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 thirdY  ,
-                                                                                                 switchWidth,
-                                                                                                 buttonHeight)];
+                                                                                                thirdY  ,
+                                                                                                switchWidth,
+                                                                                                buttonHeight)];
                             verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyAccept.frame;
                             frame.origin.y = buttonAccept.frame.origin.y;
                             verifyAccept.frame = frame;
-
+                            
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [upperThird addSubview: verifyAccept];
@@ -686,7 +570,7 @@ case ROLL:
                             frame = verifyDecline.frame;
                             frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
                             verifyDecline.frame = frame;
-
+                            
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [middleThird addSubview: verifyDecline];
@@ -707,7 +591,7 @@ case ROLL:
         case ACCEPT_BEAVER_DECLINE:
         {
 #pragma mark - Button Accept Beaver Pass
-
+            
             DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
             [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
@@ -723,7 +607,7 @@ case ROLL:
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
-
+                
                 for(NSDictionary * dict in attributesArray)
                 {
                     if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
@@ -731,14 +615,14 @@ case ROLL:
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
                             UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 thirdY  ,
-                                                                                                 switchWidth,
-                                                                                                 buttonHeight)];
+                                                                                                thirdY  ,
+                                                                                                switchWidth,
+                                                                                                buttonHeight)];
                             verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyAccept.frame;
                             frame.origin.y = buttonAccept.frame.origin.y;
                             verifyAccept.frame = frame;
-
+                            
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [upperThird addSubview: verifyAccept];
@@ -760,7 +644,7 @@ case ROLL:
                             frame = verifyDecline.frame;
                             frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
                             verifyDecline.frame = frame;
-
+                            
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [middleThird addSubview: verifyDecline];
@@ -778,7 +662,7 @@ case ROLL:
             }
             break;
         }
-
+            
         case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
@@ -791,7 +675,7 @@ case ROLL:
         case GREEDY:
         {
 #pragma mark - Submit Greedy Bearoff
-
+            
             DGButton *buttonGreedy = [[DGButton alloc] initWithFrame:CGRectMake(thirdXForLargeButton, thirdY, buttonLargeWidth, buttonHeight)];
             [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
             [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
@@ -825,7 +709,7 @@ case ROLL:
         case SUBMIT_FORCED_MOVE:
         {
 #pragma mark - Button Submit Forced Move
-
+            
             DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake(thirdXForLargeButton, thirdY, buttonLargeWidth, buttonHeight)];
             [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitForcedMove) forControlEvents:UIControlEventTouchUpInside];
@@ -837,11 +721,11 @@ case ROLL:
 #pragma mark - Chat
             // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
-
-             [self.view bringSubviewToFront:self.chatView ];
+            
+            [self.view bringSubviewToFront:self.chatView ];
             //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
-
+            
             BOOL isCheckbox = FALSE;
             for(NSMutableDictionary *dict in attributesArray)
             {
@@ -864,10 +748,10 @@ case ROLL:
                 self.quoteSwitch.frame = self.quoteSwitchFrame;
                 self.quoteMessage.frame = self.quoteMessageFrame;
             }
-             self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
-
-    //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
-
+            self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
+            
+            //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
+            
             self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
             if(([self.opponentChat.text length] == 0) && (isCheckbox == FALSE))
             {
@@ -881,7 +765,7 @@ case ROLL:
                 frame.origin.y += opponentChatHoehe;
                 frame.size.height -= opponentChatHoehe;
                 self.chatView.frame = frame;
-
+                
                 frame = self.playerChat.frame;
                 frame.origin.y -= opponentChatHoehe;
                 self.playerChat.frame = frame;
@@ -904,19 +788,19 @@ case ROLL:
                 self.playerChat.frame       = self.playerChatViewFrame;
                 [self.opponentChat flashScrollIndicators];
                 [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(flashIndicator) userInfo:nil repeats:YES]; // set time interval as per your requirement.
-
-
+                
+                
             }
             frame = self.chatView.frame;
             frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
             frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
             self.chatView.frame = frame;
-
+            
             self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
             self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
             
             self.playerChat.text = @"you may chat here";
-   //         self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
+            //         self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
             
@@ -932,7 +816,7 @@ case ROLL:
         {
 #pragma mark - preview match
             float gap = 20;
-
+            
             float reviewButtonHeight  = MIN(30,(actionView.layer.frame.size.height / 4) - gap - 5);
             
             NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
@@ -960,10 +844,10 @@ case ROLL:
                 }
                 y += reviewButtonHeight + gap;
             }
-
+            
             break;
         }
-
+            
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
@@ -981,7 +865,7 @@ case ROLL:
         messageText.text = [self.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.adjustsFontSizeToFitWidth = YES;
-
+        
         [lowerThird addSubview: messageText];
         
     }
@@ -998,7 +882,7 @@ case ROLL:
         [buttonAllMoves addTarget:self action:@selector(actionAllMoves:) forControlEvents:UIControlEventTouchUpInside];
         [buttonAllMoves.layer setValue: [self.actionDict objectForKey:@"List of Moves"] forKey:@"href"];
         [self.view addSubview:buttonAllMoves];
-
+        
     }
     else
     {
@@ -1095,8 +979,8 @@ case ROLL:
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
-                                            
-                                        }];
+                
+            }];
             
             [alert addAction:yesButton];
             
@@ -1147,8 +1031,8 @@ case ROLL:
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
-                                            
-                                        }];
+                
+            }];
             [alert addAction:yesButton];
             [self presentViewController:alert animated:YES completion:nil];
         }
@@ -1195,8 +1079,8 @@ case ROLL:
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
-                                            
-                                        }];
+                
+            }];
             [alert addAction:yesButton];
             [self presentViewController:alert animated:YES completion:nil];
         }
@@ -1243,8 +1127,8 @@ case ROLL:
                                         style:UIAlertActionStyleDefault
                                         handler:^(UIAlertAction * action)
                                         {
-                                            
-                                        }];
+                
+            }];
             [alert addAction:yesButton];
             [self presentViewController:alert animated:YES completion:nil];
         }
@@ -1285,7 +1169,7 @@ case ROLL:
     
     Review *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"Review"];
     vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]];
-
+    
     [self.navigationController pushViewController:vc animated:NO];
 }
 
@@ -1296,7 +1180,7 @@ case ROLL:
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
-
+    
     [self.navigationController pushViewController:vc animated:NO];
 }
 
@@ -1306,9 +1190,9 @@ case ROLL:
     
     Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
-
+    
     [self.navigationController pushViewController:vc animated:NO];
-
+    
 }
 
 #pragma mark - chat Buttons
@@ -1331,7 +1215,7 @@ case ROLL:
         [self.transparentButton setImage:image forState:UIControlStateNormal];
         self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     }
-
+    
 }
 - (IBAction)chatNextButton:(id)sender
 {
@@ -1350,7 +1234,7 @@ case ROLL:
         }
     }
     NSString *chatString = [tools cleanChatString:self.playerChat.text];
-
+    
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
@@ -1377,7 +1261,7 @@ case ROLL:
             matchLink = [match objectForKey:@"href"];
         }
     }
-
+    
     [self showMatch];
     
 }
@@ -1385,7 +1269,7 @@ case ROLL:
 {
     if([self.playerChat.text isEqualToString:@"you may chat here"])
         self.playerChat.text = @"";
-
+    
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
@@ -1400,14 +1284,14 @@ case ROLL:
     }
     
     NSString *chatString = [tools cleanChatString:self.playerChat.text];
-
+    
     matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
     
     [self showMatch];
-
+    
 }
 
 #pragma mark - analyzeAction
@@ -1422,7 +1306,7 @@ case ROLL:
     
     if(isReview)
         return REVIEW;
-
+    
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 1)
     {
@@ -1457,7 +1341,7 @@ case ROLL:
             if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
                 return ACCEPT_BEAVER_DECLINE;
         }
-
+        
         dict = attributesArray[1];
         if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
             return SUBMIT_MOVE;
@@ -1526,11 +1410,6 @@ case ROLL:
     if([self.playerChat.text isEqualToString:@"you may chat here"])
     {
         self.playerChat.text = @"";
-        self.answerMessage.text = @"";
-    }
-    if (!([self.chatFinishedMatch.text rangeOfString:@"You may chat with"].location == NSNotFound))
-    {
-        self.chatFinishedMatch.text = @"";
     }
     
     return YES;
@@ -1557,8 +1436,6 @@ shouldChangeTextInRange:(NSRange)range
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
     [self.playerChat endEditing:YES];
-    [self.answerMessage endEditing:YES];
-
     return YES;
 }
 
@@ -1571,19 +1448,7 @@ shouldChangeTextInRange:(NSRange)range
         self.chatView.frame = frame;
         XLog(@"keyboardDidShow %f",self.chatView.frame.origin.y );
     }
-    if(self.isFinishedMatch)
-    {
-        CGRect frame = self.finishedMatchFrame;
-        frame.origin.y -= 100;
-        self.finishedMatchView.frame = frame;
-    }
-    if(self.isMessageAnswerView)
-    {
-        CGRect frame = self.answerMessageFrameSave;
-        frame.origin.y = 10;
-        self.messageAnswerView.frame = frame;
-    }
-
+    
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
@@ -1592,14 +1457,6 @@ shouldChangeTextInRange:(NSRange)range
     {
         self.chatView.frame = self.chatViewFrame;
         XLog(@"keyboardDidHide %f",self.chatView.frame.origin.y );
-    }
-    if(self.isFinishedMatch)
-    {
-        self.finishedMatchView.frame = self.finishedMatchFrame;
-    }
-    if(self.isMessageAnswerView)
-    {
-        self.messageAnswerView.frame = self.answerMessageFrameSave;
     }
 }
 
@@ -1641,87 +1498,87 @@ shouldChangeTextInRange:(NSRange)range
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                    
-                                    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-                                    
-                                    [self.navigationController pushViewController:vc animated:NO];
-                                }];
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        
+        [self.navigationController pushViewController:vc animated:NO];
+    }];
     
     UIAlertAction* mailButton = [UIAlertAction
                                  actionWithTitle:@"Mail to Support"
                                  style:UIAlertActionStyleDefault
                                  handler:^(UIAlertAction * action)
                                  {
-                                     if (![MFMailComposeViewController canSendMail])
-                                     {
-                                         XLog(@"Fehler: Mail kann nicht versendet werden");
-                                         return;
-                                     }
-                                     NSString *betreff = [NSString stringWithFormat:@"-%d- Something unexpected happend!", typ];
-                                     
-                                     NSString *text = @"";
-                                     NSString *emailText = @"";
-                                     text = [NSString stringWithFormat:@"Hallo Support-Team of %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"my Data: <br> "];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"] ];
-                                     
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
-                                     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
-                                     
-                                     
-                                     MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
-                                     emailController.mailComposeDelegate = self;
-                                     NSArray *toSupport = [NSArray arrayWithObjects:@"dg@hape42.de",nil];
-                                     
-                                     [emailController setToRecipients:toSupport];
-                                     [emailController setSubject:betreff];
-                                     [emailController setMessageBody:emailText isHTML:YES];
-                                     NSString *dictPath = @"";
-                                     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                                          NSUserDomainMask, YES);
-                                     if([paths count] > 0)
-                                     {
-                                         switch (typ)
-                                         {
-                                             case 0:
-                                             {
-                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
-                                                 NSData *myData = [NSData dataWithContentsOfFile:dictPath];
-                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
-                                                 break;
-                                             }
-                                             case 1:
-                                             case 2:
-                                             {
-                                                 dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES];
-                                                 NSData *myData = [NSData dataWithContentsOfFile:dictPath];
-                                                 [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
-                                                 break;
-                                             }
-                                        }
-                                     }
-                                     
-                                     [self presentViewController:emailController animated:YES completion:NULL];
-                                     
-                                 }];
+        if (![MFMailComposeViewController canSendMail])
+        {
+            XLog(@"Fehler: Mail kann nicht versendet werden");
+            return;
+        }
+        NSString *betreff = [NSString stringWithFormat:@"-%d- Something unexpected happend!", typ];
+        
+        NSString *text = @"";
+        NSString *emailText = @"";
+        text = [NSString stringWithFormat:@"Hallo Support-Team of %@, <br><br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"my Data: <br> "];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"DGBuildDate"] ];
+        
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"Device <b>%@</b> IOS <b>%@</b><br> ", [[UIDevice currentDevice] model], [[UIDevice currentDevice] systemVersion]];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
+        emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+        
+        
+        MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
+        emailController.mailComposeDelegate = self;
+        NSArray *toSupport = [NSArray arrayWithObjects:@"dg@hape42.de",nil];
+        
+        [emailController setToRecipients:toSupport];
+        [emailController setSubject:betreff];
+        [emailController setMessageBody:emailText isHTML:YES];
+        NSString *dictPath = @"";
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                             NSUserDomainMask, YES);
+        if([paths count] > 0)
+        {
+            switch (typ)
+            {
+                case 0:
+                {
+                    dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
+                    [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
+                    NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+                    [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
+                    break;
+                }
+                case 1:
+                case 2:
+                {
+                    dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
+                    [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES];
+                    NSData *myData = [NSData dataWithContentsOfFile:dictPath];
+                    [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
+                    break;
+                }
+            }
+        }
+        
+        [self presentViewController:emailController animated:YES completion:NULL];
+        
+    }];
     
     [alert addAction:yesButton];
     [alert addAction:mailButton];
@@ -1730,228 +1587,7 @@ shouldChangeTextInRange:(NSRange)range
     
     
 }
-#pragma mark - finishedMatch
-- (void)finishedMatchView:(NSMutableDictionary *)finishedMatchDict
-{
-    // ist es ein "finished match" ohne chat?
 
-    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"<input type=hidden name=commit value=1>"].location == NSNotFound))
-    {
-        NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
-        NSString *href = @"";
-        for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
-        {
-            href = [dict objectForKey:@"action"];
-        }
-        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", href];
-
-        [self showMatch];
-        return;
-    }
-    if (!([[self.boardDict objectForKey:@"htmlString"] rangeOfString:@"<u>Score</u>"].location == NSNotFound))
-    {
-        NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
-        NSString *href = @"";
-        for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
-        {
-            href = [dict objectForKey:@"action"];
-        }
-        matchLink = [NSString stringWithFormat:@"%@?submit=Next&commit=1", href];
-
-        [self showMatch];
-        return;
-    }
-
-    self.matchName.text = @"";
-    
-    int rand = 5;
-    
-    int buttonHeight = 0;
-    int buttonWidth = 0;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        buttonHeight = 35;
-        buttonWidth  = 100;
-    }
-    else
-    {
-        buttonHeight = 30;
-        buttonWidth  = 80;
-    }
-
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
-    
-    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-
-    infoView.tag = FINISHED_MATCH_VIEW;
-    infoView.layer.borderWidth = 1;
-    
-    [self.view addSubview:self.finishedMatchView];
-    
-    UILabel * matchNameFinished = [[UILabel alloc] initWithFrame:CGRectMake(rand,
-                                                                            rand,
-                                                                            infoView.layer.frame.size.width - (2 * rand),
-                                                                            30)];
-    matchNameFinished.text = [finishedMatchDict objectForKey:@"matchName"];
-    matchNameFinished.textAlignment = NSTextAlignmentCenter;
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
-    [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:20.0]
-                 range:NSMakeRange(0, [attr length])];
-    [matchNameFinished setAttributedText:attr];
-    matchNameFinished.adjustsFontSizeToFitWidth = YES;
-    matchNameFinished.numberOfLines = 0;
-    matchNameFinished.minimumScaleFactor = 0.5;
-    matchNameFinished.adjustsFontSizeToFitWidth = YES;
-    [infoView addSubview:matchNameFinished];
-    
-    UILabel *winner = [[UILabel alloc] initWithFrame:CGRectMake(rand,
-                                                                 matchNameFinished.frame.origin.y + matchNameFinished.frame.size.height + 5,
-                                                                 infoView.layer.frame.size.width - (2 * rand),
-                                                                 30)];
-//    winner.backgroundColor = [UIColor yellowColor];
-
-    winner.textAlignment = NSTextAlignmentLeft;
-    winner.text = [finishedMatchDict objectForKey:@"winnerName"];
-    [winner setFont:[UIFont boldSystemFontOfSize: winner.font.pointSize]];
-    winner.adjustsFontSizeToFitWidth = YES;
-    winner.numberOfLines = 0;
-    winner.minimumScaleFactor = 0.5;
-    winner.adjustsFontSizeToFitWidth = YES;
-    [infoView addSubview:winner];
-    
-    int labelHoehe = 25;
-    UILabel *length = [[UILabel alloc] initWithFrame:CGRectMake(rand,
-                                                                winner.frame.origin.y + winner.frame.size.height,
-                                                                100,
-                                                                labelHoehe)];
-//    length.backgroundColor = [UIColor redColor];
-
-    length.textAlignment = NSTextAlignmentLeft;
-    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
-    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
-    [infoView addSubview:length];
-    
-    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
-    
-    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(length.frame.origin.x + length.frame.size.width + 5,
-                                                                       length.frame.origin.y ,
-                                                                       150,
-                                                                       labelHoehe)];
-    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.size.width + 5,
-                                                                       player1Name.layer.frame.origin.y,
-                                                                       100,
-                                                                       labelHoehe)];
-//    player1Name.backgroundColor = [UIColor yellowColor];
-    player1Name.textAlignment = NSTextAlignmentLeft;
-    player1Name.text = playerArray[0];
-    [infoView addSubview:player1Name];
-    player1Score.textAlignment = NSTextAlignmentRight;
-    player1Score.text = playerArray[1];
-    [infoView addSubview:player1Score];
-    
-    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.origin.x,
-                                                                       player1Name.frame.origin.y + player1Name.frame.size.height
-                                                                       ,
-                                                                       150,
-                                                                       labelHoehe)];
-    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.size.width + 5,
-                                                                       player2Name.layer.frame.origin.y,
-                                                                       100,
-                                                                       labelHoehe)];
-//    player2Name.backgroundColor = [UIColor redColor];
-    player2Name.textAlignment = NSTextAlignmentLeft;
-    player2Name.text = playerArray[2];
-    [infoView addSubview:player2Name];
-    player2Score.textAlignment = NSTextAlignmentRight;
-    player2Score.text = playerArray[3];
-    [infoView addSubview:player2Score];
-    
-    self.chatFinishedMatch  = [[UITextView alloc] initWithFrame:CGRectMake(rand,
-                                                                     player2Name.layer.frame.origin.y + player2Name.frame.size.height ,
-                                                                     infoView.layer.frame.size.width - (2 * rand),
-                                                                     infoView.layer.frame.size.height - (player2Name.layer.frame.origin.y + 70 ))];
-    self.chatFinishedMatch.textAlignment = NSTextAlignmentLeft;
-    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
-    NSString *chatString = @"";
-    for( NSString *chatZeile in chatArray)
-    {
-        if(![chatZeile isEqual:[NSString stringWithFormat:@"\nYou may chat with %@ here:\n\n ", playerArray[2]]])
-            chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
-    }
-    self.chatFinishedMatch.text = chatString;
-    self.chatFinishedMatch.editable = YES;
-    [self.chatFinishedMatch setDelegate:self];
-    
-    [self.chatFinishedMatch setFont:[UIFont systemFontOfSize:20]];
-    [infoView addSubview:self.chatFinishedMatch];
-    
-    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50, infoView.layer.frame.size.height - buttonHeight -5, 100, buttonHeight)];
-    [buttonNext setTitle:@"Next Game" forState: UIControlStateNormal];
-    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonNext];
-    
-    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(50 + 100 + 50, infoView.layer.frame.size.height - buttonHeight -5 , 100, buttonHeight)];
-    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonToTop];
-    
-    [self.finishedMatchView addSubview:infoView];
-    return;
-}
-- (void)actionNextFinishedMatch
-{
-    NSString *chatText = self.chatFinishedMatch.text;
-    self.finishedMatchView.frame = self.finishedMatchFrame;
-    
-    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
-    NSString *href = @"";
-    for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
-    {
-        href = [dict objectForKey:@"action"];
-    }
-    UIView *removeView;
-    while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
-    {
-        for (UIView *subUIView in removeView.subviews)
-        {
-            [subUIView removeFromSuperview];
-        }
-
-        [removeView removeFromSuperview];
-    }
-    if([href isEqualToString:@""])
-        matchLink = @"/bg/nextgame";
-    else
-        matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1&chat=%@", href, chatText];
-    [self showMatch];
-}
-- (void)actionToTopFinishedMatch
-{
-    NSString *chatText = self.chatFinishedMatch.text;
-
-    self.finishedMatchView.frame = self.finishedMatchFrame;
-    
-    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
-    NSString *href = @"";
-    for(NSDictionary * dict in [finishedMatchDict objectForKey:@"attributes"])
-    {
-        href = [dict objectForKey:@"action"];
-    }
-    matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1&chat=%@", href, chatText];
-    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-    
-    NSError *error = nil;
-    NSStringEncoding encoding = 0;
-    self.matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-                                                  usedEncoding:&encoding
-                                                         error:&error];
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-    
-    [self.navigationController pushViewController:vc animated:NO];
-}
 - (IBAction)moreAction:(id)sender
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -1960,111 +1596,5 @@ shouldChangeTextInRange:(NSRange)range
     [self.navigationController pushViewController:vc animated:NO];
 }
 
-#pragma mark - reply message
 
-- (void) actionSendReplay
-{
-    if([self.answerMessage.text isEqualToString:@"you may chat here"])
-        self.answerMessage.text = @"";
-    
-    NSMutableDictionary *actionDict = [self.boardDict objectForKey:@"messageDict"];
-    NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
-    NSMutableDictionary *dict = attributesArray[0];
-    
-    NSString *chatString = [tools cleanChatString:self.answerMessage.text];
-
-    matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",
-                 [dict objectForKey:@"action"],
-                 chatString];
-
-    [self showMatch];
-}
-- (void) actionCancelReplay
-{
-    self->matchLink = [NSString stringWithFormat:@"/bg/nextgame?submit=Next"];
-    [self showMatch];
-}
-- (NSString *) free_memory
-{
-    mach_port_t host_port;
-    mach_msg_type_number_t host_size;
-    vm_size_t pagesize;
-    
-    host_port = mach_host_self();
-    host_size = sizeof(vm_statistics_data_t) / sizeof(integer_t);
-    host_page_size(host_port, &pagesize);
-    
-    vm_statistics_data_t vm_stat;
-    
-    if (host_statistics(host_port, HOST_VM_INFO, (host_info_t)&vm_stat, &host_size) != KERN_SUCCESS) {
-        NSLog(@"Failed to fetch vm statistics");
-    }
-    
-    /* Stats in bytes */
-    natural_t mem_used = (vm_stat.active_count +
-                          vm_stat.inactive_count +
-                          vm_stat.wire_count) * (unsigned int)pagesize;
-    natural_t mem_free = vm_stat.free_count * (unsigned int)pagesize;
-    natural_t mem_total = mem_used + mem_free;
-//    NSLog(@"used: %u free: %u total: %u", mem_used, mem_free, mem_total);
-    if(self.first)
-    {
-        self.memory_start = mem_free;
-        self.first = FALSE;
-    }
-    
-    return [NSString stringWithFormat:@"%@ %@",
-            [NSByteCountFormatter stringFromByteCount:self.memory_start countStyle:NSByteCountFormatterCountStyleMemory],
-            [NSByteCountFormatter stringFromByteCount:mem_free countStyle:NSByteCountFormatterCountStyleMemory]];
-}
-
-#pragma mark - invite
-- (void)inviteMatchView:(NSMutableDictionary *)inviteDict
-{
-    self.matchName.text = @"";
-
-    int rand = 5;
-    
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.finishedMatchView.frame.size.width,  self.finishedMatchView.frame.size.height)];
-    
-    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-    
-    infoView.tag = FINISHED_MATCH_VIEW;
-    infoView.layer.borderWidth = 1;
-    
-    [self.view addSubview:self.finishedMatchView];
-    NSMutableArray *inviteArray = [inviteDict objectForKey:@"inviteDetails"];
-    UILabel * inviteHeader = [[UILabel alloc] initWithFrame:CGRectMake(rand,
-                                                                            rand,
-                                                                            infoView.layer.frame.size.width - (2 * rand),
-                                                                            30)];
-    inviteHeader.textAlignment = NSTextAlignmentCenter;
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:inviteArray[0]];
-    [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:20.0]
-                 range:NSMakeRange(0, [attr length])];
-    [inviteHeader setAttributedText:attr];
-    inviteHeader.adjustsFontSizeToFitWidth = YES;
-    inviteHeader.numberOfLines = 0;
-    inviteHeader.minimumScaleFactor = 0.5;
-    [infoView addSubview:inviteHeader];
-    
-    
-    UILabel *inviteDetails = [[UILabel alloc] initWithFrame:CGRectMake(rand,
-                                                                inviteHeader.frame.origin.y + inviteHeader.frame.size.height + 5,
-                                                                infoView.layer.frame.size.width - (2 * rand),
-                                                                30)];
-    //    winner.backgroundColor = [UIColor yellowColor];
-    
-    inviteDetails.textAlignment = NSTextAlignmentLeft;
-    inviteDetails.text = inviteArray[1];
-    [inviteDetails setFont:[UIFont boldSystemFontOfSize: inviteDetails.font.pointSize]];
-    inviteDetails.numberOfLines = 0;
-    inviteDetails.minimumScaleFactor = 0.5;
-    inviteDetails.adjustsFontSizeToFitWidth = YES;
-    [infoView addSubview:inviteDetails];
-
-    [self.finishedMatchView addSubview:infoView];
-    return;
-}
 @end
