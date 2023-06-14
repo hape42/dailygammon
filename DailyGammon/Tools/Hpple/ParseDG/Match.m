@@ -150,6 +150,8 @@
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:errorText forKey:@"error"];
+        noBoard = TRUE;
+
   //      return boardDict;
     }
 //
@@ -240,6 +242,8 @@
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
     {
         [boardDict setObject:@"noMatches" forKey:@"noMatches"];
+        noBoard = TRUE;
+
  //       return boardDict;
     }
 
