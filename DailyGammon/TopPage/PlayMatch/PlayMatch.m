@@ -328,7 +328,10 @@
     [self.view addSubview:playerView];
     [self.view addSubview:opponentView];
 
-    
+    int edge = 10;
+    float gap = 10;
+    float verifyTextWidth = 50;
+
     int buttonHeight = 0;
     int buttonWidth = 0;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -341,8 +344,13 @@
         buttonHeight = 30;
         buttonWidth  = 80;
     }
+    float switchWidth = 50;
 
-    switch([self analyzeAction])
+    self.verifiedDouble = FALSE;
+    self.verifiedTake   = FALSE;
+    self.verifiedPass   = FALSE;
+
+    switch([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview])
     {
         case NEXT:
         {
@@ -463,6 +471,124 @@
                 }
             }
             break;
+        }
+        case ACCEPT_BEAVER_DECLINE:
+        {
+#pragma mark - Button Accept/Beaver/Pass
+            
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(edge, edge, buttonWidth, buttonHeight)];
+            [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
+            [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonAccept];
+            
+            DGButton *buttonBeaver = [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonAccept.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            [buttonBeaver setTitle:@"Beaver!" forState: UIControlStateNormal];
+            [buttonBeaver addTarget:self action:@selector(actionBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonBeaver];
+
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonBeaver.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
+            [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonPass];
+            
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count > 2)
+            {
+                
+                for(NSDictionary * dict in attributesArray)
+                {
+                    if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+                    {
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
+                        {
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                buttonAccept.frame.origin.y  ,
+                                                                                                switchWidth,
+                                                                                                buttonHeight)];
+                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            
+                            [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
+                            verifyAccept = [design makeNiceSwitch:verifyAccept];
+                            [actionView addSubview: verifyAccept];
+                            
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
+                                                                                                  verifyAccept.frame.origin.y ,
+                                                                                                  verifyTextWidth,
+                                                                                                  buttonHeight)];
+                            verifyAcceptText.text = @"Verify";
+                            [actionView addSubview: verifyAcceptText];
+                        }
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                        {
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonPass.frame.origin.x + buttonWidth + gap,
+                                                                                                 buttonPass.frame.origin.y  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            
+                            [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
+                            [actionView addSubview: verifyDecline];
+                            
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                                                   verifyDecline.frame.origin.y,
+                                                                                                   verifyTextWidth,
+                                                                                                   buttonHeight)];
+                            verifyDeclineText.text = @"Verify";
+                            [actionView addSubview: verifyDeclineText];
+                        }
+                        
+                    }
+                }
+            }
+            break;
+        }
+        case BEAVER_ACCEPT:
+        {
+#pragma mark - Button Beaver Accept
+            
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(edge, edge, buttonWidth, buttonHeight)];
+            [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
+            [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonAccept];
+            
+
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonAccept.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
+            [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
+            [actionView addSubview:buttonPass];
+            
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count > 2)
+            {
+                for(NSDictionary * dict in attributesArray)
+                {
+                    if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+                    {
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                        {
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 buttonAccept.frame.origin.y  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            
+                            [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
+                            [actionView addSubview: verifyDecline];
+                            
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                                                   verifyDecline.frame.origin.y,
+                                                                                                   verifyTextWidth,
+                                                                                                   buttonHeight)];
+                            verifyDeclineText.text = @"Verify";
+                            [actionView addSubview: verifyDeclineText];
+                        }
+                    }
+                }
+            }
+            break;
+
         }
        case SWAP_DICE:
         {
@@ -770,6 +896,16 @@
         matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
         [self showMatch];
     }
+}
+- (void)actionBeaver
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
+}
+- (void)actionTakeBeaver
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
 }
 
 - (void)actionTake

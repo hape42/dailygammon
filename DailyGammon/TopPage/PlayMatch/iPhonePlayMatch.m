@@ -424,7 +424,12 @@
     float thirdY = (upperThird.frame.size.height / 2) - (buttonHeight / 2); // center button
     
     CGRect frame;
-    switch([self analyzeAction])
+    
+    self.verifiedDouble = FALSE;
+    self.verifiedTake   = FALSE;
+    self.verifiedPass   = FALSE;
+
+    switch([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview])
     {
         case NEXT:
         {
@@ -590,22 +595,28 @@
         }
         case ACCEPT_BEAVER_DECLINE:
         {
-#pragma mark - Button Accept Beaver Pass
+#pragma mark - Button Accept/Beaver/Pass
             
             DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
-            [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
-            [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
+            [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
             [upperThird addSubview:buttonAccept];
             
+            DGButton *buttonBeaver = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
+            [buttonBeaver setTitle:@"Beaver!" forState: UIControlStateNormal];
+            [buttonBeaver addTarget:self action:@selector(actionBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [middleThird addSubview:buttonBeaver];
+
             DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
-            [middleThird addSubview:buttonPass];
+            [lowerThird addSubview:buttonPass];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonBeaver.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 
                 for(NSDictionary * dict in attributesArray)
@@ -647,6 +658,59 @@
                             
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
+                            [lowerThird addSubview: verifyDecline];
+                            
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                                                   thirdY,
+                                                                                                   verifyTextWidth,
+                                                                                                   buttonHeight)];
+                            verifyDeclineText.text = @"Verify";
+                            [lowerThird addSubview: verifyDeclineText];
+                        }
+                        
+                    }
+                }
+            }
+            break;
+        }
+        case BEAVER_ACCEPT:
+        {
+#pragma mark - Button Beaver Accept
+            
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
+            [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
+            [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
+            [upperThird addSubview:buttonAccept];
+            
+
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
+            [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
+            [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
+            [middleThird addSubview:buttonPass];
+            
+            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            if(attributesArray.count > 2)
+            {
+                buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                
+                for(NSDictionary * dict in attributesArray)
+                {
+                    if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
+                    {
+                        if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
+                        {
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 thirdY  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
+                            
+                            [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
+                            verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [middleThird addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
@@ -661,8 +725,8 @@
                 }
             }
             break;
+
         }
-            
         case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
@@ -866,6 +930,9 @@
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.adjustsFontSizeToFitWidth = YES;
         
+        if([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview] == ACCEPT_BEAVER_DECLINE)
+            return; // We need the message area for an additional button
+        
         [lowerThird addSubview: messageText];
         
     }
@@ -1043,54 +1110,17 @@
         [self showMatch];
     }
 }
+- (void)actionBeaver
+{
+    matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
+}
 - (void)actionTakeBeaver
 {
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
-    BOOL verify = FALSE;
-    if(attributesArray.count > 2)
-    {
-        for(NSDictionary * dict in attributesArray)
-        {
-            if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
-            {
-                if([[dict objectForKey:@"value"]isEqualToString:@"Accept Beaver"])
-                {
-                    verify = TRUE;
-                }
-            }
-        }
-    }
-    if(verify)
-    {
-        if(self.verifiedPass)
-        {
-            matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver&verify=Decline", [self.actionDict objectForKey:@"action"]];
-            [self showMatch];
-        }
-        else
-        {
-            UIAlertController * alert = [UIAlertController
-                                         alertControllerWithTitle:@"Information"
-                                         message:@"Previous move not verified!"
-                                         preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction* yesButton = [UIAlertAction
-                                        actionWithTitle:@"OK"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                
-            }];
-            [alert addAction:yesButton];
-            [self presentViewController:alert animated:YES completion:nil];
-        }
-    }
-    else
-    {
-        matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
-        [self showMatch];
-    }
+    matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
+    [self showMatch];
 }
+
 - (void)actionPass
 {
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1322,7 +1352,15 @@
     }
     if(attributesArray.count > 1)
     {
-        NSMutableDictionary *dict = attributesArray[0];
+        NSMutableDictionary *dict = attributesArray[1];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Beaver!"])
+        {
+            return ACCEPT_BEAVER_DECLINE;
+        }
+        dict = attributesArray[0];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Accept Beaver"])
+            return BEAVER_ACCEPT;
+
         if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
         {
             dict = attributesArray[1];
@@ -1334,12 +1372,6 @@
             dict = attributesArray[1];
             if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
                 return ACCEPT_DECLINE;
-        }
-        if([[dict objectForKey:@"value"] isEqualToString:@"Accept Beaver"])
-        {
-            dict = attributesArray[1];
-            if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
-                return ACCEPT_BEAVER_DECLINE;
         }
         
         dict = attributesArray[1];

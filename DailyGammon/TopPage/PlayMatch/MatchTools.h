@@ -22,6 +22,8 @@ NS_ASSUME_NONNULL_BEGIN
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict;
 -(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView;
 
+- (int) analyzeAction:(NSMutableDictionary *)actionDict isChat:(BOOL) isChat isReview:(BOOL) isReview;
+
 @end
 
 NS_ASSUME_NONNULL_END

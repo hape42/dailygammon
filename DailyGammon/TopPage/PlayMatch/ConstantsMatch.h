@@ -24,6 +24,7 @@
 #define SUBMIT_FORCED_MOVE 13
 #define NEXTGAME 14
 #define ACCEPT_BEAVER_DECLINE 15
+#define BEAVER_ACCEPT 16
 
 // review match
 

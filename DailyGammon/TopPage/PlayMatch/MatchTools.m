@@ -1066,4 +1066,78 @@
     return returnDict;
 
 }
+
+#pragma mark - analyze
+- (int) analyzeAction:(NSMutableDictionary *)actionDict isChat:(BOOL) isChat isReview:(BOOL) isReview
+{
+//    self.verifiedDouble = FALSE;
+//    self.verifiedTake   = FALSE;
+//    self.verifiedPass   = FALSE;
+    
+    if( isChat)
+        return CHAT;
+    
+    if(isReview)
+        return REVIEW;
+    
+    NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
+    if(attributesArray.count == 1)
+    {
+        NSMutableDictionary *dict = attributesArray[0];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Next"])
+            return NEXT;
+        if([[dict objectForKey:@"value"] isEqualToString:@"1"])
+            return NEXTGAME;
+        if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
+            return ROLL;
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Forced Move"])
+            return SUBMIT_FORCED_MOVE;
+    }
+    if(attributesArray.count > 1)
+    {
+        NSMutableDictionary *dict = attributesArray[1];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Beaver!"])
+        {
+            return ACCEPT_BEAVER_DECLINE;
+        }
+        dict = attributesArray[0];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Accept Beaver"])
+            return BEAVER_ACCEPT;
+
+        if([[dict objectForKey:@"value"] isEqualToString:@"Roll Dice"])
+        {
+            dict = attributesArray[1];
+            if([[dict objectForKey:@"value"] isEqualToString:@"Double"])
+                return ROLL_DOUBLE;
+        }
+        if([[dict objectForKey:@"value"] isEqualToString:@"Accept"])
+        {
+            dict = attributesArray[1];
+            if([[dict objectForKey:@"value"] isEqualToString:@"Decline"])
+                return ACCEPT_DECLINE;
+        }
+        
+        dict = attributesArray[1];
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Move"])
+            return SUBMIT_MOVE;
+        if([[dict objectForKey:@"value"] isEqualToString:@"Submit Greedy Bearoff"])
+            return GREEDY;
+    }
+    
+    if([[actionDict objectForKey:@"SwapDice"] length] != 0)
+        return SWAP_DICE;
+    if([[actionDict objectForKey:@"UndoMove"] length] != 0)
+        return UNDO_MOVE;
+    if([[actionDict objectForKey:@"Next Game>>"] length] != 0)
+        return NEXT__;
+    
+    if(attributesArray == nil)
+    {
+        if([[actionDict objectForKey:@"Message"] length] != 0)
+            return ONLY_MESSAGE;
+    }
+    XLog(@"unknown action %@", actionDict);
+    return 0;
+}
+
 @end
