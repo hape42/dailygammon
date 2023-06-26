@@ -173,6 +173,7 @@
             name =  [name stringByReplacingOccurrencesOfString:@">" withString:@""];
 
             drawArray[z][s] = name;
+#warning hier muss der string  "drawArray[z][s] = name" durch ein dict ersetzt werden. dict muss name & href beinhalten. Überall wo drawarray benutzt wird, muss von string auf dict geändert werden.
             s++;
         }
         z++;
@@ -232,6 +233,9 @@
             }
             if(position == step)
             {
+#warning DGLabel muss durch DGButton ersetzt werden. Aber nur, wenn im namen auch ein Inhalt ist. Der button braucht dann noch href um an die playerInfo zu kommen
+#warning     [button.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+#warning target für den Button ist quasi identisch wie bei PlayMatch Zeile 314 & Zeile 1052
 
                 DGLabel *namelabel = [[DGLabel alloc]initWithFrame:CGRectMake(x , y ,labelWidth, labelHeight)];
                 namelabel.layer.cornerRadius = 14.0f;
