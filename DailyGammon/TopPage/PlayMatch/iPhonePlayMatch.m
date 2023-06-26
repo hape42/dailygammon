@@ -932,8 +932,8 @@
         
         if([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview] == ACCEPT_BEAVER_DECLINE)
             return; // We need the message area for an additional button
-        
-        [lowerThird addSubview: messageText];
+        if(!isReview)
+            [lowerThird addSubview: messageText];
         
     }
     
