@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F82" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+    <entity name="Phrases" representedClassName="Phrases" syncable="YES" codeGenerationType="class">
+        <attribute name="longText" optional="YES" attributeType="String"/>
+        <attribute name="shortText" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="Ratings" representedClassName="Ratings" syncable="YES" codeGenerationType="class">
+        <attribute name="dateRating" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="user" optional="YES" attributeType="String"/>
+    </entity>
+</model>

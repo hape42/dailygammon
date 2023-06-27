@@ -44,6 +44,8 @@
 		E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008C21B2FADB0056D2A2 /* TFHppleElement.m */; };
 		E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C008E21B2FADB0056D2A2 /* TFHpple.m */; };
 		E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C009021B2FADB0056D2A2 /* XPathQuery.m */; };
+		E09EC1262A4ABA4A00B5543F /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E09EC1252A4ABA4A00B5543F /* CloudKit.framework */; };
+		E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E09EC1272A4ABAD600B5543F /* DailyGammon.xcdatamodeld */; };
 		E0A92D4A273F8BB800008477 /* iCloudOFF.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A92D49273F8BB800008477 /* iCloudOFF.png */; };
 		E0A92D4C273F8BCA00008477 /* iCloudON.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A92D4B273F8BCA00008477 /* iCloudON.png */; };
 		E0AC594922270F5600367EE9 /* RatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AC594822270F5500367EE9 /* RatingVC.m */; };
@@ -154,6 +156,8 @@
 		E09C008E21B2FADB0056D2A2 /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
 		E09C008F21B2FADB0056D2A2 /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
 		E09C009021B2FADB0056D2A2 /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		E09EC1252A4ABA4A00B5543F /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		E09EC1282A4ABAD600B5543F /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		E0A92D49273F8BB800008477 /* iCloudOFF.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iCloudOFF.png; sourceTree = "<group>"; };
 		E0A92D4B273F8BCA00008477 /* iCloudON.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iCloudON.png; sourceTree = "<group>"; };
 		E0AC594722270F5500367EE9 /* RatingVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RatingVC.h; sourceTree = "<group>"; };
@@ -311,6 +315,7 @@
 				E035538F298987CC002C820C /* NotificationCenter.framework in Frameworks */,
 				E0BE3B06223A3440003A824D /* StoreKit.framework in Frameworks */,
 				E0AC594D22270FB200367EE9 /* QuartzCore.framework in Frameworks */,
+				E09EC1262A4ABA4A00B5543F /* CloudKit.framework in Frameworks */,
 				E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */,
 				E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */,
 				E0AC599F2227110000367EE9 /* libCorePlot-CocoaTouch.a in Frameworks */,
@@ -558,6 +563,7 @@
 		E0B0514921F4FCE400D91857 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E09EC1252A4ABA4A00B5543F /* CloudKit.framework */,
 				E035538E298987CB002C820C /* NotificationCenter.framework */,
 				E035538C29898798002C820C /* UserNotifications.framework */,
 				E035538A29867C93002C820C /* BackgroundTasks.framework */,
@@ -652,6 +658,7 @@
 			isa = PBXGroup;
 			children = (
 				E038E4FF273D40930087C4A4 /* DailyGammon.entitlements */,
+				E09EC1272A4ABAD600B5543F /* DailyGammon.xcdatamodeld */,
 				E07F021722EED0870065546C /* Rating */,
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
@@ -895,6 +902,7 @@
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
 				E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */,
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
+				E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 				E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */,
@@ -1134,6 +1142,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		E09EC1272A4ABAD600B5543F /* DailyGammon.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				E09EC1282A4ABAD600B5543F /* Model.xcdatamodel */,
+			);
+			currentVersion = E09EC1282A4ABAD600B5543F /* Model.xcdatamodel */;
+			path = DailyGammon.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = E0F9587E21AD1687003DAC01 /* Project object */;
 }

@@ -7,12 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreData/CoreData.h>
+
 @class Design;
 @class DbConnect;
 @class Tools;
 @class Preferences;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (readonly, strong) NSPersistentCloudKitContainer *persistentContainer;
+- (void)saveContext;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;

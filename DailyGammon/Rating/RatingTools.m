@@ -7,6 +7,9 @@
 //
 
 #import "RatingTools.h"
+#import "Ratings+CoreDataProperties.h"
+
+
 
 @implementation RatingTools
 
