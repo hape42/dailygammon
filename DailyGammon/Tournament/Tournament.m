@@ -41,6 +41,12 @@
 
 @implementation Tournament
 
+/*
+ * drawArray is the central data structure to draw the (reverse) tournament tree. Each line of the two-dimensional array represents the next path from a leaf up to the root of the tree (ie the winner in the end).
+ * Each path except for the first one ends with array elements that contain a "-", which means "path merges into a previous path".
+ * Each node can either contain a player name, "In Progress", " " meaning "empty - right of an 'in progress'" or "-" meaning "not relevant, merged into a row above".
+ * How many elements of a line are filled depends solely on the line number because of the shape of a reverse binary tree that the array represents: all - 1 - 2 - 1 - 3 - 1 - ... 
+ */
 @synthesize drawArray;
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize scrollView;
