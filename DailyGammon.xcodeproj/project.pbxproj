@@ -774,7 +774,8 @@
 		E0F9587E21AD1687003DAC01 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1310;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Peter Schneider";
 				TargetAttributes = {
 					E0F9588521AD1688003DAC01 = {

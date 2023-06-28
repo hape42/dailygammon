@@ -24,6 +24,8 @@
     {
         [self saveRating:[[ratingDict objectForKey:@"rating"] floatValue] forDate:[ratingDict objectForKey:@"date"] forUser:[ratingDict objectForKey:@"userID"]];
     }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:TRUE forKey:@"convertDB_done"];
     return;
 }
 
@@ -62,7 +64,7 @@
             if (![context save:&error])
             {
                 // Something's gone seriously wrong
-                // [design showError:self error:[error localizedDescription] title:@"Error update Gewicht"];
+                XLog(@"Error update Rating %@", [error localizedDescription]);
             }
         }
     }
@@ -78,10 +80,9 @@
         if (![context save:&error])
         {
             // Something's gone seriously wrong
-            NSLog(@"Error saving Gewicht");
+            XLog(@"Error saving Rating %@", [error localizedDescription]);
         }
     }
-
 }
 
 - (bool)dateUserExist:(NSString *)date user:(NSString*)userID inManagedObjectContext:(NSManagedObjectContext *)context
@@ -109,9 +110,37 @@
     else
     {
         XLog(@"Fehlt: %@ %@", date, userID);
-
         return FALSE;
     }
 }
 
+- (Ratings *)bestRating
+{
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSError *error;
+
+    Ratings *ratingEntity = (Ratings *)[NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSMutableArray *predicates = [NSMutableArray array];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
+    [predicates addObject:predicate];
+    NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+
+    [fetchRequest setPredicate:compoundPredicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"rating" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
+    [fetchRequest setFetchLimit:1];
+    [fetchRequest setEntity:entity];
+    NSArray *arrResult = [context executeFetchRequest:fetchRequest error:&error];
+    ratingEntity = arrResult[0];
+
+    return ratingEntity;
+}
 @end

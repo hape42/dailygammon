@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class Tools;
 @class RatingTools;
+@class RatingCD;
 
 @interface RatingVC : UIViewController<CPTPlotDataSource, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 {
@@ -29,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
+@property (strong, readwrite, retain, atomic) RatingCD *ratingCD;
+
 @property (strong, readwrite, retain, atomic) UIView *filterView;
 
 @end

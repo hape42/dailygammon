@@ -29,6 +29,8 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 #import "DGLabel.h"
+#import "RatingCD.h"
+#import "Ratings+CoreDataProperties.h"
 
 @interface RatingVC ()
 
@@ -55,7 +57,7 @@
 
 @implementation RatingVC
 
-@synthesize design, preferences, rating, tools, ratingTools;
+@synthesize design, preferences, rating, tools, ratingTools, ratingCD;
 @synthesize filterView;
 
 - (void)viewDidLoad
@@ -174,6 +176,7 @@
     preferences = [[Preferences alloc] init];
     rating =      [[Rating alloc] init];
     tools =       [[Tools alloc] init];
+    ratingCD =    [[RatingCD alloc] init];
 
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -748,7 +751,7 @@
     [self closeFilter];
     
     float filterWidth =  400.0;
-    float filterHeight = 200;
+    float filterHeight = 250;
 
     float labelWidth = 200;
     float labelHeight = 35;
@@ -820,11 +823,25 @@
         [filterView addSubview:dataControl];
 
         x = rand;
+        y += 50;
+
+        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, filterWidth - rand - rand, labelHeight)];
+        [label setTextAlignment:NSTextAlignmentLeft];
+        Ratings *dict =  [ratingCD bestRating];
+        label.text = [NSString stringWithFormat: @"Best Rating %5.1f %@",dict.rating,dict.dateRating];
+        [filterView addSubview:label];
+
         y += 70;
         DGButton *closeButton = [[DGButton alloc]initWithFrame:CGRectMake((filterWidth - 100) / 2, y, 100, 35)];
         [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitle:@"Close" forState:UIControlStateNormal];
         [filterView addSubview:closeButton];
+        
+        DGButton *dataButton = [[DGButton alloc]initWithFrame:CGRectMake(rand, y, 100, 35)];
+        [dataButton addTarget:self action:@selector(showData) forControlEvents:UIControlEventTouchUpInside];
+        [dataButton setTitle:@"Data" forState:UIControlStateNormal];
+        [filterView addSubview:dataButton];
+
     }
     filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
@@ -899,6 +916,11 @@
     [self makeAverageArray];
     [self initGraph];
 
+}
+
+-(void)showData
+{
+    
 }
 
 #pragma mark - Header
