@@ -826,9 +826,21 @@
         y += 50;
 
         label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, filterWidth - rand - rand, labelHeight)];
-        [label setTextAlignment:NSTextAlignmentLeft];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.adjustsFontSizeToFitWidth = YES;
+        [label setFont:[UIFont boldSystemFontOfSize: 25.0]];
+        label.numberOfLines = 0;
+        label.minimumScaleFactor = 0.1;
+
         Ratings *dict =  [ratingCD bestRating];
-        label.text = [NSString stringWithFormat: @"Best Rating %5.1f %@",dict.rating,dict.dateRating];
+        
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        [format setDateFormat:@"yyyy-MM-dd"];
+        NSDate *dateDB = [format dateFromString:dict.dateRating];
+        [format setLocale:[NSLocale currentLocale]];
+        [format setDateFormat:@"dd. MMMM yyyy"];
+
+        label.text = [NSString stringWithFormat: @"Best Rating %5.1f - %@",dict.rating,[format stringFromDate:dateDB]];
         [filterView addSubview:label];
 
         y += 70;
