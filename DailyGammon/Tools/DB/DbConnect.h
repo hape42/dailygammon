@@ -22,4 +22,7 @@
 
 - (NSMutableArray *) readAlleRatingForUserAufgefuellt:(NSString*)userID;
 
+#pragma mark - used for DB convert to CD
+- (NSMutableArray *) readAll;
+
 @end

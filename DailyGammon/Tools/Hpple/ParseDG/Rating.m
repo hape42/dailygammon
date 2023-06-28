@@ -12,10 +12,11 @@
 #import "DbConnect.h"
 #import "DGRequest.h"
 #import "RatingTools.h"
+#import "RatingCD.h"
 
 @implementation Rating
 
-@synthesize ratingTools;
+@synthesize ratingTools, ratingCD;
 
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID
 {
@@ -120,6 +121,7 @@
 - (void)updateRating
 {
     ratingTools = [[RatingTools alloc] init];
+    ratingCD    = [[RatingCD alloc] init];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -146,6 +148,8 @@
                 [app.dbConnect saveRating:dateDB withRating:[ratingPlayer floatValue] forUser:userID];
             if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
                 [self->ratingTools saveRating:dateDB withRating:[ratingPlayer floatValue]] ;
+
+            [self->ratingCD saveRating:[ratingPlayer floatValue] forDate:dateDB forUser:userID];
 
         }
         else

@@ -11,6 +11,7 @@
 #import "Tools.h"
 #import "Preferences.h"
 #import "DBConnect.h"
+#import "RatingCD.h"
 #import <StoreKit/StoreKit.h>
 #import <BackgroundTasks/BackgroundTasks.h>
 #import <UserNotifications/UserNotifications.h>
@@ -21,7 +22,7 @@
 
 @implementation AppDelegate
 
-@synthesize design,tools, preferences,activeStoryBoard;
+@synthesize design,tools, preferences, ratingCD,activeStoryBoard;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
@@ -40,6 +41,7 @@
     design      = [[Design alloc] init];
     tools       = [[Tools alloc] init];
     preferences = [[Preferences alloc] init];
+    ratingCD    = [[RatingCD alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     if(schemaDict.count == 0)
@@ -70,6 +72,22 @@
     }];
 
     [self configureProcessingTask];
+
+#pragma mark - Convert DB from sqlLite to CoreDate/iCloud
+    if([[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys] containsObject:@"convertDB_done"])
+    {
+        XLog(@"convertDB_done found %d", [[NSUserDefaults standardUserDefaults] boolForKey:@"convertDB_done"]);
+    }
+    else
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:FALSE forKey:@"convertDB_done"];
+        XLog(@"convertDB_done not found %d", [[NSUserDefaults standardUserDefaults] boolForKey:@"convertDB_done"]);
+    }
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"convertDB_done"] == FALSE)
+    {
+        [ratingCD convertDB];
+    }
+    XLog(@"convertDB_done  %d", [[NSUserDefaults standardUserDefaults] boolForKey:@"convertDB_done"]);
 
     return YES;
 }
@@ -213,7 +231,7 @@ static NSString* backgroundTask = @"com.dailygammon.TopPage";
     // The persistent container for the application. This implementation creates and returns a container, having loaded the store for the application to it.
     @synchronized (self) {
         if (_persistentContainer == nil) {
-            _persistentContainer = [[NSPersistentCloudKitContainer alloc] initWithName:@"Dailygammon"];
+            _persistentContainer = [[NSPersistentCloudKitContainer alloc] initWithName:@"DailyGammon"];
             [_persistentContainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *storeDescription, NSError *error) {
                 if (error != nil) {
                     // Replace this implementation with code to handle the error appropriately.

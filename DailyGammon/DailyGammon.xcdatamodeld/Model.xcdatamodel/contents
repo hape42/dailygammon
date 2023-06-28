@@ -5,7 +5,7 @@
         <attribute name="shortText" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Ratings" representedClassName="Ratings" syncable="YES" codeGenerationType="class">
-        <attribute name="dateRating" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="dateRating" optional="YES" attributeType="String"/>
         <attribute name="rating" optional="YES" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="user" optional="YES" attributeType="String"/>
     </entity>

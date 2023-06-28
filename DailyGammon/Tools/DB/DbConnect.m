@@ -266,5 +266,29 @@
     return tmpArray;
 }
 
+#pragma mark - used for DB convert to CD
+- (NSMutableArray *) readAll
+{
+    
+    NSMutableArray *ratingArray = [NSMutableArray arrayWithCapacity:20];
+    NSString *sqlQuery = [NSString stringWithFormat:@"SELECT * FROM Rating ORDER BY Datum ASC ;"];
+    const char *sql = [sqlQuery UTF8String];
+    if (sqlite3_prepare_v2(database, sql, -1, &statement, nil) == SQLITE_OK)
+    {
+        while (sqlite3_step(statement) == SQLITE_ROW)
+        {
+            NSDictionary *ratingDict = @{
+                                          @"date"   : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)],
+                                          @"rating"  : [NSNumber numberWithDouble: sqlite3_column_double(statement, 2)],
+                                          @"userID"  : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 3)]
+                                         };
+                [ratingArray addObject:ratingDict];
+        }
+        sqlite3_finalize(statement);
+    }
+    
+
+    return ratingArray;
+}
 
 @end

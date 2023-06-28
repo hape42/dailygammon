@@ -10,10 +10,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class RatingTools;
+@class RatingCD;
 
 @interface Rating : NSObject
 
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
+@property (strong, readwrite, retain, atomic) RatingCD *ratingCD;
 
 - (NSMutableDictionary *)readRatingForPlayer:(NSString *)userID andOpponent: (NSString *)opponentID;
 - (void)updateRating;
