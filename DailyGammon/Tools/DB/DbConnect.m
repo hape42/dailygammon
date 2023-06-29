@@ -277,12 +277,15 @@
     {
         while (sqlite3_step(statement) == SQLITE_ROW)
         {
-            NSDictionary *ratingDict = @{
-                                          @"date"   : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)],
-                                          @"rating"  : [NSNumber numberWithDouble: sqlite3_column_double(statement, 2)],
-                                          @"userID"  : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 3)]
-                                         };
+            if(sqlite3_column_text(statement, 3) != NULL)
+            {
+                NSDictionary *ratingDict = @{
+                    @"date"   : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 1)],
+                    @"rating"  : [NSNumber numberWithDouble: sqlite3_column_double(statement, 2)],
+                    @"userID"  : [NSString stringWithUTF8String:(char *)sqlite3_column_text(statement, 3)]
+                };
                 [ratingArray addObject:ratingDict];
+            }
         }
         sqlite3_finalize(statement);
     }

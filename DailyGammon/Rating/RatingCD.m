@@ -114,6 +114,34 @@
     }
 }
 
+- (float)readRatingForDate:(NSString *)date user:(NSString*)userID inManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSMutableArray *predicates = [NSMutableArray array];
+
+    request.entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"dateRating = [c] %@", date];
+    
+    [predicates addObject:predicate];
+    predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
+    [predicates addObject:predicate];
+    NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+    request.predicate =  compoundPredicate;
+
+    [request setPredicate:compoundPredicate];
+    [request setFetchLimit:1];
+
+    NSError *error;
+
+    NSArray *arrResult = [context executeFetchRequest:request error:&error];
+    Ratings *ratingEntity = (Ratings *)[NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+
+    if(arrResult.count < 1)
+        return 0.0;
+    ratingEntity = arrResult[0];
+    return ratingEntity.rating;
+}
+
 - (Ratings *)bestRating
 {
     NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
@@ -143,4 +171,74 @@
 
     return ratingEntity;
 }
+
+- (NSMutableArray *) readAlleRatingForUser:(NSString*)userID
+{
+    NSString *startDateDB = @"2000-01-01";
+
+    NSMutableArray *tmpArray = [[NSMutableArray alloc]init];
+
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
+    [request setPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateRating" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
+    [request setFetchLimit:1];
+
+    // Fetch the records and handle an error
+    NSError *error;
+    
+    NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
+    Ratings *rating = arrayDB[0];
+    startDateDB = rating.dateRating;
+    
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSDate *startDate = [df dateFromString:startDateDB];
+    
+    NSDate *endDate = [NSDate date];
+    
+    float lastRating = 0.0;
+    float min = 9999.0;
+    float max = -1.0;
+
+    for (NSDate *date = startDate;                    // initialisation
+         [date compare:endDate] == NSOrderedAscending; // compare
+         date = [date dateByAddingTimeInterval:60*60*24])    // increment
+    {
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        [format setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateDB = [format stringFromDate:date];
+
+
+        float rating = [self readRatingForDate:dateDB user:userID inManagedObjectContext:context];
+        if (rating < 1.0)
+            rating = lastRating;
+        else
+            lastRating = rating;
+        
+//        XLog(@"%3.1f %3.1f", rating, lastRating);
+        if(rating > max)
+            max = rating;
+        if(rating < min)
+            min = rating;
+
+        NSDictionary *ratingDict = @{
+                                     @"datum"   : dateDB,
+                                     @"min"     : [NSNumber numberWithDouble: min],
+                                     @"max"     : [NSNumber numberWithDouble: max],
+                                     @"rating"  : [NSNumber numberWithDouble: rating]
+                                     };
+
+        [tmpArray addObject:ratingDict];
+    }
+    
+    return tmpArray;
+}
+
 @end

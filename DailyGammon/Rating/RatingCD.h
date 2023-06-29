@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (Ratings *)bestRating;
 
+- (NSMutableArray *) readAlleRatingForUser:(NSString*)userID;
+
 @end
 
 NS_ASSUME_NONNULL_END

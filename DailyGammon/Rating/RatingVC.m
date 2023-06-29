@@ -158,25 +158,25 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 
-    ratingTools = [[RatingTools alloc] init];
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-
-//    self.ratingArray = [app.dbConnect readAlleRatingForUser:userID];
- 
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
-        self.ratingArrayAll = [ratingTools readAll];
-    else
-        self.ratingArrayAll = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
-
-    self.ratingArray = [self filterDataArray];
-    
     design =      [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating =      [[Rating alloc] init];
     tools =       [[Tools alloc] init];
     ratingCD =    [[RatingCD alloc] init];
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+ 
+//    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+//        self.ratingArrayAll = [ratingTools readAll];
+//    else
+//        self.ratingArrayAll = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
+
+    self.ratingArrayAll = [ratingCD readAlleRatingForUser:userID];
+
+    self.ratingArray = [self filterDataArray];
+    
 
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
