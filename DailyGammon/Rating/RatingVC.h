@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import <MessageUI/MessageUI.h>
+#import <Charts/Charts.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -96,6 +96,23 @@
 		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		E05840282A4E9675005C032C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E05840232A4E9675005C032C /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 65AD9E95D9ED4DC0BD73A743;
+			remoteInfo = Charts;
+		};
+		E058402A2A4E9675005C032C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E05840232A4E9675005C032C /* Charts.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1CBBC58C6CE1EBEE9852CE41;
+			remoteInfo = ChartsTests;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		E002F19C29A0F08C0028098C /* DGRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGRequest.h; sourceTree = "<group>"; };
 		E002F19D29A0F08C0028098C /* DGRequest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGRequest.m; sourceTree = "<group>"; };
@@ -124,6 +141,7 @@
 		E05325002271D42A0080D504 /* Tools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tools.m; sourceTree = "<group>"; };
 		E058400C2A4C0FD3005C032C /* RatingCD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RatingCD.h; sourceTree = "<group>"; };
 		E058400D2A4C0FD3005C032C /* RatingCD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RatingCD.m; sourceTree = "<group>"; };
+		E05840232A4E9675005C032C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Charts.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E060AC9A22A8E2A700D60C39 /* InviteDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InviteDetail.h; sourceTree = "<group>"; };
 		E060AC9B22A8E2A700D60C39 /* InviteDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteDetail.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
@@ -359,6 +377,15 @@
 				E0355392298E775C002C820C /* PlayerLists.m */,
 			);
 			path = PlayerLists;
+			sourceTree = "<group>";
+		};
+		E05840242A4E9675005C032C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E05840292A4E9675005C032C /* Charts.framework */,
+				E058402B2A4E9675005C032C /* ChartsTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		E06E1C5421B7B2DE003B310F /* SetUp */ = {
@@ -664,6 +691,7 @@
 			children = (
 				E038E4FF273D40930087C4A4 /* DailyGammon.entitlements */,
 				E09EC1272A4ABAD600B5543F /* DailyGammon.xcdatamodeld */,
+				E05840232A4E9675005C032C /* Charts.xcodeproj */,
 				E07F021722EED0870065546C /* Rating */,
 				E0763D3122D7658700EDA562 /* TopPage */,
 				E083BAE822B3A2E50035A71E /* Player */,
@@ -794,12 +822,35 @@
 			mainGroup = E0F9587D21AD1687003DAC01;
 			productRefGroup = E0F9588721AD1688003DAC01 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E05840242A4E9675005C032C /* Products */;
+					ProjectRef = E05840232A4E9675005C032C /* Charts.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				E0F9588521AD1688003DAC01 /* DailyGammon */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E05840292A4E9675005C032C /* Charts.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Charts.framework;
+			remoteRef = E05840282A4E9675005C032C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E058402B2A4E9675005C032C /* ChartsTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = ChartsTests.xctest;
+			remoteRef = E058402A2A4E9675005C032C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		E0F9588421AD1688003DAC01 /* Resources */ = {
