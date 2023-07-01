@@ -22,6 +22,7 @@
 		E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0454ECF22104C9300F10E5A /* PreferencesVC.m */; };
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
 		E058400E2A4C0FD3005C032C /* RatingCD.m in Sources */ = {isa = PBXBuildFile; fileRef = E058400D2A4C0FD3005C032C /* RatingCD.m */; };
+		E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E058402C2A4EA394005C032C /* DateValueFormatter.m */; };
 		E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E060AC9B22A8E2A700D60C39 /* InviteDetail.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
@@ -142,6 +143,8 @@
 		E058400C2A4C0FD3005C032C /* RatingCD.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RatingCD.h; sourceTree = "<group>"; };
 		E058400D2A4C0FD3005C032C /* RatingCD.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RatingCD.m; sourceTree = "<group>"; };
 		E05840232A4E9675005C032C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Charts.xcodeproj; sourceTree = SOURCE_ROOT; };
+		E058402C2A4EA394005C032C /* DateValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateValueFormatter.m; sourceTree = "<group>"; };
+		E058402D2A4EA394005C032C /* DateValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateValueFormatter.h; sourceTree = "<group>"; };
 		E060AC9A22A8E2A700D60C39 /* InviteDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InviteDetail.h; sourceTree = "<group>"; };
 		E060AC9B22A8E2A700D60C39 /* InviteDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteDetail.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
@@ -717,6 +720,8 @@
 		E0F9589F21AD185C003DAC01 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				E058402D2A4EA394005C032C /* DateValueFormatter.h */,
+				E058402C2A4EA394005C032C /* DateValueFormatter.m */,
 				E0FA69352969CE0900D88C26 /* DGLabel.h */,
 				E0FA69362969CE0900D88C26 /* DGLabel.m */,
 				E0FA69322964463200D88C26 /* DGButton.h */,
@@ -954,6 +959,7 @@
 				E0FA69342964463200D88C26 /* DGButton.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
+				E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */,
 				E00654D722A6784000194435 /* Player.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,

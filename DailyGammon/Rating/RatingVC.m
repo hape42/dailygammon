@@ -31,8 +31,12 @@
 #import "DGLabel.h"
 #import "RatingCD.h"
 #import "Ratings+CoreDataProperties.h"
+#import <Charts/Charts.h>
+#import "DateValueFormatter.h"
 
-@interface RatingVC ()
+@interface RatingVC ()<ChartViewDelegate>
+
+@property (nonatomic, strong) IBOutlet LineChartView *chartView;
 
 @property (strong, nonatomic) NSMutableArray *ratingArray;
 @property (strong, nonatomic) NSMutableArray *ratingArrayAll;
@@ -42,8 +46,9 @@
 @property (strong, nonatomic) NSMutableArray *averageArray;
 @property (readwrite, atomic) int average, dataRange;
 @property (readwrite, atomic) BOOL iPad;
+@property (readwrite, atomic) float gap;
 
-@property (weak, nonatomic) IBOutlet DGLabel *header;
+@property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UIImageView *iCloudConnected;
 @property (weak, nonatomic) IBOutlet DGButton *iCloud;
@@ -72,7 +77,7 @@
         [self.view addSubview:[self makeHeader]];
 
     self.iPad = FALSE;
-    
+    self.gap = 50;
     int ratingAverage = 0;
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
     {
@@ -212,21 +217,7 @@
         [self.view addSubview:iCloudConnected];
 
         int maxWidth = self.view.bounds.size.width;
-//        int segmentWidth = 180;
-//        int labelWidth = 80;
         int edge = 50;
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(maxWidth - segmentWidth - edge -labelWidth, 100, labelWidth, 35)];
-//        [label setTextAlignment:NSTextAlignmentCenter];
-//        label.text = @"Average";
-//
-//        [self.view addSubview:label];
-//        NSArray *itemArray = [NSArray arrayWithObjects: @"7", @"30", @"90", @"365",nil];
-//        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-//        averageControl.frame = CGRectMake(maxWidth-segmentWidth-edge, 100, segmentWidth, 35);
-//
-//        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
-//        averageControl.selectedSegmentIndex = 1;
-//        [self.view addSubview:averageControl];
 
         UIButton *filterButton = [UIButton buttonWithType:UIButtonTypeCustom];
         filterButton.frame = CGRectMake(maxWidth-35-edge, 100, 35, 35);
@@ -236,15 +227,22 @@
 
         [filterButton addTarget:self action:@selector(showFilter:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:filterButton];
+        self.gap = filterButton.frame.origin.y + self.filterButton.frame.size.height + 30;
 
         self.iPad = TRUE;
         [self updateMatchCount:self.view];
 
+        CGRect frame = self.header.frame;
+        frame.origin.y = filterButton.frame.origin.y;
+        frame.origin.x = iCloudConnected.frame.origin.x + iCloudConnected.frame.size.width + 10;
+        frame.size.width = filterButton.frame.origin.x - frame.origin.x ;
+        self.header.frame = frame;
     }
     else
     {
         self.moreButton.tintColor   = [UIColor colorNamed:@"ColorSwitch"];
         self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+        self.gap = self.filterButton.frame.origin.y + self.filterButton.frame.size.height + 10;
 
     }
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
@@ -257,6 +255,7 @@
     else
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
 
+    
     [self makeAverageArray];
     [self initGraph];
 
@@ -355,7 +354,7 @@
     return filteredArray;
 }
 #pragma mark - CorePlot
-    
+  /*
 - (void) initGraph
 {
     if(hostingView != nil)
@@ -550,7 +549,7 @@
 
 
 }
-
+*/
 -(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
     return [self.ratingArray count];
@@ -934,6 +933,178 @@
 {
     
 }
+#pragma mark - Charts
+
+-(void)initGraph
+{
+    NSDictionary *dictForDate = [self.ratingArray objectAtIndex:0];
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSString *today = [format stringFromDate:[NSDate date]];
+
+    self.header.text = [NSString stringWithFormat:@"Rating from %@ to %@ ",[dictForDate objectForKey:@"datum"],today] ;
+    self.header = [design makeNiceLabel:self.header];
+
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    
+    if (self.chartView == nil)
+    {
+        float gap = 0;
+        if([design isX]) //Notch
+            gap = 50;
+        self.chartView = [[LineChartView alloc]initWithFrame:CGRectMake(0 + gap, safe.layoutFrame.origin.y + self.gap, safe.layoutFrame.size.width - gap, safe.layoutFrame.size.height - self.gap - 20 )];
+        [self.view addSubview:self.chartView];
+        
+  }
+    self.chartView.tag = 42;
+    
+    self.chartView.delegate = self;
+    
+    self.chartView.chartDescription.enabled = NO;
+    self.chartView.dragEnabled = YES;
+    [self.chartView setScaleEnabled:YES];
+    self.chartView.drawGridBackgroundEnabled = YES;
+    self.chartView.pinchZoomEnabled = YES;
+    
+    
+    ChartLegend *l = self.chartView.legend;
+    l.form = ChartLegendFormLine;
+    l.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:11.f];
+    l.textColor = UIColor.blackColor;
+    l.horizontalAlignment = ChartLegendHorizontalAlignmentCenter;
+    l.verticalAlignment = ChartLegendVerticalAlignmentTop;
+    l.orientation = ChartLegendOrientationHorizontal;
+    l.drawInside = NO;
+    
+    ChartXAxis *xAxis = self.chartView.xAxis;
+    xAxis.labelFont = [UIFont systemFontOfSize:11.f];
+    xAxis.labelTextColor = UIColor.blackColor;
+    xAxis.drawGridLinesEnabled = YES;
+    xAxis.drawAxisLineEnabled = NO;
+    xAxis.labelPosition = XAxisLabelPositionBottom;
+    xAxis.valueFormatter = [[DateValueFormatter alloc] init];
+  //  xAxis.granularity = 60*60*24*30;
+ //   xAxis.granularity = 7;
+    [xAxis setLabelCount:12];
+    
+    ChartYAxis *leftAxis = self.chartView.leftAxis;
+    leftAxis.labelTextColor = [UIColor colorNamed:@"ColorGraphSD"];
+    leftAxis.axisMaximum = [self maxY];
+    leftAxis.axisMinimum = [self minY];
+    leftAxis.drawGridLinesEnabled = YES;
+    leftAxis.drawZeroLineEnabled = NO;
+    leftAxis.granularityEnabled = YES;
+    leftAxis.granularity = 1;
+    
+    ChartYAxis *rightAxis = self.chartView.rightAxis;
+    rightAxis.labelTextColor = [UIColor colorNamed:@"ColorGraphSD" ];
+    rightAxis.axisMaximum = [self maxY];
+    rightAxis.axisMinimum = [self minY];
+    rightAxis.drawGridLinesEnabled = NO;
+    rightAxis.granularityEnabled = YES;
+    rightAxis.granularity = 1;
+
+    
+    [self.chartView animateWithXAxisDuration:.5];
+
+    [self graphData];
+}
+- (float)maxY
+{
+    float max = 0;
+    for(NSMutableDictionary *dict in self.ratingArray)
+    {
+       if( [[dict objectForKey: @"rating"]floatValue] > max)
+           max = [[dict objectForKey: @"rating"]floatValue];
+    }
+    return max + 10;
+}
+
+- (float)minY
+{
+    float min = 9999;
+    for(NSMutableDictionary *dict in self.ratingArray)
+    {
+        if( [[dict objectForKey: @"rating"]floatValue] > 0)
+            if( [[dict objectForKey: @"rating"]floatValue] < min)
+                min = [[dict objectForKey: @"rating"]floatValue];
+        
+    }
+    return min - 10;
+}
+
+- (void)updateChartData
+{
+    if (self.shouldHideData)
+    {
+        self.chartView.data = nil;
+        return;
+    }
+    
+}
+
+- (void)graphData
+{
+#pragma mark - Rating
+    NSMutableArray *ratingData = [[NSMutableArray alloc] init];
+    int i = 0;
+    for(NSMutableDictionary *dict in self.ratingArray)
+    {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+        NSDate *date = [dateFormatter dateFromString:[dict objectForKey: @"datum"]];
+        double timeIntervall = date.timeIntervalSince1970;
+        [ratingData addObject:[[ChartDataEntry alloc] initWithX:timeIntervall y:[[dict objectForKey: @"rating"]floatValue]]];
+    }
+    LineChartDataSet *ratingSet = nil;
+    ratingSet = [[LineChartDataSet alloc] initWithEntries:ratingData label:@"Rating"];
+    ratingSet.axisDependency = AxisDependencyLeft;
+    [ratingSet setColor:[design schemaColor]];
+    ratingSet.lineWidth = 2.0;
+    ratingSet.circleRadius = 0.0;
+    ratingSet.fillAlpha = 0.0;
+    ratingSet.fillColor = [UIColor colorWithRed:51/255.f green:181/255.f blue:229/255.f alpha:1.f];
+    ratingSet.highlightColor = [UIColor colorWithRed:244/255.f green:117/255.f blue:117/255.f alpha:1.f];
+    ratingSet.drawCircleHoleEnabled = NO;
+    ratingSet.mode = LineChartModeLinear;
+
+
+#pragma mark - Average
+    NSMutableArray *averageData = [[NSMutableArray alloc] init];
+    i = 0;
+    for(NSMutableDictionary *dict in self.averageArray)
+    {
+        ChartDataEntry *ratingDict = ratingData[i++];
+        if([[dict objectForKey: @"rating"]floatValue] > 0)
+            [averageData addObject:[[ChartDataEntry alloc] initWithX:ratingDict.x y:[[dict objectForKey: @"rating"]floatValue]]];
+     }
+    NSString *text = [NSString stringWithFormat:@"Average %d days",self.average];
+    LineChartDataSet *avergeSet = nil;
+    avergeSet = [[LineChartDataSet alloc] initWithEntries:averageData label:text];
+    avergeSet.axisDependency = AxisDependencyLeft;
+    [avergeSet setColor:[UIColor yellowColor ]];
+    avergeSet.lineWidth = 2.0;
+    avergeSet.circleRadius = 0.0;
+    avergeSet.fillAlpha = 0.0;
+    avergeSet.fillColor = [UIColor colorWithRed:51/255.f green:181/255.f blue:229/255.f alpha:1.f];
+    avergeSet.highlightColor = [UIColor colorWithRed:244/255.f green:117/255.f blue:117/255.f alpha:1.f];
+    avergeSet.drawCircleHoleEnabled = NO;
+    avergeSet.mode = LineChartModeLinear;
+
+
+
+    NSMutableArray *dataSets = [[NSMutableArray alloc] init];
+    [dataSets addObject:ratingSet];
+    [dataSets addObject:avergeSet];
+
+    LineChartData *data = [[LineChartData alloc] initWithDataSets:dataSets];
+    [data setValueTextColor:UIColor.whiteColor];
+    [data setValueFont:[UIFont systemFontOfSize:9.f]];
+    
+    self.chartView.data = data;
+
+}
+
 
 #pragma mark - Header
 #include "HeaderInclude.h"

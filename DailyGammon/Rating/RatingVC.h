@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import <MessageUI/MessageUI.h>
-#import <Charts/Charts.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
     CPTGraphHostingView *hostingView;
     CPTXYGraph *barLineChart;
 }
+
+@property (nonatomic, assign) BOOL shouldHideData;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Preferences *preferences;
