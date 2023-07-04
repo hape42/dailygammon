@@ -27,15 +27,19 @@
     {
         _dateFormatter = [[NSDateFormatter alloc] init];
   //      _dateFormatter.dateFormat = @"dd MMM HH:mm";
-        _dateFormatter.dateFormat = @"MM yyyy";
+        _dateFormatter.dateFormat = @"MM yy";
     }
     return self;
 }
 
 - (NSString *)stringForValue:(double)value axis:(ChartAxisBase *)axis
 {
-//    if(
-//    return @"";
+//    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+//    format.dateFormat = @"dd";
+//
+//    NSString *day = [format stringFromDate:[NSDate dateWithTimeIntervalSince1970:value]];
+//    if([day intValue] != 1)
+//        return @"";
     return [_dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSince1970:value]];
 }
 

@@ -19,11 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class RatingTools;
 @class RatingCD;
 
-@interface RatingVC : UIViewController<CPTPlotDataSource, MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
-{
-    CPTGraphHostingView *hostingView;
-    CPTXYGraph *barLineChart;
-}
+@interface RatingVC : UIViewController< MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, assign) BOOL shouldHideData;
 
