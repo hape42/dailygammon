@@ -167,8 +167,7 @@
     if(numberArray.count < 17)
     {
         // for some reason no board was displayed at all
-#warning        [self errorAction:2];
-#warning better call topPage instead return nil;
+//TODO: better call topPage instead return nil;
         return nil;
     }
     for(int i = 1; i <= 6; i++)
@@ -701,7 +700,6 @@
                     {
                         NSString *img = [[images[(images.count-1) - indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
                         img = [design changeCheckerColor:img forColor:[boardDict objectForKey:@"playerColor"]];
-                        NSString *imgName = [NSString stringWithFormat:@"%d/%@",schema, img] ;
                         UIImageView *pointView =  [[UIImageView alloc] init];
                         // is it a cube? then get width and height from the img for the view
                         if ([img containsString:@"cube"])

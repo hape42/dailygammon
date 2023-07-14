@@ -169,14 +169,7 @@
     tools =       [[Tools alloc] init];
     ratingCD =    [[RatingCD alloc] init];
 
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
-
- 
-//    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
-//        self.ratingArrayAll = [ratingTools readAll];
-//    else
-//        self.ratingArrayAll = [app.dbConnect readAlleRatingForUserAufgefuellt:userID];
 
     self.ratingArrayAll = [ratingCD readAlleRatingForUser:userID];
 

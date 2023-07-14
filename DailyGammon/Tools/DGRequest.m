@@ -101,7 +101,10 @@
 
         NSStringEncoding stringEncoding = [NSString stringEncodingForData:self.responseData encodingOptions:encodingOptions convertedString:&responseString usedLossyConversion:&usedLossyConverted];
  //       NSLog(@"... Ended sucessfully, result converted to string (length: %lu, encoding: %lu, wasLossyConverted: %i)", self.responseData.length, stringEncoding, usedLossyConverted);
-        if (self.completionHandler) self.completionHandler(TRUE, nil, responseString);
+        if (self.completionHandler)
+            self.completionHandler(TRUE, nil, responseString);
+        
+        XLog(@"%lu",(unsigned long)stringEncoding);
     }
 }
 

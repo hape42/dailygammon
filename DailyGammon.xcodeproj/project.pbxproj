@@ -40,6 +40,8 @@
 		E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E07B0A90222A73AD00733D16 /* iPhonePlayMatch.m */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
+		E096F5C12A57E89C000C37AB /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E05840292A4E9675005C032C /* Charts.framework */; };
+		E096F5C22A57E89C000C37AB /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E05840292A4E9675005C032C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E09871E429372B980043DC8A /* GitHub-Mark-32px.png in Resources */ = {isa = PBXBuildFile; fileRef = E09871E329372B980043DC8A /* GitHub-Mark-32px.png */; };
 		E09871EA294870E60043DC8A /* MatchTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E09871E9294870E60043DC8A /* MatchTools.m */; };
 		E09C007421B042020056D2A2 /* PlayMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = E09C007321B042020056D2A2 /* PlayMatch.m */; };
@@ -113,6 +115,20 @@
 			remoteInfo = ChartsTests;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E096F5C32A57E89D000C37AB /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E096F5C22A57E89C000C37AB /* Charts.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		E002F19C29A0F08C0028098C /* DGRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGRequest.h; sourceTree = "<group>"; };
@@ -343,6 +359,7 @@
 				E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */,
 				E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */,
 				E0AC599F2227110000367EE9 /* libCorePlot-CocoaTouch.a in Frameworks */,
+				E096F5C12A57E89C000C37AB /* Charts.framework in Frameworks */,
 				E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */,
 				E035538D29898798002C820C /* UserNotifications.framework in Frameworks */,
 			);
@@ -791,6 +808,7 @@
 				E0F9588321AD1688003DAC01 /* Frameworks */,
 				E0F9588421AD1688003DAC01 /* Resources */,
 				E0BDCC3B21BE77C000E8AF25 /* ShellScript */,
+				E096F5C32A57E89D000C37AB /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -921,7 +939,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "DailyGammon/SupportingFiles/BuildInfo.sh\n";
+			shellScript = "DailyGammon/SupportingFiles/BuildInfo.sh\nTAGS=\"TODO:|FIXME:|DESIGN:\"\nERRORTAG=\"ERROR:\"\nfind \"${SRCROOT}\" \\( -name \"*.h\" -or -name \"*.m\"  \\) -print0 | xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$|($ERRORTAG).*\\$\" | perl -p -e \"s/($TAGS)/ warning: \\$1/\" | perl -p -e \"s/($ERRORTAG)/ error: \\$1/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1023,7 +1041,7 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
@@ -1088,7 +1106,7 @@
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = NO;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
