@@ -705,7 +705,8 @@
 
     
     [self.chartView animateWithXAxisDuration:.5];
-
+//DESIGN: if you tap anywhere with your finger, a small window could appear with date and rating
+    
     [self graphData];
 }
 - (float)maxY

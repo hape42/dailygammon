@@ -296,7 +296,7 @@
     dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
     NSError *error;
 
-    [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES ];
+    [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:&error];
     NSData *myData = [NSData dataWithContentsOfFile:dictPath];
     [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
 

@@ -1404,7 +1404,7 @@
                                              case 0:
                                              {
                                                  dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES];
+                                                 [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                                  [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
                                                  break;
@@ -1413,7 +1413,7 @@
                                              case 2:
                                              {
                                                  dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES];
+                                                 [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                                  [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
                                                  break;
