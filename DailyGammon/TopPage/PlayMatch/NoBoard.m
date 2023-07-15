@@ -491,7 +491,8 @@
                                        NSStringEncoding encoding = 0;
                                        NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                                                            usedEncoding:&encoding
-                                                                                                  error:&error];
+                                                                                                  error:&error]; // this line accepts the invitation
+            //TODO:Synchronous URL loading of http://dailygammon.com/bg/invite/455161?submit=Accept%20Invitation&action=accept should not occur on this application's main thread as it may lead to UI unresponsiveness. Please switch to an asynchronous networking API such as URLSession.
                                        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
 
                                    }];
@@ -509,7 +510,8 @@
                                        NSStringEncoding encoding = 0;
                                        NSString *returnString = [[NSString alloc] initWithContentsOfURL:urlMatch
                                                                                            usedEncoding:&encoding
-                                                                                                  error:&error];
+                                                                                                  error:&error]; // this line declines the invitation
+            //TODO:Synchronous URL loading of http://dailygammon.com/bg/invite/455161?submit=Decline%20Invitation&action=decline should not occur on this application's main thread as it may lead to UI unresponsiveness. Please switch to an asynchronous networking API such as URLSession.
                                        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
                                    }];
         
