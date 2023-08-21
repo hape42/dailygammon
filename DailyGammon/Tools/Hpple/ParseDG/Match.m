@@ -155,6 +155,16 @@
   //      return boardDict;
     }
 //
+#pragma mark - There has been an internal error.
+    if ([htmlString rangeOfString:@"There has been an internal error. "].location != NSNotFound)
+    {
+        errorText = @"The http request you submitted was in error.";
+        [boardDict setObject:@"There has been an internal error. " forKey:@"internal error"];
+        noBoard = TRUE;
+
+        return boardDict;
+    }
+
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
     NSMutableString *matchName = [[NSMutableString alloc]init];
     for(TFHppleElement *element in matchHeader)

@@ -190,6 +190,12 @@
         [self invite];
         return;
     }
+#pragma mark There has been an internal error.
+    if([[self.boardDict objectForKey:@"internal error"] length] != 0)
+    {
+        [self internalError];
+        return;
+    }
 
 #pragma mark unknown HTML found
     [self unknownHTML];
@@ -459,6 +465,35 @@
 
     [self.view addSubview:infoView];
     return;
+}
+
+#pragma mark There has been an internal error.
+
+- (void)internalError
+
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"There has been an internal error."
+                                 message:@" The error has been logged and the administrators will be alerted. Our apologies.\nThis is a message from the server. The app did not cause this. This is usually not a big deal and you can just keep playing."
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* okButton = [UIAlertAction
+                                actionWithTitle:@"TopPage"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        [self.navigationController pushViewController:vc animated:NO];
+                                 }];
+
+    [alert addAction:okButton];
+    
+    alert = [design makeBackgroundColor:alert];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 #pragma mark - invite
 -(void)invite
