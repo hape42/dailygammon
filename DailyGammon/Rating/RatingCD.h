@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) saveRating:(float)rating forDate:(NSString *)date forUser:(NSString *)userID;
 
 - (Ratings *)bestRating;
+- (Ratings *)worstRating;
 
 - (NSMutableArray *) readAlleRatingForUser:(NSString*)userID;
 

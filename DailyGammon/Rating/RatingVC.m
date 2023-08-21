@@ -65,6 +65,8 @@
 @synthesize design, preferences, rating, tools, ratingTools, ratingCD;
 @synthesize filterView;
 
+@synthesize ratingHigh, ratingLow, dateHigh, dateLow;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -158,6 +160,11 @@
     [self.filterButton setImage:image forState:UIControlStateNormal];
     self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
+    ratingHigh = 0;
+    ratingLow = 99999;
+    dateHigh = @"";
+    dateLow = @"";
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -175,7 +182,20 @@
 
     self.ratingArray = [self filterDataArray];
     
+    for( NSMutableDictionary *ratingDict in self.ratingArrayAll)
+    {
+        if([[ratingDict objectForKey:@"rating"]floatValue] > ratingHigh)
+        {
+            ratingHigh = [[ratingDict objectForKey:@"rating"]floatValue];
+            dateHigh = [ratingDict objectForKey:@"datum"];
+        }
+        if([[ratingDict objectForKey:@"rating"]floatValue] < ratingLow)
+        {
+            ratingLow = [[ratingDict objectForKey:@"rating"]floatValue];
+            dateLow = [ratingDict objectForKey:@"datum"];
+        }
 
+    }
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
@@ -351,21 +371,21 @@
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Rating"
-                                 message:@"Every time you play via the app your highest rating for the day will be saved."
+                                 message:[NSString stringWithFormat:@"Every time you play via the app your highest rating for the day will be saved.\n\nHighest rating %3.1f %@\nLowest rating %3.1f %@",ratingHigh, dateHigh, ratingLow, dateLow]
                                  preferredStyle:UIAlertControllerStyleAlert];
-    
+
     UIAlertAction* yesButton = [UIAlertAction
                                 actionWithTitle:@"OK"
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    
+
                                 }];
-    
+
     [alert addAction:yesButton];
-    
+
     alert = [design makeBackgroundColor:alert];
-    
+
     [self presentViewController:alert animated:YES completion:nil];
     
 }
@@ -535,18 +555,35 @@
         label.numberOfLines = 0;
         label.minimumScaleFactor = 0.1;
 
-        Ratings *dict =  [ratingCD bestRating];
-        
+        Ratings *dictBest =  [ratingCD bestRating];
+        Ratings *dictWorst =  [ratingCD worstRating];
+
         NSDateFormatter *format = [[NSDateFormatter alloc] init];
         [format setDateFormat:@"yyyy-MM-dd"];
-        NSDate *dateDB = [format dateFromString:dict.dateRating];
+        
+        NSDate *dateDB = [format dateFromString:dictBest.dateRating];
         [format setLocale:[NSLocale currentLocale]];
         [format setDateFormat:@"dd. MMMM yyyy"];
 
-        label.text = [NSString stringWithFormat: @"Best Rating %5.1f - %@",dict.rating,[format stringFromDate:dateDB]];
+        label.text = [NSString stringWithFormat: @"Best Rating %5.1f - %@",dictBest.rating,[format stringFromDate:dateDB]];
+        [filterView addSubview:label];
+        
+        y += 50;
+        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, filterWidth - rand - rand, labelHeight)];
+        [label setTextAlignment:NSTextAlignmentCenter];
+        label.adjustsFontSizeToFitWidth = YES;
+        [label setFont:[UIFont boldSystemFontOfSize: 25.0]];
+        label.numberOfLines = 0;
+        label.minimumScaleFactor = 0.1;
+
+        [format setDateFormat:@"yyyy-MM-dd"];
+        dateDB = [format dateFromString:dictWorst.dateRating];
+        [format setLocale:[NSLocale currentLocale]];
+        [format setDateFormat:@"dd. MMMM yyyy"];
+        label.text = [NSString stringWithFormat: @"Worst Rating %5.1f - %@",dictWorst.rating,[format stringFromDate:dateDB]];
         [filterView addSubview:label];
 
-        y += 70;
+        y += 50;
         DGButton *closeButton = [[DGButton alloc]initWithFrame:CGRectMake((filterWidth - 100) / 2, y, 100, 35)];
         [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
         [closeButton setTitle:@"Close" forState:UIControlStateNormal];

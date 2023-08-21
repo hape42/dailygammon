@@ -171,6 +171,35 @@
 
     return ratingEntity;
 }
+- (Ratings *)worstRating
+{
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSError *error;
+
+    Ratings *ratingEntity = (Ratings *)[NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSMutableArray *predicates = [NSMutableArray array];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
+    [predicates addObject:predicate];
+    NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+
+    [fetchRequest setPredicate:compoundPredicate];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"rating" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+
+    [fetchRequest setFetchLimit:1];
+    [fetchRequest setEntity:entity];
+    NSArray *arrResult = [context executeFetchRequest:fetchRequest error:&error];
+    ratingEntity = arrResult[0];
+
+    return ratingEntity;
+}
 
 - (NSMutableArray *) readAlleRatingForUser:(NSString*)userID
 {
