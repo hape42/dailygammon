@@ -641,6 +641,24 @@
         [elementArray addObject:[element content]];
     }
     [finishedMatchDict setObject:elementArray forKey:@"matchPlayer"];
+    
+    // get User url for button
+    elementArray = [[NSMutableArray alloc]init];
+    for(TFHppleElement *element in elements)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            for (TFHppleElement *childChild in child.children)
+            {
+                NSDictionary *dict = [childChild attributes];
+                NSString *href = [dict objectForKey:@"href"];
+                if(href != nil)
+                    [elementArray addObject:href];
+
+            }
+        }
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"href"];
 
     elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
     elementArray = [[NSMutableArray alloc]init];

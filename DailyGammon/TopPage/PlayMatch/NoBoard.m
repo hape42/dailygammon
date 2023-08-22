@@ -382,6 +382,7 @@
     [infoView addSubview:length];
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+    NSArray *playerLinkArray = [finishedMatchDict objectForKey:@"href"];
 
     y += length.frame.size.height;
     UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
@@ -389,17 +390,31 @@
     player1Name.textAlignment = NSTextAlignmentLeft;
     player1Name.text = playerArray[0];
     [infoView addSubview:player1Name];
+    
+    DGButton *buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectMake(player1Name.frame.origin.x, player1Name.frame.origin.y, player1Name.frame.size.width , player1Name.frame.size.height )] ;
+    [buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
+    [buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
+    [buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonPlayer1];
+
     player1Score.textAlignment = NSTextAlignmentRight;
     player1Score.text = playerArray[1];
     [infoView addSubview:player1Score];
 
-    y += player1Name.frame.size.height;
+    y += player1Name.frame.size.height + 10;
 
     UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
     UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.origin.x +  player2Name.layer.frame.size.width + gap, y , 100, 30)];
     player2Name.textAlignment = NSTextAlignmentLeft;
     player2Name.text = playerArray[2];
     [infoView addSubview:player2Name];
+    
+    DGButton *buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(player2Name.frame.origin.x, player2Name.frame.origin.y, player2Name.frame.size.width , player2Name.frame.size.height )] ;
+    [buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
+    [buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
+    [buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonPlayer2];
+
     player2Score.textAlignment = NSTextAlignmentRight;
     player2Score.text = playerArray[3];
     [infoView addSubview:player2Score];
@@ -465,6 +480,17 @@
 
     [self.view addSubview:infoView];
     return;
+}
+
+- (void)player:(UIButton*)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
+
+    [self.navigationController pushViewController:vc animated:NO];
+
 }
 
 #pragma mark There has been an internal error.
