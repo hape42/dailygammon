@@ -36,6 +36,7 @@
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameTournament;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet DGButton *findMeButton;
 
 @end
 
@@ -77,7 +78,6 @@
     
   //  [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-    self.nameTournament.text = name;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.view addSubview:[self makeHeader]];
 
@@ -104,14 +104,20 @@
 
     [self.view addSubview:scrollView];
 
-    [self readTournament];
-
-    [self drawTournament];
+    if([self readTournament])
+        [self drawTournament];
+    else
+    {
+        self.nameTournament.text = @"Play has not yet begun.";
+        CGRect frame = self.findMeButton.frame;
+        frame.origin.y = 9999;
+        self.findMeButton.frame = frame;
+    }
 }
 
 #pragma mark - Hpple
 
--(void)readTournament
+-(BOOL)readTournament
 {
     NSData *tournamentHtmlData = [NSData dataWithContentsOfURL:url];
 
@@ -120,6 +126,11 @@
                   initWithData:tournamentHtmlData encoding: NSISOLatin1StringEncoding];
     NSMutableArray *tournamentArray = [[NSMutableArray alloc]init];
     
+    if ([htmlString rangeOfString:@"Play has not yet begun."].location != NSNotFound)
+    {
+        return FALSE;
+    }
+
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
@@ -197,7 +208,7 @@
 //        }
 //        XLog(@"%@",zeile);
 //    }
-    return;
+    return TRUE;;
 }
 -(void)drawTournament
 {
