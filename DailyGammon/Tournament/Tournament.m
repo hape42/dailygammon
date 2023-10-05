@@ -76,10 +76,12 @@
 {
     [super viewWillAppear:animated];
     
-  //  [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
+    self.nameTournament.text = name;
+
+//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+//        [self.view addSubview:[self makeHeader]];
 
     int maxHeigth = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20;
     int maxWidth = [UIScreen mainScreen].bounds.size.width ;

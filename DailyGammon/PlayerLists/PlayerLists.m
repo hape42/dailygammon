@@ -211,10 +211,27 @@
 {
     [super viewDidAppear:animated];
     [self reDrawHeader];
+    
+    switch(listTyp)
+    {
+        case 1:
+            [self readActiveMatches];
+            break;
+        case 2:
+            [self readActiveTournaments];
+            break;
+        case 3:
+            [self readFinishedMatches];
+            break;
+        case 4:
+            [self readTournamentWins];
+            break;
+        default:
+            [self readActiveMatches];
+            break;
+    }
     [self updateTableView];
-    
-    [ self readActiveMatches];
-    
+
 }
 
 #pragma mark - NSURLSessionDataDelegate
