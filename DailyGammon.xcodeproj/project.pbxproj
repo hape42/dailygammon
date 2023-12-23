@@ -55,7 +55,6 @@
 		E0AC594922270F5600367EE9 /* RatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AC594822270F5500367EE9 /* RatingVC.m */; };
 		E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AC594A22270FA800367EE9 /* CoreGraphics.framework */; };
 		E0AC594D22270FB200367EE9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AC594C22270FB100367EE9 /* QuartzCore.framework */; };
-		E0AC599F2227110000367EE9 /* libCorePlot-CocoaTouch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AC599E2227110000367EE9 /* libCorePlot-CocoaTouch.a */; };
 		E0AC59B022283C9000367EE9 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0AC59AC22283C8E00367EE9 /* iPad.storyboard */; };
 		E0AC59B122283C9000367EE9 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0AC59AE22283C8F00367EE9 /* iPhone.storyboard */; };
 		E0AEFC4921FE0CC500CFFB6C /* startscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC4821FE0CC400CFFB6C /* startscreen.png */; };
@@ -358,7 +357,6 @@
 				E09EC1262A4ABA4A00B5543F /* CloudKit.framework in Frameworks */,
 				E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */,
 				E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */,
-				E0AC599F2227110000367EE9 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				E096F5C12A57E89C000C37AB /* Charts.framework in Frameworks */,
 				E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */,
 				E035538D29898798002C820C /* UserNotifications.framework in Frameworks */,
