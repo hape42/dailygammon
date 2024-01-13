@@ -20,7 +20,6 @@
 #import "Player.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
-#import "iPhoneMenue.h"
 #import "About.h"
 #import "DGButton.h"
 #import "PlayerLists.h"
@@ -49,6 +48,7 @@
 
 @synthesize design, preferences, rating, tools;
 @synthesize waitView;
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -807,11 +807,12 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 #include "HeaderInclude.h"

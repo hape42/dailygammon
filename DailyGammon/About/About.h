@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "DGButton.h"
+#import "MenueView.h"
 
 @class Design;
 @class Preferences;
@@ -36,5 +37,7 @@
 @property (weak, nonatomic) IBOutlet DGButton *buttonPrivacy;
 
 @property (nonatomic, assign) BOOL showRemindMeLaterButton;
+
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end

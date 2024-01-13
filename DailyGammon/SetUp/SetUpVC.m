@@ -51,6 +51,9 @@
 {
     [super viewWillAppear:animated];
         
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationItem.hidesBackButton = YES;
+
     [self.showRatingsOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue] animated:YES];
     [self.showWinLossOutlet setOn:[[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue] animated:YES];
     

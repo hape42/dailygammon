@@ -18,7 +18,6 @@
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
@@ -66,6 +65,8 @@
 @synthesize filterView;
 
 @synthesize ratingHigh, ratingLow, dateHigh, dateLow;
+
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -169,6 +170,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationItem.hidesBackButton = YES;
 
     design =      [[Design alloc] init];
     preferences = [[Preferences alloc] init];
@@ -460,11 +463,12 @@
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 #pragma mark - Filter

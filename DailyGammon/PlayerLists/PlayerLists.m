@@ -18,7 +18,6 @@
 #import "AppDelegate.h"
 #import "RatingVC.h"
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "iPhonePlayMatch.h"
 #import "Tools.h"
 #import "RatingTools.h"
@@ -63,6 +62,7 @@
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize listTyp;
 @synthesize waitView;
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -1242,32 +1242,6 @@ didCompleteWithError:(NSError *)error
         [self.navigationController pushViewController:vc animated:NO];
     }
     return;
-    NSDictionary *activeGame = row[5];
-
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    UIAlertAction* browserButton = [UIAlertAction
-                                actionWithTitle:@"Show me in the browser please"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [activeGame objectForKey:@"href"]]] options:@{} completionHandler:nil];
-                                }];
-
-    [alert addAction:yesButton];
-    [alert addAction:browserButton];
-
-    [self presentViewController:alert animated:YES completion:nil];
 
 }
 - (IBAction)exportAction:(UIButton*)button
@@ -1320,11 +1294,12 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 - (IBAction)opponentAction:(UIButton*)button

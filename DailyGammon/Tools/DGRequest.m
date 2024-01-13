@@ -104,7 +104,7 @@
         if (self.completionHandler)
             self.completionHandler(TRUE, nil, responseString);
         
-        XLog(@"%lu",(unsigned long)stringEncoding);
+//        XLog(@"%lu",(unsigned long)stringEncoding);
     }
 }
 

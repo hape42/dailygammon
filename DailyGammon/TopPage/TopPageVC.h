@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "WaitView.h"
+#import "MenueView.h"
 
 @class Design;
 @class Preferences;
@@ -30,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) bool refreshButtonPressed;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 

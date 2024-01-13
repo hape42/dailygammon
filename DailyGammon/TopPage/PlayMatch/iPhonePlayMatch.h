@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "MenueView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
@@ -30,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) NSMutableArray *topPageArray;
 
 @property (readwrite, assign, atomic) BOOL isReview;
+
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 

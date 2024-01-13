@@ -14,7 +14,6 @@
 #import "Player.h"
 #import "AppDelegate.h"
 #import "Design.h"
-#import "iPhoneMenue.h"
 #import <SafariServices/SafariServices.h>
 #import "DGButton.h"
 #import "PlayerLists.h"
@@ -157,14 +156,6 @@
     
 }
 
-- (void)moreAction
-{
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
-}
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     if(self.isTimeControl)

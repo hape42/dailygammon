@@ -18,7 +18,6 @@
 #import "AppDelegate.h"
 #import "RatingVC.h"
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "iPhonePlayMatch.h"
 #import "Tools.h"
 #import "RatingTools.h"
@@ -69,6 +68,7 @@
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize timeRefresh, refreshButtonPressed;
 @synthesize waitView;
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -1138,11 +1138,13 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
+    return;
 }
 - (IBAction)refreshAction:(id)sender
 {

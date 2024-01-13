@@ -25,7 +25,6 @@
 #import "DbConnect.h"
 #import "RatingVC.h"
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "TopPageVC.h"
 #import "About.h"
 #import "PlayerLists.h"
@@ -59,6 +58,7 @@
 @synthesize player1wonGame;
 
 @synthesize waitView;
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -726,11 +726,12 @@
 }
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 - (IBAction)moveAction:(UIButton*)button

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CorePlot-CocoaTouch.h"
 #import <MessageUI/MessageUI.h>
+#import "MenueView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,11 +33,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, readwrite, retain, atomic) UIView *filterView;
 
-
 @property (readwrite, assign, atomic) float ratingHigh;
 @property (readwrite, assign, atomic) float ratingLow;
 @property (strong, readwrite, retain, atomic) NSString *dateHigh;
 @property (strong, readwrite, retain, atomic) NSString *dateLow;
+
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 

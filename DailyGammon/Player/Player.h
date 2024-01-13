@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "MenueView.h"
 
 @class Design;
 @class Tools;
@@ -20,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Tools *tools;
 
 @property (strong, readwrite, retain, atomic)    NSString *name;
+
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 

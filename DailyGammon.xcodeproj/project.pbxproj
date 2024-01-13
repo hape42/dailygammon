@@ -23,6 +23,8 @@
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
 		E058400E2A4C0FD3005C032C /* RatingCD.m in Sources */ = {isa = PBXBuildFile; fileRef = E058400D2A4C0FD3005C032C /* RatingCD.m */; };
 		E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E058402C2A4EA394005C032C /* DateValueFormatter.m */; };
+		E05FB7472B3AEB20004EC59F /* DGNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = E05FB7462B3AEB20004EC59F /* DGNavigationController.m */; };
+		E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */ = {isa = PBXBuildFile; fileRef = E05FB7492B3EAEFB004EC59F /* MenueView.m */; };
 		E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E060AC9B22A8E2A700D60C39 /* InviteDetail.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
@@ -160,6 +162,10 @@
 		E05840232A4E9675005C032C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Charts.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E058402C2A4EA394005C032C /* DateValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateValueFormatter.m; sourceTree = "<group>"; };
 		E058402D2A4EA394005C032C /* DateValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateValueFormatter.h; sourceTree = "<group>"; };
+		E05FB7452B3AEB20004EC59F /* DGNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DGNavigationController.h; sourceTree = "<group>"; };
+		E05FB7462B3AEB20004EC59F /* DGNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGNavigationController.m; sourceTree = "<group>"; };
+		E05FB7482B3EAEFB004EC59F /* MenueView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenueView.h; sourceTree = "<group>"; };
+		E05FB7492B3EAEFB004EC59F /* MenueView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenueView.m; sourceTree = "<group>"; };
 		E060AC9A22A8E2A700D60C39 /* InviteDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InviteDetail.h; sourceTree = "<group>"; };
 		E060AC9B22A8E2A700D60C39 /* InviteDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteDetail.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
@@ -724,6 +730,8 @@
 				E0F9589F21AD185C003DAC01 /* Tools */,
 				E0F9588921AD1688003DAC01 /* AppDelegate.h */,
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
+				E05FB7452B3AEB20004EC59F /* DGNavigationController.h */,
+				E05FB7462B3AEB20004EC59F /* DGNavigationController.m */,
 				E0F9588C21AD1688003DAC01 /* LoginVC.h */,
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
 				E0F9589821AD168B003DAC01 /* main.m */,
@@ -745,6 +753,8 @@
 				E002F19D29A0F08C0028098C /* DGRequest.m */,
 				E02C7BC529C4461E003B6357 /* WaitView.h */,
 				E02C7BC629C4461E003B6357 /* WaitView.m */,
+				E05FB7482B3EAEFB004EC59F /* MenueView.h */,
+				E05FB7492B3EAEFB004EC59F /* MenueView.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
 				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
@@ -968,6 +978,7 @@
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
+				E05FB7472B3AEB20004EC59F /* DGNavigationController.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,
@@ -981,6 +992,7 @@
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
 				E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */,
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
+				E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */,
 				E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
@@ -1166,7 +1178,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1193,7 +1205,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/DailyGammon/Tools/CorePlot",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.5.4;
 				PRODUCT_BUNDLE_IDENTIFIER = de.hape42.dailygammon;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";

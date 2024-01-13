@@ -14,7 +14,6 @@
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import "TopPageVC.h"
-#import "iPhoneMenue.h"
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
@@ -117,7 +116,7 @@
 @synthesize topPageArray;
 
 @synthesize matchTools;
-
+@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -1622,10 +1621,12 @@ shouldChangeTextInRange:(NSRange)range
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 

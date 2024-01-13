@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "WaitView.h"
 #import <MessageUI/MessageUI.h>
+#import "MenueView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Tools *tools;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *boardDict;
 

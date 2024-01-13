@@ -7,9 +7,7 @@
 //
 
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "AppDelegate.h"
-#import "iPhoneMenue.h"
 #import "Design.h"
 #import "TFHpple.h"
 #import "InviteDetail.h"
@@ -53,6 +51,7 @@
 @synthesize design, tools;
 
 @synthesize name;
+@synthesize menueView;
 
 #define PLAYER_WIDTH .6
 #define RATING_WIDTH .19
@@ -312,10 +311,12 @@
 
 - (IBAction)moreAction:(id)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
 }
 
 #pragma mark - Search Implementation

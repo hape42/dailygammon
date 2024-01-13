@@ -19,7 +19,6 @@
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "Player.h"
-#import "iPhoneMenue.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"
@@ -330,14 +329,6 @@
 
 }
 
-- (IBAction)moreAction:(id)sender
-{
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    iPhoneMenue *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneMenue"];
-    [self.navigationController pushViewController:vc animated:NO];
-    
-}
 
 #pragma mark - Header
 #include "HeaderInclude.h"
