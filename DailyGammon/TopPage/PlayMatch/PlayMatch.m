@@ -104,6 +104,8 @@
 
 @synthesize matchTools;
 
+@synthesize menueView;
+
 #define BUTTONHEIGHT 35
 #define BUTTONWIDTH 80
 
@@ -128,7 +130,6 @@
     [nc addObserver:self selector:@selector(drawPlayingAreas) name:changeSchemaNotification object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
 
-    [self.view addSubview:[self makeHeader]];
     [self.view addSubview:self.matchName];
     
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTouched:)];
@@ -168,14 +169,23 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
-    [self.view addSubview:[self makeHeader]];
-
     [self showMatch];
 }
 
+- (IBAction)moreAction:(id)sender
+{
+    if(!menueView)
+    {
+        menueView = [[MenueView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [menueView showMenueInView:self.view];
+}
+
+
 - (void) showMatchCount
 {
-    [self updateMatchCount:self.view];
+   // [self updateMatchCount:self.view];
 }
 -(void)showMatch
 {
@@ -1433,7 +1443,5 @@
     [self presentViewController:alert animated:YES completion:nil];
 
 }
-
-#include "HeaderInclude.h"
 
 @end

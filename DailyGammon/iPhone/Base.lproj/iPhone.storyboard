@@ -176,7 +176,7 @@
         <!--TopPage-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController storyboardIdentifier="iPhoneTopPageVC" id="BYZ-38-t0r" customClass="TopPageVC" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TopPageVC" id="BYZ-38-t0r" customClass="TopPageVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="QOm-no-gbF"/>
                         <viewControllerLayoutGuide type="bottom" id="uYB-pF-O2w"/>
@@ -798,7 +798,7 @@
         <!--View Controller About-->
         <scene sceneID="8rd-ls-ZIj">
             <objects>
-                <viewController storyboardIdentifier="iPhoneAbout" id="UX0-ua-SQF" userLabel="View Controller About" customClass="About" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="About" id="UX0-ua-SQF" userLabel="View Controller About" customClass="About" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Bbb-w0-PaC"/>
                         <viewControllerLayoutGuide type="bottom" id="DMk-xr-Uie"/>
@@ -984,7 +984,7 @@ Did we make you curious?</string>
         <!--Tournament Sign-Up-->
         <scene sceneID="cf6-yw-aDN">
             <objects>
-                <viewController storyboardIdentifier="iPhoneGameLounge" id="DvW-Tf-E0z" customClass="GameLounge" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameLounge" id="DvW-Tf-E0z" customClass="GameLounge" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9Il-NU-VBl"/>
                         <viewControllerLayoutGuide type="bottom" id="lzF-Y2-C37"/>

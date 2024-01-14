@@ -106,6 +106,7 @@
     }
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
+        
         self.numberWidth = 40;
         self.graceWidth  = 80;
         self.poolWidth   = 120;
@@ -129,9 +130,11 @@
 {
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
+        /*
         UIView *header = [self makeHeader];
         if(header)
             [self.view addSubview:header];
+         */
     }
     else
     {
@@ -699,7 +702,7 @@ didCompleteWithError:(NSError *)error
 }
 -(void)updateMatchCount
 {
-    [self updateMatchCount:self.view];
+//    [self updateMatchCount:self.view];
 }
 - (void)updateTableView
 {
@@ -1184,7 +1187,5 @@ didCompleteWithError:(NSError *)error
     [self.refreshButtonIPAD setTitle:[NSString stringWithFormat:@"%d", timeRefresh] forState: UIControlStateNormal];
 }
 
-#pragma mark - Header
-#include "HeaderInclude.h"
 
 @end

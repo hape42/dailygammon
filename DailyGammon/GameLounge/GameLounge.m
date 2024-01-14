@@ -105,8 +105,6 @@
 
 -(void) reDrawHeader
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
 
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
@@ -145,11 +143,6 @@
 
     [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
     
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
-
-    [self updateMatchCount:self.view];
-
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -815,6 +808,5 @@ didCompleteWithError:(NSError *)error
     [menueView showMenueInView:self.view];
 }
 
-#include "HeaderInclude.h"
 
 @end

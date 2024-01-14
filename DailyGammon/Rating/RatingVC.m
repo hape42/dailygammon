@@ -76,9 +76,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:changeSchemaNotification object:nil];
     
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
-
     self.iPad = FALSE;
     self.gap = 50;
     int ratingAverage = 0;
@@ -246,7 +243,6 @@
         self.gap = filterButton.frame.origin.y + self.filterButton.frame.size.height + 30;
 
         self.iPad = TRUE;
-        [self updateMatchCount:self.view];
 
         CGRect frame = self.header.frame;
         frame.origin.y = filterButton.frame.origin.y;
@@ -846,8 +842,5 @@
 
 }
 
-
-#pragma mark - Header
-#include "HeaderInclude.h"
 
 @end

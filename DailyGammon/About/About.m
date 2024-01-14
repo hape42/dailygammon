@@ -129,9 +129,6 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
 
-    [self reDrawHeader    ];
-    [self updateMatchCount:self.view];
-
 }
 #pragma mark - NSURLSessionDataDelegate
 - (void)URLSession:(NSURLSession *)session
@@ -187,18 +184,8 @@ didCompleteWithError:(NSError *)error
         LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
-    else
-    {
-        [self updateMatchCount:self.view];
-
-    }
 }
 
--(void) reDrawHeader
-{
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
-}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -372,8 +359,5 @@ didCompleteWithError:(NSError *)error
     }
     [menueView showMenueInView:self.view];
 }
-
-#pragma mark - iPad menue
-#include "HeaderInclude.h"
 
 @end

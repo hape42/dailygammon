@@ -112,7 +112,7 @@
     [self.topPageButton setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
     self.topPageButton.tag = 1;
     [self.topPageButton addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
-    
+     
     x += buttonBreite + luecke;
     
     DGButton *button2 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonBreite - 10, buttonHoehe)];

@@ -10,6 +10,7 @@
 #import "Design.h"
 #import "DGButton.h"
 #import "DbConnect.h"
+#import "Tools.h"
 
 #import "AppDelegate.h"
 #import "RatingVC.h"
@@ -24,7 +25,7 @@
 
 @implementation MenueView
 
-@synthesize design;
+@synthesize design, tools;
 
 - (id)init
 {
@@ -38,6 +39,9 @@
 
 - (void)showMenueInView:(UIView *)view
 {
+    tools = [[Tools alloc] init];
+    [tools matchCount];
+
     // Place the view at the top right of the menu button
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -68,7 +72,8 @@
     float y = edge;
 
     DGButton *button1 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button1 setTitle:@"Top Page" forState: UIControlStateNormal];
+    [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
+
     button1.tag = 1;
     [button1 addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button1];
@@ -92,7 +97,7 @@
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
     button4.tag = 4;
     [self addSubview:button4];
-    [button4 addTarget:self action:@selector(SetUpVC) forControlEvents:UIControlEventTouchUpInside];
+    [button4 addTarget:self action:@selector(SetUpVC:) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     DGButton *button5 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
@@ -210,7 +215,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
@@ -227,7 +232,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneGameLounge"];
+    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLounge"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }
@@ -241,13 +246,30 @@
     [self.navigationController pushViewController:vc animated:NO];
 }
 
--(void) SetUpVC
+-(void) SetUpVC:(id)sender
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     SetUpVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
     
-    [self.navigationController pushViewController:vc animated:NO];
+    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+    {
+        vc.modalPresentationStyle = UIModalPresentationPopover;
+        [self.navigationController presentViewController:vc animated:YES completion:nil];
+        
+        UIPopoverPresentationController *popController = [vc popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        popController.delegate = self;
+        
+        UIButton *button = (UIButton *)sender;
+        popController.sourceView = button;
+        popController.sourceRect = button.bounds;
+    }
+    else
+    {
+        
+        [self.navigationController pushViewController:vc animated:NO];
+    }
 }
 
 - (void)logout
@@ -265,7 +287,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    About *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
+    About *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
     vc.showRemindMeLaterButton = NO;
     [self.navigationController pushViewController:vc animated:NO];
     

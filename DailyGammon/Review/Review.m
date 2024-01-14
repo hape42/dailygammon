@@ -151,12 +151,6 @@
 
 -(void) reDrawHeader
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        UIView *header = [self makeHeader];
-        if(header)
-            [self.view addSubview:header];
-    }
     
     self.navigationBar.leftBarButtonItems = nil;
 
@@ -758,7 +752,5 @@
 
 
 }
-#pragma mark - Header
-#include "HeaderInclude.h"
 
 @end

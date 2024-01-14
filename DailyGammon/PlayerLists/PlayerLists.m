@@ -125,12 +125,6 @@
 
 -(void) reDrawHeader
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        UIView *header = [self makeHeader];
-        if(header)
-            [self.view addSubview:header];
-    }
     
     int maxWidth = [UIScreen mainScreen].bounds.size.width;
     int edge = 20;
@@ -202,8 +196,6 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
     [self reDrawHeader];
-
-    [self updateMatchCount:self.view];
 
 }
 
@@ -1313,7 +1305,5 @@ didCompleteWithError:(NSError *)error
 
 
 }
-#pragma mark - Header
-#include "HeaderInclude.h"
 
 @end

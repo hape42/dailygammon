@@ -122,10 +122,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
-    
+        
     UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
     [keyboardToolbar sizeToFit];
     UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
@@ -136,13 +133,10 @@
                                       target:self action:@selector(messageDoneButtonPressed)];
     keyboardToolbar.items = @[flexBarButton, doneBarButton];
     self.message.inputAccessoryView = keyboardToolbar;
-    [self updateMatchCount:self.view];
 
 }
 -(void) reDrawHeader
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
 
     [self updateTableView];
 }
@@ -635,7 +629,5 @@
     self.isMessageView = FALSE;
 }
 
-#pragma mark - Header
-#include "HeaderInclude.h"
 
 @end

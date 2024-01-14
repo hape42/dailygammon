@@ -98,8 +98,8 @@
 
 -(void) reDrawHeader
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.view addSubview:[self makeHeader]];
+//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+//        [self.view addSubview:[self makeHeader]];
 
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
@@ -118,11 +118,7 @@
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageVC *vc;
-        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-        else
-            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
 
         [self.navigationController pushViewController:vc animated:NO];
         return;
@@ -230,12 +226,7 @@
     {
         XLog(@"---------> empty htmlString");
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageVC *vc;
-        if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-        else
-            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -589,11 +580,7 @@
                                             [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
                                         }
                                                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                                TopPageVC *vc;
-                                                if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-                                                    vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-                                                else
-                                                    vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                                                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
 
                                                 [self.navigationController pushViewController:vc animated:NO];
 
@@ -818,18 +805,11 @@
                           {
         if (success)
         {
-            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-            {
-                [self topPageVC];
-            }
-            else
-            {
-                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
-                
-                [self.navigationController pushViewController:vc animated:NO];
-            }
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            
+            [self.navigationController pushViewController:vc animated:NO];
         }
         else
         {
@@ -878,7 +858,5 @@
     }
     [menueView showMenueInView:self.view];
 }
-
-#include "HeaderInclude.h"
 
 @end
