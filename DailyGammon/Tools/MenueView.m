@@ -26,6 +26,7 @@
 @implementation MenueView
 
 @synthesize design, tools;
+@synthesize presentingView;
 
 - (id)init
 {
@@ -42,6 +43,7 @@
     tools = [[Tools alloc] init];
     [tools matchCount];
 
+    presentingView = view;
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTouched:)];
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
@@ -221,7 +223,12 @@
     CGPoint tapLocation = [gesture locationInView:self];
     if( !CGRectContainsPoint(self.frame, tapLocation) )
     {
+        for (UIGestureRecognizer *recognizer in presentingView.gestureRecognizers) 
+        {
+            [presentingView removeGestureRecognizer:recognizer];
+        }
         [self dismiss];
+        
     }
 }
 

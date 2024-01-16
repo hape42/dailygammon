@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MenueView : UIView<UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) UINavigationController *navigationController;
+@property (strong, readwrite, retain, atomic) UIView *presentingView;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;
