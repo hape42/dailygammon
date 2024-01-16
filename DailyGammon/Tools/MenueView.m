@@ -267,7 +267,7 @@
     }
     else
     {
-        
+        [self dismiss];
         [self.navigationController pushViewController:vc animated:NO];
     }
 }
