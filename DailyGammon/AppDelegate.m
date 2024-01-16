@@ -16,6 +16,8 @@
 #import <BackgroundTasks/BackgroundTasks.h>
 #import <UserNotifications/UserNotifications.h>
 
+#import "GameLounge.h"
+
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
 @end
@@ -24,6 +26,37 @@
 
 @synthesize design,tools, preferences, ratingCD,activeStoryBoard;
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;
+
+    UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
+    XLog(@"CurrentVC: %@", currentViewController);
+//    if (currentViewController.class == GameLounge.class) orientationMask = UIInterfaceOrientationMaskAll;
+    
+    return orientationMask;
+}
+
+- (UIViewController *)topViewControllerWithRootViewController:(UIViewController *)rootViewController
+{
+    // Walking recursively through view hierarchie to identify top-most view controller
+    
+    if (rootViewController == nil) return nil;
+    if ([rootViewController isKindOfClass:UITabBarController.class])
+    {
+        return [self topViewControllerWithRootViewController:((UITabBarController *)rootViewController).selectedViewController];
+    }
+    else if ([rootViewController isKindOfClass:UINavigationController.class])
+    {
+        return [self topViewControllerWithRootViewController:((UINavigationController *)rootViewController).topViewController];
+    }
+    else if ((rootViewController.presentedViewController != nil) && rootViewController.presentedViewController.isBeingDismissed == FALSE)
+    {
+        return [self topViewControllerWithRootViewController:rootViewController.presentedViewController];
+    }
+    return rootViewController;
+}
+    
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
