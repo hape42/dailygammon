@@ -42,6 +42,11 @@
     tools = [[Tools alloc] init];
     [tools matchCount];
 
+    UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(screenTouched:)];
+    oneFingerTap.numberOfTapsRequired = 1;
+    oneFingerTap.numberOfTouchesRequired = 1;
+    [view addGestureRecognizer:oneFingerTap];
+
     // Place the view at the top right of the menu button
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -209,6 +214,15 @@
         [self removeFromSuperview];
 
     }];
+}
+
+- (void)screenTouched:(UIGestureRecognizer *)gesture
+{
+    CGPoint tapLocation = [gesture locationInView:self];
+    if( !CGRectContainsPoint(self.frame, tapLocation) )
+    {
+        [self dismiss];
+    }
 }
 
 -(void) topPageVC
