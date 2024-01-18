@@ -34,8 +34,9 @@
     XLog(@"CurrentVC: %@", currentViewController);
 
     if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
-  //  if (currentViewController.class == UIAlertController.class) orientationMask = UIInterfaceOrientationMaskAll;
-
+ //   if (currentViewController.class == UIAlertController.class) orientationMask = UIInterfaceOrientationMaskAll;
+    if(currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
+    
     return orientationMask;
 }
 

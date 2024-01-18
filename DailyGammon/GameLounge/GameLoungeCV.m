@@ -516,7 +516,7 @@ didCompleteWithError:(NSError *)error
                                {
         return;
     }];
-    
+    alert.view.tag = 42;
     [alert addAction:okButton];
     
     alert = [design makeBackgroundColor:alert];
