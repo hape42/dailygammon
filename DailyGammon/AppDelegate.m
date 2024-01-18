@@ -16,7 +16,7 @@
 #import <BackgroundTasks/BackgroundTasks.h>
 #import <UserNotifications/UserNotifications.h>
 
-#import "GameLounge.h"
+#import "GameLoungeCV.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -32,8 +32,10 @@
 
     UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
     XLog(@"CurrentVC: %@", currentViewController);
-//    if (currentViewController.class == GameLounge.class) orientationMask = UIInterfaceOrientationMaskAll;
-    
+
+    if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
+  //  if (currentViewController.class == UIAlertController.class) orientationMask = UIInterfaceOrientationMaskAll;
+
     return orientationMask;
 }
 
@@ -54,6 +56,7 @@
     {
         return [self topViewControllerWithRootViewController:rootViewController.presentedViewController];
     }
+
     return rootViewController;
 }
     

@@ -88,6 +88,7 @@
 		E0F1E4012229353C00494918 /* iPhoneMenue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F1E4002229353C00494918 /* iPhoneMenue.m */; };
 		E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F5597A29914B8B00EB5DBE /* Tournament.m */; };
 		E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F5597D2994E4CC00EB5DBE /* CellConnector.m */; };
+		E0F80DC42B58113900678743 /* GameLoungeCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F80DC32B58113800678743 /* GameLoungeCV.m */; };
 		E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588A21AD1688003DAC01 /* AppDelegate.m */; };
 		E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0F9588D21AD1688003DAC01 /* LoginVC.m */; };
 		E0F9589321AD168B003DAC01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0F9589221AD168B003DAC01 /* Assets.xcassets */; };
@@ -331,6 +332,8 @@
 		E0F5597A29914B8B00EB5DBE /* Tournament.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tournament.m; sourceTree = "<group>"; };
 		E0F5597C2994E4CC00EB5DBE /* CellConnector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CellConnector.h; sourceTree = "<group>"; };
 		E0F5597D2994E4CC00EB5DBE /* CellConnector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CellConnector.m; sourceTree = "<group>"; };
+		E0F80DC02B58112800678743 /* GameLoungeCV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameLoungeCV.h; sourceTree = "<group>"; };
+		E0F80DC32B58113800678743 /* GameLoungeCV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLoungeCV.m; sourceTree = "<group>"; };
 		E0F9588621AD1688003DAC01 /* DailyGammon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DailyGammon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E0F9588921AD1688003DAC01 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E0F9588A21AD1688003DAC01 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -464,6 +467,8 @@
 			children = (
 				E0C1D82821E900BA00494A82 /* GameLounge.h */,
 				E0C1D82921E900D100494A82 /* GameLounge.m */,
+				E0F80DC02B58112800678743 /* GameLoungeCV.h */,
+				E0F80DC32B58113800678743 /* GameLoungeCV.m */,
 			);
 			path = GameLounge;
 			sourceTree = "<group>";
@@ -986,6 +991,7 @@
 				E0FA69342964463200D88C26 /* DGButton.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
+				E0F80DC42B58113900678743 /* GameLoungeCV.m in Sources */,
 				E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */,
 				E00654D722A6784000194435 /* Player.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,

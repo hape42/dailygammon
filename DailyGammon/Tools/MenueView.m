@@ -21,6 +21,7 @@
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
 #import "GameLounge.h"
+#import "GameLoungeCV.h"
 #import "PlayerLists.h"
 
 @implementation MenueView
@@ -251,11 +252,14 @@
 
 -(void) GameLoungeVC
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLounge"];
-    
+    GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
     [self.navigationController pushViewController:vc animated:NO];
+//
+//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    
+//    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLounge"];
+//    
+//    [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) playerVC

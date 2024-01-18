@@ -25,6 +25,7 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 #import "DGRequest.h"
+#import "GameLoungeCV.h"
 
 @interface GameLounge ()
 
@@ -808,5 +809,11 @@ didCompleteWithError:(NSError *)error
     [menueView showMenueInView:self.view];
 }
 
+- (IBAction)gameLoungeCV:(UIButton*)button
+{
+    GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
+    [self.navigationController pushViewController:vc animated:NO];
+
+}
 
 @end
