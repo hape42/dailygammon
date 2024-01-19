@@ -97,17 +97,13 @@
 
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
- //   [self updateTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.navigationController setNavigationBarHidden:YES animated:animated];
-    else
-        [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.navigationItem.hidesBackButton = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
 
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
