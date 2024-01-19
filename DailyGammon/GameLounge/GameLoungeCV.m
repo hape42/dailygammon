@@ -32,16 +32,10 @@
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
 @property (assign, atomic) BOOL loginOk;
 @property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeArray;
-@property (readwrite, retain, nonatomic) NSMutableArray *gameLoungeHeaderArray;
+
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
-
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
-
-@property (readwrite, retain, nonatomic) NSString *matchString;
-
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
 @end
 
@@ -214,13 +208,6 @@ didCompleteWithError:(NSError *)error
 
             NSString *searchString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tabelleNummer];
             NSArray *elementHeader  = [xpathParser searchWithXPathQuery:searchString];
-            self.gameLoungeHeaderArray = [[NSMutableArray alloc]init];
-
-            for(TFHppleElement *element in elementHeader)
-            {
-                //            XLog(@"%@",[element text]);
-                [self.gameLoungeHeaderArray addObject:[element text]];
-            }
             self.gameLoungeArray = [[NSMutableArray alloc]init];
             searchString = [NSString stringWithFormat:@"//table[%d]/tr",tabelleNummer];
             NSArray *rown  = [xpathParser searchWithXPathQuery:searchString];

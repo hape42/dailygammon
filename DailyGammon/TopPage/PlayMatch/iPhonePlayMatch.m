@@ -281,7 +281,7 @@
                                    {
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             
-            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }];
         
@@ -296,7 +296,7 @@
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -305,7 +305,7 @@
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -461,7 +461,7 @@
             //    [match readMatch:matchLink];
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             
-            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
             [self.navigationController pushViewController:vc animated:NO];
             return;
             
@@ -1531,7 +1531,7 @@ shouldChangeTextInRange:(NSRange)range
                                 {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
         
         [self.navigationController pushViewController:vc animated:NO];
     }];

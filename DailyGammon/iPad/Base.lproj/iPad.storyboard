@@ -1047,18 +1047,19 @@ Did we make you curious?</string>
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPY-YV-Q0u">
-                                <rect key="frame" x="974" y="20" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPY-YV-Q0u">
+                                <rect key="frame" x="974" y="44" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="mLn-7T-xeu"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                                 <connections>
                                     <action selector="moreAction:" destination="KHz-5w-zsy" eventType="touchUpInside" id="Hck-3N-lCQ"/>
                                 </connections>
                             </button>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Dck-k2-aEA">
-                                <rect key="frame" x="20" y="76" width="974" height="672"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Dck-k2-aEA">
+                                <rect key="frame" x="20" y="92" width="974" height="656"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jox-TN-7rD">
                                     <size key="itemSize" width="128" height="128"/>
@@ -1081,19 +1082,33 @@ Did we make you curious?</string>
                                     <outlet property="delegate" destination="KHz-5w-zsy" id="nnR-Im-846"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tournament Sign-Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Mh-7N1">
-                                <rect key="frame" x="337" y="28" width="341" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.45085787770000002" green="0.98829740290000001" blue="0.83763033149999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tournament Sign-Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Mh-7N1">
+                                <rect key="frame" x="395" y="44" width="234" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="ZZW-vG-pHr"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="26"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="jPY-YV-Q0u" secondAttribute="trailing" constant="-10" id="ItG-pN-mff"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Dck-k2-aEA" secondAttribute="trailing" constant="10" id="PTL-Mb-vfp"/>
+                            <constraint firstItem="Bzd-Mh-7N1" firstAttribute="top" secondItem="jPY-YV-Q0u" secondAttribute="top" id="PUs-kj-7kf"/>
+                            <constraint firstItem="Bzd-Mh-7N1" firstAttribute="centerX" secondItem="pEE-Fe-25D" secondAttribute="centerX" id="T48-Q9-WP6"/>
+                            <constraint firstItem="Bzd-Mh-7N1" firstAttribute="top" secondItem="5pc-e2-XBT" secondAttribute="bottom" constant="24" id="WCR-7Z-VD4"/>
+                            <constraint firstItem="Dck-k2-aEA" firstAttribute="leading" secondItem="pEE-Fe-25D" secondAttribute="leadingMargin" id="Zwy-Ec-B1K"/>
+                            <constraint firstItem="Dck-k2-aEA" firstAttribute="top" secondItem="Bzd-Mh-7N1" secondAttribute="bottom" constant="8" id="km7-do-m9i"/>
+                            <constraint firstItem="G2c-qh-Boo" firstAttribute="top" secondItem="Dck-k2-aEA" secondAttribute="bottom" constant="20" id="oEZ-Q7-ByB"/>
+                            <constraint firstItem="Bzd-Mh-7N1" firstAttribute="bottom" secondItem="jPY-YV-Q0u" secondAttribute="bottom" id="tHl-rq-vZb"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="Dck-k2-aEA" id="caY-0h-Um9"/>
+                        <outlet property="header" destination="Bzd-Mh-7N1" id="aw2-fc-3EB"/>
+                        <outlet property="moreButton" destination="jPY-YV-Q0u" id="HZy-XP-qLp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Q1-Wf-85o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -45,7 +45,7 @@
             if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
                 vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
             else
-                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneAbout"];
+                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
             vc.showRemindMeLaterButton = YES;
             [self.navigationController pushViewController:vc animated:NO];
             return;

@@ -180,7 +180,7 @@ didCompleteWithError:(NSError *)error
             }
             else
             {
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"iPhoneTopPageVC"];
+                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
                 [self.navigationController pushViewController:vc animated:NO];
             }
         }
