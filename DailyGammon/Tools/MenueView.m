@@ -23,18 +23,29 @@
 #import "GameLounge.h"
 #import "GameLoungeCV.h"
 #import "PlayerLists.h"
+#import "Constants.h"
 
 @implementation MenueView
 
 @synthesize design, tools;
 @synthesize presentingView;
+@synthesize button1;
 
 - (id)init
 {
+    design      = [[Design alloc] init];
+
     if (self = [super initWithFrame:CGRectZero])
     {
         self.opaque = FALSE;
         self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+        self.layer.borderWidth = 1;
+        NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+        self.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
+        self.layer.cornerRadius = 14.0f;
+        self.layer.masksToBounds = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMatchCount) name:matchCountChangedNotification object:nil];
+
     }
     return self;
 }
@@ -79,7 +90,7 @@
     float x =  edge;
     float y = edge;
 
-    DGButton *button1 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
+    button1 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
 
     button1.tag = 1;
@@ -154,7 +165,7 @@
     [self addSubview:buttonClose];
     
     // Add the view at the front of the app's windows
-    self.backgroundColor = UIColor.clearColor;
+
     [view addSubview:self];
     
     x = superFrame.origin.x + superFrame.size.width  - fr.size.width - 50;
@@ -183,9 +194,8 @@
     CGRect fr = rect;
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    CGContextSetFillColorWithColor(context, [[UIColor colorNamed:@"ColorViewBackground"] CGColor]);
-    CGContextSetFillColorWithColor(context, [[schemaDict objectForKey:@"TintColor"] CGColor]);
-
+    CGContextSetFillColorWithColor(context, [[UIColor clearColor] CGColor]);
+    
     CGMutablePathRef selectionPath = CGPathCreateMutable();
     CGPathMoveToPoint(selectionPath, NULL, fr.origin.x, fr.origin.y + radius);
     CGPathAddLineToPoint(selectionPath, NULL, fr.origin.x, fr.origin.y + fr.size.height - radius);
@@ -232,7 +242,10 @@
         
     }
 }
-
+-(void)updateMatchCount
+{
+    [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
+}
 -(void) topPageVC
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
