@@ -117,15 +117,21 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mor-lx-RZm">
-                                <rect key="frame" x="984" y="28" width="20" height="22"/>
+                                <rect key="frame" x="984" y="28" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                                 <connections>
-                                    <action selector="moreAction:" destination="DvW-Tf-E0z" eventType="touchUpInside" id="E2h-63-7Rc"/>
                                     <action selector="moreAction:" destination="luK-r6-8If" eventType="touchUpInside" id="iG3-t4-xRc"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="27" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lyY-03-8XW">
+                                <rect key="frame" x="945" y="28" width="40" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
@@ -136,6 +142,7 @@
                         <outlet property="chatView" destination="Blz-DR-iBs" id="3cw-Vv-Ozp"/>
                         <outlet property="infoLabel" destination="wOG-gN-yFy" id="IDd-ye-C4E"/>
                         <outlet property="makeYourMove" destination="2BS-uq-SCo" id="RSF-et-X4z"/>
+                        <outlet property="matchCountLabel" destination="lyY-03-8XW" id="KpC-Ul-0oc"/>
                         <outlet property="matchName" destination="hxE-0z-UNT" id="gw6-sf-wYC"/>
                         <outlet property="opponentChat" destination="tU9-zq-D7B" id="NWX-nZ-0js"/>
                         <outlet property="playerChat" destination="iEr-Dz-bJe" id="WfQ-Bh-D1Z"/>
@@ -1169,7 +1176,7 @@ Did we make you curious?</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tLH-40-Wc1">
-                                <rect key="frame" x="20" y="70" width="778" height="30"/>
+                                <rect key="frame" x="20" y="70" width="778" height="35"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="tintColor" red="0.75294117647058822" green="0.75294117647058822" blue="0.75294117647058822" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -1177,7 +1184,7 @@ Did we make you curious?</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Re7-nE-eCP" customClass="DGButton">
-                                <rect key="frame" x="922" y="68" width="84" height="35"/>
+                                <rect key="frame" x="889" y="70" width="100" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Find me"/>

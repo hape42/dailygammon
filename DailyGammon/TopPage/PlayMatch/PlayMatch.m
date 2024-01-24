@@ -63,6 +63,7 @@
 @property (assign, atomic) CGRect playerChatViewFrame;
 @property (assign, atomic) CGRect chatViewFrameSave;
 
+@property (weak, nonatomic) IBOutlet UILabel *matchCountLabel;
 
 @property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
 @property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
@@ -157,6 +158,8 @@
     self.first = TRUE;
 
     self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", self.matchCount]];
+
     if(isReview)
     {
         self.unexpectedMove.text = @"";
@@ -185,11 +188,12 @@
 
 - (void) showMatchCount
 {
-   // [self updateMatchCount:self.view];
+    [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]]];
 }
 -(void)showMatch
 {
-    [self showMatchCount];
+    [tools matchCount];
+
     self.isChatView = FALSE;
 
     UIView *removeView;

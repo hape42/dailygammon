@@ -376,6 +376,16 @@
     //XLog(@"? %@ %@",imgName, color);
     return imgName;
 }
+
+- (UIButton *)designMoreButton:(UIButton *)moreButton
+{
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [moreButton setImage:image forState:UIControlStateNormal];
+    moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    return moreButton;
+}
 - (BOOL)isX
 {
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)

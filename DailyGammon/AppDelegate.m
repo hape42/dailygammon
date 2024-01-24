@@ -17,6 +17,9 @@
 #import <UserNotifications/UserNotifications.h>
 
 #import "GameLoungeCV.h"
+#import "Review.h"
+#import "Tournament.h"
+#import "TopPageVC.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -34,8 +37,11 @@
     XLog(@"CurrentVC: %@", currentViewController);
 
     if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
- //   if (currentViewController.class == UIAlertController.class) orientationMask = UIInterfaceOrientationMaskAll;
-    if(currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == TopPageVC.class)   orientationMask = UIInterfaceOrientationMaskAll;
+
+    if (currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
     
     return orientationMask;
 }

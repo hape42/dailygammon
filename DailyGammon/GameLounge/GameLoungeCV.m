@@ -88,9 +88,9 @@
 
 -(void) reDrawHeader
 {
-
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    self.header.textColor = [schemaDict objectForKey:@"TintColor"];
+    self.moreButton = [design designMoreButton:self.moreButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -99,6 +99,7 @@
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
+    [self reDrawHeader];
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -207,7 +208,6 @@ didCompleteWithError:(NSError *)error
             int tabelleNummer = tableArray.count == 4 ? 3 : 2;
 
             NSString *searchString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tabelleNummer];
-            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:searchString];
             self.gameLoungeArray = [[NSMutableArray alloc]init];
             searchString = [NSString stringWithFormat:@"//table[%d]/tr",tabelleNummer];
             NSArray *rown  = [xpathParser searchWithXPathQuery:searchString];

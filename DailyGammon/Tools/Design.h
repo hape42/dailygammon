@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
 
+- (UIButton *)designMoreButton:(UIButton *)moreButton;
+
 - (BOOL)isX;
 
 //#define VIEWBACKGROUNDCOLOR [UIColor colorWithRed:246.0/255 green:246.0/255 blue:246.0/255 alpha:1]
