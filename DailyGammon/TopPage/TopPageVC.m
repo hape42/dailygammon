@@ -759,6 +759,12 @@ didCompleteWithError:(NSError *)error
     
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    NSDictionary *match = row[8];
+    vc.matchLink = [match objectForKey:@"href"];
+    vc.topPageArray = self.topPageArray;
+    [self.navigationController pushViewController:vc animated:NO];
+    return;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];

@@ -304,6 +304,11 @@
 
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
     UIView *boardView = [returnDict objectForKey:@"boardView"];
+    // passe chatView an boardView an
+    CGRect frame = self.chatView.frame;
+    frame.size.width = boardView.frame.size.width * .8;
+    self.chatView.frame = frame;
+
     self.moveArray = [returnDict objectForKey:@"moveArray"];
         
     UIView *removeView;
@@ -342,12 +347,30 @@
     [self.view addSubview:playerView];
     [self.view addSubview:opponentView];
 
+    float actionViewHeight  = actionView.layer.frame.size.height - 50 ; // skip Button
+    float actionViewWidth = actionView.layer.frame.size.width;
+
+    UIView *upperThird = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  actionViewWidth, actionViewHeight /3)];
+    upperThird.backgroundColor = UIColor.redColor;
+    [actionView addSubview:upperThird];
+    
+    UIView *middleThird = [[UIView alloc]initWithFrame:CGRectMake(0, upperThird.frame.origin.y + upperThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
+    middleThird.backgroundColor = UIColor.yellowColor;
+    [actionView addSubview:middleThird];
+    
+    UIView *lowerThird = [[UIView alloc]initWithFrame:CGRectMake(0, middleThird.frame.origin.y + middleThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
+    lowerThird.backgroundColor = UIColor.greenColor;
+    [actionView addSubview:lowerThird];
+
     int edge = 10;
     float gap = 10;
     float verifyTextWidth = 50;
 
     int buttonHeight = 0;
     int buttonWidth = 0;
+    
+    float buttonLargeWidth = MIN(buttonWidth *2, actionViewWidth - 10);
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         buttonHeight = 35;
@@ -364,123 +387,171 @@
     self.verifiedTake   = FALSE;
     self.verifiedPass   = FALSE;
 
+    float thirdX = (actionViewWidth / 2) - (buttonWidth / 2); // center button
+    float thirdXForLargeButton = (actionViewWidth / 2) - (buttonLargeWidth / 2); // center button
+    float thirdXwithVerify = (actionViewWidth / 2) - (buttonWidth / 2) - (gap / 2) - (switchWidth / 2) - (gap / 2) - (verifyTextWidth / 2); // center button
+    
+    float thirdY = (upperThird.frame.size.height / 2) - (buttonHeight / 2); // center button
+
     switch([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview])
     {
         case NEXT:
         {
 #pragma mark - Button Next
-            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
             [buttonNext addTarget:self action:@selector(actionNext) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonNext];
+            [middleThird addSubview:buttonNext];
             break;
         }
         case NEXT__:
         {
 #pragma mark - Button Next>>
-            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonNext setTitle:@"Next>>" forState: UIControlStateNormal];
             [buttonNext addTarget:self action:@selector(actionNext__) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonNext];
+            [middleThird addSubview:buttonNext];
             break;
         }
 #pragma mark - Button NextGame
         case NEXTGAME:
         {
-                // seltsamer -0- Something unexpected happend!
-
-                matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
-                NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-                //    XLog(@"%@",urlMatch);
-                NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-
+            // seltsamer -0- Something unexpected happend!
+            
+            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
+            NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+            //    XLog(@"%@",urlMatch);
+            NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
+            
             //    [match readMatch:matchLink];
-                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-                [self.navigationController pushViewController:vc animated:NO];
-                return;
-
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            
+            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            [self.navigationController pushViewController:vc animated:NO];
+            return;
+            
         }
-       case ROLL:
+        case ROLL:
         {
 #pragma mark - Button Roll
-            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonRoll];
+            [middleThird addSubview:buttonRoll];
             break;
         }
         case ROLL_DOUBLE:
         {
 #pragma mark - Button Roll Double
-            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(10, 10, 100, 35)];
+            
+            DGButton *buttonRoll = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonRoll setTitle:@"Roll Dice" forState: UIControlStateNormal];
             [buttonRoll addTarget:self action:@selector(actionRoll) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonRoll];
- 
-            DGButton *buttonDouble = [[DGButton alloc] initWithFrame:CGRectMake(10,  buttonRoll.frame.origin.y + 100 , 100, 35)];
+            
+            [upperThird addSubview:buttonRoll];
+            
+            DGButton *buttonDouble = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonDouble setTitle:@"Double" forState: UIControlStateNormal];
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonDouble];
-
+            [middleThird addSubview:buttonDouble];
+            
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
-            if(attributesArray.count == 3)
+            if(attributesArray.count == 3) // verify double
             {
-                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonDouble.frame.origin.y + 4, 50, 35)];
+                buttonDouble.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                
+                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
+                                          CGRectMake(buttonDouble.frame.origin.x + buttonWidth + gap,
+                                                     thirdY  ,
+                                                     switchWidth,
+                                                     buttonHeight)];
+                verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
+                frame = verifyDouble.frame;
+                frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
+                verifyDouble.frame = frame;
+                
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
                 verifyDouble = [design makeNiceSwitch:verifyDouble];
-                [actionView addSubview: verifyDouble];
+                [middleThird addSubview: verifyDouble];
                 
-                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonDouble.frame.origin.y,100, 35)];
+                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + gap,
+                                                                                      thirdY,
+                                                                                      verifyTextWidth,
+                                                                                      buttonHeight)];
                 verifyDoubleText.text = @"Verify";
-                [actionView addSubview: verifyDoubleText];
+                [middleThird addSubview: verifyDoubleText];
             }
             break;
         }
         case ACCEPT_DECLINE:
         {
 #pragma mark - Button Accept Pass
-            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(10, 10, 100, 35)];
+            
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonAccept];
+            [upperThird addSubview:buttonAccept];
             
-            DGButton *buttonPass = [[DGButton alloc] initWithFrame:CGRectMake(10,  buttonAccept.frame.origin.y + 100 , 100, 35)];
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonPass];
+            [middleThird addSubview:buttonPass];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
+                buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                
                 for(NSDictionary * dict in attributesArray)
                 {
                     if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
-                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonAccept.frame.origin.y + 4, 50, 35)];
+                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                thirdY  ,
+                                                                                                switchWidth,
+                                                                                                buttonHeight)];
+                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyAccept.frame;
+                            frame.origin.y = buttonAccept.frame.origin.y;
+                            verifyAccept.frame = frame;
+                            
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             verifyAccept = [design makeNiceSwitch:verifyAccept];
-                            [actionView addSubview: verifyAccept];
-            
-                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonAccept.frame.origin.y,100, 35)];
+                            [upperThird addSubview: verifyAccept];
+                            
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
+                                                                                                  thirdY,
+                                                                                                  verifyTextWidth,
+                                                                                                  buttonHeight)];
                             verifyAcceptText.text = @"Verify";
-                            [actionView addSubview: verifyAcceptText];
+                            [upperThird addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame: CGRectMake(120, buttonPass.frame.origin.y + 4, 50, 35)];
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 thirdY  ,
+                                                                                                 switchWidth,
+                                                                                                 buttonHeight)];
+                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
+                            
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
-                            [actionView addSubview: verifyDecline];
+                            [middleThird addSubview: verifyDecline];
                             
-                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(120 + 60, buttonPass.frame.origin.y,100, 35)];
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                                                   thirdY,
+                                                                                                   verifyTextWidth,
+                                                                                                   buttonHeight)];
                             verifyDeclineText.text = @"Verify";
-                            [actionView addSubview: verifyDeclineText];
+                            [middleThird addSubview: verifyDeclineText];
                         }
-
+                        
                     }
                 }
             }
@@ -490,24 +561,27 @@
         {
 #pragma mark - Button Accept/Beaver/Pass
             
-            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(edge, edge, buttonWidth, buttonHeight)];
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonAccept setTitle:@"Accept" forState: UIControlStateNormal];
             [buttonAccept addTarget:self action:@selector(actionTake) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonAccept];
+            [upperThird addSubview:buttonAccept];
             
-            DGButton *buttonBeaver = [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonAccept.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            DGButton *buttonBeaver = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonBeaver setTitle:@"Beaver!" forState: UIControlStateNormal];
             [buttonBeaver addTarget:self action:@selector(actionBeaver) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonBeaver];
+            [middleThird addSubview:buttonBeaver];
 
-            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonBeaver.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonPass];
+            [lowerThird addSubview:buttonPass];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
+                buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonBeaver.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 
                 for(NSDictionary * dict in attributesArray)
                 {
@@ -516,40 +590,46 @@
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
                             UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                buttonAccept.frame.origin.y  ,
+                                                                                                thirdY  ,
                                                                                                 switchWidth,
                                                                                                 buttonHeight)];
                             verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyAccept.frame;
+                            frame.origin.y = buttonAccept.frame.origin.y;
+                            verifyAccept.frame = frame;
                             
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
                             verifyAccept = [design makeNiceSwitch:verifyAccept];
-                            [actionView addSubview: verifyAccept];
+                            [upperThird addSubview: verifyAccept];
                             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
-                                                                                                  verifyAccept.frame.origin.y ,
+                                                                                                  thirdY,
                                                                                                   verifyTextWidth,
                                                                                                   buttonHeight)];
                             verifyAcceptText.text = @"Verify";
-                            [actionView addSubview: verifyAcceptText];
+                            [upperThird addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonPass.frame.origin.x + buttonWidth + gap,
-                                                                                                 buttonPass.frame.origin.y  ,
+                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
+                                                                                                 thirdY  ,
                                                                                                  switchWidth,
                                                                                                  buttonHeight)];
                             verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
                             
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
-                            [actionView addSubview: verifyDecline];
+                            [lowerThird addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
-                                                                                                   verifyDecline.frame.origin.y,
+                                                                                                   thirdY,
                                                                                                    verifyTextWidth,
                                                                                                    buttonHeight)];
                             verifyDeclineText.text = @"Verify";
-                            [actionView addSubview: verifyDeclineText];
+                            [lowerThird addSubview: verifyDeclineText];
                         }
                         
                     }
@@ -561,20 +641,23 @@
         {
 #pragma mark - Button Beaver Accept
             
-            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(edge, edge, buttonWidth, buttonHeight)];
+            DGButton *buttonAccept = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonAccept setTitle:@"Accept Beaver" forState: UIControlStateNormal];
             [buttonAccept addTarget:self action:@selector(actionTakeBeaver) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonAccept];
+            [upperThird addSubview:buttonAccept];
             
 
-            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(edge, buttonAccept.frame.origin.y + 100, buttonWidth, buttonHeight)];
+            DGButton *buttonPass =  [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonPass setTitle:@"Decline" forState: UIControlStateNormal];
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonPass];
+            [middleThird addSubview:buttonPass];
             
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
+                buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                buttonPass.frame   = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
+                
                 for(NSDictionary * dict in attributesArray)
                 {
                     if([[dict objectForKey:@"name"]isEqualToString:@"verify"])
@@ -582,128 +665,95 @@
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
                             UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 buttonAccept.frame.origin.y  ,
+                                                                                                 thirdY  ,
                                                                                                  switchWidth,
                                                                                                  buttonHeight)];
                             verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+                            frame = verifyDecline.frame;
+                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
+                            verifyDecline.frame = frame;
                             
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
-                            [actionView addSubview: verifyDecline];
+                            [middleThird addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
-                                                                                                   verifyDecline.frame.origin.y,
+                                                                                                   thirdY,
                                                                                                    verifyTextWidth,
                                                                                                    buttonHeight)];
                             verifyDeclineText.text = @"Verify";
-                            [actionView addSubview: verifyDeclineText];
+                            [middleThird addSubview: verifyDeclineText];
                         }
+                        
                     }
                 }
             }
             break;
 
         }
-       case SWAP_DICE:
+        case SWAP_DICE:
         {
 #pragma mark - Button Swap Dice
-            DGButton *buttonSwap = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonSwap = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonSwap setTitle:@"Swap Dice" forState: UIControlStateNormal];
             [buttonSwap addTarget:self action:@selector(actionSwap) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonSwap];
+            [middleThird addSubview:buttonSwap];
             break;
         }
         case GREEDY:
         {
 #pragma mark - Submit Greedy Bearoff
-            DGButton *buttonGreedy = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 100, (actionView.frame.size.height/2) -40, 200, 35)];
+            
+            DGButton *buttonGreedy = [[DGButton alloc] initWithFrame:CGRectMake(thirdXForLargeButton, thirdY, buttonLargeWidth, buttonHeight)];
             [buttonGreedy setTitle:@"Submit Greedy Bearoff" forState: UIControlStateNormal];
             [buttonGreedy addTarget:self action:@selector(actionGreedy) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonGreedy];
+            [middleThird addSubview:buttonGreedy];
             break;
         }
         case UNDO_MOVE:
         {
 #pragma mark - Button Undo Move
-            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonUndoMove];
+            [middleThird addSubview:buttonUndoMove];
             break;
         }
         case SUBMIT_MOVE:
         {
-#pragma mark - Button Submit Move
-            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, 10, 100, 35)];
+#pragma mark - Button Submit Move & Undo
+            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonSubmitMove setTitle:@"Submit Move" forState: UIControlStateNormal];
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitMove) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonSubmitMove];
+            [upperThird addSubview:buttonSubmitMove];
             
-            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, (actionView.frame.size.height/2) -40, 100, 35)];
+            DGButton *buttonUndoMove = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
             [buttonUndoMove setTitle:@"Undo Move" forState: UIControlStateNormal];
             [buttonUndoMove addTarget:self action:@selector(actionUnDoMove) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonUndoMove];
+            [middleThird addSubview:buttonUndoMove];
+            
             break;
         }
         case SUBMIT_FORCED_MOVE:
         {
 #pragma mark - Button Submit Forced Move
-            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, 50, 150, 35)];
+            
+            DGButton *buttonSubmitMove = [[DGButton alloc] initWithFrame:CGRectMake(thirdXForLargeButton, thirdY, buttonLargeWidth, buttonHeight)];
             [buttonSubmitMove setTitle:@"Submit Forced Move" forState: UIControlStateNormal];
             [buttonSubmitMove addTarget:self action:@selector(actionSubmitForcedMove) forControlEvents:UIControlEventTouchUpInside];
-            [actionView addSubview:buttonSubmitMove];
+            [middleThird addSubview:buttonSubmitMove];
             break;
         }
         case CHAT:
         {
-#pragma mark - CHAT
-            // schieb den chatView in den sichtbaren Bereich
+#pragma mark - Chat
+            // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
-            frame.origin.x = 185;
-            frame.origin.y = actionView.frame.origin.y-85;
-            self.chatView.frame = frame;
+            
             [self.view bringSubviewToFront:self.chatView ];
-            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
-            if([self.opponentChat.text length] == 0)
-            {
-                // opponentChat nicht anzeigen
-                frame = self.opponentChat.frame;
-                float opponentChatHoehe = self.opponentChat.frame.size.height;
-                frame.size.height = 0;
-                self.opponentChat.frame = frame;
-                frame = self.chatView.frame;
-                frame.origin.y += opponentChatHoehe;
-                frame.size.height -= opponentChatHoehe;
-                self.chatView.frame = frame;
-                frame = self.playerChat.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.playerChat.frame = frame;
-
-                frame = self.NextButtonOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.NextButtonOutlet.frame = frame;
-
-                frame = self.ToTopOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.ToTopOutlet.frame = frame;
-            }
-            else
-            {
-                // opponentChat anzeigen
-                self.NextButtonOutlet.frame = self.chatNextButtonFrame;
-                self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
-                self.opponentChat.frame     = self.opponentChatViewFrame;
-                self.chatView.frame         = self.chatViewFrameSave;
-                self.playerChat.frame       = self.playerChatViewFrame;
-            }
-
-            frame = self.chatView.frame;
-            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
-            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
-            self.chatView.frame = frame;
-
-            self.playerChat.text = @"you may chat here";
+            //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
             NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            
             BOOL isCheckbox = FALSE;
             for(NSMutableDictionary *dict in attributesArray)
             {
@@ -727,24 +777,78 @@
                 self.quoteMessage.frame = self.quoteMessageFrame;
             }
             self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
+            
+            //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
+            
+            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
+            if(([self.opponentChat.text length] == 0) && (isCheckbox == FALSE))
+            {
+                // opponentChat nicht anzeigen
+                frame = self.opponentChat.frame;
+                float opponentChatHoehe = self.opponentChat.frame.size.height;
+                frame.size.height = 0;
+                self.opponentChat.frame = frame;
+                
+                frame = self.chatView.frame;
+                frame.origin.y += opponentChatHoehe;
+                frame.size.height -= opponentChatHoehe;
+                self.chatView.frame = frame;
+                
+                frame = self.playerChat.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.playerChat.frame = frame;
+                
+                frame = self.NextButtonOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.NextButtonOutlet.frame = frame;
+                
+                frame = self.ToTopOutlet.frame;
+                frame.origin.y -= opponentChatHoehe;
+                self.ToTopOutlet.frame = frame;
+            }
+            else
+            {
+                // opponentChat anzeigen
+                self.NextButtonOutlet.frame = self.chatNextButtonFrame;
+                self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
+                self.opponentChat.frame     = self.opponentChatViewFrame;
+                self.chatView.frame         = self.chatViewFrameSave;
+                self.playerChat.frame       = self.playerChatViewFrame;
+                [self.opponentChat flashScrollIndicators];
+                [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(flashIndicator) userInfo:nil repeats:YES]; // set time interval as per your requirement.
+                
+                
+            }
+            frame = self.chatView.frame;
+            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
+            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
+            self.chatView.frame = frame;
+            
+            self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
+            self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
+            
+            self.playerChat.text = @"you may chat here";
+            //         self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
             self.chatView.layer.cornerRadius = 14.0f;
             self.chatView.layer.masksToBounds = YES;
-
+            
             self.chatViewFrame = self.chatView.frame; // position merken um bei keyboard reinfahren view zu verschieben und wieder an die richtige Stelle zurück
             break;
         }
         case ONLY_MESSAGE:
         {
-//            XLog(@"ONLY_MESSAGE");
+            XLog(@"ONLY_MESSAGE");
             break;
         }
         case REVIEW:
         {
 #pragma mark - preview match
+            float gap = 20;
+            
+            float reviewButtonHeight  = MIN(30,(actionView.layer.frame.size.height / 4) - gap - 5);
+            
             NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
             float width = 150;
-            float height = 35;
-            float gap = 20;
             float x = (actionView.frame.size.width/2) - (width / 2);
             float y = 20;
             NSArray *reviewText = [NSArray arrayWithObjects: @"First Move", @"Prev Move", @"Next Move", @"Last Move",nil];
@@ -753,24 +857,25 @@
                 NSString *url = reviewArray[i];
                 if(!url.length)
                 {
-                    DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, width, reviewButtonHeight)];
                     label.text = reviewText[i];
                     label.textAlignment = NSTextAlignmentCenter;
                     [actionView addSubview:label];
                 }
                 else
                 {
-                    DGButton *buttonReview = [[DGButton alloc] initWithFrame:CGRectMake(x, y, width, height)];
+                    DGButton *buttonReview = [[DGButton alloc] initWithFrame:CGRectMake(x, y, width, reviewButtonHeight)];
                     [buttonReview setTitle:reviewText[i] forState: UIControlStateNormal];
                     [buttonReview addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
                     [buttonReview.layer setValue:url forKey:@"href"];
                     [actionView addSubview:buttonReview];
                 }
-                y += height + gap;
+                y += reviewButtonHeight + gap;
             }
-
+            
             break;
         }
+            
         default:
         {
             XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
