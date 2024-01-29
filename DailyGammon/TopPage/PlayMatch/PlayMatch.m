@@ -351,15 +351,18 @@
     float actionViewWidth = actionView.layer.frame.size.width;
 
     UIView *upperThird = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  actionViewWidth, actionViewHeight /3)];
-    upperThird.backgroundColor = UIColor.redColor;
+//    upperThird.backgroundColor = UIColor.redColor;
+    upperThird.layer.borderWidth = 1;
     [actionView addSubview:upperThird];
     
     UIView *middleThird = [[UIView alloc]initWithFrame:CGRectMake(0, upperThird.frame.origin.y + upperThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
-    middleThird.backgroundColor = UIColor.yellowColor;
+//    middleThird.backgroundColor = UIColor.yellowColor;
+    middleThird.layer.borderWidth = 1;
     [actionView addSubview:middleThird];
     
     UIView *lowerThird = [[UIView alloc]initWithFrame:CGRectMake(0, middleThird.frame.origin.y + middleThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
-    lowerThird.backgroundColor = UIColor.greenColor;
+//    lowerThird.backgroundColor = UIColor.greenColor;
+    lowerThird.layer.borderWidth = 1;
     [actionView addSubview:lowerThird];
 
     int edge = 10;
