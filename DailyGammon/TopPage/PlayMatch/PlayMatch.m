@@ -372,7 +372,6 @@
     int buttonHeight = 0;
     int buttonWidth = 0;
     
-    float buttonLargeWidth = MIN(buttonWidth *2, actionViewWidth - 10);
 
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
@@ -385,6 +384,7 @@
         buttonWidth  = 80;
     }
     float switchWidth = 50;
+    float buttonLargeWidth = MIN(buttonWidth *2, actionViewWidth - 10);
 
     self.verifiedDouble = FALSE;
     self.verifiedTake   = FALSE;
@@ -468,7 +468,7 @@
                                                      thirdY  ,
                                                      switchWidth,
                                                      buttonHeight)];
-                verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
+//                verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
                 frame = verifyDouble.frame;
                 frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
                 verifyDouble.frame = frame;
@@ -516,7 +516,7 @@
                                                                                                 thirdY  ,
                                                                                                 switchWidth,
                                                                                                 buttonHeight)];
-                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+//                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyAccept.frame;
                             frame.origin.y = buttonAccept.frame.origin.y;
                             verifyAccept.frame = frame;
@@ -538,7 +538,7 @@
                                                                                                  thirdY  ,
                                                                                                  switchWidth,
                                                                                                  buttonHeight)];
-                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
+//                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
                             frame = verifyDecline.frame;
                             frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
                             verifyDecline.frame = frame;
@@ -924,7 +924,10 @@
         [actionView addSubview:buttonSkipGame];
     }
 }
-
+-(void)flashIndicator
+{
+    [self.opponentChat flashScrollIndicators];
+}
 #pragma mark - actions
 - (void)actionSubmitMove
 {
