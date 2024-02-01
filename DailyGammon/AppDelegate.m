@@ -19,7 +19,7 @@
 #import "GameLoungeCV.h"
 #import "Review.h"
 #import "Tournament.h"
-#import "TopPageVC.h"
+#import "TopPageCV.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -39,7 +39,7 @@
     if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
-//    if (currentViewController.class == TopPageVC.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == TopPageCV.class)   orientationMask = UIInterfaceOrientationMaskAll;
 
     if (currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
     

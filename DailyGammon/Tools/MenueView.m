@@ -25,6 +25,8 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 
+#import "TopPageCV.h"
+
 @implementation MenueView
 
 @synthesize design, tools;
@@ -248,11 +250,14 @@
 }
 -(void) topPageVC
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-    
+    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
     [self.navigationController pushViewController:vc animated:NO];
+
+//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    
+//    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//    
+//    [self.navigationController pushViewController:vc animated:NO];
 }
 -(void) ratingVC
 {

@@ -99,6 +99,7 @@
 		E0FA69342964463200D88C26 /* DGButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69332964463200D88C26 /* DGButton.m */; };
 		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
 		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
+		E0FD83532B6A340E003B6DBF /* TopPageCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD83522B6A340E003B6DBF /* TopPageCV.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -353,6 +354,8 @@
 		E0FA69362969CE0900D88C26 /* DGLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DGLabel.m; sourceTree = "<group>"; };
 		E0FB9E4129AA35B900E668B9 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		E0FB9E4229AA35B900E668B9 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
+		E0FD83512B6A340E003B6DBF /* TopPageCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPageCV.h; sourceTree = "<group>"; };
+		E0FD83522B6A340E003B6DBF /* TopPageCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageCV.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -433,6 +436,8 @@
 			children = (
 				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
 				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
+				E0FD83512B6A340E003B6DBF /* TopPageCV.h */,
+				E0FD83522B6A340E003B6DBF /* TopPageCV.m */,
 				E09871E729448DB40043DC8A /* PlayMatch */,
 			);
 			path = TopPage;
@@ -978,6 +983,7 @@
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E002F19E29A0F08C0028098C /* DGRequest.m in Sources */,
 				E00A3D832700CB7D008B526B /* NoInternet.m in Sources */,
+				E0FD83532B6A340E003B6DBF /* TopPageCV.m in Sources */,
 				E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */,
 				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
