@@ -105,7 +105,6 @@
     [ self readTopPage];
 
     [self reDrawHeader];
-    
     refreshButtonPressed = NO;
     
 }
@@ -115,6 +114,35 @@
     self.header.textColor = [schemaDict objectForKey:@"TintColor"];
     self.moreButton = [design designMoreButton:self.moreButton];
     self.sortLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+    
+    switch([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue])
+    {
+        case 1:
+            [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
+            break;
+        case 2:
+            [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
+           break;
+        case 3:
+            [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
+            break;
+        case 4:
+            [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
+           break;
+        case 5:
+            [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
+            break;
+        case 6:
+            [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
+            break;
+        case 7:
+            [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
+            break;
+        case 8:
+            [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
+            break;
+    }
+
 }
 #pragma mark - WaitView
 
@@ -295,14 +323,19 @@ didCompleteWithError:(NSError *)error
         [self.topPageArray addObject:topPageZeile];
     }
     if(self.topPageArray.count > 0)
+    {
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 3)
+            [self sortUpdate];
+
         [self updateCollectionView];
-    
+    }
     [self stopActivityIndicator];
 
 }
 
 - (void)updateCollectionView
 {
+
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
     if(self.topPageArray.count == 0)
@@ -312,42 +345,262 @@ didCompleteWithError:(NSError *)error
     }
     
     [rating updateRating];
- /*
-    switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
-    {
-        case 4:
-        case 41:
-            [self sortRound];
-            break;
-        case 5:
-        case 51:
-            [self sortLength];
-            break;
-        case 6:
-        case 61:
-            [self sortEvent];
-            break;
-        case 7:
-        case 71:
-            [self sortOpponent];
-            break;
-     default:
-            [self.tableView reloadData];
-            break;
-    }
-  
-  */
+ 
     [self.collectionView reloadData];
 
     [self stopActivityIndicator];
 }
+#pragma mark - sort
 - (void)sortUpdate
 {
-    // organize allt the sort things here
-    
+    // organize all the sort things here
+    switch([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue])
+    {
+        case 1:
+            [self matchOrdering:0];
+            [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
+            break;
+        case 2:
+            [self matchOrdering:1];
+            [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
+           break;
+        case 3:
+            [self matchOrdering:2];
+            [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
+            break;
+        case 4:
+            [self matchOrdering:3];
+            [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
+           break;
+        case 5:
+            [self sortEvent];
+            [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
+            break;
+        case 6:
+            [self sortRound];
+            [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
+            break;
+        case 7:
+            [self sortLength];
+            [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
+            break;
+        case 8:
+            [self sortOpponent];
+            [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
+            break;
+    }
     [self.collectionView reloadData];
 
 }
+
+-(void)matchOrdering:(int)typ
+{
+    NSString *postString = [NSString stringWithFormat:@"order=%d",typ];
+    NSString *preferencesString = @"";
+    NSMutableArray *preferencesArray = [preferences readPreferences];
+    for(NSMutableDictionary *preferencesDict in preferencesArray)
+    {
+        if([preferencesDict objectForKey:@"checked"] != nil)
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=on",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+        else
+        {
+            preferencesString = [NSString stringWithFormat:@"%@&%@=off",preferencesString,[preferencesDict objectForKey:@"name"]];
+        }
+    }
+    postString = [NSString stringWithFormat:@"%@%@",postString,preferencesString];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://dailygammon.com/bg/profile/pref"]];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    NSData *data = [postString dataUsingEncoding:NSUTF8StringEncoding];
+    [request setHTTPBody:data];
+    [request setValue:[NSString stringWithFormat:@"%lu", (unsigned long)[data length]] forHTTPHeaderField:@"Content-Length"];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
+    
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+
+    [[NSUserDefaults standardUserDefaults] setInteger:typ forKey:@"orderTyp"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self readTopPage];
+    [self reDrawHeader];
+
+    [self updateCollectionView];
+    
+}
+
+-(void)sortEvent
+{
+    
+    if(self.topPageArray.count < 1)
+        return;
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:1];
+        id secondObject = [second objectAtIndex:1];
+        NSString *erstes = [[firstObject objectForKey:@"Text"]lastPathComponent];
+        NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
+
+        NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
+        {
+            if( result == NSOrderedAscending)
+                return NSOrderedDescending;
+            if( result == NSOrderedDescending)
+                return NSOrderedAscending;
+        }
+        else
+            return result;
+
+        return NSOrderedSame;
+    }];
+
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
+        [[NSUserDefaults standardUserDefaults] setInteger:6 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:61 forKey:@"orderTyp"];
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateCollectionView];
+
+}
+-(void)sortLength
+{
+    if(self.topPageArray.count < 1)
+        return;
+
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:5];
+        id secondObject = [second objectAtIndex:5];
+        int erstes = [[firstObject objectForKey:@"Text"]intValue];
+        int zweites = [[secondObject objectForKey:@"Text"]intValue];
+        
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 5)
+        {
+            if(erstes < zweites)
+                return NSOrderedAscending;
+            if(erstes > zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
+        {
+            if(erstes > zweites)
+                return NSOrderedAscending;
+            if(erstes < zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+       return NSOrderedSame;
+    }];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
+        [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:51 forKey:@"orderTyp"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
+    [self updateCollectionView];
+
+}
+
+-(void)sortRound
+{
+    if(self.topPageArray.count < 1)
+        return;
+
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:4];
+        id secondObject = [second objectAtIndex:4];
+        
+        float erstes = .0001;
+        float zweites = .0001;
+        NSString *vorne = @"";
+        NSString *hinten = @"";
+
+        NSArray *Array = [[firstObject objectForKey:@"Text"] componentsSeparatedByString:@"/"];
+        if(Array.count == 2)
+        {
+            vorne = [Array objectAtIndex:0];
+            hinten = [Array objectAtIndex:1];
+            erstes = [vorne floatValue] / [hinten floatValue];
+        }
+        Array = [[secondObject objectForKey:@"Text"] componentsSeparatedByString:@"/"];
+        if(Array.count == 2)
+        {
+            vorne = [Array objectAtIndex:0];
+            hinten = [Array objectAtIndex:1];
+            zweites = [vorne floatValue] / [hinten floatValue];
+        }
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
+        {
+            if(erstes > zweites)
+                return NSOrderedAscending;
+            if(erstes < zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 4)
+        {
+            if(erstes < zweites)
+                return NSOrderedAscending;
+            if(erstes > zweites)
+                return NSOrderedDescending;
+            if(erstes == zweites)
+                return NSOrderedSame;
+        }
+        return NSOrderedSame;
+    }];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
+        [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:41 forKey:@"orderTyp"];
+
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateCollectionView];
+}
+-(void)sortOpponent
+{
+    if(self.topPageArray.count < 1)
+        return;
+
+    [self.topPageArray sortUsingComparator:^(id first, id second){
+        id firstObject = [first objectAtIndex:6];
+        id secondObject = [second objectAtIndex:6];
+        NSString *erstes = [[firstObject objectForKey:@"Text"]lastPathComponent];
+        NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
+        
+        NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
+        {
+            if( result == NSOrderedAscending)
+                return NSOrderedDescending;
+            if( result == NSOrderedDescending)
+                return NSOrderedAscending;
+        }
+        else
+            return result;
+        
+        return NSOrderedSame;
+    }];
+    
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
+        [[NSUserDefaults standardUserDefaults] setInteger:7 forKey:@"orderTyp"];
+    else
+        [[NSUserDefaults standardUserDefaults] setInteger:71 forKey:@"orderTyp"];
+    
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self updateCollectionView];
+
+}
+
 #pragma mark - autoLayout
 -(void)layoutObjects
 {
@@ -703,8 +956,6 @@ didCompleteWithError:(NSError *)error
     [self dismissViewControllerAnimated:YES completion:Nil];
     NSArray *row = self.topPageArray[indexPath.row];
     
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = row[8];
     vc.matchLink = [match objectForKey:@"href"];

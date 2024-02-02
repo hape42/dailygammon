@@ -51,12 +51,11 @@
 
     CGRect superFrame = view.frame;
 
-    float buttonCount = 11.0 + 1; //10 Sort + 1 close + headerLabel
+    float buttonCount = 1 + 8 + 1; // headerLabel + 8 Sort +  close
     float edge = 5.0;
     float gap = 10;
     float buttonWidth = 200.0;
     float checkWidth = 30.0;
-    NSString *check = @"✅";
     float buttonHight = MIN(((superFrame.size.height - 50 - edge) / buttonCount) ,  30.0 + gap) - gap;
     
     CGRect fr = self.frame;
@@ -77,8 +76,8 @@
     [self addSubview:header];
     y += gap + buttonHight;
 
-    int activeOrder = 0;
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 1)
+    int activeOrder = [[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 0)
     {
         activeOrder = [[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue];
         UILabel *removeView;
@@ -91,6 +90,7 @@
         checkLabel.tag = 42;
         checkLabel.text = @"✅";
         [self addSubview:checkLabel];
+        XLog(@"sortButton %d", activeOrder);
     }
     y = edge + gap + buttonHight;
     DGButton *button1 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
@@ -129,38 +129,24 @@
     y += gap + buttonHight;
 
     DGButton *button6 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button6 setTitle:@"Grace" forState: UIControlStateNormal];
+    [button6 setTitle:@"Round" forState: UIControlStateNormal];
     button6.tag = 6;
-    [self addSubview:button6];
     [button6 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:button6];
     y += gap + buttonHight;
 
     DGButton *button7 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button7 setTitle:@"Time Pool" forState: UIControlStateNormal];
+    [button7 setTitle:@"Length" forState: UIControlStateNormal];
     button7.tag = 7;
-    [button7 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button7];
+    [button7 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
-    
+
     DGButton *button8 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button8 setTitle:@"Round" forState: UIControlStateNormal];
+    [button8 setTitle:@"Opponent Name" forState: UIControlStateNormal];
     button8.tag = 8;
-    [button8 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button8];
-    y += gap + buttonHight;
-
-    DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button9 setTitle:@"Length" forState: UIControlStateNormal];
-    button9.tag = 9;
-    [self addSubview:button9];
-    [button9 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
-    y += gap + buttonHight;
-
-    DGButton *button10 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button10 setTitle:@"Opponent Name" forState: UIControlStateNormal];
-    button10.tag = 10;
-    [self addSubview:button10];
-    [button10 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
+    [button8 addTarget:self action:@selector(sortNotification:) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     x = (self.frame.size.width - (buttonWidth / 2)) /2;
