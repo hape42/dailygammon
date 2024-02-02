@@ -8,6 +8,9 @@
 
 #import "Constants.h"
 
-NSString * const changeSchemaNotification   = @"changeSchemaNotification";
-NSString * const matchCountChangedNotification   = @"matchCountChangedNotification";
+NSString * const changeSchemaNotification      = @"changeSchemaNotification";
+NSString * const matchCountChangedNotification = @"matchCountChangedNotification";
+
+NSString * const sortNotification              = @"sortNotification";
+NSString * const sortButton                    = @"sortButton";
 

@@ -9,6 +9,8 @@
 #import "TopPageCV.h"
 #import "DGButton.h"
 #import "DGLabel.h"
+#import "Constants.h"
+#import "Design.h"
 
 @interface TopPageCV ()
 
@@ -23,12 +25,20 @@
 
 @implementation TopPageCV
 
-@synthesize menueView;
+@synthesize menueView, sortView;
+@synthesize design;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    design      = [[Design alloc] init];
+
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+    self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
+
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
 }
@@ -36,10 +46,21 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     [self layoutObjects];
+    [self reDrawHeader];
+
+}
+
+-(void) reDrawHeader
+{
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    self.header.textColor = [schemaDict objectForKey:@"TintColor"];
+    self.moreButton = [design designMoreButton:self.moreButton];
+    self.sortLabel.textColor = [schemaDict objectForKey:@"TintColor"];
 }
 
 #pragma mark - autoLayout
@@ -295,4 +316,15 @@
     }
     [menueView showMenueInView:self.view];
 }
+
+- (IBAction)sortAction:(id)sender
+{
+    if(!sortView)
+    {
+        sortView = [[SortView alloc]init];
+        menueView.navigationController = self.navigationController;
+    }
+    [sortView showMenueInView:self.view];
+}
+
 @end

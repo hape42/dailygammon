@@ -100,6 +100,8 @@
 		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
 		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
 		E0FD83532B6A340E003B6DBF /* TopPageCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD83522B6A340E003B6DBF /* TopPageCV.m */; };
+		E0FD837D2B6BF4F3003B6DBF /* ReadTopPage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */; };
+		E0FD83802B6BFE10003B6DBF /* SortView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD837F2B6BFE10003B6DBF /* SortView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -356,6 +358,10 @@
 		E0FB9E4229AA35B900E668B9 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		E0FD83512B6A340E003B6DBF /* TopPageCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPageCV.h; sourceTree = "<group>"; };
 		E0FD83522B6A340E003B6DBF /* TopPageCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageCV.m; sourceTree = "<group>"; };
+		E0FD837B2B6BF4F3003B6DBF /* ReadTopPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadTopPage.h; sourceTree = "<group>"; };
+		E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadTopPage.m; sourceTree = "<group>"; };
+		E0FD837E2B6BFDD9003B6DBF /* SortView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortView.h; sourceTree = "<group>"; };
+		E0FD837F2B6BFE10003B6DBF /* SortView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -436,8 +442,12 @@
 			children = (
 				E0F958AE21ADA304003DAC01 /* TopPageVC.h */,
 				E0F958AF21ADA304003DAC01 /* TopPageVC.m */,
+				E0FD837B2B6BF4F3003B6DBF /* ReadTopPage.h */,
+				E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */,
 				E0FD83512B6A340E003B6DBF /* TopPageCV.h */,
 				E0FD83522B6A340E003B6DBF /* TopPageCV.m */,
+				E0FD837E2B6BFDD9003B6DBF /* SortView.h */,
+				E0FD837F2B6BFE10003B6DBF /* SortView.m */,
 				E09871E729448DB40043DC8A /* PlayMatch */,
 			);
 			path = TopPage;
@@ -988,6 +998,7 @@
 				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
+				E0FD83802B6BFE10003B6DBF /* SortView.m in Sources */,
 				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
 				E05FB7472B3AEB20004EC59F /* DGNavigationController.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
@@ -1002,6 +1013,7 @@
 				E00654D722A6784000194435 /* Player.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
+				E0FD837D2B6BF4F3003B6DBF /* ReadTopPage.m in Sources */,
 				E07B0A91222A73AD00733D16 /* iPhonePlayMatch.m in Sources */,
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
 				E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */,

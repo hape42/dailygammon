@@ -10,4 +10,6 @@
 
 extern NSString * const changeSchemaNotification;
 extern NSString * const matchCountChangedNotification;
+extern NSString * const sortNotification;
+extern NSString * const sortButton;
 
