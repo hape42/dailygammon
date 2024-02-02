@@ -189,6 +189,9 @@
                                 <state key="normal" title="Refresh">
                                     <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="refreshAction:" destination="s70-NS-46U" eventType="touchUpInside" id="j6I-xe-LcR"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2b7-ZB-4ot" customClass="DGButton">
                                 <rect key="frame" x="176" y="100" width="190" height="35"/>

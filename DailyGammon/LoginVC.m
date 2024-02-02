@@ -8,7 +8,7 @@
 
 #import "LoginVC.h"
 #import "Design.h"
-#import "TopPageVC.h"
+#import "TopPageCV.h"
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
@@ -171,18 +171,21 @@ didCompleteWithError:(NSError *)error
             [[NSUserDefaults standardUserDefaults] setValue:self.passwordOutlet.text forKey:@"password"];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            [self.navigationController pushViewController:vc animated:NO];
 
-            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-            {
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-                [self.navigationController pushViewController:vc animated:NO];
-            }
-            else
-            {
-                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-                [self.navigationController pushViewController:vc animated:NO];
-            }
+//            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//
+//            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+//            {
+//                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//                [self.navigationController pushViewController:vc animated:NO];
+//            }
+//            else
+//            {
+//                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//                [self.navigationController pushViewController:vc animated:NO];
+//            }
         }
     }
     NSArray *cookie = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];

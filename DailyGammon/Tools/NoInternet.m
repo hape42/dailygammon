@@ -8,7 +8,7 @@
 
 #import "NoInternet.h"
 #import "Tools.h"
-#import "TopPageVC.h"
+#import "TopPageCV.h"
 #import "AppDelegate.h"
 #import "About.h"
 
@@ -51,12 +51,15 @@
             return;
 
         }
-        TopPageVC *vc = [[TopPageVC alloc]init];
-        
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
+
+//        TopPageVC *vc = [[TopPageVC alloc]init];
+//        
+//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+//            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+//
+//        [self.navigationController pushViewController:vc animated:NO];
 
     }
 }

@@ -13,12 +13,25 @@
 #import "SortView.h"
 
 @class Design;
+@class Preferences;
+@class Rating;
+@class Tools;
+@class RatingTools;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TopPageCV : UIViewController < UICollectionViewDataSource, UICollectionViewDelegate>
+@interface TopPageCV : UIViewController <NSURLSessionDataDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
+@property (strong, readwrite, retain, atomic) Preferences *preferences;
+@property (strong, readwrite, retain, atomic) Rating *rating;
+@property (strong, readwrite, retain, atomic) Tools *tools;
+@property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
+
+@property (readwrite, assign, atomic) int timeRefresh;
+@property (readwrite, assign, atomic) bool refreshButtonPressed;
+
+@property (strong, nonatomic, readwrite) WaitView *waitView;
 
 @property (strong, nonatomic, readwrite) MenueView *menueView;
 @property (strong, nonatomic, readwrite) SortView *sortView;
