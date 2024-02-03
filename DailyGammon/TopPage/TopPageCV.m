@@ -872,7 +872,7 @@ didCompleteWithError:(NSError *)error
     [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
     [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
     
-    UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+    DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
     eventLabel.textAlignment = NSTextAlignmentCenter;
     [eventLabel setFont:[UIFont boldSystemFontOfSize: eventLabel.font.pointSize]];
 
@@ -1000,6 +1000,10 @@ didCompleteWithError:(NSError *)error
 {
     if(!refreshButtonPressed)
     {
+        [self readTopPage];
+        [self reDrawHeader];
+        [self updateCollectionView];
+
         [NSTimer scheduledTimerWithTimeInterval:60.0f
                                          target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
         timeRefresh = 60;
