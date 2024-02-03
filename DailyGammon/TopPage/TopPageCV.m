@@ -62,6 +62,7 @@
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    timeRefresh = 60;
 
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -324,7 +325,7 @@ didCompleteWithError:(NSError *)error
     }
     if(self.topPageArray.count > 0)
     {
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 3)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 4)
             [self sortUpdate];
 
         [self updateCollectionView];
