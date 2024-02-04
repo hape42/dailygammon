@@ -169,66 +169,56 @@
     // Add the view at the front of the app's windows
 
     [view addSubview:self];
-    
-    x = superFrame.origin.x + superFrame.size.width  - fr.size.width - 50;
-    y = superFrame.origin.y + 50;
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.frame = CGRectMake(x,y,self.frame.size.width,self.frame.size.height);
+        
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    } completion:^(BOOL finished) {
+    // Top space to superview Y
+    NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:view
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:50];
+    //  position X
+    NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:view
+                                                                             attribute: NSLayoutAttributeRight
+                                                                            multiplier:1.0
+                                                                              constant:-50];
+    // Fixed width
+    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                                 attribute:NSLayoutAttributeWidth
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:nil
+                                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                                multiplier:1.0
+                                                                                  constant:self.frame.size.width];
+    // Fixed Height
+    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:self.frame.size.height];
+
+    [view addConstraints:@[yConstraint, xConstraint,widthConstraint,heightConstraint]];
+
+    [self setNeedsUpdateConstraints];
+    [UIView animateWithDuration:1.0 animations:^{
+        [self layoutIfNeeded];
     }];
 
     return;
 }
 
-
-- (void)drawRect:(CGRect)rect
-{
-    
-    design      = [[Design alloc] init];
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSaveGState(context);
-
-    // Draw a rectangle with rounded corners
-    
-    CGFloat radius = 10.0f;
-    CGRect fr = rect;
-
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    CGContextSetFillColorWithColor(context, [[UIColor clearColor] CGColor]);
-    
-    CGMutablePathRef selectionPath = CGPathCreateMutable();
-    CGPathMoveToPoint(selectionPath, NULL, fr.origin.x, fr.origin.y + radius);
-    CGPathAddLineToPoint(selectionPath, NULL, fr.origin.x, fr.origin.y + fr.size.height - radius);
-    CGPathAddArc(selectionPath, NULL, fr.origin.x + radius, fr.origin.y + fr.size.height - radius, radius, M_PI, M_PI / 2, 1);
-    CGPathAddLineToPoint(selectionPath, NULL, fr.origin.x + fr.size.width - radius, fr.origin.y + fr.size.height);
-    CGPathAddArc(selectionPath, NULL, fr.origin.x + fr.size.width - radius, fr.origin.y + fr.size.height - radius, radius, M_PI / 2, 0.0f, 1);
-    CGPathAddLineToPoint(selectionPath, NULL, fr.origin.x + fr.size.width, fr.origin.y + radius);
-    CGPathAddArc(selectionPath, NULL, fr.origin.x + fr.size.width - radius, fr.origin.y + radius, radius, 0.0f, -M_PI / 2, 1);
-    CGPathAddLineToPoint(selectionPath, NULL, fr.origin.x + radius, fr.origin.y);
-    CGPathAddArc(selectionPath, NULL, fr.origin.x + radius, fr.origin.y + radius, radius, -M_PI / 2, M_PI, 1);
-    CGPathCloseSubpath(selectionPath);
-
-    CGContextAddPath(context, selectionPath);
-    CGContextFillPath(context);
-    CGPathRelease(selectionPath);
-    
-    CGContextRestoreGState(context);
-}
-
 - (void)dismiss
 {
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self.frame = CGRectMake(self.frame.origin.x,
-                                1000,
-                                self.frame.size.width,
-                                self.frame.size.height);
-
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-
-    }];
+    [self removeFromSuperview];
+    return;
 }
 
 - (void)screenTouched:(UIGestureRecognizer *)gesture
@@ -272,12 +262,6 @@
 {
     GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
     [self.navigationController pushViewController:vc animated:NO];
-//
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    
-//    GameLounge *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"GameLounge"];
-//    
-//    [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) playerVC
