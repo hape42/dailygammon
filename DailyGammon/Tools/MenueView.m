@@ -208,9 +208,6 @@
     [view addConstraints:@[yConstraint, xConstraint,widthConstraint,heightConstraint]];
 
     [self setNeedsUpdateConstraints];
-    [UIView animateWithDuration:1.0 animations:^{
-        [self layoutIfNeeded];
-    }];
 
     return;
 }

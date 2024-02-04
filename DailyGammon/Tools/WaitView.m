@@ -45,26 +45,7 @@
     fr.origin.x = superFrame.origin.x + superFrame.size.width / 2.0f - fr.size.width / 2.0f;
     fr.origin.y    = superFrame.origin.y + superFrame.size.height / 2.0f - fr.size.height / 2.0f;
     self.frame = fr;
-    
-    /* Fixed width */
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                       attribute:NSLayoutAttributeWidth
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:nil
-                                                                       attribute:NSLayoutAttributeNotAnAttribute
-                                                                      multiplier:1.0
-                                                                        constant:200];
-    /* Fixed Height */
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                        attribute:NSLayoutAttributeHeight
-                                                                        relatedBy:NSLayoutRelationEqual
-                                                                           toItem:nil
-                                                                        attribute:NSLayoutAttributeNotAnAttribute
-                                                                       multiplier:1.0
-                                                                         constant:100];
-    
-
-
+        
     float x = (self.bounds.size.width / 2.0f) - 15;
     UIImageView *dicesView = [[UIImageView alloc]initWithFrame:CGRectMake(x,50,30,30  )];
     
@@ -94,9 +75,7 @@
     self.backgroundColor = UIColor.clearColor;
     [view addSubview:self];
     
-    [view.centerXAnchor constraintEqualToAnchor:self.centerXAnchor].active = YES;
-    [view.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
-  //  [self addConstraints:@[ widthConstraint, heightConstraint]];
+    self.center = view.center;
 
     return;
 }
