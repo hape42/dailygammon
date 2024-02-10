@@ -1815,10 +1815,19 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) 
+     {
+         // Code to be executed during the animation
+        [self drawViewsInSuperView:size.width andWith:size.height];
+        [self showMatch];
+
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
+     {
+         // Code to be executed after the animation is completed
+     }];
+
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
-    [self drawViewsInSuperView:size.width andWith:size.height];
-    [self showMatch];
 
 }
 
