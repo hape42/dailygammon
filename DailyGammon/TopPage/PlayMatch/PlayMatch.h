@@ -38,6 +38,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic, readwrite) UIView *actionView;
 @property (readwrite, assign, atomic) float actionViewWidth;
 
+@property (readwrite, assign, atomic) BOOL isPortrait;
+
 @end
 
 NS_ASSUME_NONNULL_END

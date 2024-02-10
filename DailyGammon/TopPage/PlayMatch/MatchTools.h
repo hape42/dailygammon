@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) BoardElements *boardElements;
 
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor;
--(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth;
+-(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth isPortrait:(BOOL)isPortrait;
 
 - (int) analyzeAction:(NSMutableDictionary *)actionDict isChat:(BOOL) isChat isReview:(BOOL) isReview;
 

@@ -362,7 +362,7 @@
     [self.view addSubview:boardView];
     
     
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:100];
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:100 isPortrait:FALSE];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];

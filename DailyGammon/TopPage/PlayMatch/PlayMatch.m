@@ -112,6 +112,7 @@
 @synthesize boardView, actionView;
 @synthesize zoomFactor;
 @synthesize actionViewWidth;
+@synthesize isPortrait;
 
 #define BUTTONHEIGHT 35
 #define BUTTONWIDTH 80
@@ -372,7 +373,7 @@
     }
     [self.view addSubview:boardView];
    // return;
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth];
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth isPortrait:isPortrait];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
@@ -1752,6 +1753,7 @@
     zoomFactor = 1.0;
     
     actionViewWidth = 100;
+    isPortrait = FALSE;
     UIColor *actionColor = UIColor.redColor;
     
     if(maxWidth > maxHeight) // views Side by side
@@ -1796,17 +1798,11 @@
         boardHeight = boardHeight *zoomFactor;
         
         actionViewWidth = boardWidth;
+        isPortrait = TRUE;
     }
 
     boardView = [[UIView alloc] initWithFrame:CGRectMake(x, y, boardWidth, boardHeight)];
     boardView.tag = BOARD_VIEW;
-
-//    actionView = [[UIView alloc] initWithFrame:CGRectMake(x + boardWidth + gap, y, actionViewWidth, boardHeight)];
-//    actionView.backgroundColor = actionColor;
-//    [self.view addSubview:actionView];
-    
-//    XLog(@"w %3.1f  h %3.1f", superViewWidth, superViewheight);
-    XLog(@"boardView w %3.1f  h %3.1f", boardWidth, boardHeight);
 
     return;
  }
