@@ -388,6 +388,7 @@
 }
 - (BOOL)isX
 {
+// https://www.ios-resolution.com
     if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
         int height = (int)[[UIScreen mainScreen] nativeBounds].size.height;
@@ -428,7 +429,7 @@
                 return TRUE;
                 break;
             case 2556:
-                //return @"iPhone 14 Pro";
+                //return @"iPhone 14 Pro, iPhone 15";
                 return TRUE;
                 break;
 
@@ -442,7 +443,7 @@
                 return TRUE;
                 break;
             case 2796:
-                //return @"iPhone 14 Pro max";
+                //return @"iPhone 14 Pro max, iPhone 15 Plus, iPhone 15 Pro, iPhone 15 Pro max";
                 return TRUE;
                 break;
 

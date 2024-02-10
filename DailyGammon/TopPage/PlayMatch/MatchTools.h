@@ -12,15 +12,17 @@ NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Rating;
 @class BoardElements;
+@class Tools;
 
 @interface MatchTools : NSObject
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Rating *rating;
+@property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) BoardElements *boardElements;
 
--(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict;
--(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView;
+-(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor;
+-(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth;
 
 - (int) analyzeAction:(NSMutableDictionary *)actionDict isChat:(BOOL) isChat isReview:(BOOL) isReview;
 

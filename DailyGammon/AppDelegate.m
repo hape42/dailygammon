@@ -20,6 +20,8 @@
 #import "Review.h"
 #import "Tournament.h"
 #import "TopPageCV.h"
+#import "PlayMatch.h"
+#import "NoInternet.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -34,12 +36,14 @@
     UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;
 
     UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
-    XLog(@"CurrentVC: %@", currentViewController);
+ //   XLog(@"CurrentVC: %@", currentViewController);
 
     if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
     if (currentViewController.class == TopPageCV.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == PlayMatch.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == NoInternet.class)   orientationMask = UIInterfaceOrientationMaskAll;
 
     if (currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
     

@@ -24,5 +24,7 @@
 
 - (NSString *)cleanChatString:(NSString *)chatString;
 
+- (void)removeAllSubviewsRecursively:(UIView *)view;
+
 @end
 

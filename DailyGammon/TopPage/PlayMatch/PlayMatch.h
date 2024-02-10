@@ -30,8 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, readwrite, retain, atomic) NSString *matchLink;
 @property (readwrite, assign, atomic) BOOL isReview;
+@property (readwrite, assign, atomic) float zoomFactor;
 
 @property (strong, nonatomic, readwrite) MenueView *menueView;
+
+@property (strong, nonatomic, readwrite) UIView *boardView;
+@property (strong, nonatomic, readwrite) UIView *actionView;
+@property (readwrite, assign, atomic) float actionViewWidth;
 
 @end
 

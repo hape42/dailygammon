@@ -304,5 +304,15 @@ typedef void(^connection)(BOOL);
 
     return str;
 }
+
+- (void)removeAllSubviewsRecursively:(UIView *)view 
+{
+    for (UIView *subview in view.subviews) 
+    {
+        [self removeAllSubviewsRecursively:subview];
+        [subview removeFromSuperview];
+    }
+}
+
 @end
 

@@ -342,9 +342,9 @@
 
 -(void)drawPlayingAreas
 {
-    
-    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
-    UIView *boardView = [returnDict objectForKey:@"boardView"];
+    UIView *boardView;
+    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict boardView:boardView zoom:1.0];
+    boardView = [returnDict objectForKey:@"boardView"];
     self.moveArray = [returnDict objectForKey:@"moveArray"];
     
     UIView *removeView;
@@ -362,7 +362,7 @@
     [self.view addSubview:boardView];
     
     
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView];
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:100];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];

@@ -82,6 +82,7 @@
 		E0C1D82A21E900D100494A82 /* GameLounge.m in Sources */ = {isa = PBXBuildFile; fileRef = E0C1D82921E900D100494A82 /* GameLounge.m */; };
 		E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82B21EB99C400494A82 /* classicHD.png */; };
 		E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82F21EB9F5600494A82 /* app_icon.png */; };
+		E0DF4F702B6FF0CA002FEAF2 /* PlayMatchCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0DF4F6F2B6FF0CA002FEAF2 /* PlayMatchCV.m */; };
 		E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */; };
 		E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */; };
 		E0EE051729D7237C003DEDE8 /* NoBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EE051629D7237C003DEDE8 /* NoBoard.m */; };
@@ -323,6 +324,8 @@
 		E0C1D82921E900D100494A82 /* GameLounge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameLounge.m; sourceTree = "<group>"; };
 		E0C1D82B21EB99C400494A82 /* classicHD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = classicHD.png; sourceTree = "<group>"; };
 		E0C1D82F21EB9F5600494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
+		E0DF4F6E2B6FF0CA002FEAF2 /* PlayMatchCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayMatchCV.h; sourceTree = "<group>"; };
+		E0DF4F6F2B6FF0CA002FEAF2 /* PlayMatchCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayMatchCV.m; sourceTree = "<group>"; };
 		E0EC955A221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+URLQueryValueAllowed.h"; sourceTree = "<group>"; };
 		E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+URLQueryValueAllowed.m"; sourceTree = "<group>"; };
 		E0EC955D221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PercentEncodeURLQueryValue.h"; sourceTree = "<group>"; };
@@ -502,6 +505,8 @@
 			children = (
 				E09C007221B042020056D2A2 /* PlayMatch.h */,
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
+				E0DF4F6E2B6FF0CA002FEAF2 /* PlayMatchCV.h */,
+				E0DF4F6F2B6FF0CA002FEAF2 /* PlayMatchCV.m */,
 				E09871E8294870E60043DC8A /* MatchTools.h */,
 				E09871E9294870E60043DC8A /* MatchTools.m */,
 				E0777D60294E24DB00712C76 /* BoardElements.h */,
@@ -1018,6 +1023,7 @@
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
 				E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */,
 				E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */,
+				E0DF4F702B6FF0CA002FEAF2 /* PlayMatchCV.m in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,
 				E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */,

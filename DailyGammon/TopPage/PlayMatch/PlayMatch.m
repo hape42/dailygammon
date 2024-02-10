@@ -43,6 +43,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
 @property (weak, nonatomic) IBOutlet UILabel *makeYourMove;
 
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+
 @property (weak, nonatomic) IBOutlet UIView *chatView;
 @property (weak, nonatomic) IBOutlet UIButton *transparentButton;
 @property (assign, atomic) BOOL chatIsTransparent;
@@ -107,6 +109,10 @@
 
 @synthesize menueView;
 
+@synthesize boardView, actionView;
+@synthesize zoomFactor;
+@synthesize actionViewWidth;
+
 #define BUTTONHEIGHT 35
 #define BUTTONWIDTH 80
 
@@ -114,6 +120,10 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationDidChange:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
@@ -170,11 +180,42 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+    [self layoutObjects];
+    [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
+
     [self showMatch];
 }
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
+- (void)orientationDidChange:(NSNotification *)notification {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+
+    switch (orientation) {
+        case UIDeviceOrientationPortrait:
+            //NSLog(@"Portrait orientation");
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            //NSLog(@"Landscape Left orientation");
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            //NSLog(@"Landscape Right orientation");
+            break;
+        // ... weitere Orientierungen je nach Bedarf
+        default:
+            break;
+    }
+    [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
+
+    [self showMatch];
+
+}
 - (IBAction)moreAction:(id)sender
 {
     if(!menueView)
@@ -302,8 +343,8 @@
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
 
-    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict];
-    UIView *boardView = [returnDict objectForKey:@"boardView"];
+    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict boardView:boardView zoom:zoomFactor];
+    boardView = [returnDict objectForKey:@"boardView"];
     // passe chatView an boardView an
     CGRect frame = self.chatView.frame;
     frame.size.width = boardView.frame.size.width * .8;
@@ -312,19 +353,26 @@
     self.moveArray = [returnDict objectForKey:@"moveArray"];
         
     UIView *removeView;
-    
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
+    {
+        [removeView removeFromSuperview];
+    }
+
+    while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
         for (UIView *subUIView in removeView.subviews)
         {
+            for (UIView *subsubUIView in subUIView.subviews)
+            {
+                [subsubUIView removeFromSuperview];
+            }
             [subUIView removeFromSuperview];
         }
         [removeView removeFromSuperview];
     }
-
     [self.view addSubview:boardView];
-
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView];
+   // return;
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
@@ -337,11 +385,7 @@
 
     while((removeView = [self.view viewWithTag:ACTION_VIEW]) != nil)
     {
-        for (UIView *subUIView in removeView.subviews)
-        {
-            [subUIView removeFromSuperview];
-        }
-        [removeView removeFromSuperview];
+        [tools removeAllSubviewsRecursively:removeView];
     }
     [self.view addSubview:actionView];
     [self.view addSubview:playerView];
@@ -352,17 +396,17 @@
 
     UIView *upperThird = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  actionViewWidth, actionViewHeight /3)];
 //    upperThird.backgroundColor = UIColor.redColor;
-    upperThird.layer.borderWidth = 1;
+//    upperThird.layer.borderWidth = 1;
     [actionView addSubview:upperThird];
     
     UIView *middleThird = [[UIView alloc]initWithFrame:CGRectMake(0, upperThird.frame.origin.y + upperThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
 //    middleThird.backgroundColor = UIColor.yellowColor;
-    middleThird.layer.borderWidth = 1;
+//    middleThird.layer.borderWidth = 1;
     [actionView addSubview:middleThird];
     
     UIView *lowerThird = [[UIView alloc]initWithFrame:CGRectMake(0, middleThird.frame.origin.y + middleThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
 //    lowerThird.backgroundColor = UIColor.greenColor;
-    lowerThird.layer.borderWidth = 1;
+//    lowerThird.layer.borderWidth = 1;
     [actionView addSubview:lowerThird];
 
     int edge = 10;
@@ -1556,6 +1600,225 @@
     [alert addAction:mailButton];
 
     [self presentViewController:alert animated:YES completion:nil];
+
+}
+
+#pragma mark - autoLayout
+
+-(BOOL)prefersStatusBarHidden
+{
+    // maximize view
+    return YES;
+}
+
+-(void)layoutObjects
+{
+    UIView *superview = self.view;
+    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+
+    float edge = 5.0;
+    
+#pragma mark moreButton autoLayout
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    // Top space to superview Y
+    NSLayoutConstraint *moreButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+    //  position X
+    NSLayoutConstraint *moreButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:superview
+                                                                             attribute: NSLayoutAttributeRight
+                                                                            multiplier:1.0
+                                                                              constant:-edge];
+
+    // Fixed width
+    NSLayoutConstraint *moreButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                                 attribute:NSLayoutAttributeWidth
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:nil
+                                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                                multiplier:1.0
+                                                                                  constant:40];
+    // Fixed Height
+    NSLayoutConstraint *moreButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
+
+    [superview addConstraints:@[moreButtonXConstraint, moreButtonYConstraint, moreButtonWidthConstraint, moreButtonHeightConstraint]];
+
+#pragma mark matchCountLabel autoLayout
+    [self.matchCountLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    NSLayoutConstraint *matchCountYConstraint = [NSLayoutConstraint constraintWithItem:self.matchCountLabel
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+
+    NSLayoutConstraint *matchCountRightConstraint = [NSLayoutConstraint constraintWithItem:self.matchCountLabel
+                                                                                 attribute:NSLayoutAttributeRight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.moreButton
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:-edge];
+
+    // Fixed width
+    NSLayoutConstraint *matchCountWidthConstraint = [NSLayoutConstraint constraintWithItem:self.matchCountLabel
+                                                                                 attribute:NSLayoutAttributeWidth
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:nil
+                                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                                multiplier:1.0
+                                                                                  constant:40];
+    // Fixed Height
+    NSLayoutConstraint *matchCountHeightConstraint = [NSLayoutConstraint constraintWithItem:self.matchCountLabel
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
+
+    [superview addConstraints:@[matchCountYConstraint, matchCountRightConstraint, matchCountWidthConstraint, matchCountHeightConstraint]];
+
+#pragma mark matchName autoLayout
+    [self.matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:self.matchName
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:self.matchName
+                                                                                 attribute:NSLayoutAttributeLeft
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:safe
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:edge];
+    NSLayoutConstraint *headerRightConstraint = [NSLayoutConstraint constraintWithItem:self.matchName
+                                                                                 attribute:NSLayoutAttributeRight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.matchCountLabel
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:-edge];
+    // Fixed Height
+    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.matchName
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
+
+    [superview addConstraints:@[headerYConstraint, headerLeftConstraint, headerRightConstraint, headerHeightConstraint]];
+}
+
+- (void) drawViewsInSuperView:(float)superViewWidth andWith:(float)superViewheight
+{
+    float edge = 20;
+    float gap = 10;
+    int notch = 0;
+    if([design isX] && (superViewWidth > superViewheight) ) //Notch
+        notch = 50;
+    float x = edge;
+    float y = 40 + gap ;
+    float maxHeight = superViewheight - y - edge;
+    float maxWidth  = superViewWidth - edge - edge;
+
+    // I have determined these numbers when planning on paper in order to optimally represent a game board.
+    // float boardWidth  = cubeWidth + (6 * checkerWidth) + barWidth + (6 * checkerWidth) + offWidth; // 70 + (6 * 40) + 40 + (6 * 40) + 70 = 660
+    // float boardHeight = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight + pointsHeight + numberHeight; // 15 + 200 + 22 + 40 + 22 + 200 + 15 = 514
+
+    float boardWidth  = 660;
+    float boardHeight = 514;
+    zoomFactor = 1.0;
+    
+    actionViewWidth = 100;
+    UIColor *actionColor = UIColor.redColor;
+    
+    if(maxWidth > maxHeight) // views Side by side
+    {
+        maxWidth = maxWidth - ( 2 * notch); // to be sure that it does not interfere with either the right or left side
+        x += notch;
+
+        zoomFactor = maxHeight / boardHeight;
+
+        boardWidth  = boardWidth * zoomFactor;
+        boardHeight = boardHeight * zoomFactor;
+        
+        actionViewWidth = maxWidth - boardWidth;
+        // for the actionView we need a minimum width of 250 and a maximum of 300
+
+        if(actionViewWidth < 250)
+        {
+            float resizeFactor = (boardWidth - (250 - actionViewWidth)) / boardWidth;
+            boardWidth = boardWidth - (250 - actionViewWidth);
+            actionViewWidth = 250;
+
+            boardHeight *= resizeFactor;
+            zoomFactor =  boardWidth / 660;
+
+            y += ((maxHeight - y) - boardHeight) / 2; // center views vertical if we had du resize boardView
+            actionColor = UIColor.yellowColor;
+        }
+        if(actionViewWidth > 250)
+        {
+            x += (actionViewWidth - 250) / 2;
+            actionViewWidth = 250;
+            actionColor = UIColor.greenColor;
+        }
+    }
+    else // views among each other
+    {
+        y = self.matchName.frame.origin.y + self.matchName.frame.size.height + 50;
+        maxHeight = maxHeight - notch;
+        zoomFactor = maxWidth / boardWidth;
+
+        boardWidth  = maxWidth;
+        boardHeight = boardHeight *zoomFactor;
+        
+        actionViewWidth = boardWidth;
+    }
+
+    boardView = [[UIView alloc] initWithFrame:CGRectMake(x, y, boardWidth, boardHeight)];
+    boardView.tag = BOARD_VIEW;
+
+//    actionView = [[UIView alloc] initWithFrame:CGRectMake(x + boardWidth + gap, y, actionViewWidth, boardHeight)];
+//    actionView.backgroundColor = actionColor;
+//    [self.view addSubview:actionView];
+    
+//    XLog(@"w %3.1f  h %3.1f", superViewWidth, superViewheight);
+    XLog(@"boardView w %3.1f  h %3.1f", boardWidth, boardHeight);
+
+    return;
+ }
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator 
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+    
+    [self drawViewsInSuperView:size.width andWith:size.height];
+    [self showMatch];
 
 }
 

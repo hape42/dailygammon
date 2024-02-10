@@ -13,13 +13,14 @@
 #import "BoardElements.h"
 #import "DGButton.h"
 #import "DGLabel.h"
+#import "Tools.h"
 
 @implementation MatchTools
 
-@synthesize design, rating, boardElements;
+@synthesize design, rating,tools, boardElements;
 
 #pragma mark - draw boardView
--(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict
+-(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor
 {
     
     //     13 14 15 16 17 18    19 20 21 22 23 24
@@ -47,21 +48,22 @@
     //     12 11 10  9  8  7     6  5  4  3  2  1
 
     design        = [[Design alloc] init];
+    tools         = [[Tools alloc] init];
     boardElements = [[BoardElements alloc] init];
 
-    float zoomFactor = 1.0; // is important for iPhone
+ //   float zoomFactor = 1.0; // is important for iPhone
     
     // I have determined these numbers when planning on paper in order to optimally represent a game board.
-    int checkerWidth = 40;
-    int offWidth = 70;
-    int barWidth = 40;
-    int cubeWidth = offWidth;
-    int pointsHeight = 200;
-    int numberHeight = 15;
-    int indicatorHeight = 22;
+    float checkerWidth = 40;
+    float offWidth = 70;
+    float barWidth = 40;
+    float cubeWidth = offWidth;
+    float pointsHeight = 200;
+    float numberHeight = 15;
+    float indicatorHeight = 22;
 
     float boardWidth  = cubeWidth + (6 * checkerWidth) + barWidth + (6 * checkerWidth) + offWidth; // 70 + (6 * 40) + 40 + (6 * 40) + 70 = 660
-    float boardHeight = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight + pointsHeight + numberHeight; // 15 + 200 + 22 + 40 + 22 + 200 + 15 = 504
+    float boardHeight = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight + pointsHeight + numberHeight; // 15 + 200 + 22 + 40 + 22 + 200 + 15 = 514
     
     int maxWidth  = [UIScreen mainScreen].bounds.size.width;
     int maxHeight = [UIScreen mainScreen].bounds.size.height;
@@ -69,30 +71,30 @@
     int x = 0;
     int y = 0;
     
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        x = 20;
-        y = 200;
-        zoomFactor = (maxHeight - y - 50) / boardHeight;
-    }
-    else
-    {
-        x = 5;
-        y = 40;
-        if([design isX])
-        {
-            maxWidth = [UIScreen mainScreen].bounds.size.width - 30;
-            x = 50;
-            
-            NSArray *windows = [[UIApplication sharedApplication] windows];
-            UIWindow *keyWindow = (UIWindow *) windows[0];
-            UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
-            maxHeight  = [UIScreen mainScreen].bounds.size.height - safeArea.bottom;
-        }
-        zoomFactor = (maxHeight - y - 5) / boardHeight;
-    }
-    zoomFactor *= .98; // to have more space for the activityView, otherwise it hangs on the edge.
-
+//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
+//    {
+//        x = 20;
+//        y = 200;
+//        zoomFactor = (maxHeight - y - 50) / boardHeight;
+//    }
+//    else
+//    {
+//        x = 5;
+//        y = 40;
+//        if([design isX])
+//        {
+//            maxWidth = [UIScreen mainScreen].bounds.size.width - 30;
+//            x = 50;
+//            
+//            NSArray *windows = [[UIApplication sharedApplication] windows];
+//            UIWindow *keyWindow = (UIWindow *) windows[0];
+//            UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
+//            maxHeight  = [UIScreen mainScreen].bounds.size.height - safeArea.bottom;
+//        }
+//        zoomFactor = (maxHeight - y - 5) / boardHeight;
+//    }
+//    zoomFactor *= .98; // to have more space for the activityView, otherwise it hangs on the edge.
+//    zoomFactor = 1;
     checkerWidth    *= zoomFactor;
     offWidth        *= zoomFactor;;
     barWidth        *= zoomFactor;;
@@ -104,8 +106,11 @@
     boardWidth  = cubeWidth + (6 * checkerWidth) + barWidth + (6 * checkerWidth) + offWidth;
     boardHeight = numberHeight + pointsHeight + indicatorHeight + checkerWidth + indicatorHeight + pointsHeight + numberHeight;
 
-    UIView *boardView = [[UIView alloc] initWithFrame:CGRectMake(x, y, boardWidth, boardHeight)];
-    boardView.tag = BOARD_VIEW;
+ //   UIView *
+//    boardView = [[UIView alloc] initWithFrame:CGRectMake(x, y, boardWidth, boardHeight)];
+//    boardView.tag = BOARD_VIEW;
+
+    [tools removeAllSubviewsRecursively:boardView];
 
     NSMutableDictionary *schemaDict = [design schema:schema];
     UIColor *boardColor             = [schemaDict objectForKey:@"BoardSchemaColor"];
@@ -762,9 +767,8 @@
 }
 
 #pragma mark - draw actionView
--(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView
+-(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth
 {
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
     int nameLabelHeight = 0;
     int detailLabelHeight = 0;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
@@ -781,14 +785,21 @@
     rating = [[Rating alloc] init];
     design = [[Design alloc] init];
 
-    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(boardView.frame.origin.x + boardView.frame.size.width + 5,
-                                                                  boardView.frame.origin.y + nameLabelHeight + ( 3 * detailLabelHeight) ,
-                                                                  maxBreite - boardView.frame.size.width - boardView.frame.origin.x - 10,
-                                                                  boardView.frame.size.height - nameLabelHeight - ( 3 * detailLabelHeight) - nameLabelHeight - ( 3 * detailLabelHeight))];
+    float x = boardView.frame.origin.x + boardView.frame.size.width + 5;
+    float y = boardView.frame.origin.y ;
+    float labelWidth = actionViewWidth;
+    if(actionViewWidth == boardView.frame.size.width)
+    {
+        labelWidth = actionViewWidth / 2;
+        x = boardView.frame.origin.x;
+        y = boardView.frame.origin.y + boardView.frame.size.height + 5;
+        nameLabelHeight *= 1.5;
+        detailLabelHeight *= 1.5;
+    }
 
-    UIView  *opponentView = [[UIView alloc] initWithFrame:CGRectMake(actionView.frame.origin.x,
-                                                                     boardView.frame.origin.y,
-                                                                     actionView.frame.size.width,
+    UIView  *opponentView = [[UIView alloc] initWithFrame:CGRectMake(x,
+                                                                     y,
+                                                                     labelWidth,
                                                                      nameLabelHeight + ( 3 * detailLabelHeight))];
 
     DGLabel *opponentName        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
@@ -836,9 +847,16 @@
     [opponentView addSubview:opponentWon];
     [opponentView addSubview:opponentLost];
 
-    UIView *playerView = [[UIView alloc] initWithFrame:CGRectMake(actionView.frame.origin.x,
-                                                                  actionView.frame.origin.y + actionView.frame.size.height,
-                                                                  actionView.frame.size.width,
+    float playerX = x;
+    float playerY = boardView.frame.origin.y + boardView.frame.size.height - (nameLabelHeight + ( 3 * detailLabelHeight));
+    if(actionViewWidth == boardView.frame.size.width)
+    {
+        playerX = x + labelWidth;
+        playerY = opponentView.frame.origin.y;
+    }
+    UIView *playerView = [[UIView alloc] initWithFrame:CGRectMake(playerX,
+                                                                  playerY,
+                                                                  labelWidth,
                                                                   nameLabelHeight + ( 3 * detailLabelHeight))];
     
     DGLabel *playerName        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
@@ -885,6 +903,17 @@
     [playerView addSubview:playerActive];
     [playerView addSubview:playerWon];
     [playerView addSubview:playerLost];
+
+    float actionViewHeight = boardView.frame.size.height - nameLabelHeight - ( 3 * detailLabelHeight) - nameLabelHeight - ( 3 * detailLabelHeight);
+    y = opponentView.frame.origin.y + opponentView.frame.size.height;
+    if(actionViewWidth == boardView.frame.size.width)
+    {
+        actionViewHeight = 200;
+    }
+
+    UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(x,y,
+                                                                  actionViewWidth,
+                                                                  actionViewHeight)];
 
     bool showRatings = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showRatings"]boolValue];
     bool showWinLoss = [[[NSUserDefaults standardUserDefaults] valueForKey:@"showWinLoss"]boolValue];
@@ -1050,6 +1079,8 @@
     playerScore.text   = @"Score:";
 
     actionView.tag = ACTION_VIEW;
+    opponentView.tag = ACTION_VIEW;
+    playerView.tag = ACTION_VIEW;
 
 #pragma mark - end drawAction
     
