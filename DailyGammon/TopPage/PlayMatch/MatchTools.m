@@ -1006,7 +1006,6 @@
     
     opponentName.text = @"";
     opponentName = [design makeLabelColor:opponentName forColor:[boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
-    opponentName.adjustsFontSizeToFitWidth = YES;
     
     DGButton *buttonOpponent = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, opponentName.frame.size.width - 100, opponentName.frame.size.height - 4)] ;
     [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
@@ -1029,10 +1028,9 @@
     
     NSMutableArray *playerArray = [boardDict objectForKey:@"player"];
     
-    playerName.text = [NSString stringWithFormat:@"%@",playerArray[0]];
+    playerName.text = @"";
     playerName = [design makeLabelColor:playerName forColor:[boardDict objectForKey:@"playerColor"]  forPlayer:YES];
     playerName = [design makeNiceLabel:playerName];
-    [playerName setTextAlignment:NSTextAlignmentCenter];
     
     DGButton *buttonPlayer = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, playerName.frame.size.width - 100, playerName.frame.size.height - 4)] ;
     [buttonPlayer setTitle:playerArray[0] forState: UIControlStateNormal];
