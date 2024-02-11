@@ -616,15 +616,15 @@ didCompleteWithError:(NSError *)error
     NSLayoutConstraint *moreButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
                                                                              attribute:NSLayoutAttributeTop
                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                toItem:superview
+                                                                                toItem:safe
                                                                              attribute:NSLayoutAttributeTop
                                                                             multiplier:1.0f
-                                                                              constant:44];
+                                                                              constant:0];
     //  position X
     NSLayoutConstraint *moreButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
                                                                              attribute:NSLayoutAttributeRight
                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                toItem:superview
+                                                                                toItem:safe
                                                                              attribute: NSLayoutAttributeRight
                                                                             multiplier:1.0
                                                                               constant:-edge];
@@ -663,7 +663,7 @@ didCompleteWithError:(NSError *)error
     NSLayoutConstraint *refreshButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.refreshButton
                                                                              attribute:NSLayoutAttributeLeft
                                                                              relatedBy:NSLayoutRelationEqual
-                                                                                toItem:superview
+                                                                                toItem:safe
                                                                              attribute: NSLayoutAttributeLeft
                                                                             multiplier:1.0
                                                                               constant:edge];
@@ -686,6 +686,43 @@ didCompleteWithError:(NSError *)error
                                                                                    constant:35];
 
     [superview addConstraints:@[refreshButtonXConstraint, refreshButtonYConstraint, refreshButtonWidthConstraint, refreshButtonHeightConstraint]];
+
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+    
+    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:self.refreshButton
+                                                                            attribute: NSLayoutAttributeRight
+                                                                           multiplier:1.0
+                                                                             constant:edge];
+    
+    NSLayoutConstraint *headerRightConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                                 attribute:NSLayoutAttributeRight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.moreButton
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:-edge];
+    // Fixed Height
+    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
+
+    [superview addConstraints:@[headerYConstraint, headerLeftConstraint, headerRightConstraint, headerHeightConstraint]];
 
 #pragma mark sortLabel autoLayout
     [self.sortLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
