@@ -22,6 +22,7 @@
 #import "TopPageCV.h"
 #import "PlayMatch.h"
 #import "NoInternet.h"
+#import "TopPageVC.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -42,6 +43,7 @@
 //    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
     if (currentViewController.class == TopPageCV.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == TopPageVC.class)   orientationMask = UIInterfaceOrientationMaskAll;
     if (currentViewController.class == PlayMatch.class)   orientationMask = UIInterfaceOrientationMaskAll;
     if (currentViewController.class == NoInternet.class)   orientationMask = UIInterfaceOrientationMaskAll;
 

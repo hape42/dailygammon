@@ -825,7 +825,7 @@ didCompleteWithError:(NSError *)error
     int labelHeight = 20;
     int buttonHeight = 35;
 
-    int height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + labelHeight + gap + (labelHeight*2) ;
+    int height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + (labelHeight*2) ;
     return CGSizeMake(250, height);
 }
 
@@ -924,14 +924,14 @@ didCompleteWithError:(NSError *)error
     y += graceLabel.frame.size.height + gap;
     x = edge;
     
-    DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight)];
-    opponentLabel.textAlignment = NSTextAlignmentLeft;
-    opponentLabel.text = @"Opponent:";
-    [cell.contentView addSubview:opponentLabel];
+//    DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight)];
+//    opponentLabel.textAlignment = NSTextAlignmentLeft;
+//    opponentLabel.text = @"Opponent:";
+//    [cell.contentView addSubview:opponentLabel];
+//
+//    y += opponentLabel.frame.size.height + gap;
 
-    y += opponentLabel.frame.size.height + gap;
-
-    opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight*2)];
+    DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight*2)];
     opponentLabel.textAlignment = NSTextAlignmentCenter;
     [opponentLabel setFont:[UIFont boldSystemFontOfSize: 25.0]];
     NSDictionary *opponent = row[6];
