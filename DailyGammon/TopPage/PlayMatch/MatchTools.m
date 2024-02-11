@@ -762,7 +762,6 @@
     float x = boardView.frame.origin.x + boardView.frame.size.width + 5;
     float y = boardView.frame.origin.y ;
     float labelWidth = actionViewWidth;
-    
     if(isPortrait)
     {
         labelWidth = boardView.frame.size.width / 2;
@@ -1007,7 +1006,10 @@
     opponentName.text = @"";
     opponentName = [design makeLabelColor:opponentName forColor:[boardDict objectForKey:@"opponentColor"]  forPlayer:NO];
     
-    DGButton *buttonOpponent = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, opponentName.frame.size.width - 100, opponentName.frame.size.height - 4)] ;
+    DGButton *buttonOpponent = [[DGButton alloc] initWithFrame:CGRectMake((opponentName.frame.size.width * .2) / 2,
+                                                                          (opponentName.frame.size.height * .2) / 2,
+                                                                          opponentName.frame.size.width * .8,
+                                                                          opponentName.frame.size.height * .8)] ;
     [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
     [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
     [opponentView addSubview:buttonOpponent];
@@ -1032,7 +1034,10 @@
     playerName = [design makeLabelColor:playerName forColor:[boardDict objectForKey:@"playerColor"]  forPlayer:YES];
     playerName = [design makeNiceLabel:playerName];
     
-    DGButton *buttonPlayer = [[DGButton alloc] initWithFrame:CGRectMake(50, 2, playerName.frame.size.width - 100, playerName.frame.size.height - 4)] ;
+    DGButton *buttonPlayer = [[DGButton alloc] initWithFrame:CGRectMake((playerName.frame.size.width * .2) / 2,
+                                                                        (playerName.frame.size.height * .2) / 2,
+                                                                        playerName.frame.size.width * .8,
+                                                                        playerName.frame.size.height * .8)] ;
     [buttonPlayer setTitle:playerArray[0] forState: UIControlStateNormal];
     [buttonPlayer.layer setValue:opponentArray[0] forKey:@"name"];
     [playerView addSubview:buttonPlayer];
