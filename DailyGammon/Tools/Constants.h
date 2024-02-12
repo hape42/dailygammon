@@ -13,3 +13,4 @@ extern NSString * const matchCountChangedNotification;
 extern NSString * const sortNotification;
 extern NSString * const sortButton;
 
+#define ALERT_VIEW_TAG 42

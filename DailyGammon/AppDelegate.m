@@ -10,6 +10,7 @@
 #import "Design.h"
 #import "Tools.h"
 #import "Preferences.h"
+#import "Constants.h"
 #import "DBConnect.h"
 #import "RatingCD.h"
 #import <StoreKit/StoreKit.h>
@@ -23,6 +24,7 @@
 #import "PlayMatch.h"
 #import "NoInternet.h"
 #import "TopPageVC.h"
+#import "NoBoard.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -40,14 +42,15 @@
  //   XLog(@"CurrentVC: %@", currentViewController);
 
     if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
-//    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
-//    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == TopPageCV.class)   orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == TopPageVC.class)   orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == PlayMatch.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == TopPageCV.class)    orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == TopPageVC.class)    orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == PlayMatch.class)    orientationMask = UIInterfaceOrientationMaskAll;
     if (currentViewController.class == NoInternet.class)   orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.class == NoBoard.class)      orientationMask = UIInterfaceOrientationMaskAll;
 
-    if (currentViewController.view.tag == 42) orientationMask = UIInterfaceOrientationMaskAll;
+    if (currentViewController.view.tag == ALERT_VIEW_TAG) orientationMask = UIInterfaceOrientationMaskAll; //
     
     return orientationMask;
 }
