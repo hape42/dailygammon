@@ -43,7 +43,7 @@
 
 @synthesize menueView, sortView, waitView;
 @synthesize design, preferences, rating, tools, ratingTools;
-@synthesize timeRefresh, refreshButtonPressed;
+@synthesize timeRefresh, refreshButtonPressed, timer;
 
 - (void)viewDidLoad
 {
@@ -234,7 +234,7 @@ didCompleteWithError:(NSError *)error
 -(void)readTopPage
 {
     [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
-
+    XLog(@"readTopPage");
     DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
         if (success)
@@ -1041,12 +1041,20 @@ didCompleteWithError:(NSError *)error
         [self reDrawHeader];
         [self updateCollectionView];
 
-        [NSTimer scheduledTimerWithTimeInterval:60.0f
-                                         target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
         timeRefresh = 60;
-        [NSTimer scheduledTimerWithTimeInterval:1.0f
+        timer =[NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
         refreshButtonPressed = YES;
+    }
+    else
+    {
+        refreshButtonPressed = NO;
+        if (timer && [timer isValid])
+        {
+            [timer invalidate];
+            timer = nil;
+        }
+        [self.refreshButton setTitle:@"Refresh" forState: UIControlStateNormal];
     }
 }
 - (void)automaticRefresh

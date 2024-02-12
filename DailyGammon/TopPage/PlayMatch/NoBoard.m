@@ -30,7 +30,7 @@
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
-#import "TopPageVC.h"
+#import "TopPageCV.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
@@ -118,7 +118,7 @@
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
         [self.navigationController pushViewController:vc animated:NO];
         return;
@@ -226,7 +226,7 @@
     {
         XLog(@"---------> empty htmlString");
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -501,7 +501,7 @@
                                 {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-        TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
                                  }];
 
@@ -580,7 +580,7 @@
                                             [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
                                         }
                                                 AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                                                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                                 [self.navigationController pushViewController:vc animated:NO];
 
@@ -807,7 +807,7 @@
         {
             AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             
-            TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
+            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
             
             [self.navigationController pushViewController:vc animated:NO];
         }

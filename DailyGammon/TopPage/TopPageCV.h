@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
+@property (readwrite, retain, nonatomic) NSTimer *timer;
 @property (readwrite, assign, atomic) int timeRefresh;
 @property (readwrite, assign, atomic) bool refreshButtonPressed;
 
