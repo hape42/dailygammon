@@ -884,6 +884,8 @@ didCompleteWithError:(NSError *)error
     cell.layer.cornerRadius = 14.0f;
     cell.layer.masksToBounds = YES;
     cell.backgroundColor = [UIColor colorNamed:@"ColorCV"];
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    UIColor *tintColor = [schemaDict objectForKey:@"TintColor"];
 
     if(self.topPageArray.count < 1)
         return cell;
@@ -927,7 +929,16 @@ didCompleteWithError:(NSError *)error
     DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,labelHeight)];
     lengthLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *length = row[5];
-    lengthLabel.text = [NSString stringWithFormat: @"Length: %@",[length objectForKey:@"Text"]];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Length: %@",[length objectForKey:@"Text"]]];
+    NSRange range = NSMakeRange(7, attributedString.length - 7);
+    NSDictionary *boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+    NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: tintColor};
+    NSMutableDictionary *combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+    [combinedAttributes addEntriesFromDictionary:colorAttributes];
+    [attributedString setAttributes:combinedAttributes range:range];
+    lengthLabel.attributedText = attributedString;
+
     [cell.contentView addSubview:lengthLabel];
 
     x += lengthLabel.frame.size.width;
@@ -935,7 +946,14 @@ didCompleteWithError:(NSError *)error
     DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,labelHeight)];
     roundLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *round = row[4];
-    roundLabel.text = [NSString stringWithFormat: @"Round: %@",[round objectForKey:@"Text"]];
+    
+    attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Round: %@",[round objectForKey:@"Text"]]];
+    range = NSMakeRange(7, attributedString.length - 7);
+    boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+    combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+    [combinedAttributes addEntriesFromDictionary:colorAttributes];
+    [attributedString setAttributes:combinedAttributes range:range];    roundLabel.attributedText = attributedString;
+
     [cell.contentView addSubview:roundLabel];
 
 #pragma mark 3. Line time & grace
@@ -945,7 +963,14 @@ didCompleteWithError:(NSError *)error
     DGLabel *timeLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,labelHeight)];
     timeLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *time = row[3];
-    timeLabel.text = [NSString stringWithFormat:@"Time: %@",[time objectForKey:@"Text"]];
+    
+    attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Time: %@",[time objectForKey:@"Text"]]];
+    range = NSMakeRange(6, attributedString.length - 6);
+    boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+    combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+    [combinedAttributes addEntriesFromDictionary:colorAttributes];
+    [attributedString setAttributes:combinedAttributes range:range];    timeLabel.attributedText = attributedString;
+
     [cell.contentView addSubview:timeLabel];
 
     x += timeLabel.frame.size.width;
@@ -953,7 +978,14 @@ didCompleteWithError:(NSError *)error
     DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,labelHeight)];
     graceLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *grace = row[2];
-    graceLabel.text = [NSString stringWithFormat:@"Grace: %@",[grace objectForKey:@"Text"]];
+    
+    attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Grace: %@",[grace objectForKey:@"Text"]]];
+    range = NSMakeRange(7, attributedString.length - 7);
+    boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+    combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+    [combinedAttributes addEntriesFromDictionary:colorAttributes];
+    [attributedString setAttributes:combinedAttributes range:range];    graceLabel.attributedText = attributedString;
+
     [cell.contentView addSubview:graceLabel];
 
 #pragma mark 4&5. Line opponent
@@ -961,13 +993,6 @@ didCompleteWithError:(NSError *)error
     y += graceLabel.frame.size.height + gap;
     x = edge;
     
-//    DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight)];
-//    opponentLabel.textAlignment = NSTextAlignmentLeft;
-//    opponentLabel.text = @"Opponent:";
-//    [cell.contentView addSubview:opponentLabel];
-//
-//    y += opponentLabel.frame.size.height + gap;
-
     DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight*2)];
     opponentLabel.textAlignment = NSTextAlignmentCenter;
     [opponentLabel setFont:[UIFont boldSystemFontOfSize: 25.0]];
