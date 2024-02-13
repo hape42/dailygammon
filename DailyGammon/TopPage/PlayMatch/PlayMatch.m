@@ -289,9 +289,7 @@
                                     style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action)
                                     {
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
                                      }];
  
@@ -472,9 +470,7 @@
             NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
             
             //    [match readMatch:matchLink];
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            
-            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
             return;
             
@@ -1513,9 +1509,7 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-                                    TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+                                    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                     [self.navigationController pushViewController:vc animated:NO];
                                 }];

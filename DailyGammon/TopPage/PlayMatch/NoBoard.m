@@ -117,8 +117,7 @@
 #pragma mark TopPage
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
         [self.navigationController pushViewController:vc animated:NO];
         return;
@@ -140,6 +139,7 @@
                                       }];
 
         [alert addAction:yesButton];
+        alert.view.tag = ALERT_VIEW_TAG;
 
         [self presentViewController:alert animated:YES completion:nil];
         return;
@@ -169,6 +169,7 @@
                                      }];
  
         [alert addAction:okButton];
+        alert.view.tag = ALERT_VIEW_TAG;
 
         [self presentViewController:alert animated:YES completion:nil];
         return;
@@ -225,8 +226,7 @@
     if([ [self.boardDict objectForKey:@"htmlString"] isEqualToString:@""])
     {
         XLog(@"---------> empty htmlString");
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -270,6 +270,7 @@
                                     }];
 
         [alert addAction:cancelButton];
+        alert.view.tag = ALERT_VIEW_TAG;
         [self presentViewController:alert animated:YES completion:nil];
         XLog(@"Fehler: Mail kann nicht versendet werden");
         return;
@@ -499,14 +500,13 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
                                  }];
 
     [alert addAction:okButton];
-    
+    alert.view.tag = ALERT_VIEW_TAG;
+
     alert = [design makeBackgroundColor:alert];
     
     [self presentViewController:alert animated:YES completion:nil];
@@ -579,8 +579,7 @@
                                         } else {
                                             [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
                                         }
-                                                AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+                                                TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                                 [self.navigationController pushViewController:vc animated:NO];
 
@@ -589,7 +588,8 @@
         [alert addAction:okButton];
         [alert addAction:noButton];
         [alert addAction:webButton];
-        
+        alert.view.tag = ALERT_VIEW_TAG;
+
         [self presentViewController:alert animated:YES completion:nil];
     }
 
@@ -695,6 +695,7 @@
 
     [alert addAction:yesButton];
     [alert addAction:answerButton];
+    alert.view.tag = ALERT_VIEW_TAG;
 
     [self presentViewController:alert animated:YES completion:nil];
     return;
@@ -805,10 +806,8 @@
                           {
         if (success)
         {
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            
-            TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
-            
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+
             [self.navigationController pushViewController:vc animated:NO];
         }
         else
