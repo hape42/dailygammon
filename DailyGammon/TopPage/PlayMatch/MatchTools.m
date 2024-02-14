@@ -1000,7 +1000,7 @@
     
     opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
     playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
-
+ 
     NSMutableArray *opponentArray = [boardDict objectForKey:@"opponent"];
     
     opponentName.text = @"";
@@ -1013,6 +1013,15 @@
     [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
     [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
     [opponentView addSubview:buttonOpponent];
+
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = opponentView.bounds;
+    gradient.startPoint = CGPointMake(1, 0);;
+    gradient.endPoint = CGPointMake(1, 1);
+    gradient.colors = @[(id)opponentName.backgroundColor.CGColor, (id)[UIColor colorNamed:@"ColorViewBackground"].CGColor];
+    gradient.name = @"gradientOpponent";
+    [opponentView.layer insertSublayer:gradient atIndex:0];
 
     opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
@@ -1041,6 +1050,14 @@
     [buttonPlayer setTitle:playerArray[0] forState: UIControlStateNormal];
     [buttonPlayer.layer setValue:opponentArray[0] forKey:@"name"];
     [playerView addSubview:buttonPlayer];
+
+    gradient = [CAGradientLayer layer];
+    gradient.frame = playerView.bounds;
+    gradient.startPoint = CGPointMake(1, 0);;
+    gradient.endPoint = CGPointMake(1, 1);
+    gradient.colors = @[(id)playerName.backgroundColor.CGColor, (id)[UIColor colorNamed:@"ColorViewBackground"].CGColor];
+    gradient.name = @"gradientplayer";
+    [playerView.layer insertSublayer:gradient atIndex:0];
 
     playerPips.text    = playerArray[2];
     if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)

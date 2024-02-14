@@ -143,6 +143,7 @@
             [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
             break;
     }
+    [self updateCollectionView];
 
 }
 #pragma mark - WaitView
