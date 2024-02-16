@@ -25,6 +25,7 @@
 #import "NoInternet.h"
 #import "TopPageVC.h"
 #import "NoBoard.h"
+#import "SetUp/SetUpVC.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -34,26 +35,27 @@
 
 @synthesize design,tools, preferences, ratingCD,activeStoryBoard;
 
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-{
-    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;
-
-    UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
- //   XLog(@"CurrentVC: %@", currentViewController);
-
-    if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == TopPageCV.class)    orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == TopPageVC.class)    orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == PlayMatch.class)    orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == NoInternet.class)   orientationMask = UIInterfaceOrientationMaskAll;
-    if (currentViewController.class == NoBoard.class)      orientationMask = UIInterfaceOrientationMaskAll;
-
-    if (currentViewController.view.tag == ALERT_VIEW_TAG) orientationMask = UIInterfaceOrientationMaskAll; //
-    
-    return orientationMask;
-}
+//- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+//{
+//    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;
+//
+//    UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
+// //   XLog(@"CurrentVC: %@", currentViewController);
+//
+//    if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == TopPageCV.class)    orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == TopPageVC.class)    orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == PlayMatch.class)    orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == NoInternet.class)   orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == NoBoard.class)      orientationMask = UIInterfaceOrientationMaskAll;
+//    if (currentViewController.class == SetUpVC.class)      orientationMask = UIInterfaceOrientationMaskAll;
+//
+//    if (currentViewController.view.tag == ALERT_VIEW_TAG) orientationMask = UIInterfaceOrientationMaskAll; //
+//    
+//    return orientationMask;
+//}
 
 - (UIViewController *)topViewControllerWithRootViewController:(UIViewController *)rootViewController
 {

@@ -59,18 +59,18 @@
     float buttonHight = MIN(((superFrame.size.height - 50 - edge) / buttonCount) ,  30.0 + gap) - gap;
     
     CGRect fr = self.frame;
-    fr.size.width = edge + checkWidth + gap + buttonWidth + edge;
-    fr.size.height = buttonCount * (buttonHight + gap);
+    fr.size.width = edge + checkWidth + gap + buttonWidth + checkWidth + edge;
+    fr.size.height = (buttonCount * (buttonHight + gap)) + edge;
     
     fr.origin.x = superFrame.origin.x + 50;
     fr.origin.y = 0 - fr.size.height;
 
     self.frame = fr;
     
-    float x =  edge;
+    float x =  edge + checkWidth;
     float y = edge;
 
-    DGLabel *header = [[DGLabel alloc] initWithFrame:CGRectMake(x,y, self.frame.size.width, buttonHight)];
+    DGLabel *header = [[DGLabel alloc] initWithFrame:CGRectMake(0,y, self.frame.size.width, buttonHight)];
     header.text = @"Sort Matches by";
     header.textAlignment = NSTextAlignmentCenter;
     [self addSubview:header];

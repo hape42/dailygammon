@@ -99,6 +99,8 @@
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
+    [self layoutObjects];
+
     [self reDrawHeader];
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
@@ -255,7 +257,7 @@ didCompleteWithError:(NSError *)error
                 [self.collectionView reloadData];
 
                 [self stopActivityIndicator];
-
+                [self readActiveTournaments];
             }
         }
         else
@@ -265,8 +267,72 @@ didCompleteWithError:(NSError *)error
                 
     }];
     request = nil;
+}
+-(void)readActiveTournaments
+{
+    [self startActivityIndicator:@"Getting active tournaments from www.dailygammon.com"];
 
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/userevent/%@", userID] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            
+            NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+            
+            TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+            
+            int tableNo = 2;
+            NSString *queryString = [NSString stringWithFormat:@"//table[%d]/tr[1]/th",tableNo];
+            NSArray *elementHeader  = [xpathParser searchWithXPathQuery:queryString];
+            NSMutableArray *listHeaderArray = [[NSMutableArray alloc]init];
+            
+            for(TFHppleElement *element in elementHeader)
+            {
+                if([element text] != nil)
+                    [listHeaderArray addObject:[element text]];
+            }
+            NSMutableArray *listArray = [[NSMutableArray alloc]init];
+            queryString = [NSString stringWithFormat:@"//table[%d]/tr",tableNo];
+            NSArray *rows  = [xpathParser searchWithXPathQuery:queryString];
+            for(int row = 2; row <= rows.count; row ++)
+            {
+                NSMutableArray *topPageZeile = [[NSMutableArray alloc]init];
+                
+                NSString * searchString = [NSString stringWithFormat:@"//table[%d]/tr[%d]/td",tableNo,row];
+                NSArray *elementZeile  = [xpathParser searchWithXPathQuery:searchString];
+                for(TFHppleElement *element in elementZeile)
+                {
+                    NSMutableDictionary *topPageZeileSpalte = [[NSMutableDictionary alloc]init];
+                    
+                    for (TFHppleElement *child in element.children)
+                    {
+                        if ([child.tagName isEqualToString:@"a"])
+                        {
+                            [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
+                            [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                        }
+                        else
+                        {
+                            [topPageZeileSpalte setValue:[element content] forKey:@"Text"];
+                        }
+                    }
+                    [topPageZeile addObject:topPageZeileSpalte];
+                }
+                
+                [listArray addObject:topPageZeile];
+            }
+            self.header.text = [NSString stringWithFormat:@"Tournament Sign-Up (%lu active Tournaments)", (unsigned long)listArray.count];
+            [self stopActivityIndicator];
+
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
 }
 
 
@@ -519,7 +585,138 @@ didCompleteWithError:(NSError *)error
     [menueView showMenueInView:self.view];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed during the animation
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+}
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UIView *superview = self.view;
+    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+    float edge = 5.0;
+    
+#pragma mark moreButton autoLayout
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    // Top space to superview Y
+    NSLayoutConstraint *moreButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+    //  position X
+    NSLayoutConstraint *moreButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                             attribute:NSLayoutAttributeRight
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute: NSLayoutAttributeRight
+                                                                            multiplier:1.0
+                                                                              constant:-edge];
+    
+    // Fixed width
+    NSLayoutConstraint *moreButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                                 attribute:NSLayoutAttributeWidth
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:nil
+                                                                                 attribute:NSLayoutAttributeNotAnAttribute
+                                                                                multiplier:1.0
+                                                                                  constant:40];
+    // Fixed Height
+    NSLayoutConstraint *moreButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
+    
+    [superview addConstraints:@[moreButtonXConstraint, moreButtonYConstraint, moreButtonWidthConstraint, moreButtonHeightConstraint]];
+    
+ 
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
+    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                             attribute:NSLayoutAttributeTop
+                                                                            multiplier:1.0f
+                                                                              constant:0];
+    
+    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                            attribute:NSLayoutAttributeLeft
+                                                                            relatedBy:NSLayoutRelationEqual
+                                                                               toItem:safe
+                                                                            attribute: NSLayoutAttributeRight
+                                                                           multiplier:1.0
+                                                                             constant:edge];
+    
+    NSLayoutConstraint *headerRightConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                                 attribute:NSLayoutAttributeRight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:self.moreButton
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:-edge];
+    // Fixed Height
+    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.header
+                                                                                  attribute:NSLayoutAttributeHeight
+                                                                                  relatedBy:NSLayoutRelationEqual
+                                                                                     toItem:nil
+                                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                                 multiplier:1.0
+                                                                                   constant:40];
 
+    [superview addConstraints:@[headerYConstraint, headerLeftConstraint, headerRightConstraint, headerHeightConstraint]];
+
+#pragma mark collectionView autoLayout
+    [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    NSLayoutConstraint *collectionViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
+                                                                                 attribute:NSLayoutAttributeLeft
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:safe
+                                                                                 attribute: NSLayoutAttributeLeft
+                                                                                multiplier:1.0
+                                                                                  constant:edge];
+    NSLayoutConstraint *collectionViewRightConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
+                                                                                 attribute:NSLayoutAttributeRight
+                                                                                 relatedBy:NSLayoutRelationEqual
+                                                                                    toItem:safe
+                                                                                 attribute: NSLayoutAttributeRight
+                                                                                multiplier:1.0
+                                                                                  constant:-edge];
+    
+    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
+                                                                             attribute:NSLayoutAttributeTop
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:self.header
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0f
+                                                                                  constant:20];
+
+    NSLayoutConstraint *collectionViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
+                                                                             attribute:NSLayoutAttributeBottom
+                                                                             relatedBy:NSLayoutRelationEqual
+                                                                                toItem:safe
+                                                                                 attribute:NSLayoutAttributeBottom
+                                                                                multiplier:1.0f
+                                                                                  constant:-edge];
+
+   [superview addConstraints:@[collectionViewLeftConstraint, collectionViewRightConstraint, collectionViewTopConstraint, collectionViewBottomConstraint]];
+
+}
 @end

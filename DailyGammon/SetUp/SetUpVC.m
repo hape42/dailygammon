@@ -194,7 +194,7 @@
         [self presentViewController:controller animated:YES completion:nil];
         
         UIPopoverPresentationController *popController = [controller popoverPresentationController];
-        popController.permittedArrowDirections = UIPopoverArrowDirectionLeft;
+        popController.permittedArrowDirections = UIPopoverArrowDirectionRight;
         popController.delegate = self;
         
         UIButton *button = (UIButton *)sender;
@@ -214,6 +214,20 @@
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"buttonDesign"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonDesign" object:self];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed during the animation
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
 }
 
 @end

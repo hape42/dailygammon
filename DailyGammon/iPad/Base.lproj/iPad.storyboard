@@ -1134,9 +1134,11 @@ Did we make you curious?</string>
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYH-Gv-qQi">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYH-Gv-qQi">
                                 <rect key="frame" x="964" y="28" width="40" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="q4Q-x8-6y6"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                                 <connections>
@@ -1145,6 +1147,10 @@ Did we make you curious?</string>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kYH-Gv-qQi" firstAttribute="top" secondItem="zkV-iy-r1g" secondAttribute="bottom" constant="8" id="YOq-x5-s9E"/>
+                            <constraint firstItem="kYH-Gv-qQi" firstAttribute="trailing" secondItem="Ghs-c1-8pZ" secondAttribute="trailingMargin" id="mWt-On-3FU"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="moreButton" destination="kYH-Gv-qQi" id="uMZ-xV-Dcv"/>
@@ -1252,7 +1258,7 @@ Did we make you curious?</string>
                                     <outlet property="delegate" destination="KHz-5w-zsy" id="nnR-Im-846"/>
                                 </connections>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tournament Sign-Up" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Mh-7N1">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tournament Sign-Up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bzd-Mh-7N1">
                                 <rect key="frame" x="395" y="20" width="234" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="ZZW-vG-pHr"/>
