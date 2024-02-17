@@ -259,4 +259,22 @@ didCompleteWithError:(NSError *)error
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
 
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed during the animation
+        
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+    
+
+}
+
 @end

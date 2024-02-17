@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "MenueView.h"
+#import "ChatView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
@@ -33,12 +34,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) float zoomFactor;
 
 @property (strong, nonatomic, readwrite) MenueView *menueView;
+@property (strong, nonatomic, readwrite) ChatView  *chatViewX;
 
 @property (strong, nonatomic, readwrite) UIView *boardView;
 @property (strong, nonatomic, readwrite) UIView *actionView;
 @property (readwrite, assign, atomic) float actionViewWidth;
 
 @property (readwrite, assign, atomic) BOOL isPortrait;
+
+@property (strong, readwrite, retain, atomic) UITextView *playerChatX;
 
 @end
 

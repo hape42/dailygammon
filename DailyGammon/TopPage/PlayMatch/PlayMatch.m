@@ -108,6 +108,7 @@
 @synthesize matchTools;
 
 @synthesize menueView;
+@synthesize chatViewX, playerChatX;
 
 @synthesize boardView, actionView;
 @synthesize zoomFactor;
@@ -791,6 +792,25 @@
         case CHAT:
         {
 #pragma mark - Chat
+            
+//            if(chatViewX)
+//            {
+//                [tools removeAllSubviewsRecursively:chatViewX];
+//                UIView *removeView;
+//                while((removeView = [self.view viewWithTag:123]) != nil)
+//                {
+//                    [removeView removeFromSuperview];
+//                }
+//
+//            }
+//            chatViewX = [[ChatView alloc]init];
+//            chatViewX.navigationController = self.navigationController;
+//            chatViewX.boardDict = self.boardDict;
+//            chatViewX.actionDict = self.actionDict;
+//            chatViewX.boardView = boardView;
+//            chatViewX.presentingViewController = self;
+//            [chatViewX showChatInView:self.view];
+//            break;
             // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
             
@@ -855,9 +875,9 @@
                 // opponentChat anzeigen
                 self.NextButtonOutlet.frame = self.chatNextButtonFrame;
                 self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
-                self.opponentChat.frame     = self.opponentChatViewFrame;
                 self.chatView.frame         = self.chatViewFrameSave;
                 self.playerChat.frame       = self.playerChatViewFrame;
+                self.opponentChat.frame     = self.opponentChatViewFrame;
                 [self.opponentChat flashScrollIndicators];
                 [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(flashIndicator) userInfo:nil repeats:YES]; // set time interval as per your requirement.
                 
@@ -1428,46 +1448,46 @@
     }
 }
 
-#pragma mark - textField
--(BOOL)textViewShouldBeginEditing:(UITextView *)textField
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    if([self.playerChat.text isEqualToString:@"you may chat here"])
-    {
-        self.playerChat.text = @"";
-    }
-
-    return YES;
-}
-
-
-- (BOOL)textViewShouldEndEditing:(UITextView *)textField
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    
-    [self.playerChat endEditing:YES];
-    return YES;
-}
-
-
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-    if(self.isChatView)
-    {
-        CGRect frame = self.chatViewFrame;
-        frame.origin.y -= 330;
-        self.chatView.frame = frame;
-    }
-}
-
--(void)keyboardDidHide:(NSNotification *)notification
-{
-    if(self.isChatView)
-    {
-        self.chatView.frame = self.chatViewFrame;
-    }
-
-}
+//#pragma mark - textField
+//-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+//{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+//    if([self.playerChat.text isEqualToString:@"you may chat here"])
+//    {
+//        self.playerChat.text = @"";
+//    }
+//
+//    return YES;
+//}
+//
+//
+//- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+//{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+//    
+//    [self.playerChat endEditing:YES];
+//    return YES;
+//}
+//
+//
+//- (void)keyboardDidShow:(NSNotification *)notification
+//{
+//    if(self.isChatView)
+//    {
+//        CGRect frame = self.chatViewFrame;
+//        frame.origin.y -= 330;
+//        self.chatView.frame = frame;
+//    }
+//}
+//
+//-(void)keyboardDidHide:(NSNotification *)notification
+//{
+//    if(self.isChatView)
+//    {
+//        self.chatView.frame = self.chatViewFrame;
+//    }
+//
+//}
 
 #pragma mark - Email
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -1808,6 +1828,9 @@
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {
          // Code to be executed during the animation
+        
+        [self->chatViewX dismiss];
+
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch];
 
