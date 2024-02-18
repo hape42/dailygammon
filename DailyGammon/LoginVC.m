@@ -16,13 +16,18 @@
 
 @interface LoginVC ()<NSURLSessionDataDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *usewrnameOutlet;
-@property (weak, nonatomic) IBOutlet UITextField *passwordOutlet;
+@property (weak, nonatomic) IBOutlet UILabel *header;
 
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UITextField *username;
+@property (weak, nonatomic) IBOutlet UILabel *passwordLabel;
+@property (weak, nonatomic) IBOutlet UITextField *password;
 @property (weak, nonatomic) IBOutlet DGButton *loginButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *accountLabel;
 @property (weak, nonatomic) IBOutlet DGButton *createAccountButton;
+@property (weak, nonatomic) IBOutlet UILabel *faqLabel;
 @property (weak, nonatomic) IBOutlet DGButton *faqButton;
-@property (weak, nonatomic) IBOutlet UIImageView *logo;
 
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 
@@ -51,10 +56,8 @@
     [defaults removeObjectForKey:@"password"];
     [defaults synchronize];
 
-    self.logo.layer.cornerRadius = 14.0f;
-    self.logo.layer.masksToBounds = YES;
-    [self.usewrnameOutlet setDelegate:self];
-    [self.passwordOutlet  setDelegate:self];
+    [self.username setDelegate:self];
+    [self.password  setDelegate:self];
 
 }
 
@@ -62,6 +65,9 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
+    
+    [self layoutObjects];
+
 }
 
 - (BOOL)textFieldShouldReturn:(UITextView *)textField
@@ -73,8 +79,8 @@
 
 - (IBAction)loginAction:(id)sender
 {
-    NSString *userName = self.usewrnameOutlet.text;
-    NSString *userPassword = self.passwordOutlet.text;
+    NSString *userName = self.username.text;
+    NSString *userPassword = self.password.text;
     
     NSString *post               = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
     NSData *postData             = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -167,25 +173,12 @@ didCompleteWithError:(NSError *)error
         else
         {
             XLog(@"login ok");
-            [[NSUserDefaults standardUserDefaults] setValue:self.usewrnameOutlet.text forKey:@"user"];
-            [[NSUserDefaults standardUserDefaults] setValue:self.passwordOutlet.text forKey:@"password"];
+            [[NSUserDefaults standardUserDefaults] setValue:self.username.text forKey:@"user"];
+            [[NSUserDefaults standardUserDefaults] setValue:self.password.text forKey:@"password"];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
             TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
-
-//            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//
-//            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-//            {
-//                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//                [self.navigationController pushViewController:vc animated:NO];
-//            }
-//            else
-//            {
-//                TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//                [self.navigationController pushViewController:vc animated:NO];
-//            }
         }
     }
     NSArray *cookie = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
@@ -258,7 +251,95 @@ didCompleteWithError:(NSError *)error
     }
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UIView *superview = self.view;
+    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5.0;
 
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:10.0].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark user & password autoLayout
+
+    [self.usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.username setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.loginButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    CGFloat labelWidth  = 100.0;
+    CGFloat labelHeigth = 35.0;
+
+    [self.usernameLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.usernameLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.usernameLabel.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:20.0].active = YES;
+
+    [self.username.widthAnchor constraintEqualToConstant:labelWidth*2].active = YES;
+    [self.username.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.username.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:20.0].active = YES;
+
+    // Center label and text field horizontally together
+    CGFloat totalWidth = (labelWidth * 3)+ gap;
+    [self.usernameLabel.leadingAnchor constraintEqualToAnchor:superview.centerXAnchor constant:-totalWidth / 2.0f].active = YES;
+    [self.username.trailingAnchor constraintEqualToAnchor:superview.centerXAnchor constant:totalWidth / 2.0f].active = YES;
+    
+
+    [self.passwordLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.password setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.passwordLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.passwordLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.passwordLabel.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20.0].active = YES;
+
+    [self.password.widthAnchor constraintEqualToConstant:labelWidth*2].active = YES;
+    [self.password.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.password.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20.0].active = YES;
+
+    // Center label and text field horizontally together
+    [self.passwordLabel.leadingAnchor constraintEqualToAnchor:superview.centerXAnchor constant:-totalWidth / 2.0f].active = YES;
+    [self.password.trailingAnchor constraintEqualToAnchor:superview.centerXAnchor constant:totalWidth / 2.0f].active = YES;
+
+    
+    [self.loginButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.loginButton.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.loginButton.topAnchor constraintEqualToAnchor:self.passwordLabel.bottomAnchor constant:20.0].active = YES;
+    [self.loginButton.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
+
+#pragma faq autoLayout
+
+    [self.faqLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.faqButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.faqButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.faqButton.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.faqButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-gap].active = YES;
+    [self.faqButton.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
+
+    [self.faqLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.faqLabel.bottomAnchor constraintEqualToAnchor:self.faqButton.topAnchor constant:-gap].active = YES;
+    [self.faqLabel.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
+
+#pragma account autoLayout
+
+    [self.accountLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.createAccountButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.createAccountButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.createAccountButton.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.createAccountButton.bottomAnchor constraintEqualToAnchor:self.faqLabel.topAnchor constant:-gap].active = YES;
+    [self.createAccountButton.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
+
+    [self.accountLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.accountLabel.bottomAnchor constraintEqualToAnchor:self.createAccountButton.topAnchor constant:-gap].active = YES;
+    [self.accountLabel.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
+
+}
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
@@ -274,7 +355,6 @@ didCompleteWithError:(NSError *)error
 
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
-
 }
 
 @end

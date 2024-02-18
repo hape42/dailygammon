@@ -20,7 +20,7 @@
 @synthesize boardDict, actionDict, boardView;
 
 @synthesize transparentButton, quoteSwitch, playerChat;
-@synthesize navigationController, presentingViewController;
+@synthesize navigationController, presentingVC;
 
 - (id)init
 {
@@ -527,7 +527,8 @@
     playerChat.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     playerChat.layer.cornerRadius = 14.0f;
     playerChat.layer.masksToBounds = YES;
-//    [playerChat setDelegate:(id)presentingViewController];
+    [playerChat setDelegate:(id)presentingVC];
+    XLog(@"%@",presentingVC);
 
     [self addSubview:playerChat];
     

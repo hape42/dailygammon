@@ -808,7 +808,8 @@
 //            chatViewX.boardDict = self.boardDict;
 //            chatViewX.actionDict = self.actionDict;
 //            chatViewX.boardView = boardView;
-//            chatViewX.presentingViewController = self;
+//            chatViewX.presentingVC = self;
+//            XLog(@"%@",self);
 //            [chatViewX showChatInView:self.view];
 //            break;
             // schieb den chatView mittig in den sichtbaren Bereich
@@ -1448,46 +1449,46 @@
     }
 }
 
-//#pragma mark - textField
-//-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
-//{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//    if([self.playerChat.text isEqualToString:@"you may chat here"])
-//    {
-//        self.playerChat.text = @"";
-//    }
-//
-//    return YES;
-//}
-//
-//
-//- (BOOL)textViewShouldEndEditing:(UITextView *)textField
-//{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-//    
-//    [self.playerChat endEditing:YES];
-//    return YES;
-//}
-//
-//
-//- (void)keyboardDidShow:(NSNotification *)notification
-//{
-//    if(self.isChatView)
-//    {
-//        CGRect frame = self.chatViewFrame;
-//        frame.origin.y -= 330;
-//        self.chatView.frame = frame;
-//    }
-//}
-//
-//-(void)keyboardDidHide:(NSNotification *)notification
-//{
-//    if(self.isChatView)
-//    {
-//        self.chatView.frame = self.chatViewFrame;
-//    }
-//
-//}
+#pragma mark - textField
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    if([self.playerChat.text isEqualToString:@"you may chat here"])
+    {
+        self.playerChat.text = @"";
+    }
+
+    return YES;
+}
+
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+    
+    [self.playerChat endEditing:YES];
+    return YES;
+}
+
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    if(self.isChatView)
+    {
+        CGRect frame = self.chatViewFrame;
+        frame.origin.y -= 330;
+        self.chatView.frame = frame;
+    }
+}
+
+-(void)keyboardDidHide:(NSNotification *)notification
+{
+    if(self.isChatView)
+    {
+        self.chatView.frame = self.chatViewFrame;
+    }
+
+}
 
 #pragma mark - Email
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

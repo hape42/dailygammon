@@ -209,17 +209,14 @@ didCompleteWithError:(NSError *)error
         [[NSUserDefaults standardUserDefaults] synchronize];
         if([[cookie value] isEqualToString:@"N/A"])
         {
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-            LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
+            LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
     {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-        LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
+        LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
         [self.navigationController pushViewController:vc animated:NO];
     }
     else

@@ -19,10 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *actionDict;
 @property (strong, readwrite, retain, atomic) UIView *boardView;
 @property (strong, readwrite, retain, atomic) UISwitch *quoteSwitch;
-@property (strong, readwrite, retain, atomic) UITextView *playerChat;
+@property (strong,  nonatomic) UITextView *playerChat;
 
 @property (strong, readwrite, retain, atomic) UINavigationController *navigationController;
-@property (strong, readwrite, retain, atomic) UIViewController *presentingViewController;
+@property (strong, readwrite, retain, atomic) UIViewController *presentingVC;
 
 @property (strong, readwrite, retain, atomic) UIButton *transparentButton;
 

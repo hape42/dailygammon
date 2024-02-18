@@ -305,10 +305,8 @@
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    LoginVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"LoginVC"];
+        
+    LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
     [self.navigationController pushViewController:vc animated:NO];
 }
 - (IBAction)AboutVC
