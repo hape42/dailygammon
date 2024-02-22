@@ -321,6 +321,7 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     app.chatBuffer = @"";
 
+    [self dismiss];
     NSDictionary *userInfo = @{ @"playerChat" : playerChat.text,
                                 @"quoteSwitch": @([quoteSwitch isOn])};
     [[NSNotificationCenter defaultCenter] postNotificationName:chatViewNextButtonNotification object:self userInfo:userInfo];
@@ -331,6 +332,7 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     app.chatBuffer = @"";
 
+    [self dismiss];
     NSDictionary *userInfo = @{ @"playerChat" : playerChat.text,
                                 @"quoteSwitch": @([quoteSwitch isOn])};
     [[NSNotificationCenter defaultCenter] postNotificationName:chatViewTopButtonNotification object:self userInfo:userInfo];
