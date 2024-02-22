@@ -36,6 +36,8 @@
 #import "Review.h"
 #import "NoBoard.h"
 
+#import "ChatVC.h"
+
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -127,6 +129,16 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(chatTopButton:)
+                                                 name:chatViewTopButtonNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(chatNextButton:)
+                                                 name:chatViewNextButtonNotification
+                                               object:nil];
+
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
     self.chatView.layer.borderWidth = 1.0f;
@@ -196,26 +208,37 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)orientationDidChange:(NSNotification *)notification {
+- (void)orientationDidChange:(NSNotification *)notification 
+{
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-    switch (orientation) {
+    switch (orientation) 
+    {
         case UIDeviceOrientationPortrait:
             //NSLog(@"Portrait orientation");
+            [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
+
+            [self showMatch];
+
             break;
         case UIDeviceOrientationLandscapeLeft:
             //NSLog(@"Landscape Left orientation");
+            [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
+
+            [self showMatch];
+
             break;
         case UIDeviceOrientationLandscapeRight:
             //NSLog(@"Landscape Right orientation");
+            [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
+
+            [self showMatch];
+
             break;
         // ... weitere Orientierungen je nach Bedarf
         default:
             break;
     }
-    [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
-
-    [self showMatch];
 
 }
 - (IBAction)moreAction:(id)sender
@@ -793,25 +816,30 @@
         {
 #pragma mark - Chat
             
-//            if(chatViewX)
-//            {
-//                [tools removeAllSubviewsRecursively:chatViewX];
-//                UIView *removeView;
-//                while((removeView = [self.view viewWithTag:123]) != nil)
-//                {
-//                    [removeView removeFromSuperview];
-//                }
-//
-//            }
-//            chatViewX = [[ChatView alloc]init];
-//            chatViewX.navigationController = self.navigationController;
-//            chatViewX.boardDict = self.boardDict;
-//            chatViewX.actionDict = self.actionDict;
-//            chatViewX.boardView = boardView;
-//            chatViewX.presentingVC = self;
-//            XLog(@"%@",self);
-//            [chatViewX showChatInView:self.view];
-//            break;
+            if(chatViewX)
+            {
+                [tools removeAllSubviewsRecursively:chatViewX];
+                UIView *removeView;
+                while((removeView = [self.view viewWithTag:123]) != nil)
+                {
+                    [removeView removeFromSuperview];
+                }
+
+            }
+            chatViewX = [[ChatView alloc]init];
+            chatViewX.navigationController = self.navigationController;
+            chatViewX.boardDict = self.boardDict;
+            chatViewX.actionDict = self.actionDict;
+            chatViewX.boardView = boardView;
+            chatViewX.presentingVC = self;
+            XLog(@"%@",self);
+            [chatViewX showChatInView:self.view];
+            break;
+            
+            ChatVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"ChatVC"];
+            [self presentViewController:vc animated:YES completion:nil];
+
+            break;
             // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
             
@@ -1271,37 +1299,36 @@
 
 
 }
-- (IBAction)chatNextButton:(id)sender
+- (IBAction)chatNextButton:(NSNotification *)notification
 {
+    NSString *chat = notification.userInfo[@"playerChat"] ;
+    BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
     
-    if([self.playerChat.text isEqualToString:@"you may chat here"])
-        self.playerChat.text = @"";
-
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
     {
         if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
         {
-            if([self.quoteSwitch isOn])
+            if(quote)
                 checkbox = @"&quote=on";
             else
                 checkbox = @"&quote=off";
        }
     }
 
-    NSString *chatString = [tools cleanChatString:self.playerChat.text];
+    NSString *chatString = [tools cleanChatString:chat];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
     
-//    schicke matchlink hier schon ab, wenn sort = round oder length
-//    hole erstes element aus dem Array
-//    baue daraus matchLink
-//    lösche erstes elemnt aus dem array
-   
+    // send matchlink here already, if sort = round or length
+    // get first element from the array
+    // build matchLink from it
+    // delete first element from the array
+    
     if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > 3)
     {
         NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
@@ -1321,10 +1348,10 @@
     [self showMatch];
 
 }
-- (IBAction)chatTopButton:(id)sender
+- (IBAction)chatTopButton:(NSNotification *)notification
 {
-    if([self.playerChat.text isEqualToString:@"you may chat here"])
-        self.playerChat.text = @"";
+    NSString *chat = notification.userInfo[@"playerChat"] ;
+    BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
@@ -1332,13 +1359,13 @@
     {
         if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
         {
-            if([self.quoteSwitch isOn])
+            if(quote)
                 checkbox = @"&quote=on";
             else
                 checkbox = @"&quote=off";
         }
     }
-    NSString *chatString = [tools cleanChatString:self.playerChat.text];
+    NSString *chatString = [tools cleanChatString:chat];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
@@ -1450,45 +1477,45 @@
 }
 
 #pragma mark - textField
--(BOOL)textViewShouldBeginEditing:(UITextView *)textField
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    if([self.playerChat.text isEqualToString:@"you may chat here"])
-    {
-        self.playerChat.text = @"";
-    }
-
-    return YES;
-}
-
-
-- (BOOL)textViewShouldEndEditing:(UITextView *)textField
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    
-    [self.playerChat endEditing:YES];
-    return YES;
-}
-
-
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-    if(self.isChatView)
-    {
-        CGRect frame = self.chatViewFrame;
-        frame.origin.y -= 330;
-        self.chatView.frame = frame;
-    }
-}
-
--(void)keyboardDidHide:(NSNotification *)notification
-{
-    if(self.isChatView)
-    {
-        self.chatView.frame = self.chatViewFrame;
-    }
-
-}
+//-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
+//{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+//    if([self.playerChat.text isEqualToString:@"you may chat here"])
+//    {
+//        self.playerChat.text = @"";
+//    }
+//
+//    return YES;
+//}
+//
+//
+//- (BOOL)textViewShouldEndEditing:(UITextView *)textField
+//{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+//    
+//    [self.playerChat endEditing:YES];
+//    return YES;
+//}
+//
+//
+//- (void)keyboardDidShow:(NSNotification *)notification
+//{
+//    if(self.isChatView)
+//    {
+//        CGRect frame = self.chatViewFrame;
+//        frame.origin.y -= 330;
+//        self.chatView.frame = frame;
+//    }
+//}
+//
+//-(void)keyboardDidHide:(NSNotification *)notification
+//{
+//    if(self.isChatView)
+//    {
+//        self.chatView.frame = self.chatViewFrame;
+//    }
+//
+//}
 
 #pragma mark - Email
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error

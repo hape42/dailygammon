@@ -34,6 +34,7 @@
 @implementation AppDelegate
 
 @synthesize design,tools, preferences, ratingCD,activeStoryBoard;
+@synthesize chatBuffer;
 
 //- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 //{
@@ -80,6 +81,8 @@
     
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    chatBuffer = @"";
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     

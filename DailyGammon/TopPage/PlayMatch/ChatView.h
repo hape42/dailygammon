@@ -13,19 +13,21 @@ NS_ASSUME_NONNULL_BEGIN
 @class Tools;
 @class DGButton;
 
-@interface ChatView : UIView<UIPopoverPresentationControllerDelegate>
+@interface ChatView : UIView<UITextViewDelegate>
 
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *boardDict;
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *actionDict;
 @property (strong, readwrite, retain, atomic) UIView *boardView;
 @property (strong, readwrite, retain, atomic) UISwitch *quoteSwitch;
-@property (strong,  nonatomic) UITextView *playerChat;
+@property (strong, readwrite, retain, atomic) UITextView *playerChat;
 
 @property (strong, readwrite, retain, atomic) UINavigationController *navigationController;
 @property (strong, readwrite, retain, atomic) UIViewController *presentingVC;
 
 @property (strong, readwrite, retain, atomic) UIButton *transparentButton;
 
+@property (nonatomic, strong) NSLayoutConstraint *chatViewTopAnchorConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *chatViewHeightConstraint;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;

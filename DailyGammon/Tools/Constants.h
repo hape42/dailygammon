@@ -7,6 +7,8 @@
 //
 
 
+extern NSString * const chatViewNextButtonNotification;
+extern NSString * const chatViewTopButtonNotification;
 
 extern NSString * const changeSchemaNotification;
 extern NSString * const matchCountChangedNotification;

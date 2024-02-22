@@ -31,5 +31,7 @@
 
 @property (strong, nonatomic) UIStoryboard *activeStoryBoard;
 
+@property (strong, readwrite, retain, atomic) NSString *chatBuffer;
+
 @end
 

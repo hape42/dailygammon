@@ -14,3 +14,5 @@ NSString * const matchCountChangedNotification = @"matchCountChangedNotification
 NSString * const sortNotification              = @"sortNotification";
 NSString * const sortButton                    = @"sortButton";
 
+NSString * const chatViewNextButtonNotification     = @"chatViewNextButtonNotification";
+NSString * const chatViewTopButtonNotification      = @"chatViewTopButtonNotification";

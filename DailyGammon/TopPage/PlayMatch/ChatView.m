@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 
+
 @implementation ChatView
 
 @synthesize design, tools;
@@ -36,6 +37,8 @@
         self.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
         self.layer.cornerRadius = 14.0f;
         self.layer.masksToBounds = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     }
     return self;
@@ -53,66 +56,36 @@
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     float edge = 10.0;
-    float gap = 20;
-    float buttonWidth = 100.0;
+    float gap = 10;
+    float buttonWidth = 80.0;
     float buttonHight = 35;
         
-    float headerButtonSize = 30;
-    float x =  edge;
-    float y = edge;
+    float headerSize = 30;
+    float opponentChatHeight = 100;
+    float playerChatHeight = 150;
 
-    
-    // opponentChat fals was da ist
-    // reply switch fals opponent da ist
-    // reply text "Quote previous message"
-    // textView
-    // next button
-    // to Top button
-    
     [presentingView addSubview:self];
     
-    // Add the view at the front of the app's windows
     UILayoutGuide *safe = presentingView.safeAreaLayoutGuide;
 
-    float chatViewHeight = presentingView.frame.size.height/2;
-        
+    float chatViewHeight = (edge*4) + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
+
+    while (chatViewHeight > (safe.layoutFrame.size.height - (edge*2)))
+    {
+        opponentChatHeight *= .9;
+        playerChatHeight   *= .9;
+        chatViewHeight      = edge + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
+    }
+
 #pragma mark chatView
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-
-    NSLayoutConstraint *chatViewYConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:edge * 2];
-   
-    NSLayoutConstraint *chatViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:boardView.frame.origin.x];
     
-    NSLayoutConstraint *chatViewWidthConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute: NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:boardView.frame.size.width];
-    
-    NSLayoutConstraint *chatViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:chatViewHeight];
-
-    [presentingView addConstraints:@[chatViewYConstraint, chatViewLeftConstraint,chatViewWidthConstraint,chatViewHeightConstraint]];
+    self.chatViewTopAnchorConstraint = [self.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge*4];
+    self.chatViewTopAnchorConstraint.active = YES;
+    self.chatViewHeightConstraint = [self.heightAnchor constraintEqualToConstant:chatViewHeight];
+    self.chatViewHeightConstraint.active = YES;
+    [self.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:boardView.frame.origin.x].active = YES;
+    [self.widthAnchor constraintEqualToConstant:boardView.frame.size.width ].active = YES;
 
 #pragma mark header
     DGLabel *header = [[DGLabel alloc] init];
@@ -124,86 +97,25 @@
 
     [header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-
-    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:header
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:10];
-   
-    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:header
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:10];
-    
-    // Fixed width
-    NSLayoutConstraint *headerWidthConstraint = [NSLayoutConstraint constraintWithItem:header
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:100];
-    // Fixed Height
-    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:header
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:headerButtonSize];
-
-    [self addConstraints:@[headerYConstraint, headerLeftConstraint,headerWidthConstraint,headerHeightConstraint]];
+    [header.topAnchor constraintEqualToAnchor:self.topAnchor constant:edge].active = YES;
+    [header.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+    [header.widthAnchor constraintEqualToConstant:100 ].active = YES;
+    [header.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:edge].active = YES;
 
 #pragma mark transparentButton
     transparentButton = [[UIButton alloc] init];
+    transparentButton.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     [transparentButton setImage:[[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     [transparentButton addTarget:self action:@selector(chatTransparent) forControlEvents:UIControlEventTouchUpInside];
-
     [self addSubview:transparentButton];
 
     [transparentButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-
-    NSLayoutConstraint *transparentButtonYConstraint = [NSLayoutConstraint constraintWithItem:transparentButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:10];
-   
-    NSLayoutConstraint *transparentButtonRightConstraint = [NSLayoutConstraint constraintWithItem:transparentButton
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:-10];
-    
-    // Fixed width
-    NSLayoutConstraint *transparentButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:transparentButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:headerButtonSize];
-    // Fixed Height
-    NSLayoutConstraint *transparentButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:transparentButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:headerButtonSize];
-
-    [self addConstraints:@[transparentButtonYConstraint, transparentButtonRightConstraint,transparentButtonWidthConstraint,transparentButtonHeightConstraint]];
+    [transparentButton.topAnchor constraintEqualToAnchor:self.topAnchor constant:edge].active = YES;
+    [transparentButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+    [transparentButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
+    [transparentButton.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
 
 #pragma mark historyButton
     UIButton *historyButton = [[UIButton alloc] init];
@@ -214,41 +126,10 @@
 
     [historyButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-
-    NSLayoutConstraint *historyButtonYConstraint = [NSLayoutConstraint constraintWithItem:historyButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:transparentButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-   
-    NSLayoutConstraint *historyButtonRightConstraint = [NSLayoutConstraint constraintWithItem:historyButton
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:transparentButton
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:-gap];
-    
-    // Fixed width
-    NSLayoutConstraint *historyButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:historyButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:headerButtonSize];
-    // Fixed Height
-    NSLayoutConstraint *historyButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:historyButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:headerButtonSize];
-
-    [self addConstraints:@[historyButtonYConstraint, historyButtonRightConstraint,historyButtonWidthConstraint,historyButtonHeightConstraint]];
+    [historyButton.topAnchor constraintEqualToAnchor:transparentButton.topAnchor constant:0].active = YES;
+    [historyButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+    [historyButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
+    [historyButton.rightAnchor constraintEqualToAnchor:transparentButton.leftAnchor constant:-gap].active = YES;
 
 #pragma mark quotesButton
     UIButton *quotesButton = [[UIButton alloc] init];
@@ -259,133 +140,54 @@
 
     [quotesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *quotesButtonYConstraint = [NSLayoutConstraint constraintWithItem:quotesButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:historyButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-   
-    NSLayoutConstraint *quotesButtonRightConstraint = [NSLayoutConstraint constraintWithItem:quotesButton
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:historyButton
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:-gap];
-    
-    // Fixed width
-    NSLayoutConstraint *quotesButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:quotesButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:headerButtonSize];
-    // Fixed Height
-    NSLayoutConstraint *quotesButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:quotesButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:headerButtonSize];
-
-    [self addConstraints:@[quotesButtonYConstraint, quotesButtonRightConstraint,quotesButtonWidthConstraint,quotesButtonHeightConstraint]];
+    [quotesButton.topAnchor constraintEqualToAnchor:historyButton.topAnchor constant:0].active = YES;
+    [quotesButton.rightAnchor constraintEqualToAnchor:historyButton.leftAnchor constant:-gap].active = YES;
+    [quotesButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+    [quotesButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
 
 #pragma mark nextButton
 
     DGButton *nextButton = [[DGButton alloc] init];
     [nextButton setTitle:@"Next" forState: UIControlStateNormal];
-    [nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
+    [nextButton addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nextButton];
 
     [nextButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *nextButtonYConstraint = [NSLayoutConstraint constraintWithItem:nextButton
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                            multiplier:1.0f
-                                                                              constant:-edge];
-   
-    NSLayoutConstraint *nextButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:nextButton
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:edge];
-    
-    // Fixed width
-    NSLayoutConstraint *nextButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:nextButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:buttonWidth];
-    // Fixed Height
-    NSLayoutConstraint *nextButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:nextButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:buttonHight];
-
-    [self addConstraints:@[nextButtonYConstraint, nextButtonLeftConstraint,nextButtonWidthConstraint,nextButtonHeightConstraint]];
+    [nextButton.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-edge].active = YES;
+    [nextButton.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:edge].active = YES;
+    [nextButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [nextButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
 
 #pragma mark topButton
 
     DGButton *topButton = [[DGButton alloc] init];
     [topButton setTitle:@"To Top" forState: UIControlStateNormal];
-    [topButton addTarget:self action:@selector(top) forControlEvents:UIControlEventTouchUpInside];
+    [topButton addTarget:self action:@selector(topAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:topButton];
 
     [topButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *topButtonYConstraint = [NSLayoutConstraint constraintWithItem:topButton
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:nextButton
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-   
-    NSLayoutConstraint *topButtonLeftConstraint = [NSLayoutConstraint constraintWithItem:topButton
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:nextButton
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:gap];
+    [topButton.topAnchor constraintEqualToAnchor:nextButton.topAnchor constant:0].active = YES;
+    [topButton.leftAnchor constraintEqualToAnchor:nextButton.rightAnchor constant:gap].active = YES;
+    [topButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [topButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
     
-    // Fixed width
-    NSLayoutConstraint *topButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:topButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:buttonWidth];
-    // Fixed Height
-    NSLayoutConstraint *topButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:topButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:buttonHight];
+#pragma mark hide keyboard Button
 
-    [self addConstraints:@[topButtonYConstraint, topButtonLeftConstraint,topButtonWidthConstraint,topButtonHeightConstraint]];
+    DGButton *keyboardButton = [[DGButton alloc] init];
+    [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
+    [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:keyboardButton];
+
+    [keyboardButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [keyboardButton.topAnchor constraintEqualToAnchor:topButton.topAnchor constant:0].active = YES;
+    [keyboardButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [keyboardButton.widthAnchor constraintEqualToConstant:buttonWidth *2 ].active = YES;
+    [keyboardButton.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
 
 #pragma mark - OpponentChat & switch & label
-
-    float opponentChatHeight = chatViewHeight/7*1;
-    float playerChatHeight = chatViewHeight/7*1;
 
     NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
     
@@ -401,9 +203,9 @@
     UITextView *opponentChat = [[UITextView alloc] init];
     opponentChat.editable = NO;
     [opponentChat setFont:[UIFont systemFontOfSize:15]];
-
+    opponentChat.backgroundColor = [UIColor clearColor];
+    opponentChat.textColor = [schemaDict objectForKey:@"TintColor"];
     opponentChat.text = [boardDict objectForKey:@"chat"];
-    opponentChat.text = @"Die Subdomain, für die Sie den CNAME hinterlegen, muss auch beim Zielserver bekannt sein, ansonsten erhalten Sie eine Fehlermeldung beim Aufruf der Subdomain. Nach der Änderung kann es ca. 3 - 4 Stunden dauern, bis der Eintrag aktiv ist. Loggen Sie sich im KAS (technische Verwaltung) ein und klicken Sie auf Tools -> DNS-Einstellungen.Bearbeiten Sie die Domain, für deren Subdomain Sie die Änderung vornehmen möchten, und klicken Sie anschließend auf neuen DNS-Eintrag erstellen.Schritt 2DNS-Werkzeuge - CNAME, Bild 2 Tragen Sie im Feld Name die gewünschte Subdomain ein (im Beispiel calendar). Bei Typ wählen Sie CNAME aus. Prio bleibt auf 0, in dem Feld Data tragen Sie die Zieldomain ein. Beachten Sie, dass am Ende des Hosts ein Punkt stehen muss.Anschließend klicken Sie auf die Schaltfäche speichern und der Eintrag wird vorgenommen.";
     opponentChat.layer.borderWidth = 1;
     opponentChat.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     opponentChat.layer.cornerRadius = 14.0f;
@@ -414,39 +216,10 @@
     {
         [opponentChat setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-        NSLayoutConstraint *opponentChatYConstraint = [NSLayoutConstraint constraintWithItem:opponentChat
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:header
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:edge];
-       
-        NSLayoutConstraint *opponentChatLeftConstraint = [NSLayoutConstraint constraintWithItem:opponentChat
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:edge];
-        
-        NSLayoutConstraint *opponentChatRightConstraint = [NSLayoutConstraint constraintWithItem:opponentChat
-                                                                                     attribute:NSLayoutAttributeRight
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:self
-                                                                                     attribute: NSLayoutAttributeRight
-                                                                                    multiplier:1.0
-                                                                                      constant:-edge];
-        
-        NSLayoutConstraint *opponentChatHeightConstraint = [NSLayoutConstraint constraintWithItem:opponentChat
-                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:nil
-                                                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                                                     multiplier:1.0
-                                                                                       constant:opponentChatHeight];
-
-        [self addConstraints:@[opponentChatYConstraint, opponentChatLeftConstraint, opponentChatRightConstraint, opponentChatHeightConstraint]];
+        [opponentChat.topAnchor constraintEqualToAnchor:header.bottomAnchor constant:gap].active = YES;
+        [opponentChat.heightAnchor constraintEqualToConstant:opponentChatHeight].active = YES;
+        [opponentChat.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:edge].active = YES;
+        [opponentChat.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
 
 #pragma mark quoteSwitch
         quoteSwitch = [[UISwitch alloc] init];
@@ -457,32 +230,9 @@
 
         [quoteSwitch setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-        NSLayoutConstraint *quoteSwitchYConstraint = [NSLayoutConstraint constraintWithItem:quoteSwitch
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:opponentChat
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:gap];
-       
-        NSLayoutConstraint *quoteSwitchLeftConstraint = [NSLayoutConstraint constraintWithItem:quoteSwitch
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:opponentChat
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:0];
-        
-        // Fixed Height
-        NSLayoutConstraint *quoteSwitchHeightConstraint = [NSLayoutConstraint constraintWithItem:quoteSwitch
-                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:nil
-                                                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                                                     multiplier:1.0
-                                                                                       constant:headerButtonSize];
-
-        [self addConstraints:@[quoteSwitchYConstraint, quoteSwitchLeftConstraint,quoteSwitchHeightConstraint]];
+        [quoteSwitch.topAnchor constraintEqualToAnchor:opponentChat.bottomAnchor constant:gap].active = YES;
+        [quoteSwitch.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+        [quoteSwitch.leftAnchor constraintEqualToAnchor:opponentChat.leftAnchor constant:0].active = YES;
 
 #pragma mark quoteLabel
         UILabel *quoteLabel = [[UILabel alloc] init];
@@ -491,93 +241,34 @@
         [self addSubview:quoteLabel];
 
         [quoteLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-        NSLayoutConstraint *quoteLabelYConstraint = [NSLayoutConstraint constraintWithItem:quoteLabel
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:quoteSwitch
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                multiplier:1.0f
-                                                                                  constant:0];
-       
-        NSLayoutConstraint *quoteLabelLeftConstraint = [NSLayoutConstraint constraintWithItem:quoteLabel
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:quoteSwitch
-                                                                                 attribute: NSLayoutAttributeRight
-                                                                                multiplier:1.0
-                                                                                  constant:gap];
         
-        // Fixed Height
-        NSLayoutConstraint *quoteLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:quoteLabel
-                                                                                      attribute:NSLayoutAttributeHeight
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:nil
-                                                                                      attribute:NSLayoutAttributeNotAnAttribute
-                                                                                     multiplier:1.0
-                                                                                       constant:headerButtonSize];
+        [quoteLabel.topAnchor constraintEqualToAnchor:quoteSwitch.topAnchor constant:0].active = YES;
+        [quoteLabel.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+        [quoteLabel.leftAnchor constraintEqualToAnchor:quoteSwitch.rightAnchor constant:gap].active = YES;
 
-        [self addConstraints:@[quoteLabelYConstraint, quoteLabelLeftConstraint,quoteLabelHeightConstraint]];
     }
 
-#pragma mark PlayerChat
+#pragma mark - PlayerChat
     playerChat = [[UITextView alloc] init];
     [playerChat setFont:[UIFont systemFontOfSize:15]];
     playerChat.layer.borderWidth = 1;
     playerChat.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     playerChat.layer.cornerRadius = 14.0f;
     playerChat.layer.masksToBounds = YES;
-    [playerChat setDelegate:(id)presentingVC];
-    XLog(@"%@",presentingVC);
-
+    [playerChat setDelegate:self];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    playerChat.text = app.chatBuffer;
     [self addSubview:playerChat];
     
     [playerChat setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    
-    NSLayoutConstraint *playerChatYConstraint;
     if(quoteSwitch)
-        playerChatYConstraint = [NSLayoutConstraint constraintWithItem:playerChat
-                                                                                 attribute:NSLayoutAttributeTop
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:quoteSwitch
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:gap];
-       else
-           playerChatYConstraint = [NSLayoutConstraint constraintWithItem:playerChat
-                                                                                    attribute:NSLayoutAttributeTop
-                                                                                    relatedBy:NSLayoutRelationEqual
-                                                                                       toItem:quotesButton
-                                                                                    attribute:NSLayoutAttributeBottom
-                                                                                   multiplier:1.0f
-                                                                                     constant:gap];
-
-        NSLayoutConstraint *playerChatLeftConstraint = [NSLayoutConstraint constraintWithItem:playerChat
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:edge];
-        
-        NSLayoutConstraint *playerChatRightConstraint = [NSLayoutConstraint constraintWithItem:playerChat
-                                                                                     attribute:NSLayoutAttributeRight
-                                                                                     relatedBy:NSLayoutRelationEqual
-                                                                                        toItem:self
-                                                                                     attribute: NSLayoutAttributeRight
-                                                                                    multiplier:1.0
-                                                                                      constant:-edge];
-        
-        NSLayoutConstraint *playerChatBottomConstraint = [NSLayoutConstraint constraintWithItem:playerChat
-                                                                                      attribute:NSLayoutAttributeBottom
-                                                                                      relatedBy:NSLayoutRelationEqual
-                                                                                         toItem:nextButton
-                                                                                      attribute:NSLayoutAttributeTop
-                                                                                     multiplier:1.0
-                                                                                       constant:-gap];
-
-        [self addConstraints:@[playerChatYConstraint, playerChatLeftConstraint, playerChatRightConstraint, playerChatBottomConstraint]];
+        [playerChat.topAnchor constraintEqualToAnchor:quoteSwitch.bottomAnchor constant:gap].active = YES;
+    else
+        [playerChat.topAnchor constraintEqualToAnchor:header.bottomAnchor constant:gap].active = YES;
+    [playerChat.leftAnchor constraintEqualToAnchor:self.leftAnchor constant:edge].active = YES;
+    [playerChat.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
+    [playerChat.bottomAnchor constraintEqualToAnchor:nextButton.topAnchor constant:-gap].active = YES;
 
     [self setNeedsUpdateConstraints];
     [UIView animateWithDuration:1.0  animations:^{
@@ -598,30 +289,51 @@
 - (void)screenTouched:(UIGestureRecognizer *)gesture
 {
     CGPoint tapLocation = [gesture locationInView:self];
-    if( CGRectContainsPoint(self.frame, tapLocation) )
+    if( !CGRectContainsPoint(playerChat.frame, tapLocation) )
     {
-        for (UIGestureRecognizer *recognizer in self.gestureRecognizers)
-        {
-            [self removeGestureRecognizer:recognizer];
-        }
-     //   [self dismiss];
-        
+        [playerChat endEditing:YES];
+        // keyboard should dismiss
     }
-    // if typing is done outside the chat, it will be ignored
 }
+
+#pragma mark - chatVieButtons actions
 
 - (IBAction)chatTransparent
 {
     if(self.backgroundColor == [UIColor clearColor])
     {
         self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+        playerChat.backgroundColor = [UIColor whiteColor];
+
         [transparentButton setImage:[[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
     else
     {
         self.backgroundColor = [UIColor clearColor];
+        playerChat.backgroundColor = [UIColor clearColor];
+
         [transparentButton setImage:[[UIImage imageNamed:@"Brille_voll"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
+}
+
+- (IBAction)nextAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app.chatBuffer = @"";
+
+    NSDictionary *userInfo = @{ @"playerChat" : playerChat.text,
+                                @"quoteSwitch": @([quoteSwitch isOn])};
+    [[NSNotificationCenter defaultCenter] postNotificationName:chatViewNextButtonNotification object:self userInfo:userInfo];
+}
+
+- (IBAction)topAction:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app.chatBuffer = @"";
+
+    NSDictionary *userInfo = @{ @"playerChat" : playerChat.text,
+                                @"quoteSwitch": @([quoteSwitch isOn])};
+    [[NSNotificationCenter defaultCenter] postNotificationName:chatViewTopButtonNotification object:self userInfo:userInfo];
 }
 
 -(void)notYetImplemented:(id)sender
@@ -665,45 +377,68 @@
                                 }];
     [alert addAction:okButton];
    [navigationController presentViewController:alert animated:YES completion:nil];
-
 }
-#pragma mark - textField
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [self viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed during the animation
+        
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+}
+
+#pragma mark - textView delegates
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    if([playerChat.text isEqualToString:@"you may chat here"])
-    {
-        playerChat.text = @"";
-    }
-
     return YES;
 }
-
 
 - (BOOL)textViewShouldEndEditing:(UITextView *)textField
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIKeyboardDidHideNotification object:self];
+
     [playerChat endEditing:YES];
     return YES;
+}
+-(void)textViewDidChange:(UITextView *)textView
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app.chatBuffer = playerChat.text;
 }
 
 
 - (void)keyboardDidShow:(NSNotification *)notification
 {
-    CGRect frame = self.frame;
-        frame.origin.y -= 330;
-        self.frame = frame;
+    UILayoutGuide *safe = presentingVC.view.safeAreaLayoutGuide;
+    
+    CGRect keyboardBounds;
+    [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
+    
+    float spaceForKeyboard = keyboardBounds.size.height - (safe.layoutFrame.size.height - self.chatViewHeightConstraint.constant);
+    
+    if(spaceForKeyboard > 0)
+        self.chatViewTopAnchorConstraint.constant = -spaceForKeyboard;
+
+    [self layoutIfNeeded];
+
     return;
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
+    self.chatViewTopAnchorConstraint.constant = 10;
 
-    CGRect frame = self.frame;
-        frame.origin.y += 330;
-        self.frame = frame;
+    [self layoutIfNeeded];
 
     return;
 }
+
+
 @end

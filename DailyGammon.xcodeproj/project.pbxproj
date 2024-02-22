@@ -10,6 +10,7 @@
 		E002F19E29A0F08C0028098C /* DGRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = E002F19D29A0F08C0028098C /* DGRequest.m */; };
 		E002F1A229A0F9740028098C /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = E002F1A129A0F9740028098C /* Review.m */; };
 		E0048BD02B810C0B00AE8433 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0048BCF2B810C0B00AE8433 /* main.storyboard */; };
+		E0048BD52B825A1500AE8433 /* ChatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0048BD42B825A1500AE8433 /* ChatVC.m */; };
 		E005D52B2B7CED4400B4E29A /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = E005D52A2B7CED4400B4E29A /* ChatView.m */; };
 		E00654D722A6784000194435 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* Player.m */; };
 		E00A3D832700CB7D008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D822700CB7D008B526B /* NoInternet.m */; };
@@ -144,6 +145,8 @@
 		E002F1A029A0F9740028098C /* Review.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
 		E002F1A129A0F9740028098C /* Review.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
 		E0048BCF2B810C0B00AE8433 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		E0048BD32B825A1500AE8433 /* ChatVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatVC.h; sourceTree = "<group>"; };
+		E0048BD42B825A1500AE8433 /* ChatVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatVC.m; sourceTree = "<group>"; };
 		E005D5272B7CECFB00B4E29A /* ChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatView.h; sourceTree = "<group>"; };
 		E005D52A2B7CED4400B4E29A /* ChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatView.m; sourceTree = "<group>"; };
 		E00654D522A6784000194435 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
@@ -747,6 +750,8 @@
 			children = (
 				E038E4FF273D40930087C4A4 /* DailyGammon.entitlements */,
 				E09EC1272A4ABAD600B5543F /* DailyGammon.xcdatamodeld */,
+				E0048BD32B825A1500AE8433 /* ChatVC.h */,
+				E0048BD42B825A1500AE8433 /* ChatVC.m */,
 				E0048BCF2B810C0B00AE8433 /* main.storyboard */,
 				E05840232A4E9675005C032C /* Charts.xcodeproj */,
 				E07F021722EED0870065546C /* Rating */,
@@ -867,7 +872,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1520;
 				ORGANIZATIONNAME = "Peter Schneider";
 				TargetAttributes = {
 					E0F9588521AD1688003DAC01 = {
@@ -998,6 +1003,7 @@
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
 				E09871EA294870E60043DC8A /* MatchTools.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,
+				E0048BD52B825A1500AE8433 /* ChatVC.m in Sources */,
 				E0F1E4012229353C00494918 /* iPhoneMenue.m in Sources */,
 				E0F958B021ADA304003DAC01 /* TopPageVC.m in Sources */,
 				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
@@ -1112,6 +1118,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1127,7 +1134,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1177,6 +1184,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1186,7 +1194,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SDKROOT}/usr/include/libxml2/**";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				OTHER_LDFLAGS = (
@@ -1209,7 +1217,7 @@
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1236,7 +1244,7 @@
 				GCC_PREFIX_HEADER = DailyGammon/SupportingFiles/PrefixHeader.pch;
 				INFOPLIST_FILE = DailyGammon/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

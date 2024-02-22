@@ -311,7 +311,7 @@ didCompleteWithError:(NSError *)error
     [self.loginButton.topAnchor constraintEqualToAnchor:self.passwordLabel.bottomAnchor constant:20.0].active = YES;
     [self.loginButton.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
 
-#pragma faq autoLayout
+#pragma mark faq autoLayout
 
     [self.faqLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.faqButton setTranslatesAutoresizingMaskIntoConstraints:NO];
