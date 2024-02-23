@@ -1014,7 +1014,6 @@ didCompleteWithError:(NSError *)error
         [self miniBoardSchemaWarning];
         return;
     }
-    [self dismissViewControllerAnimated:YES completion:Nil];
     NSArray *row = self.topPageArray[indexPath.row];
     
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
@@ -1022,6 +1021,9 @@ didCompleteWithError:(NSError *)error
     vc.matchLink = [match objectForKey:@"href"];
     vc.topPageArray = self.topPageArray;
     [self.navigationController pushViewController:vc animated:NO];
+    
+    [self dismissViewControllerAnimated:YES completion:Nil];
+
     return;
 
 }
@@ -1058,13 +1060,17 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)refreshAction:(id)sender
 {
+    [self readTopPage];
+    [self reDrawHeader];
+    [self updateCollectionView];
+
     if(!refreshButtonPressed)
     {
-        [self readTopPage];
-        [self reDrawHeader];
-        [self updateCollectionView];
 
         timeRefresh = 60;
+        [NSTimer scheduledTimerWithTimeInterval:60.0f
+                                         target:self selector:@selector(automaticRefresh) userInfo:nil repeats:YES];
+
         timer =[NSTimer scheduledTimerWithTimeInterval:1.0f
                                          target:self selector:@selector(updateRefreshButton) userInfo:nil repeats:YES];
         refreshButtonPressed = YES;
@@ -1090,7 +1096,7 @@ didCompleteWithError:(NSError *)error
 
 -(void)updateRefreshButton
 {
-    if(timeRefresh-- < 0)
+    if(timeRefresh-- < 1)
         timeRefresh = 60;
     [self.refreshButton setTitle:[NSString stringWithFormat:@"%d", timeRefresh] forState: UIControlStateNormal];
 }
