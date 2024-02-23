@@ -62,10 +62,20 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
-    self.MRAboutAppVersion.text = [NSString stringWithFormat:@"Version %@ Build %@ from %@",
-                                   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],
-                                   [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                   [self getBuildDate]];
+    NSString *version = @"?";
+    NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
+    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    for(NSDictionary *prefSpecification in preferences) 
+    {
+        NSString *key = [prefSpecification objectForKey:@"Key"];
+        if([key isEqualToString:@"version_string"])
+        {
+            version = [prefSpecification objectForKey:@"DefaultValue"];
+        }
+    }
+
+    self.MRAboutAppVersion.text = [NSString stringWithFormat:@"Version %@ from %@", version, [self getBuildDate]];
 
     self.infoText.numberOfLines = 0;
     self.infoText.adjustsFontSizeToFitWidth = YES;
@@ -306,7 +316,20 @@ didCompleteWithError:(NSError *)error
     text = [NSString stringWithFormat:@"App <b>%@</b> <br> ", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleName"]];
     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
     
-    text = [NSString stringWithFormat:@"Version %@ Build %@", [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleShortVersionString"], [[[NSBundle mainBundle] infoDictionary]   objectForKey:@"CFBundleVersion"]];
+    NSString *version = @"?";
+    NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
+    NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
+    NSArray *preferences = [settings objectForKey:@"PreferenceSpecifiers"];
+    for(NSDictionary *prefSpecification in preferences)
+    {
+        NSString *key = [prefSpecification objectForKey:@"Key"];
+        if([key isEqualToString:@"version_string"])
+        {
+            version = [prefSpecification objectForKey:@"DefaultValue"];
+        }
+    }
+
+    text = [NSString stringWithFormat:@"Version %@ ", version];
     emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
     
     text = [NSString stringWithFormat:@"Build from <b>%@</b> <br> ", [self getBuildDate] ];
