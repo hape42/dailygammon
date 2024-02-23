@@ -1233,6 +1233,7 @@
 
 - (void)actionSkipGame
 {
+    [chatViewX dismiss];
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
