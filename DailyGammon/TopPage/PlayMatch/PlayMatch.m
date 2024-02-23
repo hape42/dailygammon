@@ -36,8 +36,6 @@
 #import "Review.h"
 #import "NoBoard.h"
 
-#import "ChatVC.h"
-
 @interface PlayMatch ()
 
 @property (weak, nonatomic) IBOutlet UILabel *infoLabel;
@@ -836,10 +834,6 @@
             [chatViewX showChatInView:self.view];
             break;
             
-            ChatVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"ChatVC"];
-            [self presentViewController:vc animated:YES completion:nil];
-
-            break;
             // schieb den chatView mittig in den sichtbaren Bereich
             CGRect frame = self.chatView.frame;
             
