@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -982,7 +983,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
-                                <rect key="frame" x="13" y="80" width="986" height="21"/>
+                                <rect key="frame" x="87" y="88" width="652" height="21"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
@@ -1104,6 +1105,17 @@ Did we make you curious?</string>
                                     <action selector="moreAction:" destination="DvW-Tf-E0z" eventType="touchUpInside" id="aZM-mU-TwW"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OrE-s8-Zak">
+                                <rect key="frame" x="687" y="71" width="99" height="51"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <imageReference key="image" image="clipboard" catalog="system" symbolScale="large"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="copyInfoToClipBoard:" destination="UX0-ua-SQF" eventType="touchUpInside" id="Foa-u9-zFE"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                     </view>
@@ -1115,12 +1127,13 @@ Did we make you curious?</string>
                         <outlet property="buttonPrivacy" destination="EN6-bO-x0d" id="2ze-I8-haR"/>
                         <outlet property="buttonReminder" destination="dKz-9s-t8l" id="MFP-z5-9Q8"/>
                         <outlet property="buttonWeb" destination="qwc-Ac-hor" id="HUB-fv-iR9"/>
+                        <outlet property="clipBoard" destination="OrE-s8-Zak" id="zwU-PV-WJN"/>
                         <outlet property="infoText" destination="q5o-Fx-lsS" id="L2K-1S-JKR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0eT-bB-Ge5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="705" y="536"/>
+            <point key="canvasLocation" x="704.8828125" y="535.9375"/>
         </scene>
         <!--No Board-->
         <scene sceneID="prp-u7-cMx">
@@ -1713,6 +1726,7 @@ Did we make you curious?</string>
         <image name="Brille" width="44" height="44"/>
         <image name="GitHub-Mark-32px.png" width="32" height="32"/>
         <image name="app_icon.png" width="1024" height="1024"/>
+        <image name="clipboard" catalog="system" width="98" height="128"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="startscreen.png" width="1024" height="300"/>

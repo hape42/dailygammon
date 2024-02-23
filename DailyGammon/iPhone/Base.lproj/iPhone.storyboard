@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -936,6 +937,17 @@ Did we make you curious?</string>
                                     <action selector="actionPrivacy:" destination="UX0-ua-SQF" eventType="touchUpInside" id="OJf-jJ-SjI"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bT-WB-P1I">
+                                <rect key="frame" x="531" y="15" width="99" height="51"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain">
+                                    <imageReference key="image" image="clipboard" catalog="system" symbolScale="large"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="copyInfoToClipBoard:" destination="UX0-ua-SQF" eventType="touchUpInside" id="6uK-iA-Z7r"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" name="ColorViewBackground"/>
                         <constraints>
@@ -972,6 +984,7 @@ Did we make you curious?</string>
                         <outlet property="buttonPrivacy" destination="EN6-bO-x0d" id="2ze-I8-haR"/>
                         <outlet property="buttonReminder" destination="jw4-NP-Myf" id="Sl5-rc-hMe"/>
                         <outlet property="buttonWeb" destination="b9Q-d8-HSF" id="Mk9-lo-eej"/>
+                        <outlet property="clipBoard" destination="2bT-WB-P1I" id="uCR-rX-Isw"/>
                         <outlet property="creditButton" destination="cVK-Ur-y0b" id="RiB-2J-cfC"/>
                         <outlet property="infoText" destination="Tqh-Bf-z22" id="zl4-c1-ibv"/>
                         <outlet property="moreButton" destination="u0a-va-GJp" id="qCh-Bv-xaK"/>
@@ -1557,6 +1570,7 @@ Did we make you curious?</string>
     <resources>
         <image name="Brille" width="44" height="44"/>
         <image name="GitHub-Mark-32px.png" width="32" height="32"/>
+        <image name="clipboard" catalog="system" width="98" height="128"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>

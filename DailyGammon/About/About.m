@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
 @property (weak, nonatomic) IBOutlet DGButton *creditButton;
 @property (weak, nonatomic) IBOutlet UILabel *infoText;
+@property (weak, nonatomic) IBOutlet UIButton *clipBoard;
 
 @end
 
@@ -101,6 +102,10 @@
     buildDate = [dateFormat stringFromDate:date];
  
     return buildDate;
+}
+- (IBAction)copyInfoToClipBoard:(id)sender 
+{
+    [[UIPasteboard generalPasteboard] setString:self.MRAboutAppVersion.text];
 }
 
 - (void)viewWillAppear:(BOOL)animated
