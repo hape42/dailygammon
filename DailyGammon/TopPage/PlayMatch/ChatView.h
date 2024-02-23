@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSLayoutConstraint *chatViewTopAnchorConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *chatViewHeightConstraint;
 
+@property (readwrite, assign, atomic) float keyboardHeight;
+
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 

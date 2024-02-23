@@ -22,6 +22,9 @@
 
 @synthesize transparentButton, quoteSwitch, playerChat;
 @synthesize navigationController, presentingVC;
+@synthesize keyboardHeight;
+
+#define TOP_EDGE 40
 
 - (id)init
 {
@@ -39,7 +42,7 @@
         self.layer.masksToBounds = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-
+        keyboardHeight = 0;
     }
     return self;
 }
@@ -68,19 +71,25 @@
     
     UILayoutGuide *safe = presentingView.safeAreaLayoutGuide;
 
-    float chatViewHeight = (edge*4) + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
+    float chatViewHeight = TOP_EDGE + headerSize  + gap + playerChatHeight + gap + buttonHight + edge;
+    if([[boardDict objectForKey:@"chat"] length] != 0)
+        chatViewHeight      = TOP_EDGE + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
 
-    while (chatViewHeight > (safe.layoutFrame.size.height - (edge*2)))
+    while (chatViewHeight > (safe.layoutFrame.size.height - edge - TOP_EDGE))
     {
         opponentChatHeight *= .9;
         playerChatHeight   *= .9;
-        chatViewHeight      = edge + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
+        if([[boardDict objectForKey:@"chat"] length] != 0)
+            chatViewHeight      = TOP_EDGE + headerSize  + gap + opponentChatHeight + gap + headerSize + gap + playerChatHeight + gap + buttonHight + edge;
+        else
+            chatViewHeight      = TOP_EDGE + headerSize  + gap  + playerChatHeight + gap + buttonHight + edge;
+
     }
 
 #pragma mark chatView
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    self.chatViewTopAnchorConstraint = [self.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge*4];
+    self.chatViewTopAnchorConstraint = [self.topAnchor constraintEqualToAnchor:safe.topAnchor constant:TOP_EDGE];
     self.chatViewTopAnchorConstraint.active = YES;
     self.chatViewHeightConstraint = [self.heightAnchor constraintEqualToConstant:chatViewHeight];
     self.chatViewHeightConstraint.active = YES;
@@ -420,13 +429,17 @@
 {
     UILayoutGuide *safe = presentingVC.view.safeAreaLayoutGuide;
     
-    CGRect keyboardBounds;
-    [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
-    
-    float spaceForKeyboard = keyboardBounds.size.height - (safe.layoutFrame.size.height - self.chatViewHeightConstraint.constant);
-    
+    if(keyboardHeight == 0)
+    {
+        CGRect keyboardBounds;
+        [[notification.userInfo valueForKey:UIKeyboardFrameBeginUserInfoKey] getValue:&keyboardBounds];
+        keyboardHeight = keyboardBounds.size.height;
+    }
+    float spaceForKeyboard = keyboardHeight - (safe.layoutFrame.size.height - self.chatViewHeightConstraint.constant);
+    XLog(@"space %3.1f keyboard %3.1f safe %3.1f chatView %3.1f",spaceForKeyboard, keyboardHeight, safe.layoutFrame.size.height , self.chatViewHeightConstraint.constant );
     if(spaceForKeyboard > 0)
         self.chatViewTopAnchorConstraint.constant = -spaceForKeyboard;
+    [self setNeedsUpdateConstraints];
 
     [self layoutIfNeeded];
 
@@ -435,7 +448,8 @@
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
-    self.chatViewTopAnchorConstraint.constant = 10;
+    self.chatViewTopAnchorConstraint.constant = TOP_EDGE;
+    [self setNeedsUpdateConstraints];
 
     [self layoutIfNeeded];
 
