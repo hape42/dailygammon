@@ -63,8 +63,6 @@
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
-@property (assign, atomic) BOOL isChatView;
-
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
 
@@ -164,32 +162,35 @@
     switch (orientation) 
     {
         case UIDeviceOrientationPortrait:
-            //NSLog(@"Portrait orientation");
+            NSLog(@"Portrait orientation");
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
             [self showMatch];
 
             break;
         case UIDeviceOrientationLandscapeLeft:
-            //NSLog(@"Landscape Left orientation");
+            NSLog(@"Landscape Left orientation");
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
             [self showMatch];
 
             break;
         case UIDeviceOrientationLandscapeRight:
-            //NSLog(@"Landscape Right orientation");
+            NSLog(@"Landscape Right orientation %ld", (long)orientation);
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
             [self showMatch];
 
             break;
-        // ... weitere Orientierungen je nach Bedarf
         default:
+            NSLog(@"?? %ld orientation", (long)orientation);
+
             break;
     }
 
 }
+
+
 - (IBAction)moreAction:(id)sender
 {
     if(!menueView)
@@ -209,7 +210,7 @@
 {
     [tools matchCount];
 
-    self.isChatView = FALSE;
+    [chatView dismiss];
 
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
@@ -1122,6 +1123,7 @@
 
 #pragma mark - chat Buttons
 
+// are triggered by notification from chatView
 - (IBAction)chatNextButton:(NSNotification *)notification
 {
     NSString *chat = notification.userInfo[@"playerChat"] ;
@@ -1263,7 +1265,6 @@
 }
 -(BOOL)isChat
 {
-    self.isChatView = TRUE;
     NSString *chatString = [self.boardDict objectForKey:@"chat"];
     if(chatString.length > 0)
         return TRUE;
@@ -1276,7 +1277,6 @@
         if([contentString rangeOfString:@"says"].location != NSNotFound)
             return TRUE;
     }
-    self.isChatView = FALSE;
     return FALSE;
 }
 - (void)cellTouched:(UIGestureRecognizer *)gesture
@@ -1299,46 +1299,6 @@
     }
 }
 
-#pragma mark - textField
-//-(BOOL)textViewShouldBeginEditing:(UITextView *)textField
-//{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//    if([self.playerChat.text isEqualToString:@"you may chat here"])
-//    {
-//        self.playerChat.text = @"";
-//    }
-//
-//    return YES;
-//}
-//
-//
-//- (BOOL)textViewShouldEndEditing:(UITextView *)textField
-//{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-//    
-//    [self.playerChat endEditing:YES];
-//    return YES;
-//}
-//
-//
-//- (void)keyboardDidShow:(NSNotification *)notification
-//{
-//    if(self.isChatView)
-//    {
-//        CGRect frame = self.chatViewFrame;
-//        frame.origin.y -= 330;
-//        self.chatView.frame = frame;
-//    }
-//}
-//
-//-(void)keyboardDidHide:(NSNotification *)notification
-//{
-//    if(self.isChatView)
-//    {
-//        self.chatView.frame = self.chatViewFrame;
-//    }
-//
-//}
 
 #pragma mark - Email
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
