@@ -38,32 +38,9 @@
 
 @interface PlayMatch ()
 
-@property (weak, nonatomic) IBOutlet UILabel *infoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *matchName;
-@property (weak, nonatomic) IBOutlet UILabel *unexpectedMove;
-@property (weak, nonatomic) IBOutlet UILabel *makeYourMove;
 
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
-
-@property (weak, nonatomic) IBOutlet UIView *chatView;
-@property (weak, nonatomic) IBOutlet UIButton *transparentButton;
-@property (assign, atomic) BOOL chatIsTransparent;
-
-@property (weak, nonatomic) IBOutlet UITextView *opponentChat;
-@property (weak, nonatomic) IBOutlet UITextView *playerChat;
-@property (weak, nonatomic) IBOutlet UIButton *NextButtonOutlet;
-@property (weak, nonatomic) IBOutlet UIButton *ToTopOutlet;
-@property (weak, nonatomic) IBOutlet UISwitch *quoteSwitch;
-@property (weak, nonatomic) IBOutlet UILabel *quoteMessage;
-@property (weak, nonatomic) IBOutlet UILabel *chatHeaderText;
-@property (assign, atomic) CGRect chatViewFrame;
-@property (assign, atomic) CGRect quoteSwitchFrame;
-@property (assign, atomic) CGRect quoteMessageFrame;
-@property (assign, atomic) CGRect chatNextButtonFrame;
-@property (assign, atomic) CGRect chatTopPageButtonFrame;
-@property (assign, atomic) CGRect opponentChatViewFrame;
-@property (assign, atomic) CGRect playerChatViewFrame;
-@property (assign, atomic) CGRect chatViewFrameSave;
 
 @property (weak, nonatomic) IBOutlet UILabel *matchCountLabel;
 
@@ -108,7 +85,7 @@
 @synthesize matchTools;
 
 @synthesize menueView;
-@synthesize chatViewX, playerChatX;
+@synthesize chatView;
 
 @synthesize boardView, actionView;
 @synthesize zoomFactor;
@@ -139,10 +116,6 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
-    self.chatView.layer.borderWidth = 1.0f;
-    self.opponentChat.layer.borderWidth = 1.0f;
-    self.playerChat.layer.borderWidth = 1.0f;
-
     design = [[Design alloc] init];
     match  = [[Match alloc] init];
     rating = [[Rating alloc] init];
@@ -159,34 +132,12 @@
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:oneFingerTap];
-
-    [self.playerChat setDelegate:self];
-
-    self.chatIsTransparent = FALSE;
-    [self.transparentButton setTitle:@"" forState: UIControlStateNormal];
-    UIImage *image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.transparentButton setImage:image forState:UIControlStateNormal];
-    self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-    
-    self.quoteSwitchFrame = self.quoteSwitch.frame;
-    self.quoteMessageFrame = self.quoteMessage.frame;
-    
-    self.chatNextButtonFrame    = self.NextButtonOutlet.frame;
-    self.chatTopPageButtonFrame = self.ToTopOutlet.frame;
-    self.opponentChatViewFrame  = self.opponentChat.frame;
-    self.playerChatViewFrame    = self.playerChat.frame;
-    self.chatViewFrameSave      = self.chatView.frame;
     
     self.first = TRUE;
 
     self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
     [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", self.matchCount]];
 
-    if(isReview)
-    {
-        self.unexpectedMove.text = @"";
-        self.makeYourMove.text = @"";
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -270,13 +221,6 @@
         [removeView removeFromSuperview];
     }
 
-    // schieb den chatView aus dem sichtbaren bereich
-    CGRect frame = self.chatView.frame;
-    frame.origin.x = 5000;
-    frame.origin.y = 5000;
-    self.chatView.frame = frame;
-    self.infoLabel.frame = frame;
-
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
     
@@ -341,7 +285,6 @@
         return;
     }
 
-    self.unexpectedMove.text   = [self.boardDict objectForKey:@"unexpectedMove"];
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
     {
         self.matchName.text = @"";
@@ -366,11 +309,9 @@
 
     NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict boardView:boardView zoom:zoomFactor];
     boardView = [returnDict objectForKey:@"boardView"];
-    // passe chatView an boardView an
-    CGRect frame = self.chatView.frame;
-    frame.size.width = boardView.frame.size.width * .8;
-    self.chatView.frame = frame;
 
+    CGRect frame = CGRectZero;
+    
     self.moveArray = [returnDict objectForKey:@"moveArray"];
         
     UIView *removeView;
@@ -814,9 +755,9 @@
         {
 #pragma mark - Chat
             
-            if(chatViewX)
+            if(chatView)
             {
-                [tools removeAllSubviewsRecursively:chatViewX];
+                [tools removeAllSubviewsRecursively:chatView];
                 UIView *removeView;
                 while((removeView = [self.view viewWithTag:123]) != nil)
                 {
@@ -824,102 +765,14 @@
                 }
 
             }
-            chatViewX = [[ChatView alloc]init];
-            chatViewX.navigationController = self.navigationController;
-            chatViewX.boardDict = self.boardDict;
-            chatViewX.actionDict = self.actionDict;
-            chatViewX.boardView = boardView;
-            chatViewX.presentingVC = self;
-            XLog(@"%@",self);
-            [chatViewX showChatInView:self.view];
-            break;
-            
-            // schieb den chatView mittig in den sichtbaren Bereich
-            CGRect frame = self.chatView.frame;
-            
-            [self.view bringSubviewToFront:self.chatView ];
-            //        self.opponentChat.text = [self.actionDict objectForKey:@"content"];
-            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
-            
-            BOOL isCheckbox = FALSE;
-            for(NSMutableDictionary *dict in attributesArray)
-            {
-                if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
-                {
-                    isCheckbox = TRUE;;
-                }
-            }
-            if(!isCheckbox)
-            {
-                // schiebe switch und Text weg
-                frame = self.quoteSwitch.frame;
-                frame.origin.x = 9999;
-                frame.origin.y = 9999;
-                self.quoteSwitch.frame = frame;
-                self.quoteMessage.frame = frame;
-            }
-            else
-            {
-                self.quoteSwitch.frame = self.quoteSwitchFrame;
-                self.quoteMessage.frame = self.quoteMessageFrame;
-            }
-            self.quoteSwitch = [design makeNiceSwitch:self.quoteSwitch];
-            
-            //        self.quoteMessage.textColor   = [schemaDict objectForKey:@"TintColor"];
-            
-            self.opponentChat.text = [self.boardDict objectForKey:@"chat"];
-            if(([self.opponentChat.text length] == 0) && (isCheckbox == FALSE))
-            {
-                // opponentChat nicht anzeigen
-                frame = self.opponentChat.frame;
-                float opponentChatHoehe = self.opponentChat.frame.size.height;
-                frame.size.height = 0;
-                self.opponentChat.frame = frame;
-                
-                frame = self.chatView.frame;
-                frame.origin.y += opponentChatHoehe;
-                frame.size.height -= opponentChatHoehe;
-                self.chatView.frame = frame;
-                
-                frame = self.playerChat.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.playerChat.frame = frame;
-                
-                frame = self.NextButtonOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.NextButtonOutlet.frame = frame;
-                
-                frame = self.ToTopOutlet.frame;
-                frame.origin.y -= opponentChatHoehe;
-                self.ToTopOutlet.frame = frame;
-            }
-            else
-            {
-                // opponentChat anzeigen
-                self.NextButtonOutlet.frame = self.chatNextButtonFrame;
-                self.ToTopOutlet.frame      = self.chatTopPageButtonFrame;
-                self.chatView.frame         = self.chatViewFrameSave;
-                self.playerChat.frame       = self.playerChatViewFrame;
-                self.opponentChat.frame     = self.opponentChatViewFrame;
-                [self.opponentChat flashScrollIndicators];
-                [NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(flashIndicator) userInfo:nil repeats:YES]; // set time interval as per your requirement.
-                
-                
-            }
-            frame = self.chatView.frame;
-            frame.origin.x = boardView.frame.origin.x + ((boardView.frame.size.width - self.chatView.frame.size.width) / 2);
-            frame.origin.y = boardView.frame.origin.y + ((boardView.frame.size.height - self.chatView.frame.size.height) / 2);
-            self.chatView.frame = frame;
-            
-            self.NextButtonOutlet.backgroundColor = [UIColor whiteColor];
-            self.ToTopOutlet.backgroundColor = [UIColor whiteColor];
-            
-            self.playerChat.text = @"you may chat here";
-            //         self.chatHeaderText.textColor   = [schemaDict objectForKey:@"TintColor"];
-            self.chatView.layer.cornerRadius = 14.0f;
-            self.chatView.layer.masksToBounds = YES;
-            
-            self.chatViewFrame = self.chatView.frame; // position merken um bei keyboard reinfahren view zu verschieben und wieder an die richtige Stelle zurück
+            chatView = [[ChatView alloc]init];
+            chatView.navigationController = self.navigationController;
+            chatView.boardDict = self.boardDict;
+            chatView.actionDict = self.actionDict;
+            chatView.boardView = boardView;
+            chatView.presentingVC = self;
+            //XLog(@"%@",self);
+            [chatView showChatInView:self.view];
             break;
         }
         case ONLY_MESSAGE:
@@ -1008,10 +861,7 @@
         [actionView addSubview:buttonSkipGame];
     }
 }
--(void)flashIndicator
-{
-    [self.opponentChat flashScrollIndicators];
-}
+
 #pragma mark - actions
 - (void)actionSubmitMove
 {
@@ -1227,7 +1077,7 @@
 
 - (void)actionSkipGame
 {
-    [chatViewX dismiss];
+    [chatView dismiss];
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch];
 }
@@ -1272,28 +1122,6 @@
 
 #pragma mark - chat Buttons
 
-- (IBAction)chatTransparent:(id)sender
-{
-
-    if(self.chatIsTransparent)
-    {
-        self.chatIsTransparent = FALSE;
-        self.chatView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-        UIImage *image = [[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [self.transparentButton setImage:image forState:UIControlStateNormal];
-        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-    }
-    else
-    {
-        self.chatIsTransparent = TRUE;
-        self.chatView.backgroundColor = [UIColor clearColor];
-        UIImage *image = [[UIImage imageNamed:@"Brille_voll"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [self.transparentButton setImage:image forState:UIControlStateNormal];
-        self.transparentButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-    }
-
-
-}
 - (IBAction)chatNextButton:(NSNotification *)notification
 {
     NSString *chat = notification.userInfo[@"playerChat"] ;
@@ -1852,7 +1680,7 @@
      {
          // Code to be executed during the animation
         
-        [self->chatViewX dismiss];
+        [self->chatView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch];

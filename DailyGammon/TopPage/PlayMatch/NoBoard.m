@@ -205,9 +205,14 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    vc.matchLink = matchLink;
+    [self.navigationController pushViewController:vc animated:NO];
+
+    return;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
-        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+        PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
         vc.matchLink = matchLink;
         [self.navigationController pushViewController:vc animated:NO];
     }

@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Tools;
 @class MatchTools;
 
-@interface PlayMatch : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate, UITextViewDelegate, MFMailComposeViewControllerDelegate >
+@interface PlayMatch : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate, MFMailComposeViewControllerDelegate >
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Match *match;
@@ -34,15 +34,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) float zoomFactor;
 
 @property (strong, nonatomic, readwrite) MenueView *menueView;
-@property (strong, nonatomic, readwrite) ChatView  *chatViewX;
+@property (strong, nonatomic, readwrite) ChatView  *chatView;
 
 @property (strong, nonatomic, readwrite) UIView *boardView;
 @property (strong, nonatomic, readwrite) UIView *actionView;
 @property (readwrite, assign, atomic) float actionViewWidth;
 
 @property (readwrite, assign, atomic) BOOL isPortrait;
-
-@property (strong, readwrite, retain, atomic) UITextView *playerChatX;
 
 @end
 

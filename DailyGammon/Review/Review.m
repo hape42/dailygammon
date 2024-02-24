@@ -730,24 +730,12 @@
 
 - (IBAction)moveAction:(UIButton*)button
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        PlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-        vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
-        vc.isReview = TRUE;
-        vc.topPageArray = [[NSMutableArray alloc]init];
-        [self.navigationController pushViewController:vc animated:NO];
-    }
-    else
-    {
-        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
-        vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
-        vc.topPageArray = [[NSMutableArray alloc]init];
-        vc.isReview = TRUE;
-        [self.navigationController pushViewController:vc animated:NO];
-    }
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
+    vc.isReview = TRUE;
+    vc.topPageArray = [[NSMutableArray alloc]init];
+    [self.navigationController pushViewController:vc animated:NO];
+ 
     return;
 
 

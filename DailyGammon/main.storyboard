@@ -121,8 +121,63 @@
             </objects>
             <point key="canvasLocation" x="-479" y="-1509"/>
         </scene>
+        <!--Play Match-->
+        <scene sceneID="ptI-DJ-sfk">
+            <objects>
+                <viewController storyboardIdentifier="PlayMatch" id="8z1-bn-naV" customClass="PlayMatch" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hCK-WM-X8y"/>
+                        <viewControllerLayoutGuide type="bottom" id="VRC-FJ-nZd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="OYg-4e-lBo">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pNT-PL-OBh">
+                                <rect key="frame" x="20" y="30" width="924" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Match Name &amp; Number, Round x">
+                                        <attributes>
+                                            <font key="NSFont" metaFont="system" size="25"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Crb-ZZ-Nqq">
+                                <rect key="frame" x="964" y="30" width="40" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="8z1-bn-naV" eventType="touchUpInside" id="Bzo-Iq-d9M"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="27" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sx3-1W-YLW">
+                                <rect key="frame" x="932" y="30" width="40" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="YRe-kB-1fc"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <outlet property="matchCountLabel" destination="Sx3-1W-YLW" id="c2k-ab-rbk"/>
+                        <outlet property="matchName" destination="pNT-PL-OBh" id="zLB-sf-wsi"/>
+                        <outlet property="moreButton" destination="Crb-ZZ-Nqq" id="dnS-Og-FbW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Utr-lC-0zf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-479" y="-2382"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="menue.png" width="20" height="20"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

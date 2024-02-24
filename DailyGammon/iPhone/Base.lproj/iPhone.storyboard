@@ -938,10 +938,10 @@ Did we make you curious?</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bT-WB-P1I">
-                                <rect key="frame" x="531" y="15" width="99" height="51"/>
+                                <rect key="frame" x="531" y="15" width="256" height="51"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain">
+                                <buttonConfiguration key="configuration" style="plain" title=" Copy to clipBoard">
                                     <imageReference key="image" image="clipboard" catalog="system" symbolScale="large"/>
                                 </buttonConfiguration>
                                 <connections>

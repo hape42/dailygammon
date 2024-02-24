@@ -1016,7 +1016,7 @@ didCompleteWithError:(NSError *)error
     }
     NSArray *row = self.topPageArray[indexPath.row];
     
-    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = row[8];
     vc.matchLink = [match objectForKey:@"href"];
     vc.topPageArray = self.topPageArray;
