@@ -21,9 +21,7 @@
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
 #import "Tools.h"
-#import "Player.h"
 #import "LoginVC.h"
-#import "About.h"
 #import "DGButton.h"
 
 #import "ConstantsMatch.h"

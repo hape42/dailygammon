@@ -81,9 +81,9 @@
 
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     else
