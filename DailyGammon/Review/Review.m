@@ -21,17 +21,14 @@
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
-#import "GameLounge.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
 #import "Player.h"
-#import "TopPageVC.h"
 #import "About.h"
 #import "PlayerLists.h"
 #import "Constants.h"
 
 #import "PlayMatch.h"
-#import "iPhonePlayMatch.h"
 
 @interface Review ()
 

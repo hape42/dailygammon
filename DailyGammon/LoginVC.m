@@ -177,7 +177,7 @@ didCompleteWithError:(NSError *)error
             [[NSUserDefaults standardUserDefaults] setValue:self.password.text forKey:@"password"];
             [[NSUserDefaults standardUserDefaults] synchronize];
 
-            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
         }
     }

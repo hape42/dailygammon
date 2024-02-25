@@ -8,8 +8,7 @@
 
 #import "InviteDetail.h"
 #import "RatingVC.h"
-#import "GameLounge.h"
-#import "TopPageVC.h"
+#import "TopPageCV.h"
 #import "DbConnect.h"
 #import "Player.h"
 #import "AppDelegate.h"

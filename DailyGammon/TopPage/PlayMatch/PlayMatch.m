@@ -12,7 +12,6 @@
 #import "Design.h"
 #import "TFHpple.h"
 #import "Match.h"
-#import "GameLounge.h"
 #import "Rating.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
@@ -256,7 +255,7 @@
                                     style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action)
                                     {
-            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
                                      }];
  
@@ -434,7 +433,7 @@
             NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
             
             //    [match readMatch:matchLink];
-            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
             [self.navigationController pushViewController:vc animated:NO];
             return;
             
@@ -1340,7 +1339,7 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-                                    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+                                    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                     [self.navigationController pushViewController:vc animated:NO];
                                 }];

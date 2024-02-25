@@ -13,13 +13,10 @@
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
-#import "TopPageVC.h"
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
 #import "Player.h"
-#import "GameLounge.h"
-#import "TopPageVC.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "DGButton.h"

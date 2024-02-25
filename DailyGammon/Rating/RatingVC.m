@@ -7,14 +7,12 @@
 //
 
 #import "RatingVC.h"
-#import "TopPageVC.h"
 #import "Design.h"
 #import "TFHpple.h"
 #import "PlayMatch.h"
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
-#import "GameLounge.h"
 #import "DbConnect.h"
 #import "AppDelegate.h"
 #import "Player.h"

@@ -51,7 +51,7 @@
             return;
 
         }
-        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
 
 //        TopPageVC *vc = [[TopPageVC alloc]init];

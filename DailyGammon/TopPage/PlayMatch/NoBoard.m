@@ -26,7 +26,6 @@
 #import "Design.h"
 #import "TFHpple.h"
 #import "PlayMatch.h"
-#import "iPhonePlayMatch.h"
 #import "Preferences.h"
 #import "Rating.h"
 #import "LoginVC.h"
@@ -42,7 +41,6 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 #import "DGRequest.h"
-#import "GameLounge.h"
 #import "DGLabel.h"
 
 @interface NoBoard ()
@@ -117,7 +115,7 @@
 #pragma mark TopPage
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
-        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
         [self.navigationController pushViewController:vc animated:NO];
         return;
@@ -210,19 +208,6 @@
     [self.navigationController pushViewController:vc animated:NO];
 
     return;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-        vc.matchLink = matchLink;
-        [self.navigationController pushViewController:vc animated:NO];
-    }
-    else
-    {
-        iPhonePlayMatch *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"iPhonePlayMatch"];
-        vc.matchLink = matchLink;
-        [self.navigationController pushViewController:vc animated:NO];
-    }
-    return;
 }
 #pragma mark - unknown HTML
 
@@ -231,7 +216,7 @@
     if([ [self.boardDict objectForKey:@"htmlString"] isEqualToString:@""])
     {
         XLog(@"---------> empty htmlString");
-        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -505,7 +490,7 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
                                  }];
 
@@ -584,7 +569,7 @@
                                         } else {
                                             [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
                                         }
-                                                TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+                                                TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                                 [self.navigationController pushViewController:vc animated:NO];
 
@@ -811,7 +796,7 @@
                           {
         if (success)
         {
-            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+            TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
             [self.navigationController pushViewController:vc animated:NO];
         }

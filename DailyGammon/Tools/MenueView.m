@@ -14,13 +14,11 @@
 
 #import "AppDelegate.h"
 #import "RatingVC.h"
-#import "TopPageVC.h"
 #import "LoginVC.h"
 #import "SetupVC.h"
 #import "About.h"
 #import <SafariServices/SafariServices.h>
 #import "Player.h"
-#import "GameLounge.h"
 #import "GameLoungeCV.h"
 #import "PlayerLists.h"
 #import "Constants.h"
@@ -97,14 +95,14 @@
     [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
 
     button1.tag = 1;
-    [button1 addTarget:self action:@selector(topPageVC) forControlEvents:UIControlEventTouchUpInside];
+    [button1 addTarget:self action:@selector(topPage) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button1];
     y += gap + buttonHight;
     
     DGButton *button2 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
     button2.tag = 2;
-    [button2 addTarget:self action:@selector(GameLoungeVC) forControlEvents:UIControlEventTouchUpInside];
+    [button2 addTarget:self action:@selector(GameLounge) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button2];
     y += gap + buttonHight;
 
@@ -239,16 +237,11 @@
 {
     [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
 }
--(void) topPageVC
+-(void) topPage
 {
-    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+    TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
     [self.navigationController pushViewController:vc animated:NO];
 
-//    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//    
-//    TopPageVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//    
-//    [self.navigationController pushViewController:vc animated:NO];
 }
 -(void) ratingVC
 {
@@ -259,9 +252,9 @@
     [self.navigationController pushViewController:vc animated:NO];
 }
 
--(void) GameLoungeVC
+-(void) GameLounge
 {
-    GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"iPad" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
+    GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
     [self.navigationController pushViewController:vc animated:NO];
 }
 
