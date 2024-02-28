@@ -30,6 +30,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     if(![tools hasConnectivity])
     {
         [self exitApp];
@@ -53,13 +60,6 @@
         }
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
-
-//        TopPageVC *vc = [[TopPageVC alloc]init];
-//        
-//        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-//            vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageVC"];
-//
-//        [self.navigationController pushViewController:vc animated:NO];
 
     }
 }

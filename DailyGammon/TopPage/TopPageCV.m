@@ -76,9 +76,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
     [self layoutObjects];
-    [self reDrawHeader];
 
-    [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
 
     NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -103,6 +101,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
+
     [ self readTopPage];
 
     [self reDrawHeader];
@@ -342,7 +342,7 @@ didCompleteWithError:(NSError *)error
         self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
 
     }
-    
+    XLog(@"updateCollectionView");
     [rating updateRating];
  
     [self.collectionView reloadData];
@@ -1215,19 +1215,19 @@ didCompleteWithError:(NSError *)error
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/profile"] options:@{} completionHandler:nil];
 
 }
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed during the animation
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed after the animation is completed
-     }];
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-}
+//
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//{
+//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+//
+//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed during the animation
+//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed after the animation is completed
+//     }];
+//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+//}
 
 @end

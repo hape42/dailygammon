@@ -49,6 +49,14 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
+@property (readwrite, retain, nonatomic) NSArray       *landscapeConstraints;
+@property (readwrite, retain, nonatomic) NSArray       *portraitConstraints;
+@property (strong, readwrite, retain, atomic) DGButton *buttonPlayer1;
+@property (strong, readwrite, retain, atomic) DGButton *buttonPlayer2;
+@property (strong, readwrite, retain, atomic) UILabel  *player1Score;
+@property (strong, readwrite, retain, atomic) UILabel  *player2Score;
+@property (strong, readwrite, retain, atomic) UIView   *infoView;
+
 @end
 
 @implementation NoBoard
@@ -73,7 +81,7 @@
     tools = [[Tools alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-
+    
     UITapGestureRecognizer *oneFingerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyboardDidHide:)];
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
@@ -90,16 +98,29 @@
         [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
     
-    [self reDrawHeader];
+#pragma mark moreButton design & autoLayout
+    
+    self.moreButton = [design designMoreButton:self.moreButton];
+
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
     [self analyze];
 }
 
--(void) reDrawHeader
+- (void)viewWillDisappear:(BOOL)animated
 {
-//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-//        [self.view addSubview:[self makeHeader]];
-
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tools removeAllSubviewsRecursively:self.view];
+    [self.view removeFromSuperview];
 
 }
 
@@ -201,7 +222,6 @@
 
 -(void)playMatch:(NSString *)matchLink
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     vc.matchLink = matchLink;
@@ -241,7 +261,7 @@
     [self.view addSubview:htmlView];
 
 }
-#pragma mark - Support Email
+#pragma mark  Support Email
 - (IBAction)sendEmail:(id)sender
 {
     if (![MFMailComposeViewController canSendMail])
@@ -311,21 +331,48 @@
         href = [dict objectForKey:@"action"];
     }
     isFinishedMatch = YES;
+    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
+    bool withChat = NO;
+    if([chatArray[0] containsString:@"chat"])
+        withChat = YES;
     int edge = 10;
     int gap = 10;
-    int x = 50;
-    int y = edge;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        y = 70;
 
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake(x, y, self.view.bounds.size.width - 150 - edge,  self.view.bounds.size.height - y - edge)];
-    
-    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
-    y = 0;
-    UILabel * matchName = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+    self.infoView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:self.infoView];
+//    self.infoView.layer.borderWidth = 3;
+    [self.infoView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    if(withChat)
+    {
+        [self.infoView.heightAnchor constraintEqualToAnchor:safe.heightAnchor constant:-50].active = YES;
+        [self.infoView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-edge].active = YES;
+    }
+    else
+    {
+        [self.infoView.heightAnchor constraintEqualToConstant:300].active = YES;
+        [self.infoView.topAnchor constraintEqualToAnchor:safe.topAnchor constant:50].active = YES;
+    }
+    [self.infoView.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.infoView.rightAnchor  constraintEqualToAnchor:self.moreButton.leftAnchor constant:0].active = YES;
+
+    self.infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+//    self.infoView.backgroundColor = [UIColor yellowColor];
+
+    UILabel *matchName = [[UILabel alloc] initWithFrame:CGRectZero];
+    [self.infoView addSubview:matchName];
+    [matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
+
     matchName.text = [finishedMatchDict objectForKey:@"matchName"];
     matchName.textAlignment = NSTextAlignmentCenter;
+//    matchName.backgroundColor = [UIColor redColor];
+
+    [matchName.topAnchor constraintEqualToAnchor:self.infoView.topAnchor constant:edge].active = YES;
+    [matchName.heightAnchor constraintEqualToConstant:40].active = YES;
+    [matchName.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [matchName.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
     [attr addAttribute:NSFontAttributeName
@@ -336,14 +383,13 @@
     matchName.numberOfLines = 0;
     matchName.minimumScaleFactor = 0.5;
     matchName.adjustsFontSizeToFitWidth = YES;
-    [infoView addSubview:matchName];
     
     NSString *htmlString = [self.boardDict objectForKey:@"htmlString"];
     NSString *winnerText = [finishedMatchDict objectForKey:@"winnerName"];
     if([htmlString containsString:@"Predicted"])
         winnerText = [NSString stringWithFormat:@"(Predicted result) %@", winnerText];
-    y += matchName.frame.size.height;
-    UILabel * winner = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+        
+    UILabel *winner = [[UILabel alloc] initWithFrame:CGRectZero];
     winner.textAlignment = NSTextAlignmentLeft;
     attr = [[NSMutableAttributedString alloc] initWithString:winnerText];
     [attr addAttribute:NSFontAttributeName
@@ -354,62 +400,156 @@
     winner.numberOfLines = 0;
     winner.minimumScaleFactor = 0.5;
     winner.adjustsFontSizeToFitWidth = YES;
-    [infoView addSubview:winner];
+    
+    [self.infoView addSubview:winner];
+    [winner setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    y += winner.frame.size.height;
-    UILabel * length = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width, 30)];
+    [winner.topAnchor constraintEqualToAnchor:matchName.bottomAnchor constant:0].active = YES;
+    [winner.heightAnchor constraintEqualToConstant:30].active = YES;
+    [winner.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [winner.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+
+    UILabel *length = [[UILabel alloc] initWithFrame:CGRectZero];
     length.textAlignment = NSTextAlignmentLeft;
     NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
     length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
-    [infoView addSubview:length];
+    [self.infoView addSubview:length];
+    [length setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [length.topAnchor constraintEqualToAnchor:winner.bottomAnchor constant:0].active = YES;
+    [length.heightAnchor constraintEqualToConstant:30].active = YES;
+    [length.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [length.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
-    NSArray *playerLinkArray = [finishedMatchDict objectForKey:@"href"];
 
-    y += length.frame.size.height;
-    UILabel * player1Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
-    UILabel * player1Score = [[UILabel alloc] initWithFrame:CGRectMake(player1Name.layer.frame.origin.x +  player1Name.layer.frame.size.width + gap, y , 100, 30)];
-    player1Name.textAlignment = NSTextAlignmentLeft;
-    player1Name.text = playerArray[0];
-    [infoView addSubview:player1Name];
+    self.buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectZero];
+    [self.buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
+    [self.buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
+    [self.buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [self.infoView addSubview:self.buttonPlayer1];
+
+
+    self.player1Score = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.player1Score.textAlignment = NSTextAlignmentCenter;
+    self.player1Score.text = playerArray[1];
+    [self.infoView addSubview:self.player1Score];
+//    self.player1Score.backgroundColor = [UIColor systemBlueColor];
+
+
+    self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectZero];
+    [self.buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
+    [self.buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
+    [self.buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [self.infoView addSubview:self.buttonPlayer2];
+
+    [self.buttonPlayer2 setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    DGButton *buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectMake(player1Name.frame.origin.x, player1Name.frame.origin.y, player1Name.frame.size.width , player1Name.frame.size.height )] ;
-    [buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
-    [buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
-    [buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonPlayer1];
 
-    player1Score.textAlignment = NSTextAlignmentRight;
-    player1Score.text = playerArray[1];
-    [infoView addSubview:player1Score];
+    self.player2Score = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.player2Score.textAlignment = NSTextAlignmentCenter;
+    self.player2Score.text = playerArray[3];
+    [self.infoView addSubview:self.player2Score];
+//    self.player2Score.backgroundColor = [UIColor systemBlueColor];
 
-    y += player1Name.frame.size.height + 10;
 
-    UILabel * player2Name  = [[UILabel alloc] initWithFrame:CGRectMake(0, y, 150, 30)];
-    UILabel * player2Score = [[UILabel alloc] initWithFrame:CGRectMake(player2Name.layer.frame.origin.x +  player2Name.layer.frame.size.width + gap, y , 100, 30)];
-    player2Name.textAlignment = NSTextAlignmentLeft;
-    player2Name.text = playerArray[2];
-    [infoView addSubview:player2Name];
+    [self.buttonPlayer1 setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    DGButton *buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(player2Name.frame.origin.x, player2Name.frame.origin.y, player2Name.frame.size.width , player2Name.frame.size.height )] ;
-    [buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
-    [buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
-    [buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonPlayer2];
+    [self.buttonPlayer1.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
+    [self.buttonPlayer1.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.buttonPlayer1.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [self.buttonPlayer1.widthAnchor constraintEqualToConstant:150].active = YES;
 
-    player2Score.textAlignment = NSTextAlignmentRight;
-    player2Score.text = playerArray[3];
-    [infoView addSubview:player2Score];
+    [self.player1Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.player1Score.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
+    [self.player1Score.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.player1Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer1.rightAnchor constant:gap].active = YES;
+    [self.player1Score.widthAnchor constraintEqualToConstant:50].active = YES;
 
-    y += player2Name.frame.size.height;
+    [self.buttonPlayer2.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.buttonPlayer2.widthAnchor constraintEqualToConstant:150].active = YES;
 
-    NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
-    if([chatArray[0] containsString:@"chat"])
+    [self.player2Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.player2Score.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.player2Score.widthAnchor constraintEqualToConstant:50].active = YES;
+
+    self.landscapeConstraints = @[
+        [self.buttonPlayer2.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.player1Score.rightAnchor constant:gap],
+        [self.player2Score.topAnchor constraintEqualToAnchor:self.buttonPlayer2.topAnchor constant:0],
+        [self.player2Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
+
+    ];
+    self.portraitConstraints = @[
+        [self.buttonPlayer2.topAnchor constraintEqualToAnchor:self.buttonPlayer1.bottomAnchor constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge] ,
+        [self.player2Score.topAnchor constraintEqualToAnchor:self.buttonPlayer2.topAnchor constant:0],
+        [self.player2Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
+    ];
+
+    if(safe.layoutFrame.size.width > (10 + 150 + 10 + 50 + 10 + 150 + 10 + 50 + 10) )
+    {
+        [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
+        [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
+    } 
+    else 
+    {
+        [NSLayoutConstraint deactivateConstraints:self.landscapeConstraints];
+        [NSLayoutConstraint activateConstraints:self.portraitConstraints];
+    }
+ 
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectZero];
+    [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
+    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonNext.layer setValue:href forKey:@"href"];
+    [buttonNext.layer setValue:finishedMatchChat.text forKey:@"chat"];
+
+    [self.infoView addSubview:buttonNext];
+    
+    [buttonNext setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [buttonNext.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
+    [buttonNext.heightAnchor constraintEqualToConstant:35].active = YES;
+    [buttonNext.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [buttonNext.widthAnchor constraintEqualToConstant:80].active = YES;
+
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectZero];
+    [buttonToTop setTitle:@"ToTop" forState: UIControlStateNormal];
+    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonToTop.layer setValue:href forKey:@"href"];
+    [buttonToTop.layer setValue:finishedMatchChat.text forKey:@"chat"];
+    
+    [self.infoView addSubview:buttonToTop];
+
+    [buttonToTop setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [buttonToTop.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
+    [buttonToTop.heightAnchor constraintEqualToConstant:35].active = YES;
+    [buttonToTop.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap ].active = YES;
+    [buttonToTop.widthAnchor constraintEqualToConstant:80].active = YES;
+
+    if(withChat)
+    {
+        
+        DGButton *keyboardButton = [[DGButton alloc] init];
+        [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
+        [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
+        [self.infoView addSubview:keyboardButton];
+        
+        [keyboardButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [keyboardButton.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
+        [keyboardButton.heightAnchor constraintEqualToConstant:35].active = YES;
+        [keyboardButton.widthAnchor constraintEqualToConstant:160].active = YES;
+        [keyboardButton.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    }
+    if(withChat)
     {
         // Calculate maximum window height
-        float height = infoView.frame.size.height - y - 35 - gap;
         XLog(@"with chat");
-        finishedMatchChat  = [[UITextView alloc] initWithFrame:CGRectMake(10, y, infoView.layer.frame.size.width - 20, MIN(250, height) )];
+        finishedMatchChat  = [[UITextView alloc] initWithFrame:CGRectZero];
         finishedmatchChatViewFrame = finishedMatchChat.frame;
         finishedMatchChat.textAlignment = NSTextAlignmentLeft;
         NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
@@ -424,43 +564,35 @@
         [finishedMatchChat setDelegate:self];
         finishedMatchChat.tag = 1000;
         [finishedMatchChat setFont:[UIFont systemFontOfSize:20]];
-        [infoView addSubview:finishedMatchChat];
+        [self.infoView addSubview:finishedMatchChat];
 
-        y += finishedMatchChat.frame.size.height + gap;
+        [finishedMatchChat setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [finishedMatchChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
+        [finishedMatchChat.heightAnchor constraintEqualToConstant:100].active = YES;
+        [finishedMatchChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+        [finishedMatchChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     }
     else
     {
         XLog(@"no chat, just a message");
-        UILabel *chatLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, y, infoView.layer.frame.size.width , 60)];
+        UILabel *chatLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         chatLabel.text = chatArray[0];
         chatLabel.adjustsFontSizeToFitWidth = YES;
         chatLabel.numberOfLines = 0;
         chatLabel.minimumScaleFactor = 0.1;
-        [infoView addSubview:chatLabel];
-        y += chatLabel.frame.size.height + gap;
+        [self.infoView addSubview:chatLabel];
+
+        [chatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [chatLabel.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
+        [chatLabel.heightAnchor constraintEqualToConstant:100].active = YES;
+        [chatLabel.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+        [chatLabel.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     }
-    NSString *nextButtonText = @"Next Game";
-    if([[finishedMatchDict objectForKey:@"NextButton"] isEqualToString:@"Next"])
-        nextButtonText = @"Next";
- 
-    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(50,y, 100, 35)];
-    [buttonNext setTitle:nextButtonText forState: UIControlStateNormal];
-    [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
-    [buttonNext.layer setValue:href forKey:@"href"];
-    [buttonNext.layer setValue:finishedMatchChat.text forKey:@"chat"];
 
-    [infoView addSubview:buttonNext];
- 
-    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(50 + 100 + 50, y, 100, 35)];
-    [buttonToTop setTitle:@"To Top" forState: UIControlStateNormal];
-    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
-    [buttonToTop.layer setValue:href forKey:@"href"];
-    [buttonToTop.layer setValue:finishedMatchChat.text forKey:@"chat"];
-    [infoView addSubview:buttonToTop];
-
-    [self.view addSubview:infoView];
     return;
 }
 
@@ -475,7 +607,7 @@
 
 }
 
-#pragma mark There has been an internal error.
+#pragma mark - There has been an internal error.
 
 - (void)internalError
 
@@ -713,7 +845,8 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    [textView endEditing:YES];
+    [finishedMatchChat endEditing:YES];
+    
     return YES;
 }
 
@@ -725,19 +858,19 @@
         frame.origin.y = 50;
         quickmessageChat.frame = frame;
     }
-    if(isFinishedMatch)
-    {
-        CGRect frame = finishedmatchChatViewFrame;
-        frame.origin.y = 50;
-        finishedMatchChat.frame = frame;
-    }
+//    if(isFinishedMatch)
+//    {
+//        CGRect frame = finishedmatchChatViewFrame;
+//        frame.origin.y = 50;
+//        finishedMatchChat.frame = frame;
+//    }
 }
 
 -(void)keyboardDidHide:(NSNotification *)notification
 {
     [self.view endEditing:YES];
-    if(isFinishedMatch)
-        finishedMatchChat.frame = finishedmatchChatViewFrame;
+//    if(isFinishedMatch)
+//        finishedMatchChat.frame = finishedmatchChatViewFrame;
     if(isQuickmessage)
         quickmessageChat.frame = quickmessageChatViewFrame;
 
@@ -848,21 +981,39 @@
     [menueView showMenueInView:self.view];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//{
+//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+//
+//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed during the animation
+//        
+//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed after the animation is completed
+//     }];
+//
+//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+//    
+//}
+
+- (void)viewDidLayoutSubviews
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed during the animation
+    [super viewDidLayoutSubviews];
         
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed after the animation is completed
-     }];
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-    
+    if(safe.layoutFrame.size.width > (10 + 150 + 10 + 50 + 10 + 150 + 10 + 50 + 10) )
+    {
+        [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
+        [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
+    }
+    else
+    {
+        [NSLayoutConstraint deactivateConstraints:self.landscapeConstraints];
+        [NSLayoutConstraint activateConstraints:self.portraitConstraints];
+    }
+
 }
-
 @end

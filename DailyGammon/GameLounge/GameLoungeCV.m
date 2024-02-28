@@ -51,7 +51,6 @@
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
-
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
 
     design = [[Design alloc] init];
@@ -98,9 +97,6 @@
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-    [self layoutObjects];
-
-    [self reDrawHeader];
 
     NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -124,6 +120,16 @@
 
     [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self layoutObjects];
+
+    [self reDrawHeader];
+
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -580,19 +586,19 @@ didCompleteWithError:(NSError *)error
     [menueView showMenueInView:self.view];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed during the animation
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed after the animation is completed
-     }];
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-}
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//{
+//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+//
+//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed during the animation
+//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed after the animation is completed
+//     }];
+//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+//}
 #pragma mark - autoLayout
 -(void)layoutObjects
 {

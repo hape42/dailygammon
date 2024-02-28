@@ -140,11 +140,16 @@
     [super viewWillAppear:animated];
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self layoutObjects];
     [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
-    [self showMatch];
+    [self showMatch:YES];
 }
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -155,28 +160,28 @@
 - (void)orientationDidChange:(NSNotification *)notification 
 {
     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-
-    switch (orientation) 
+    return;
+    switch (orientation)
     {
         case UIDeviceOrientationPortrait:
             NSLog(@"Portrait orientation");
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
-            [self showMatch];
+            [self showMatch:NO];
 
             break;
         case UIDeviceOrientationLandscapeLeft:
             NSLog(@"Landscape Left orientation");
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
-            [self showMatch];
+            [self showMatch:NO];
 
             break;
         case UIDeviceOrientationLandscapeRight:
             NSLog(@"Landscape Right orientation %ld", (long)orientation);
             [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
 
-            [self showMatch];
+            [self showMatch:NO];
 
             break;
         default:
@@ -203,7 +208,7 @@
 {
     [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]]];
 }
--(void)showMatch
+-(void)showMatch:(BOOL)readMatch
 {
     [tools matchCount];
 
@@ -229,8 +234,15 @@
     self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
-    self.boardDict = [match readMatch:matchLink reviewMatch:isReview];
-    
+    if(readMatch || (self.boardDict == nil))
+    {
+        self.boardDict = [match readMatch:matchLink reviewMatch:isReview];
+        XLog(@" gelesen");
+    }
+    else
+        XLog(@"nicht gelesen %d",readMatch);
+    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
+
     if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
     {
         AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -867,7 +879,7 @@
     NSMutableDictionary *dict = attributesArray[0];
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 - (void)actionSubmitForcedMove
 {
@@ -875,7 +887,7 @@
     //NSMutableDictionary *dict = attributesArray[0];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionGreedy
@@ -884,19 +896,19 @@
     NSMutableDictionary *dict = attributesArray[0];
     
     matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionUnDoMove
 {
     matchLink = [self.actionDict objectForKey:@"UndoMove"];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionSwap
 {
     matchLink = [self.actionDict objectForKey:@"SwapDice"];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionVerifyDouble:(id)sender
@@ -915,7 +927,7 @@
 - (void)actionRoll
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 - (void)actionDouble
 {
@@ -925,7 +937,7 @@
         if(self.verifiedDouble)
         {
             matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [self.actionDict objectForKey:@"action"]];
-            [self showMatch];
+            [self showMatch:YES];
         }
         else
         {
@@ -951,18 +963,18 @@
     else
     {
         matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
-        [self showMatch];
+        [self showMatch:YES];
     }
 }
 - (void)actionBeaver
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 - (void)actionTakeBeaver
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionTake
@@ -987,7 +999,7 @@
         if(self.verifiedTake)
         {
             matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
-            [self showMatch];
+            [self showMatch:YES];
         }
         else
         {
@@ -1010,8 +1022,8 @@
     else
     {
         matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [self.actionDict objectForKey:@"action"]];
-        [self showMatch];
-    } 
+        [self showMatch:YES];
+    }
 }
 - (void)actionPass
 {
@@ -1035,7 +1047,7 @@
         if(self.verifiedPass)
         {
             matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [self.actionDict objectForKey:@"action"]];
-            [self showMatch];
+            [self showMatch:YES];
         }
         else
         {
@@ -1058,32 +1070,32 @@
     else
     {
         matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [self.actionDict objectForKey:@"action"]];
-        [self showMatch];
+        [self showMatch:YES];
     }
 }
 
 - (void)actionNext
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 - (void)actionNext__
 {
     matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionSkipGame
 {
     [chatView dismiss];
     matchLink = [self.actionDict objectForKey:@"SkipGame"];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionReview:(UIButton*)button
 {
     matchLink = (NSString *)[button.layer valueForKey:@"href"];
-    [self showMatch];
+    [self showMatch:YES];
 }
 
 - (void)actionAllMoves:(UIButton*)button
@@ -1167,7 +1179,7 @@
             matchLink = [match objectForKey:@"href"];
         }
     }
-    [self showMatch];
+    [self showMatch:YES];
 
 }
 - (IBAction)chatTopButton:(NSNotification *)notification
@@ -1194,7 +1206,7 @@
                  checkbox,
                  chatString];
 
-    [self showMatch];
+    [self showMatch:YES];
 
 }
 
@@ -1290,7 +1302,7 @@
             if([[dict objectForKey:@"href"] length] != 0)
             {
                 matchLink = [dict objectForKey:@"href"];
-                [self showMatch];
+                [self showMatch:YES];
             }
         }
     }
@@ -1637,19 +1649,30 @@
      {
          // Code to be executed during the animation
         
-        [self->chatView dismiss];
-
-        [self drawViewsInSuperView:size.width andWith:size.height];
-        [self showMatch];
 
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {
          // Code to be executed after the animation is completed
      }];
+    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
+    [self->chatView dismiss];
+
+    [self drawViewsInSuperView:size.width andWith:size.height];
+    [self showMatch:NO];
 
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
 
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+        
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+
+    
+    XLog(@"");
 }
 
 @end

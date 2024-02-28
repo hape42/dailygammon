@@ -66,6 +66,12 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self layoutObjects];
 
 }
@@ -340,21 +346,21 @@ didCompleteWithError:(NSError *)error
     [self.accountLabel.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
 
 }
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed during the animation
-        
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed after the animation is completed
-     }];
-
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-    
-}
+//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+//{
+//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+//
+//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed during the animation
+//        
+//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+//     {
+//         // Code to be executed after the animation is completed
+//     }];
+//
+//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+//    
+//}
 
 @end

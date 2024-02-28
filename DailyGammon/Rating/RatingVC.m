@@ -267,6 +267,12 @@
 
     
     [self makeAverageArray];
+    
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self initGraph];
 
 }
