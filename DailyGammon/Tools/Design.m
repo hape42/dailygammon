@@ -386,6 +386,13 @@
 
     return moreButton;
 }
+- (UIColor *)tintColorSchema
+{
+    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+
+    return [schemaDict objectForKey:@"TintColor"];
+
+}
 - (BOOL)isX
 {
 // https://www.ios-resolution.com

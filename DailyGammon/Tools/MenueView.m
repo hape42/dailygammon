@@ -170,40 +170,10 @@
         
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // Top space to superview Y
-    NSLayoutConstraint *yConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:view
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:50];
-    //  position X
-    NSLayoutConstraint *xConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:view
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:-50];
-    // Fixed width
-    NSLayoutConstraint *widthConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:self.frame.size.width];
-    // Fixed Height
-    NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:self
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:self.frame.size.height];
-
-    [view addConstraints:@[yConstraint, xConstraint,widthConstraint,heightConstraint]];
+    [self.topAnchor constraintEqualToAnchor:view.topAnchor constant:50].active = YES;
+    [self.rightAnchor constraintEqualToAnchor:view.rightAnchor constant:-50].active = YES;
+    [self.heightAnchor constraintEqualToConstant:self.frame.size.height].active = YES;
+    [self.widthAnchor constraintEqualToConstant:self.frame.size.width].active = YES;
 
     [self setNeedsUpdateConstraints];
     [UIView animateWithDuration:1.0  animations:^{

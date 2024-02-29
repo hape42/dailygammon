@@ -603,239 +603,56 @@ didCompleteWithError:(NSError *)error
 #pragma mark - autoLayout
 -(void)layoutObjects
 {
-    UIView *superview = self.view;
-    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
     float edge = 5.0;
     
 #pragma mark moreButton autoLayout
     [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // Top space to superview Y
-    NSLayoutConstraint *moreButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-    //  position X
-    NSLayoutConstraint *moreButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:-edge];
-
-    // Fixed width
-    NSLayoutConstraint *moreButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:40];
-    // Fixed Height
-    NSLayoutConstraint *moreButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:40];
-
-    [superview addConstraints:@[moreButtonXConstraint, moreButtonYConstraint, moreButtonWidthConstraint, moreButtonHeightConstraint]];
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
 
 #pragma mark refreshButton autoLayout
     [self.refreshButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // position Y
-    NSLayoutConstraint *refreshButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.refreshButton
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.moreButton
-                                                                             attribute:NSLayoutAttributeCenterY
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-    //  position X
-    NSLayoutConstraint *refreshButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.refreshButton
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:edge];
-
-    // Fixed width
-    NSLayoutConstraint *refreshButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.refreshButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:70];
-    // Fixed Height
-    NSLayoutConstraint *refreshButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.refreshButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:35];
-
-    [superview addConstraints:@[refreshButtonXConstraint, refreshButtonYConstraint, refreshButtonWidthConstraint, refreshButtonHeightConstraint]];
+    [self.refreshButton.topAnchor constraintEqualToAnchor:self.moreButton.topAnchor constant:0].active = YES;
+    [self.refreshButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.refreshButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.refreshButton.widthAnchor constraintEqualToConstant:70].active = YES;
 
 #pragma mark header autoLayout
     [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:0].active = YES;
+    [self.header.leftAnchor constraintEqualToAnchor:self.refreshButton.rightAnchor constant:edge].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
     
-    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                            attribute:NSLayoutAttributeLeft
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:self.refreshButton
-                                                                            attribute: NSLayoutAttributeRight
-                                                                           multiplier:1.0
-                                                                             constant:edge];
-    
-    NSLayoutConstraint *headerRightConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self.moreButton
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:-edge];
-    // Fixed Height
-    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:40];
-
-    [superview addConstraints:@[headerYConstraint, headerLeftConstraint, headerRightConstraint, headerHeightConstraint]];
-
 #pragma mark sortLabel autoLayout
     [self.sortLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-
-    // position Y
-    NSLayoutConstraint *sortLabelYConstraint = [NSLayoutConstraint constraintWithItem:self.sortLabel
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.refreshButton
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                            multiplier:1.0f
-                                                                              constant:20];
-    //  position X
-    NSLayoutConstraint *sortLabelXConstraint = [NSLayoutConstraint constraintWithItem:self.sortLabel
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute: NSLayoutAttributeLeft
-                                                                            multiplier:1.0
-                                                                              constant:edge];
-
-    // Fixed width
-    NSLayoutConstraint *sortLabelWidthConstraint = [NSLayoutConstraint constraintWithItem:self.sortLabel
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:130];
-    // Fixed Height
-    NSLayoutConstraint *sortLabelHeightConstraint = [NSLayoutConstraint constraintWithItem:self.sortLabel
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:35];
-
-    [superview addConstraints:@[sortLabelXConstraint, sortLabelYConstraint, sortLabelWidthConstraint, sortLabelHeightConstraint]];
+    [self.sortLabel.topAnchor constraintEqualToAnchor:self.refreshButton.bottomAnchor constant:20].active = YES;
+    [self.sortLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.sortLabel.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.sortLabel.widthAnchor constraintEqualToConstant:130].active = YES;
 
 #pragma mark sortButton autoLayout
     [self.sortButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    // position Y
-    NSLayoutConstraint *sortButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.sortButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.sortLabel
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-    //  position X
-    NSLayoutConstraint *sortButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.sortButton
-                                                                             attribute:NSLayoutAttributeLeft
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.sortLabel
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:10.0f];
-
-    // Fixed width
-    NSLayoutConstraint *sortButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.sortButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:190];
-    // Fixed Height
-    NSLayoutConstraint *sortButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.sortButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:35];
-
-    [superview addConstraints:@[sortButtonXConstraint, sortButtonYConstraint, sortButtonWidthConstraint, sortButtonHeightConstraint]];
+    [self.sortButton.topAnchor constraintEqualToAnchor:self.sortLabel.topAnchor constant:0].active = YES;
+    [self.sortButton.leftAnchor constraintEqualToAnchor:self.sortLabel.rightAnchor constant:10].active = YES;
+    [self.sortButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.sortButton.widthAnchor constraintEqualToConstant:190].active = YES;
 
 #pragma mark collectionView autoLayout
     [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *collectionViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:safe
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:edge];
-    NSLayoutConstraint *collectionViewRightConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:safe
-                                                                                 attribute: NSLayoutAttributeRight
-                                                                                multiplier:1.0
-                                                                                  constant:-edge];
-    
-    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.sortLabel
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:20];
-
-    NSLayoutConstraint *collectionViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:-edge];
-
-   [superview addConstraints:@[collectionViewLeftConstraint, collectionViewRightConstraint, collectionViewTopConstraint, collectionViewBottomConstraint]];
+    [self.collectionView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.collectionView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.collectionView.topAnchor constraintEqualToAnchor:self.sortLabel.bottomAnchor constant:20].active = YES;
+    [self.collectionView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
 
 }
 #pragma mark - CollectionView dataSource

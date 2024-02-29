@@ -361,6 +361,35 @@
             </objects>
             <point key="canvasLocation" x="214" y="-2213"/>
         </scene>
+        <!--No Board-->
+        <scene sceneID="jMs-yc-Pye">
+            <objects>
+                <viewController storyboardIdentifier="NoBoard" id="3so-3D-kpy" customClass="NoBoard" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ua9-m7-Tnh">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qrx-1M-y3Q">
+                                <rect key="frame" x="1292" y="38" width="40" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="3so-3D-kpy" eventType="touchUpInside" id="KQW-DL-8ZD"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="chZ-h7-lJp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="moreButton" destination="qrx-1M-y3Q" id="JDW-R9-ZqD"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oAS-AU-PiZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-479" y="-816"/>
+        </scene>
     </scenes>
     <resources>
         <image name="menue.png" width="20" height="20"/>

@@ -576,6 +576,7 @@
     }
     else
     {
+#warning zu textView umbauen
         XLog(@"no chat, just a message");
         UILabel *chatLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         chatLabel.text = chatArray[0];

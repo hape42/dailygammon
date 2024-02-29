@@ -1148,39 +1148,6 @@ Did we make you curious?</string>
             </objects>
             <point key="canvasLocation" x="1796.7602591792659" y="-4.2056074766355138"/>
         </scene>
-        <!--No Board-->
-        <scene sceneID="rhw-kZ-fhe">
-            <objects>
-                <viewController storyboardIdentifier="NoBoard" id="eOr-Ls-wNT" customClass="NoBoard" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="FWt-h8-LmE"/>
-                        <viewControllerLayoutGuide type="bottom" id="7Od-XF-fyI"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="RsH-In-1nz">
-                        <rect key="frame" x="0.0" y="0.0" width="926" height="428"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yd2-KN-ks0">
-                                <rect key="frame" x="864" y="10" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                <color key="tintColor" systemColor="systemPurpleColor"/>
-                                <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="eOr-Ls-wNT" eventType="touchUpInside" id="ugr-s8-0gt"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <connections>
-                        <outlet property="moreButton" destination="Yd2-KN-ks0" id="LIT-Uj-eBT"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="w5m-D3-mjl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1790" y="695"/>
-        </scene>
         <!--Review-->
         <scene sceneID="cPO-Ve-0Uy">
             <objects>

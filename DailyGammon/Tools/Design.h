@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
 
 - (UIButton *)designMoreButton:(UIButton *)moreButton;
+- (UIColor *)tintColorSchema;
 
 - (BOOL)isX;
 

@@ -719,44 +719,6 @@ Did we make you curious?</string>
             </objects>
             <point key="canvasLocation" x="704.8828125" y="535.9375"/>
         </scene>
-        <!--No Board-->
-        <scene sceneID="prp-u7-cMx">
-            <objects>
-                <viewController storyboardIdentifier="NoBoard" id="MFo-dw-foh" customClass="NoBoard" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="zkV-iy-r1g"/>
-                        <viewControllerLayoutGuide type="bottom" id="j4I-3O-5iG"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ghs-c1-8pZ">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kYH-Gv-qQi">
-                                <rect key="frame" x="964" y="28" width="40" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="q4Q-x8-6y6"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="MFo-dw-foh" eventType="touchUpInside" id="uOe-ed-jIt"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="kYH-Gv-qQi" firstAttribute="top" secondItem="zkV-iy-r1g" secondAttribute="bottom" constant="8" id="YOq-x5-s9E"/>
-                            <constraint firstItem="kYH-Gv-qQi" firstAttribute="trailing" secondItem="Ghs-c1-8pZ" secondAttribute="trailingMargin" id="mWt-On-3FU"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="moreButton" destination="kYH-Gv-qQi" id="uMZ-xV-Dcv"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nAT-lb-aak" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="696.09375" y="1612.5"/>
-        </scene>
         <!--RatingVC-->
         <scene sceneID="LnH-WB-cAL">
             <objects>

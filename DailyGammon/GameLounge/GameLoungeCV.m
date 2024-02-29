@@ -51,8 +51,6 @@
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
-
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
@@ -82,13 +80,6 @@
 - (void)stopActivityIndicator
 {
     [waitView dismiss];
-}
-
--(void) reDrawHeader
-{
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.header.textColor = [schemaDict objectForKey:@"TintColor"];
-    self.moreButton = [design designMoreButton:self.moreButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,7 +119,8 @@
 
     [self layoutObjects];
 
-    [self reDrawHeader];
+    self.header.textColor = [design tintColorSchema];
+    self.moreButton = [design designMoreButton:self.moreButton];
 
 }
 
@@ -586,138 +578,35 @@ didCompleteWithError:(NSError *)error
     [menueView showMenueInView:self.view];
 }
 
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-//{
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//
-//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed during the animation
-//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed after the animation is completed
-//     }];
-//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-//}
 #pragma mark - autoLayout
 -(void)layoutObjects
 {
-    UIView *superview = self.view;
-    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
     float edge = 5.0;
     
 #pragma mark moreButton autoLayout
     [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    // Top space to superview Y
-    NSLayoutConstraint *moreButtonYConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-    //  position X
-    NSLayoutConstraint *moreButtonXConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                             attribute:NSLayoutAttributeRight
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute: NSLayoutAttributeRight
-                                                                            multiplier:1.0
-                                                                              constant:-edge];
-    
-    // Fixed width
-    NSLayoutConstraint *moreButtonWidthConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                                 attribute:NSLayoutAttributeWidth
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:nil
-                                                                                 attribute:NSLayoutAttributeNotAnAttribute
-                                                                                multiplier:1.0
-                                                                                  constant:40];
-    // Fixed Height
-    NSLayoutConstraint *moreButtonHeightConstraint = [NSLayoutConstraint constraintWithItem:self.moreButton
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:40];
-    
-    [superview addConstraints:@[moreButtonXConstraint, moreButtonYConstraint, moreButtonWidthConstraint, moreButtonHeightConstraint]];
-    
- 
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
 #pragma mark header autoLayout
     [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *headerYConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                             attribute:NSLayoutAttributeTop
-                                                                            multiplier:1.0f
-                                                                              constant:0];
-    
-    NSLayoutConstraint *headerLeftConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                            attribute:NSLayoutAttributeLeft
-                                                                            relatedBy:NSLayoutRelationEqual
-                                                                               toItem:safe
-                                                                            attribute: NSLayoutAttributeRight
-                                                                           multiplier:1.0
-                                                                             constant:edge];
-    
-    NSLayoutConstraint *headerRightConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:self.moreButton
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:-edge];
-    // Fixed Height
-    NSLayoutConstraint *headerHeightConstraint = [NSLayoutConstraint constraintWithItem:self.header
-                                                                                  attribute:NSLayoutAttributeHeight
-                                                                                  relatedBy:NSLayoutRelationEqual
-                                                                                     toItem:nil
-                                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                                 multiplier:1.0
-                                                                                   constant:40];
-
-    [superview addConstraints:@[headerYConstraint, headerLeftConstraint, headerRightConstraint, headerHeightConstraint]];
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
 #pragma mark collectionView autoLayout
     [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    NSLayoutConstraint *collectionViewLeftConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                 attribute:NSLayoutAttributeLeft
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:safe
-                                                                                 attribute: NSLayoutAttributeLeft
-                                                                                multiplier:1.0
-                                                                                  constant:edge];
-    NSLayoutConstraint *collectionViewRightConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                                 attribute:NSLayoutAttributeRight
-                                                                                 relatedBy:NSLayoutRelationEqual
-                                                                                    toItem:safe
-                                                                                 attribute: NSLayoutAttributeRight
-                                                                                multiplier:1.0
-                                                                                  constant:-edge];
-    
-    NSLayoutConstraint *collectionViewTopConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                             attribute:NSLayoutAttributeTop
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:self.header
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:20];
-
-    NSLayoutConstraint *collectionViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.collectionView
-                                                                             attribute:NSLayoutAttributeBottom
-                                                                             relatedBy:NSLayoutRelationEqual
-                                                                                toItem:safe
-                                                                                 attribute:NSLayoutAttributeBottom
-                                                                                multiplier:1.0f
-                                                                                  constant:-edge];
-
-   [superview addConstraints:@[collectionViewLeftConstraint, collectionViewRightConstraint, collectionViewTopConstraint, collectionViewBottomConstraint]];
+    [self.collectionView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.collectionView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.collectionView.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:20].active = YES;
+    [self.collectionView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
 
 }
 @end
