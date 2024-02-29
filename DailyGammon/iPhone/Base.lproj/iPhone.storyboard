@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -471,204 +470,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Onj-fl-ZUb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1657.4514038876891" y="-99.53271028037382"/>
-        </scene>
-        <!--View Controller About-->
-        <scene sceneID="8rd-ls-ZIj">
-            <objects>
-                <viewController storyboardIdentifier="About" id="UX0-ua-SQF" userLabel="View Controller About" customClass="About" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Bbb-w0-PaC"/>
-                        <viewControllerLayoutGuide type="bottom" id="DMk-xr-Uie"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ikh-9S-bEu">
-                        <rect key="frame" x="0.0" y="0.0" width="926" height="428"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NZF-YQ-QBO">
-                                <rect key="frame" x="18" y="11.999999999999996" width="500" height="63.666666666666657"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="500" id="jL6-r1-whc"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0a-va-GJp">
-                                <rect key="frame" x="870" y="12" width="20" height="22"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="UX0-ua-SQF" eventType="touchUpInside" id="XK3-NE-UUn"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.10000000000000001" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tqh-Bf-z22">
-                                <rect key="frame" x="85" y="87.666666666666671" width="805" height="210.33333333333331"/>
-                                <color key="backgroundColor" systemColor="systemGray5Color"/>
-                                <string key="text">You are missing a feature?
-You have found a bug?
-You have an idea how to implement something better than we have done so far?
-You have an idea that no one has come up with yet?
-Then join our team on GitHub and work together with us on the continuous development of the app. Or just send us an email
-
-You don't have to be good at IOS programming to help. We also need help describing problems. And we also need support in testing new versions. 
-
-Did we make you curious?</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZU-HG-va2" customClass="DGButton">
-                                <rect key="frame" x="85" y="365" width="150" height="32"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="WJV-7Y-eba"/>
-                                    <constraint firstAttribute="width" constant="150" id="fHM-3E-E4f"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Email to Support">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="MRAboutButtonEmail:" destination="UX0-ua-SQF" eventType="touchUpInside" id="RCl-SB-4u8"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9Q-d8-HSF" customClass="DGButton">
-                                <rect key="frame" x="85" y="318" width="300" height="32"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="300" id="YGu-MI-zUt"/>
-                                    <constraint firstAttribute="height" constant="32" id="pU2-4y-Ja5"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="  Show me the Project on GitHub" image="GitHub-Mark-32px.png">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="MRAboutButtonInfo:" destination="UX0-ua-SQF" eventType="touchUpInside" id="34J-I6-1dD"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jw4-NP-Myf" customClass="DGButton">
-                                <rect key="frame" x="721" y="318" width="150" height="32"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="E6Q-eI-YyJ"/>
-                                    <constraint firstAttribute="width" constant="150" id="RJ1-Gx-g5r"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Remind me later">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="reminder:" destination="UX0-ua-SQF" eventType="touchUpInside" id="7FQ-WV-uY8"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVK-Ur-y0b" customClass="DGButton">
-                                <rect key="frame" x="388" y="365" width="150" height="32"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="0KE-PK-zb8"/>
-                                    <constraint firstAttribute="height" constant="32" id="tib-Gn-Qwz"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Credits">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="actionCredits:" destination="UX0-ua-SQF" eventType="touchUpInside" id="kAZ-Gp-cIl"/>
-                                    <action selector="actionPrivacy:" destination="UX0-ua-SQF" eventType="touchUpInside" id="D7R-IF-ZXh"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EN6-bO-x0d" customClass="DGButton">
-                                <rect key="frame" x="721" y="365" width="150" height="32"/>
-                                <color key="backgroundColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="150" id="1yU-Ow-JCn"/>
-                                    <constraint firstAttribute="height" constant="32" id="Z9u-5g-duR"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Privacy Policy">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="actionPrivacy:" destination="UX0-ua-SQF" eventType="touchUpInside" id="OJf-jJ-SjI"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2bT-WB-P1I">
-                                <rect key="frame" x="531" y="15" width="256" height="51"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title=" Copy to clipBoard">
-                                    <imageReference key="image" image="clipboard" catalog="system" symbolScale="large"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="copyInfoToClipBoard:" destination="UX0-ua-SQF" eventType="touchUpInside" id="6uK-iA-Z7r"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" name="ColorViewBackground"/>
-                        <constraints>
-                            <constraint firstItem="u0a-va-GJp" firstAttribute="trailingMargin" secondItem="EN6-bO-x0d" secondAttribute="trailing" id="4A8-rg-ge6"/>
-                            <constraint firstItem="b9Q-d8-HSF" firstAttribute="top" secondItem="Tqh-Bf-z22" secondAttribute="bottom" constant="20" id="5yc-aV-um2"/>
-                            <constraint firstItem="EN6-bO-x0d" firstAttribute="top" secondItem="jw4-NP-Myf" secondAttribute="bottom" constant="15" id="GX1-0D-nsP"/>
-                            <constraint firstItem="jw4-NP-Myf" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="Ice-Fu-YIh"/>
-                            <constraint firstItem="qZU-HG-va2" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="KNw-5g-7Gc"/>
-                            <constraint firstItem="cVK-Ur-y0b" firstAttribute="width" secondItem="qZU-HG-va2" secondAttribute="width" id="KlL-0w-gkc"/>
-                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="leading" secondItem="b9Q-d8-HSF" secondAttribute="leading" id="MwX-uR-b6O"/>
-                            <constraint firstItem="u0a-va-GJp" firstAttribute="top" secondItem="ikh-9S-bEu" secondAttribute="top" constant="12" id="OzI-8F-xMx"/>
-                            <constraint firstItem="EN6-bO-x0d" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="PBC-Pc-YPx"/>
-                            <constraint firstItem="NZF-YQ-QBO" firstAttribute="top" secondItem="ikh-9S-bEu" secondAttribute="top" constant="12" id="QW7-hM-ImL"/>
-                            <constraint firstItem="cVK-Ur-y0b" firstAttribute="centerX" secondItem="ikh-9S-bEu" secondAttribute="centerX" id="RJ8-Pw-tui"/>
-                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="top" secondItem="NZF-YQ-QBO" secondAttribute="bottom" constant="12" id="RxT-9g-1qo"/>
-                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="trailingMargin" secondItem="jw4-NP-Myf" secondAttribute="trailing" id="SYI-v0-5ta"/>
-                            <constraint firstItem="qZU-HG-va2" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leadingMargin" constant="18" id="TX8-VU-c9O"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="cVK-Ur-y0b" secondAttribute="bottom" constant="10" id="Z5q-Uy-dzd"/>
-                            <constraint firstItem="qZU-HG-va2" firstAttribute="top" secondItem="b9Q-d8-HSF" secondAttribute="bottom" constant="15" id="bM1-p6-8aa"/>
-                            <constraint firstItem="EN6-bO-x0d" firstAttribute="width" secondItem="qZU-HG-va2" secondAttribute="width" id="c0i-cY-7Kl"/>
-                            <constraint firstItem="b9Q-d8-HSF" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leadingMargin" constant="18" id="edS-gB-j3S"/>
-                            <constraint firstItem="Tqh-Bf-z22" firstAttribute="trailing" secondItem="u0a-va-GJp" secondAttribute="trailing" id="fkH-Iu-7jF"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="qZU-HG-va2" secondAttribute="bottom" constant="10" id="nkb-g0-gDE"/>
-                            <constraint firstItem="cVK-Ur-y0b" firstAttribute="height" secondItem="b9Q-d8-HSF" secondAttribute="height" id="ntG-gi-cOB"/>
-                            <constraint firstItem="NZF-YQ-QBO" firstAttribute="leading" secondItem="ikh-9S-bEu" secondAttribute="leading" constant="18" id="rjQ-ca-JgG"/>
-                            <constraint firstAttribute="trailing" secondItem="u0a-va-GJp" secondAttribute="trailing" constant="36" id="wYv-aN-Y1Q"/>
-                            <constraint firstItem="DMk-xr-Uie" firstAttribute="top" secondItem="EN6-bO-x0d" secondAttribute="bottom" constant="10" id="ycX-YF-XmU"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="25C-py-AJq"/>
-                    <connections>
-                        <outlet property="MRAboutAppVersion" destination="NZF-YQ-QBO" id="R9Z-fa-Lod"/>
-                        <outlet property="buttonEmail" destination="qZU-HG-va2" id="89i-Yt-NfR"/>
-                        <outlet property="buttonPrivacy" destination="EN6-bO-x0d" id="2ze-I8-haR"/>
-                        <outlet property="buttonReminder" destination="jw4-NP-Myf" id="Sl5-rc-hMe"/>
-                        <outlet property="buttonWeb" destination="b9Q-d8-HSF" id="Mk9-lo-eej"/>
-                        <outlet property="clipBoard" destination="2bT-WB-P1I" id="uCR-rX-Isw"/>
-                        <outlet property="creditButton" destination="cVK-Ur-y0b" id="RiB-2J-cfC"/>
-                        <outlet property="infoText" destination="Tqh-Bf-z22" id="zl4-c1-ibv"/>
-                        <outlet property="moreButton" destination="u0a-va-GJp" id="qCh-Bv-xaK"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0eT-bB-Ge5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="453.56371490280782" y="29.439252336448597"/>
         </scene>
         <!--Tournament Sign-Up-->
         <scene sceneID="cf6-yw-aDN">
@@ -1211,8 +1012,6 @@ Did we make you curious?</string>
         </scene>
     </scenes>
     <resources>
-        <image name="GitHub-Mark-32px.png" width="32" height="32"/>
-        <image name="clipboard" catalog="system" width="98" height="128"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>
@@ -1228,9 +1027,6 @@ Did we make you curious?</string>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPurpleColor">
             <color red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

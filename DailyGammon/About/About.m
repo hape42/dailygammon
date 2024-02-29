@@ -24,23 +24,21 @@
 
 @interface About ()<NSURLSessionDataDelegate>
 
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
-
 @property (assign, atomic) BOOL loginOk;
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet DGButton *creditButton;
-@property (weak, nonatomic) IBOutlet UILabel *infoText;
-@property (weak, nonatomic) IBOutlet UIButton *clipBoard;
+@property (weak, nonatomic) IBOutlet UILabel  *infoText;
+@property (weak, nonatomic) IBOutlet DGButton *clipBoard;
+@property (weak, nonatomic) IBOutlet DGButton *buttonGitHub;
+@property (weak, nonatomic) IBOutlet DGButton *buttonReminder;
+
+@property (weak, nonatomic) IBOutlet DGButton *buttonEmail;
+@property (weak, nonatomic) IBOutlet DGButton *buttonPrivacy;
+@property (weak, nonatomic) IBOutlet UILabel  *appVersion;
 
 @end
 
 @implementation About
-
-@synthesize buttonEmail;
-@synthesize buttonWeb;
-@synthesize buttonPrivacy;
-@synthesize buttonReminder;
-
 
 @synthesize design, preferences, rating, tools;
 
@@ -58,7 +56,8 @@
     tools = [[Tools alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-    
+    self.infoText.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
+
     NSString *version = @"?";
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
     NSDictionary *settings = [NSDictionary dictionaryWithContentsOfFile:[settingsBundle stringByAppendingPathComponent:@"Root.plist"]];
@@ -72,18 +71,13 @@
         }
     }
 
-    self.MRAboutAppVersion.text = [NSString stringWithFormat:@"Version %@ from %@", version, [self getBuildDate]];
+    self.appVersion.text = [NSString stringWithFormat:@"Version %@ from %@", version, [self getBuildDate]];
 
     self.infoText.numberOfLines = 0;
     self.infoText.adjustsFontSizeToFitWidth = YES;
     self.infoText.minimumScaleFactor = 0.1;
     self.infoText.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
-    self.infoText.font = [UIFont systemFontOfSize:15.f];
-
-    if(!showRemindMeLaterButton)
-    {
-        buttonReminder.frame = CGRectMake(9999, 9999, buttonReminder.frame.size.width, buttonReminder.frame.size.height);
-    }
+    self.infoText.font = [UIFont systemFontOfSize:25.f];
     
     return;
 
@@ -110,9 +104,30 @@
  
     return buildDate;
 }
-- (IBAction)copyInfoToClipBoard:(id)sender 
+
+- (void)viewDidAppear:(BOOL)animated
 {
-    [[UIPasteboard generalPasteboard] setString:self.MRAboutAppVersion.text];
+    [super viewDidAppear:animated];
+
+    [self layoutObjects];
+    
+    self.appVersion.textColor       = [design getTintColorSchema];
+    self.moreButton                = [design designMoreButton:self.moreButton];
+
+//    You are missing a feature?
+//    You have found a bug?
+//    You have an idea how to implement something better than we have done so far?
+//    You have an idea that no one has come up with yet?
+//    Then join our team on GitHub and work together with us on the continuous development of the app. Or just send us an email
+//
+//    You don't have to be good at IOS programming to help. We also need help describing problems. And we also need support in testing new versions.
+//
+//    Did we make you curious?
+}
+
+- (IBAction)copyInfoToClipBoard:(id)sender
+{
+    [[UIPasteboard generalPasteboard] setString:self.appVersion.text];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -370,7 +385,94 @@ didCompleteWithError:(NSError *)error
     }
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
-#pragma mark - iPhone menue
+
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float buttonHeight = 35;
+    
+#pragma mark moreButton autoLayout
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark appVersion autoLayout
+    [self.appVersion setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.appVersion.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.appVersion.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.appVersion.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.appVersion.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+
+#pragma mark clipBoard Button  autoLayout
+    [self.clipBoard setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.clipBoard.topAnchor constraintEqualToAnchor:self.appVersion.bottomAnchor constant:edge].active = YES;
+    [self.clipBoard.heightAnchor constraintEqualToConstant:40].active = YES;
+//    [self.clipBoard.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+//    [self.clipBoard.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+    [self.clipBoard.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+
+#pragma mark email Button  autoLayout
+    [self.buttonEmail setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.buttonEmail.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.buttonEmail.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.buttonEmail.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+    
+#pragma mark privacy Button  autoLayout
+    [self.buttonPrivacy setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.buttonPrivacy.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.buttonPrivacy.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.buttonPrivacy.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+
+#pragma mark credit Button  autoLayout
+    [self.creditButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.creditButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.creditButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [self.creditButton.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+
+#pragma mark gitHub Button  autoLayout
+    [self.buttonGitHub setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.buttonGitHub.bottomAnchor constraintEqualToAnchor:self.buttonEmail.topAnchor constant:-edge].active = YES;
+    [self.buttonGitHub.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.buttonGitHub.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+
+#pragma mark reminder Button  autoLayout
+    [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    showRemindMeLaterButton = YES;
+    if(showRemindMeLaterButton)
+    {
+        [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [self.buttonReminder.bottomAnchor constraintEqualToAnchor:self.buttonEmail.topAnchor constant:-edge].active = YES;
+        [self.buttonReminder.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+        [self.buttonReminder.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+    }
+    else
+    {
+        [self.buttonReminder.leftAnchor constraintEqualToAnchor:safe.rightAnchor constant:99].active = YES;
+    }
+
+#pragma mark infoText  autoLayout
+    [self.infoText setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.infoText.topAnchor constraintEqualToAnchor:self.clipBoard.bottomAnchor constant:edge].active = YES;
+    [self.infoText.bottomAnchor constraintEqualToAnchor:self.buttonGitHub.topAnchor constant:-edge].active = YES;
+    [self.infoText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.infoText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+}
+#pragma mark -  menue
 - (IBAction)moreAction:(id)sender
 {
     if(!menueView)

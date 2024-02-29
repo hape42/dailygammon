@@ -271,16 +271,15 @@
     LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
     [self.navigationController pushViewController:vc animated:NO];
 }
+
 - (IBAction)AboutVC
 {
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    About *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
+    About *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"About"];
     vc.showRemindMeLaterButton = NO;
     [self.navigationController pushViewController:vc animated:NO];
-    
+
 }
+
 -(void) help
 {
     NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];

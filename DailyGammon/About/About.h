@@ -26,15 +26,9 @@
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 
-@property (weak, nonatomic) IBOutlet UILabel *MRAboutAppVersion;
 
 - (IBAction)MRAboutButtonEmail:(id)sender;
 - (IBAction)MRAboutButtonInfo:(id)sender;
-@property (weak, nonatomic) IBOutlet DGButton *buttonWeb;
-@property (weak, nonatomic) IBOutlet DGButton *buttonReminder;
-
-@property (weak, nonatomic) IBOutlet DGButton *buttonEmail;
-@property (weak, nonatomic) IBOutlet DGButton *buttonPrivacy;
 
 @property (nonatomic, assign) BOOL showRemindMeLaterButton;
 

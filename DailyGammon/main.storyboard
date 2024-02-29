@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -390,8 +391,130 @@
             </objects>
             <point key="canvasLocation" x="-479" y="-816"/>
         </scene>
+        <!--View Controller About-->
+        <scene sceneID="znH-42-SoI">
+            <objects>
+                <viewController storyboardIdentifier="About" id="KJQ-X5-cG5" userLabel="View Controller About" customClass="About" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eDP-JY-ihj"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dng-SQ-uL7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TLh-Qh-2tJ">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Version 1.0.0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Pbb-2Z-c0n">
+                                <rect key="frame" x="38" y="57" width="1258" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u0u-Tb-LGN">
+                                <rect key="frame" x="1310" y="12" width="20" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="wTo-Aj-lzQ"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rxG-Em-ML2">
+                                <rect key="frame" x="54" y="172" width="1292" height="563"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                <string key="text">You are missing a feature?
+You have found a bug?
+You have an idea how to implement something better than we have done so far?
+You have an idea that no one has come up with yet?
+Then join our team on GitHub and work together with us on the continuous development of the app. Or just send us an email
+
+You don't have to be good at IOS programming to help. We also need help describing problems. And we also need support in testing new versions. 
+
+Did we make you curious?</string>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="25"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6kt-S8-WiO" customClass="DGButton">
+                                <rect key="frame" x="38" y="962" width="150" height="32"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Email to Support"/>
+                                <connections>
+                                    <action selector="MRAboutButtonEmail:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="H9x-zp-gSc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fMS-Ds-5TU" customClass="DGButton">
+                                <rect key="frame" x="38" y="915" width="300" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="  Project on GitHub" image="GitHub-Mark-32px.png"/>
+                                <connections>
+                                    <action selector="MRAboutButtonInfo:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="6hI-Kn-o6w"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acu-zu-NWC" customClass="DGButton">
+                                <rect key="frame" x="1172" y="915" width="150" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Remind me later"/>
+                                <connections>
+                                    <action selector="reminder:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="Fd7-5b-1Nm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uoi-Qr-K9s" customClass="DGButton">
+                                <rect key="frame" x="608" y="962" width="150" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Credits"/>
+                                <connections>
+                                    <action selector="actionCredits:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="srw-We-y3o"/>
+                                    <action selector="actionPrivacy:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="Fth-i4-T82"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h6M-eq-7sI" customClass="DGButton">
+                                <rect key="frame" x="1172" y="962" width="150" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Privacy Policy"/>
+                                <connections>
+                                    <action selector="actionPrivacy:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="eE9-Jd-z1R"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4V1-WT-s9f" customClass="DGButton">
+                                <rect key="frame" x="20" y="101" width="1276" height="50"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title=" Copy version information to clipBoard">
+                                    <imageReference key="image" image="clipboard" catalog="system" symbolScale="large"/>
+                                </state>
+                                <connections>
+                                    <action selector="copyInfoToClipBoard:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="J1u-89-xVK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Igj-5b-mj7"/>
+                        <color key="backgroundColor" name="ColorViewBackground"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="U6o-YD-nrR"/>
+                    <connections>
+                        <outlet property="appVersion" destination="Pbb-2Z-c0n" id="Phe-5K-NZF"/>
+                        <outlet property="buttonEmail" destination="6kt-S8-WiO" id="PHL-Vu-dli"/>
+                        <outlet property="buttonGitHub" destination="fMS-Ds-5TU" id="57P-4Z-fw7"/>
+                        <outlet property="buttonPrivacy" destination="h6M-eq-7sI" id="53b-t7-hfN"/>
+                        <outlet property="buttonReminder" destination="acu-zu-NWC" id="mQe-AS-qvE"/>
+                        <outlet property="clipBoard" destination="4V1-WT-s9f" id="Yhc-8G-anR"/>
+                        <outlet property="creditButton" destination="Uoi-Qr-K9s" id="m5H-MZ-s9n"/>
+                        <outlet property="infoText" destination="rxG-Em-ML2" id="gTg-fc-ahF"/>
+                        <outlet property="moreButton" destination="u0u-Tb-LGN" id="2Zb-1e-H8q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BAs-D1-W2V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="453.29428989751096" y="29.296874999999996"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="GitHub-Mark-32px.png" width="32" height="32"/>
+        <image name="clipboard" catalog="system" width="98" height="128"/>
         <image name="menue.png" width="20" height="20"/>
         <namedColor name="ColorViewBackground">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -401,6 +524,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
