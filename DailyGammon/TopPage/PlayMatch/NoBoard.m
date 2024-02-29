@@ -576,21 +576,34 @@
     }
     else
     {
-#warning zu textView umbauen
         XLog(@"no chat, just a message");
-        UILabel *chatLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        chatLabel.text = chatArray[0];
-        chatLabel.adjustsFontSizeToFitWidth = YES;
-        chatLabel.numberOfLines = 0;
-        chatLabel.minimumScaleFactor = 0.1;
-        [self.infoView addSubview:chatLabel];
 
-        [chatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+        UITextView *opponentChat = [[UITextView alloc] init];
+        opponentChat.editable = NO;
+        [opponentChat setFont:[UIFont systemFontOfSize:15]];
+        opponentChat.backgroundColor = [UIColor clearColor];
+        opponentChat.textColor = [design getTintColorSchema];
+        opponentChat.text = chatArray[0];
+        opponentChat.layer.borderWidth = 1;
+        opponentChat.layer.borderColor = [design getTintColorSchema].CGColor;
+        opponentChat.layer.cornerRadius = 14.0f;
+        opponentChat.layer.masksToBounds = YES;
+        [self.infoView addSubview:opponentChat];
 
-        [chatLabel.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
-        [chatLabel.heightAnchor constraintEqualToConstant:100].active = YES;
-        [chatLabel.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-        [chatLabel.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+        
+        [opponentChat setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [opponentChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
+        [opponentChat.heightAnchor constraintEqualToConstant:80].active = YES;
+        [opponentChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+        [opponentChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+
+//        [chatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+//
+//        [chatLabel.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
+//        [chatLabel.heightAnchor constraintEqualToConstant:100].active = YES;
+//        [chatLabel.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+//        [chatLabel.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     }
 

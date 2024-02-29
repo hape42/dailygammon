@@ -119,7 +119,7 @@
 
     [self layoutObjects];
 
-    self.header.textColor = [design tintColorSchema];
+    self.header.textColor = [design getTintColorSchema];
     self.moreButton = [design designMoreButton:self.moreButton];
 
 }

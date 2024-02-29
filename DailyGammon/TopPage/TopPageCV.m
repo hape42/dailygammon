@@ -831,6 +831,12 @@ didCompleteWithError:(NSError *)error
         [self miniBoardSchemaWarning];
         return;
     }
+    if(! self.topPageArray)
+    {
+        [self readTopPage];
+        [self updateCollectionView];
+        return;
+    }
     NSArray *row = self.topPageArray[indexPath.row];
     
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];

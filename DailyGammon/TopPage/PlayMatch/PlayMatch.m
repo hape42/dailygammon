@@ -148,8 +148,8 @@
 
     [self layoutObjects];
     
-    self.matchName.textColor       = [design tintColorSchema];
-    self.matchCountLabel.textColor = [design tintColorSchema];
+    self.matchName.textColor       = [design getTintColorSchema];
+    self.matchCountLabel.textColor = [design getTintColorSchema];
     self.moreButton                = [design designMoreButton:self.moreButton];
 
     [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];

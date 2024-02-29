@@ -386,7 +386,7 @@
 
     return moreButton;
 }
-- (UIColor *)tintColorSchema
+- (UIColor *)getTintColorSchema
 {
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
