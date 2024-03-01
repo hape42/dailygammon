@@ -53,7 +53,8 @@
 @property (weak, nonatomic) IBOutlet DGButton *infoButton;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
+@property (readwrite, retain, nonatomic) NSArray       *landscapeConstraints;
+@property (readwrite, retain, nonatomic) NSArray       *portraitConstraints;
 
 @end
 
@@ -195,66 +196,6 @@
 
     }
 
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        DGButton *infoButton = [[DGButton alloc] initWithFrame:CGRectMake(50, 100, 80, 35)];
-        [infoButton setTitle:@"Info" forState: UIControlStateNormal];
-        [infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self.view addSubview:infoButton];
-        
-        DGButton *shareButton = [[DGButton alloc] initWithFrame:CGRectMake(150, 100, 80, 35)];
-        [shareButton setTitle:@"Share" forState: UIControlStateNormal];
-        [shareButton addTarget:self action:@selector(share:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:shareButton];
- 
-        DGButton *iCloudButton = [[DGButton alloc] initWithFrame:CGRectMake(250, 100, 80, 35)];
-        [iCloudButton setTitle:@"iCloud" forState: UIControlStateNormal];
-        [iCloudButton addTarget:self action:@selector(iCloudAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:iCloudButton];
-
-        UIImageView *iCloudConnected = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iCloudOFF.png"]];
-        iCloudConnected.frame = CGRectMake(330, 100, 35, 35);
-        if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
-            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
-        else
-            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
-        
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
-            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
-        else
-            [iCloudConnected setImage:[UIImage imageNamed:@"iCloudOFF.png"]];
-
-        [self.view addSubview:iCloudConnected];
-
-        int maxWidth = self.view.bounds.size.width;
-        int edge = 50;
-
-        UIButton *filterButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        filterButton.frame = CGRectMake(maxWidth-35-edge, 100, 35, 35);
-        UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [filterButton setImage:image forState:UIControlStateNormal];
-        filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
-        [filterButton addTarget:self action:@selector(showFilter:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:filterButton];
-        self.gap = filterButton.frame.origin.y + self.filterButton.frame.size.height + 30;
-
-        self.iPad = TRUE;
-
-        CGRect frame = self.header.frame;
-        frame.origin.y = filterButton.frame.origin.y;
-        frame.origin.x = iCloudConnected.frame.origin.x + iCloudConnected.frame.size.width + 10;
-        frame.size.width = filterButton.frame.origin.x - frame.origin.x ;
-        self.header.frame = frame;
-    }
-    else
-    {
-        self.moreButton.tintColor   = [UIColor colorNamed:@"ColorSwitch"];
-        self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-        self.gap = self.filterButton.frame.origin.y + self.filterButton.frame.size.height + 10;
-
-    }
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
     else
@@ -272,11 +213,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-
+    [self layoutObjects];
     [self initGraph];
 
 }
-
 
 -(void)makeAverageArray
 {
@@ -596,13 +536,21 @@
     }
     filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    x = [[UIScreen mainScreen] bounds].size.width - filterWidth - 50;
 
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self->filterView.frame = CGRectMake(x,self->filterView.frame.origin.y,filterWidth,filterHeight);
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
 
-    } completion:^(BOOL finished) {
-    }];
+    [self->filterView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self->filterView.topAnchor constraintEqualToAnchor:self.chartView.topAnchor constant:50].active = YES;
+    [self->filterView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self->filterView.heightAnchor constraintEqualToConstant:filterHeight].active = YES;
+    [self->filterView.widthAnchor constraintEqualToConstant:filterWidth].active = YES;
+
+    [self->filterView setNeedsUpdateConstraints];
+    [UIView animateWithDuration:1.0  animations:^{
+            [self->filterView layoutIfNeeded];
+        }];
 
     return;
 }
@@ -610,15 +558,7 @@
 
 -(void)closeFilter
 {
-
-    [UIView animateWithDuration:1.0 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        self->filterView.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width,
-                                            self->filterView.frame.origin.y,
-                                            self->filterView.frame.size.width,
-                                            self->filterView.frame.size.height);
-
-    } completion:^(BOOL finished) {
-    }];
+    [filterView removeFromSuperview];
 
 }
 
@@ -846,5 +786,118 @@
 
 }
 
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5;
+
+#pragma mark moreButton autoLayout
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark filterButton autoLayout
+    [self.filterButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.filterButton.topAnchor constraintEqualToAnchor:self.moreButton.topAnchor constant:0].active = YES;
+    [self.filterButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.filterButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.filterButton.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+
+#pragma mark infoButton autoLayout
+    [self.infoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.infoButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.infoButton.widthAnchor constraintEqualToConstant:70].active = YES;
+    [self.infoButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+
+#pragma mark shareButton autoLayout
+    [self.shareButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.shareButton.topAnchor constraintEqualToAnchor:self.infoButton.topAnchor constant:0].active = YES;
+    [self.shareButton.leftAnchor constraintEqualToAnchor:self.infoButton.rightAnchor constant:gap].active = YES;
+    [self.shareButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.shareButton.widthAnchor constraintEqualToConstant:70].active = YES;
+
+#pragma mark iCloudButton autoLayout
+    [self.iCloud setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.iCloud.topAnchor constraintEqualToAnchor:self.infoButton.topAnchor constant:0].active = YES;
+    [self.iCloud.leftAnchor constraintEqualToAnchor:self.shareButton.rightAnchor constant:gap].active = YES;
+    [self.iCloud.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.iCloud.widthAnchor constraintEqualToConstant:70].active = YES;
+
+#pragma mark iCloudConnected autoLayout
+    [self.iCloudConnected setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.iCloudConnected.topAnchor constraintEqualToAnchor:self.infoButton.topAnchor constant:0].active = YES;
+    [self.iCloudConnected.leftAnchor constraintEqualToAnchor:self.iCloud.rightAnchor constant:gap].active = YES;
+    [self.iCloudConnected.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.iCloudConnected.widthAnchor constraintEqualToConstant:35].active = YES;
+
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:self.filterButton.leftAnchor constant:-edge].active = YES;
+
+
+    self.landscapeConstraints = @[
+        [self.infoButton.topAnchor constraintEqualToAnchor:self.moreButton.topAnchor constant:0],
+        [self.header.leftAnchor constraintEqualToAnchor:self.iCloudConnected.rightAnchor constant:gap]
+    ];
+    self.portraitConstraints = @[
+        [self.infoButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:gap],
+        [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge]
+    ];
+
+    if(safe.layoutFrame.size.width > 500 )
+    {
+        [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
+        [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
+    }
+    else
+    {
+        [NSLayoutConstraint deactivateConstraints:self.landscapeConstraints];
+        [NSLayoutConstraint activateConstraints:self.portraitConstraints];
+    }
+
+#pragma mark chartView autoLayout
+    self.chartView = [[LineChartView alloc]initWithFrame:CGRectMake(0 + gap, safe.layoutFrame.origin.y + self.gap, safe.layoutFrame.size.width - gap, safe.layoutFrame.size.height - self.gap - 20 )];
+    [self.view addSubview:self.chartView];
+
+    [self.chartView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.chartView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.chartView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.chartView.topAnchor constraintEqualToAnchor:self.infoButton.bottomAnchor constant:20].active = YES;
+    [self.chartView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+        
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+
+    if(safe.layoutFrame.size.width > 500 )
+    {
+        [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
+        [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
+    }
+    else
+    {
+        [NSLayoutConstraint deactivateConstraints:self.landscapeConstraints];
+        [NSLayoutConstraint activateConstraints:self.portraitConstraints];
+    }
+
+}
 
 @end
