@@ -390,7 +390,7 @@ didCompleteWithError:(NSError *)error
 -(void)layoutObjects
 {
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
-    float edge = 5.0;
+    float edge = 10.0;
     float buttonHeight = 35;
     
 #pragma mark moreButton autoLayout
@@ -421,21 +421,21 @@ didCompleteWithError:(NSError *)error
 #pragma mark email Button  autoLayout
     [self.buttonEmail setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.buttonEmail.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.buttonEmail.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge*2].active = YES;
     [self.buttonEmail.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.buttonEmail.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
     
 #pragma mark privacy Button  autoLayout
     [self.buttonPrivacy setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.buttonPrivacy.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.buttonPrivacy.bottomAnchor constraintEqualToAnchor:self.buttonEmail.bottomAnchor constant:0].active = YES;
     [self.buttonPrivacy.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
     [self.buttonPrivacy.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
 
 #pragma mark credit Button  autoLayout
     [self.creditButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.creditButton.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.creditButton.bottomAnchor constraintEqualToAnchor:self.buttonEmail.bottomAnchor constant:0].active = YES;
     [self.creditButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
     [self.creditButton.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
 

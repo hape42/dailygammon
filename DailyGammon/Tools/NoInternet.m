@@ -11,6 +11,7 @@
 #import "TopPageCV.h"
 #import "AppDelegate.h"
 #import "About.h"
+#import "GameLoungeCV.h"
 
 @interface NoInternet ()
 
@@ -46,19 +47,15 @@
         XLog(@"AboutCount %ld", [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"]);
         if ([[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"] == 5)
         {
-            About *vc = [[About alloc]init];
-            
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-            if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
-            else
-                vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"About"];
+            About *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"About"];
+
             vc.showRemindMeLaterButton = YES;
             [self.navigationController pushViewController:vc animated:NO];
             return;
 
         }
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        
         [self.navigationController pushViewController:vc animated:NO];
 
     }

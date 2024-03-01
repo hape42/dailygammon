@@ -235,8 +235,8 @@ typedef void(^connection)(BOOL);
             [scanner scanCharactersFromSet:numbers intoString:&numberString];
             if([[htmlString substringWithRange:NSMakeRange(foundRange.location -4 , 3) ] isEqualToString:@"All"]) // Beginners hat "All players have ratings less than 1501 at signup time." zusätzlich
                 continue;
-            if([numberString isEqual:@"?"])
-                XLog(@"? %@", playersArray);
+//            if([numberString isEqual:@"?"])
+//                XLog(@"? %@", playersArray);
             [playersArray addObject:numberString];
         }
         else

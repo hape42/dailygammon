@@ -147,7 +147,7 @@
 
 #pragma mark nextButton
 
-    DGButton *nextButton = [[DGButton alloc] init];
+    DGButton *nextButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [nextButton setTitle:@"Next" forState: UIControlStateNormal];
     [nextButton addTarget:self action:@selector(nextAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nextButton];
@@ -161,7 +161,7 @@
 
 #pragma mark topButton
 
-    DGButton *topButton = [[DGButton alloc] init];
+    DGButton *topButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [topButton setTitle:@"To Top" forState: UIControlStateNormal];
     [topButton addTarget:self action:@selector(topAction:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:topButton];
@@ -175,7 +175,7 @@
     
 #pragma mark hide keyboard Button
 
-    DGButton *keyboardButton = [[DGButton alloc] init];
+    DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth * 2, buttonHight)];
     [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
     [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:keyboardButton];

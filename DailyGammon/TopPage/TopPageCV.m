@@ -74,9 +74,6 @@
     
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
-    
-    [self layoutObjects];
-
 
     NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
     NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
@@ -102,6 +99,8 @@
 {
     [super viewDidAppear:animated];
     [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
+
+    [self layoutObjects];
 
     [ self readTopPage];
 
@@ -831,10 +830,11 @@ didCompleteWithError:(NSError *)error
         [self miniBoardSchemaWarning];
         return;
     }
-    if(! self.topPageArray)
+    if(!self.topPageArray)
     {
         [self readTopPage];
         [self updateCollectionView];
+        XLog(@"if(!self.topPageArray)");
         return;
     }
     NSArray *row = self.topPageArray[indexPath.row];

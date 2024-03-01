@@ -337,6 +337,8 @@
         withChat = YES;
     int edge = 10;
     int gap = 10;
+    float buttonWidth = 150.0;
+    float buttonHight = 30;
 
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
@@ -423,7 +425,7 @@
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
 
-    self.buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectZero];
+    self.buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [self.buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
     [self.buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
     [self.buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
@@ -437,7 +439,7 @@
 //    self.player1Score.backgroundColor = [UIColor systemBlueColor];
 
 
-    self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectZero];
+    self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [self.buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
     [self.buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
     [self.buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
@@ -500,7 +502,7 @@
         [NSLayoutConstraint activateConstraints:self.portraitConstraints];
     }
  
-    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectZero];
+    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
     [buttonNext.layer setValue:href forKey:@"href"];
@@ -511,11 +513,11 @@
     [buttonNext setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [buttonNext.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
-    [buttonNext.heightAnchor constraintEqualToConstant:35].active = YES;
+    [buttonNext.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
     [buttonNext.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
     [buttonNext.widthAnchor constraintEqualToConstant:80].active = YES;
 
-    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectZero];
+    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [buttonToTop setTitle:@"ToTop" forState: UIControlStateNormal];
     [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
     [buttonToTop.layer setValue:href forKey:@"href"];
@@ -526,14 +528,14 @@
     [buttonToTop setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [buttonToTop.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
-    [buttonToTop.heightAnchor constraintEqualToConstant:35].active = YES;
+    [buttonToTop.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
     [buttonToTop.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap ].active = YES;
     [buttonToTop.widthAnchor constraintEqualToConstant:80].active = YES;
 
     if(withChat)
     {
         
-        DGButton *keyboardButton = [[DGButton alloc] init];
+        DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth * 2, buttonHight)];
         [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
         [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:keyboardButton];
@@ -541,7 +543,7 @@
         [keyboardButton setTranslatesAutoresizingMaskIntoConstraints:NO];
         
         [keyboardButton.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
-        [keyboardButton.heightAnchor constraintEqualToConstant:35].active = YES;
+        [keyboardButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
         [keyboardButton.widthAnchor constraintEqualToConstant:160].active = YES;
         [keyboardButton.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
     }
