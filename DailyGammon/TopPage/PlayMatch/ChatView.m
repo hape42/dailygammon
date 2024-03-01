@@ -271,9 +271,11 @@
     [playerChat.bottomAnchor constraintEqualToAnchor:nextButton.topAnchor constant:-gap].active = YES;
 
     [self setNeedsUpdateConstraints];
-    [UIView animateWithDuration:1.0  animations:^{
-            [self layoutIfNeeded];
-        }];
+    [self layoutIfNeeded];
+
+//    [UIView animateWithDuration:1.0  animations:^{
+//            [self layoutIfNeeded];
+//        }];
 
     return;
 }

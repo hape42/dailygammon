@@ -213,6 +213,15 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.header.textColor = [design getTintColorSchema];
+    self.moreButton = [design designMoreButton:self.moreButton];
+    
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self.filterButton setImage:image forState:UIControlStateNormal];
+    self.filterButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+
     [self layoutObjects];
     [self initGraph];
 
@@ -548,9 +557,7 @@
     [self->filterView.widthAnchor constraintEqualToConstant:filterWidth].active = YES;
 
     [self->filterView setNeedsUpdateConstraints];
-    [UIView animateWithDuration:1.0  animations:^{
-            [self->filterView layoutIfNeeded];
-        }];
+    [self->filterView layoutIfNeeded];
 
     return;
 }
