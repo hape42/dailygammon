@@ -106,7 +106,8 @@
     transparentButton = [[UIButton alloc] init];
     transparentButton.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    [transparentButton setImage:[[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    transparentButton = [design designChatTransparentButton:transparentButton isTransparent:NO];
+
     [transparentButton addTarget:self action:@selector(chatTransparent) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:transparentButton];
 
@@ -114,12 +115,12 @@
 
     [transparentButton.topAnchor constraintEqualToAnchor:self.topAnchor constant:edge].active = YES;
     [transparentButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
-    [transparentButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
+    [transparentButton.widthAnchor constraintEqualToConstant:headerSize*2].active = YES;
     [transparentButton.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
 
 #pragma mark historyButton
     UIButton *historyButton = [[UIButton alloc] init];
-    [historyButton setImage:[[UIImage imageNamed:@"History"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    historyButton = [design designChatHistoryButton:historyButton];
     [historyButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
     historyButton.tag = 1;
     [self addSubview:historyButton];
@@ -131,19 +132,19 @@
     [historyButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
     [historyButton.rightAnchor constraintEqualToAnchor:transparentButton.leftAnchor constant:-gap].active = YES;
 
-#pragma mark quotesButton
-    UIButton *quotesButton = [[UIButton alloc] init];
-    [quotesButton setImage:[[UIImage imageNamed:@"Quotes"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    [quotesButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
-    quotesButton.tag = 2;
-    [self addSubview:quotesButton];
+#pragma mark phrasesButton
+    UIButton *phrasesButton = [[UIButton alloc] init];
+    phrasesButton = [design designChatPhrasesButton:phrasesButton];
+    [phrasesButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
+    phrasesButton.tag = 2;
+    [self addSubview:phrasesButton];
 
-    [quotesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [phrasesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [quotesButton.topAnchor constraintEqualToAnchor:historyButton.topAnchor constant:0].active = YES;
-    [quotesButton.rightAnchor constraintEqualToAnchor:historyButton.leftAnchor constant:-gap].active = YES;
-    [quotesButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
-    [quotesButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
+    [phrasesButton.topAnchor constraintEqualToAnchor:historyButton.topAnchor constant:0].active = YES;
+    [phrasesButton.rightAnchor constraintEqualToAnchor:historyButton.leftAnchor constant:-gap].active = YES;
+    [phrasesButton.heightAnchor constraintEqualToConstant:headerSize].active = YES;
+    [phrasesButton.widthAnchor constraintEqualToConstant:headerSize].active = YES;
 
 #pragma mark nextButton
 
@@ -175,8 +176,8 @@
     
 #pragma mark hide keyboard Button
 
-    DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth * 2, buttonHight)];
-    [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
+    UIButton *keyboardButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, buttonHight)];
+    keyboardButton = [design designKeyBoardDownButton:keyboardButton];
     [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:keyboardButton];
 
@@ -184,7 +185,7 @@
 
     [keyboardButton.topAnchor constraintEqualToAnchor:topButton.topAnchor constant:0].active = YES;
     [keyboardButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
-    [keyboardButton.widthAnchor constraintEqualToConstant:buttonWidth *2 ].active = YES;
+    [keyboardButton.widthAnchor constraintEqualToConstant:40].active = YES;
     [keyboardButton.rightAnchor constraintEqualToAnchor:self.rightAnchor constant:-edge].active = YES;
 
 #pragma mark - OpponentChat & switch & label
@@ -307,14 +308,14 @@
         self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
         playerChat.backgroundColor = [UIColor whiteColor];
 
-        [transparentButton setImage:[[UIImage imageNamed:@"Brille"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        transparentButton = [design designChatTransparentButton:transparentButton isTransparent:NO];
     }
     else
     {
         self.backgroundColor = [UIColor clearColor];
         playerChat.backgroundColor = [UIColor clearColor];
 
-        [transparentButton setImage:[[UIImage imageNamed:@"Brille_voll"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+        transparentButton = [design designChatTransparentButton:transparentButton isTransparent:YES];
     }
 }
 

@@ -71,6 +71,12 @@
 {
     [super viewDidLoad];
     
+    design =      [[Design alloc] init];
+    preferences = [[Preferences alloc] init];
+    rating =      [[Rating alloc] init];
+    tools =       [[Tools alloc] init];
+    ratingCD =    [[RatingCD alloc] init];
+
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initGraph) name:changeSchemaNotification object:nil];
@@ -153,9 +159,16 @@
     
     self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
-    image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithHierarchicalColor:[design getTintColorSchema]];
+
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+
+    image = [UIImage systemImageNamed:@"slider.horizontal.3" withConfiguration:total];
+    
     [self.filterButton setImage:image forState:UIControlStateNormal];
-    self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
+    self.filterButton.tintColor = [design getTintColorSchema];
 
     ratingHigh = 0;
     ratingLow = 99999;
@@ -169,11 +182,6 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
 
-    design =      [[Design alloc] init];
-    preferences = [[Preferences alloc] init];
-    rating =      [[Rating alloc] init];
-    tools =       [[Tools alloc] init];
-    ratingCD =    [[RatingCD alloc] init];
 
     NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
 
@@ -217,10 +225,10 @@
     self.header.textColor = [design getTintColorSchema];
     self.moreButton = [design designMoreButton:self.moreButton];
     
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.filterButton setImage:image forState:UIControlStateNormal];
-    self.filterButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+//    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+//    UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    [self.filterButton setImage:image forState:UIControlStateNormal];
+//    self.filterButton.tintColor = [schemaDict objectForKey:@"TintColor"];
 
     [self layoutObjects];
     [self initGraph];

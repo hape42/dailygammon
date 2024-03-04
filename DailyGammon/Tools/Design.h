@@ -35,6 +35,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIButton *)designMoreButton:(UIButton *)moreButton;
 - (UIColor *)getTintColorSchema;
+- (UIButton *)designKeyBoardDownButton:(UIButton *)button;
+- (UIButton *)designChatHistoryButton:(UIButton *)button;
+- (UIButton *)designChatTransparentButton:(UIButton *)button isTransparent:(BOOL)isTransparent;
+- (UIButton *)designChatPhrasesButton:(UIButton *)button;
 
 - (BOOL)isX;
 

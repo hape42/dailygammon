@@ -1512,11 +1512,12 @@
 
     if (![self.navigationController.topViewController isKindOfClass:PlayMatch.class])
         return;
-    XLog(@"navStack 1: %@", self.navigationController.viewControllers);
+   // XLog(@"navStack 1: %@", self.navigationController.viewControllers);
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
          // Code to be executed during the animation
         [self->chatView dismiss];
+        [self->menueView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch:NO];
@@ -1525,13 +1526,12 @@
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {
          // Code to be executed after the animation is completed
-            XLog(@"navStack 2: %@", self.navigationController.viewControllers);
+           // XLog(@"navStack 2: %@", self.navigationController.viewControllers);
      }];
 //    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
 //
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
-
 }
 
 

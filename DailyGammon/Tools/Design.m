@@ -379,13 +379,61 @@
 
 - (UIButton *)designMoreButton:(UIButton *)moreButton
 {
-    NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [moreButton setImage:image forState:UIControlStateNormal];
-    moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:@"contextualmenu.and.cursorarrow" withConfiguration:total];
 
+    [moreButton setImage:image forState:UIControlStateNormal];
     return moreButton;
 }
+
+- (UIButton *)designKeyBoardDownButton:(UIButton *)button
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithHierarchicalColor:[self getTintColorSchema]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:@"keyboard.chevron.compact.down" withConfiguration:total];
+
+    [button setImage:image forState:UIControlStateNormal];
+    return button;
+}
+- (UIButton *)designChatHistoryButton:(UIButton *)button
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:@"doc.badge.clock" withConfiguration:total];
+
+    [button setImage:image forState:UIControlStateNormal];
+    return button;
+}
+- (UIButton *)designChatTransparentButton:(UIButton *)button isTransparent:(BOOL)isTransparent
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:@"eyeglasses" withConfiguration:total];
+
+    if(isTransparent)
+        image = [UIImage systemImageNamed:@"eyeglasses.slash" withConfiguration:total];
+    else
+        image = [UIImage systemImageNamed:@"eyeglasses" withConfiguration:total];
+
+    [button setImage:image forState:UIControlStateNormal];
+    return button;
+}
+- (UIButton *)designChatPhrasesButton:(UIButton *)button
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:@"bubble.left.and.text.bubble.right" withConfiguration:total];
+
+    [button setImage:image forState:UIControlStateNormal];
+    return button;
+}
+
 - (UIColor *)getTintColorSchema
 {
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
