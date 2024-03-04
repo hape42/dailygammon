@@ -619,15 +619,16 @@ didCompleteWithError:(NSError *)error
     [self.refreshButton.topAnchor constraintEqualToAnchor:self.moreButton.topAnchor constant:0].active = YES;
     [self.refreshButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.refreshButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.refreshButton.widthAnchor constraintEqualToConstant:70].active = YES;
+    [self.refreshButton.widthAnchor constraintEqualToConstant:90].active = YES;
 
 #pragma mark header autoLayout
     [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:0].active = YES;
-    [self.header.leftAnchor constraintEqualToAnchor:self.refreshButton.rightAnchor constant:edge].active = YES;
+    [self.header.leadingAnchor constraintEqualToAnchor:self.refreshButton.trailingAnchor constant:edge].active = YES;
     [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
     [self.header.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+//    [self.header.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
     
 #pragma mark sortLabel autoLayout
     [self.sortLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -643,7 +644,7 @@ didCompleteWithError:(NSError *)error
     [self.sortButton.topAnchor constraintEqualToAnchor:self.sortLabel.topAnchor constant:0].active = YES;
     [self.sortButton.leftAnchor constraintEqualToAnchor:self.sortLabel.rightAnchor constant:10].active = YES;
     [self.sortButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.sortButton.widthAnchor constraintEqualToConstant:190].active = YES;
+//    [self.sortButton.widthAnchor constraintEqualToConstant:190].active = YES;
 
 #pragma mark collectionView autoLayout
     [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];

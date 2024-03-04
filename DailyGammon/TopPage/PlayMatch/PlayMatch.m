@@ -344,24 +344,12 @@
 //    lowerThird.layer.borderWidth = 1;
     [actionView addSubview:lowerThird];
 
-    int edge = 10;
     float gap = 10;
     float verifyTextWidth = 50;
 
-    int buttonHeight = 0;
-    int buttonWidth = 0;
+    int buttonHeight = 35;
+    int buttonWidth = 110;
     
-
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        buttonHeight = 35;
-        buttonWidth  = 100;
-    }
-    else
-    {
-        buttonHeight = 30;
-        buttonWidth  = 80;
-    }
     float switchWidth = 50;
     float buttonLargeWidth = MIN(buttonWidth *2, actionViewWidth - 10);
 
@@ -1522,7 +1510,7 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-    if (!self.isBeingPresented)
+    if (![self.navigationController.topViewController isKindOfClass:PlayMatch.class])
         return;
     XLog(@"navStack 1: %@", self.navigationController.viewControllers);
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)

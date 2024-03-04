@@ -208,6 +208,7 @@
 }
 -(void) topPage
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
     TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
     [self.navigationController pushViewController:vc animated:NO];
 
@@ -220,12 +221,15 @@
 
 -(void) GameLounge
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
     GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 -(void) playerVC
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
@@ -235,6 +239,8 @@
 
 -(void) SetUpVC:(id)sender
 {
+ //   [self.navigationController popToRootViewControllerAnimated:NO];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     SetUpVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
@@ -264,13 +270,16 @@
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
     [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-        
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (IBAction)AboutVC
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     About *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"About"];
     vc.showRemindMeLaterButton = NO;
     [self.navigationController pushViewController:vc animated:NO];
@@ -287,6 +296,8 @@
 
 - (void)lists
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];

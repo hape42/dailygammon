@@ -49,8 +49,14 @@
         
     self.layer.cornerRadius = 14.0f;
     self.layer.masksToBounds = YES;
-    
+
+    UIButtonConfiguration *buttonConfig = [UIButtonConfiguration plainButtonConfiguration];
+    buttonConfig.contentInsets = NSDirectionalEdgeInsetsMake(0, 5, 0, 5);
+    self.configuration = buttonConfig;
+
+     
     CAGradientLayer *gradient = [CAGradientLayer layer];
+
     gradient.frame = self.bounds;
     gradient.startPoint = CGPointMake(1, 0);;
     gradient.endPoint = CGPointMake(1, 1);
@@ -75,12 +81,12 @@
 
             break;
         case 1:
-            [self.layer insertSublayer:gradient below:self.titleLabel.layer];
+            [self.layer insertSublayer:gradient below:self.imageView.layer];
             break;
         case 2:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
-            [self.layer insertSublayer:gradient below:self.titleLabel.layer];
+            [self.layer insertSublayer:gradient below:self.imageView.layer];
             break;
         case 3:
             self.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientEdge"];
@@ -98,6 +104,8 @@
 
     if(title)
         [self setTitle:title forState: UIControlStateNormal];
+    
+
 }
 - (void)changeButtonColor
 {
@@ -119,7 +127,11 @@
         
     self.layer.cornerRadius = 14.0f;
     self.layer.masksToBounds = YES;
-    
+
+    UIButtonConfiguration *buttonConfig = [UIButtonConfiguration plainButtonConfiguration];
+    buttonConfig.contentInsets = NSDirectionalEdgeInsetsMake(0, 5, 0, 5);
+    self.configuration = buttonConfig;
+
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.bounds;
     gradient.startPoint = CGPointMake(1, 0);;
@@ -154,13 +166,13 @@
             break;
         case 1:
             self.layer.borderWidth = 0;
-            [self.layer insertSublayer:gradient below:self.titleLabel.layer];
+            [self.layer insertSublayer:gradient below:self.imageView.layer];
 
             break;
         case 2:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
-            [self.layer insertSublayer:gradient below:self.titleLabel.layer];
+            [self.layer insertSublayer:gradient below:self.imageView.layer];
 
             break;
         case 3:
