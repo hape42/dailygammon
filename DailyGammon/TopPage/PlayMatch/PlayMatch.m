@@ -94,10 +94,6 @@
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(orientationDidChange:)
-                                                 name:UIDeviceOrientationDidChangeNotification
-                                               object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(chatTopButton:)
@@ -162,44 +158,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)orientationDidChange:(NSNotification *)notification 
-{
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    return;
-    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
-    float height = safe.layoutFrame.size.height;
-    float width  = safe.layoutFrame.size.width;
-    switch (orientation)
-    {
-        case UIDeviceOrientationPortrait:
-            NSLog(@"Portrait orientation");
-            [self drawViewsInSuperView:width andWith:height];
-
-            [self showMatch:NO];
-
-            break;
-        case UIDeviceOrientationLandscapeLeft:
-            NSLog(@"Landscape Left orientation");
-            [self drawViewsInSuperView:width andWith:height];
-
-            [self showMatch:NO];
-
-            break;
-        case UIDeviceOrientationLandscapeRight:
-            NSLog(@"Landscape Right orientation %ld", (long)orientation);
-            [self drawViewsInSuperView:width andWith:height];
-
-            [self showMatch:NO];
-
-            break;
-        default:
-            NSLog(@"?? %ld orientation", (long)orientation);
-
-            break;
-    }
-
-}
-
 
 - (IBAction)moreAction:(id)sender
 {
@@ -210,7 +168,6 @@
     }
     [menueView showMenueInView:self.view];
 }
-
 
 - (void) showMatchCount
 {
@@ -1487,6 +1444,7 @@
 
 - (void) drawViewsInSuperView:(float)superViewWidth andWith:(float)superViewheight
 {
+ //   XLog(@"");
     float edge = 20;
     float gap = 10;
     int notch = 0;
@@ -1564,7 +1522,10 @@
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) 
+    if (!self.isBeingPresented)
+        return;
+    XLog(@"navStack 1: %@", self.navigationController.viewControllers);
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
          // Code to be executed during the animation
         [self->chatView dismiss];
@@ -1576,21 +1537,15 @@
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {
          // Code to be executed after the animation is completed
+            XLog(@"navStack 2: %@", self.navigationController.viewControllers);
      }];
-    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
-
+//    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
+//
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
 
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-        
-    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
-    //XLog(@"");
-}
 
 @end
