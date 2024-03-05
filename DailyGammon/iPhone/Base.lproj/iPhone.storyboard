@@ -825,46 +825,6 @@
             </objects>
             <point key="canvasLocation" x="417" y="1248"/>
         </scene>
-        <!--Tournament-->
-        <scene sceneID="j8G-t3-SLr">
-            <objects>
-                <viewController storyboardIdentifier="Tournament" id="Ggn-nM-HfT" customClass="Tournament" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="H2c-bT-4Kb"/>
-                        <viewControllerLayoutGuide type="bottom" id="JZm-Vq-Yas"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="u1U-ht-l1V">
-                        <rect key="frame" x="0.0" y="0.0" width="926" height="428"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEt-X2-fZy">
-                                <rect key="frame" x="20" y="67" width="768" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N8a-WZ-2Hp" customClass="DGButton">
-                                <rect key="frame" x="794" y="65" width="87" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Find me"/>
-                                <connections>
-                                    <action selector="findMe:" destination="Ggn-nM-HfT" eventType="touchUpInside" id="S0h-RY-4Mg"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <connections>
-                        <outlet property="findMeButton" destination="N8a-WZ-2Hp" id="MHF-58-5Tu"/>
-                        <outlet property="nameTournament" destination="vEt-X2-fZy" id="Y4N-ZM-nwH"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="paV-lc-jPI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1796.7602591792659" y="-4.2056074766355138"/>
-        </scene>
         <!--Review-->
         <scene sceneID="cPO-Ve-0Uy">
             <objects>

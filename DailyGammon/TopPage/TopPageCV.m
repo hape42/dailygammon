@@ -873,13 +873,10 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)eventAction:(UIButton*)button
 {
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    Tournament *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"Tournament"];
+    Tournament *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"Tournament"];
     vc.url   = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",(NSString *)[button.layer valueForKey:@"href"]]];
     vc.name = (NSString *)[button.layer valueForKey:@"Text"];
     [self.navigationController pushViewController:vc animated:NO];
-
 }
 
 - (IBAction)refreshAction:(id)sender

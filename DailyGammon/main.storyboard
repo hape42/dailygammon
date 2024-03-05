@@ -495,7 +495,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BAs-D1-W2V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="453.29428989751096" y="29.296874999999996"/>
+            <point key="canvasLocation" x="1840" y="-2200"/>
         </scene>
         <!--RatingVC-->
         <scene sceneID="Isv-7j-fvd">
@@ -580,7 +580,46 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6O4-AC-W5o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1802.1126760563382" y="-798.75"/>
+            <point key="canvasLocation" x="2469" y="-2200"/>
+        </scene>
+        <!--Tournament-->
+        <scene sceneID="lDd-jn-XzL">
+            <objects>
+                <viewController storyboardIdentifier="Tournament" id="jkG-2J-bUe" customClass="Tournament" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vqD-Oz-cZN">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rzb-Si-ApU" customClass="DGButton">
+                                <rect key="frame" x="1180" y="78" width="110" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Find me">
+                                    <color key="titleColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="findMe:" destination="jkG-2J-bUe" eventType="touchUpInside" id="a8c-4v-bX5"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="nameTournament" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JiE-Do-F9l">
+                                <rect key="frame" x="20" y="85" width="1152" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Zuc-fJ-WhK"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <connections>
+                        <outlet property="findMeButton" destination="Rzb-Si-ApU" id="KhO-hw-iNd"/>
+                        <outlet property="nameTournament" destination="JiE-Do-F9l" id="EHN-hX-0TH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gos-SE-7CY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3183.6017569546116" y="-1556.25"/>
         </scene>
     </scenes>
     <resources>

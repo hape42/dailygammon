@@ -52,7 +52,7 @@
 
     UIButtonConfiguration *buttonConfig = [UIButtonConfiguration plainButtonConfiguration];
     buttonConfig.contentInsets = NSDirectionalEdgeInsetsMake(0, 5, 0, 5);
-    buttonConfig.imagePadding = 50;
+    buttonConfig.imagePadding = 20;
 
     self.configuration = buttonConfig;
 
@@ -132,6 +132,7 @@
 
     UIButtonConfiguration *buttonConfig = [UIButtonConfiguration plainButtonConfiguration];
     buttonConfig.contentInsets = NSDirectionalEdgeInsetsMake(0, 5, 0, 5);
+    buttonConfig.imagePadding = 20;
     self.configuration = buttonConfig;
 
     CAGradientLayer *gradient = [CAGradientLayer layer];

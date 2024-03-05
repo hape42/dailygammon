@@ -229,7 +229,7 @@
 }
 -(void)updateMatchCount
 {
-    [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
+    [self designButton:button1 imageName:[NSString stringWithFormat:@"%d.square", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] title:@"Top Page"];
 }
 -(void) topPage
 {

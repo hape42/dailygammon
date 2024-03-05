@@ -7,32 +7,17 @@
 //
 
 #import "Tournament.h"
-#import "RatingVC.h"
 #import "Design.h"
 #import "TFHpple.h"
-#import "PlayMatch.h"
-#import "Preferences.h"
-#import "Rating.h"
-#import "LoginVC.h"
-#import "DbConnect.h"
 #import "AppDelegate.h"
-#import "Player.h"
 #import "Tools.h"
-#import <SafariServices/SafariServices.h>
-#import "RatingTools.h"
-#import "SetUpVC.h"
-#import "LoginVC.h"
-#import "About.h"
 #import "DGButton.h"
-#import "PlayerLists.h"
 #import "DGLabel.h"
 #import "CellConnector.h"
 
 @interface Tournament ()
 
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
 @property (weak, nonatomic) IBOutlet UILabel *nameTournament;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet DGButton *findMeButton;
 
 @end
@@ -46,7 +31,7 @@
  * How many elements of a line are filled depends solely on the line number because of the shape of a reverse binary tree that the array represents: all - 1 - 2 - 1 - 3 - 1 - ... 
  */
 @synthesize drawArray;
-@synthesize design, preferences, rating, tools, ratingTools;
+@synthesize design, tools;
 @synthesize scrollView;
 @synthesize url, name;
 @synthesize xFound, yFound;
@@ -57,15 +42,7 @@
     // Do any additional setup after loading the view.
     
     design      = [[Design alloc] init];
-    preferences = [[Preferences alloc] init];
-    rating      = [[Rating alloc] init];
     tools       = [[Tools alloc] init];
-    ratingTools = [[RatingTools alloc] init];
-
-    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.moreButton setImage:image forState:UIControlStateNormal];
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
 
 }
 
@@ -76,32 +53,53 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 
     self.nameTournament.text = name;
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-//    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-//        [self.view addSubview:[self makeHeader]];
+}
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 
+
+#pragma mark autolayout
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 10.0;
+
+    [self.findMeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.findMeButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.findMeButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.findMeButton.widthAnchor constraintEqualToConstant:100].active = YES;
+    [self.findMeButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+    [self.nameTournament setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.nameTournament.centerYAnchor constraintEqualToAnchor:self.findMeButton.centerYAnchor constant:0].active = YES;
+    [self.nameTournament.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.nameTournament.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.nameTournament.rightAnchor constraintEqualToAnchor:self.findMeButton.leftAnchor constant:-edge].active = YES;
+
+    
     int maxHeigth = [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20;
     int maxWidth = [UIScreen mainScreen].bounds.size.width ;
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake( 10, self.navigationController.navigationBar.frame.size.height + 20 + 50 , maxWidth, maxHeigth)];
 
-    if([design isX])
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        UIWindow *keyWindow = (UIWindow *) windows[0];
-        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
-
-        CGRect frame = scrollView.frame;
-        frame.origin.x = safeArea.left ;
-        frame.size.width = scrollView.frame.size.width - safeArea.left ;
-        scrollView.frame = frame;
-    }
+    scrollView = [[UIScrollView alloc] init];
+    
 
     scrollView.delegate = self;
+    
     scrollView.contentSize = CGSizeMake(2000, 2000);
-    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     scrollView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
     [self.view addSubview:scrollView];
+
+    [scrollView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [scrollView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [scrollView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [scrollView.topAnchor constraintEqualToAnchor:self.nameTournament.bottomAnchor constant:20].active = YES;
+    [scrollView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
 
     if([self readTournament])
         [self drawTournament];
