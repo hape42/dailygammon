@@ -115,6 +115,7 @@
     
     DGButton *button4 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button4 setTitle:@"Settings" forState: UIControlStateNormal];
+    [button4 setImage:[self designButtonImage:@"gear.badge.questionmark"] forState:UIControlStateNormal];
     button4.tag = 4;
     [self addSubview:button4];
     [button4 addTarget:self action:@selector(SetUpVC:) forControlEvents:UIControlEventTouchUpInside];
@@ -158,8 +159,8 @@
     DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button9 setTitle:@"Lists" forState: UIControlStateNormal];
     [button9 setImage:[self designButtonImage:@"list.number"] forState:UIControlStateNormal];
-    button9.tag = 9;
     [self addSubview:button9];
+    button9.tag = 9;
     [button9 addTarget:self action:@selector(lists) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
@@ -192,6 +193,7 @@
 {
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [design getTintColorSchema]]];
     UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:15];
+
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
     UIImage *image = [UIImage systemImageNamed:imageName withConfiguration:total];
 

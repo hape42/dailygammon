@@ -52,6 +52,8 @@
 
     UIButtonConfiguration *buttonConfig = [UIButtonConfiguration plainButtonConfiguration];
     buttonConfig.contentInsets = NSDirectionalEdgeInsetsMake(0, 5, 0, 5);
+    buttonConfig.imagePadding = 50;
+
     self.configuration = buttonConfig;
 
      
