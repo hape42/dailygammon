@@ -342,9 +342,11 @@
 
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
+#pragma mark infoView
     self.infoView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     [self.view addSubview:self.infoView];
-//    self.infoView.layer.borderWidth = 3;
+
     [self.infoView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     if(withChat)
@@ -354,28 +356,17 @@
     }
     else
     {
-        [self.infoView.heightAnchor constraintEqualToConstant:300].active = YES;
-        [self.infoView.topAnchor constraintEqualToAnchor:safe.topAnchor constant:50].active = YES;
+        [self.infoView.heightAnchor constraintEqualToConstant:350].active = YES;
+        [self.infoView.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     }
     [self.infoView.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.infoView.rightAnchor  constraintEqualToAnchor:self.moreButton.leftAnchor constant:0].active = YES;
 
-    self.infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-//    self.infoView.backgroundColor = [UIColor yellowColor];
+#pragma mark matchName
 
     UILabel *matchName = [[UILabel alloc] initWithFrame:CGRectZero];
-    [self.infoView addSubview:matchName];
-    [matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
-
     matchName.text = [finishedMatchDict objectForKey:@"matchName"];
     matchName.textAlignment = NSTextAlignmentCenter;
-//    matchName.backgroundColor = [UIColor redColor];
-
-    [matchName.topAnchor constraintEqualToAnchor:self.infoView.topAnchor constant:edge].active = YES;
-    [matchName.heightAnchor constraintEqualToConstant:40].active = YES;
-    [matchName.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [matchName.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
-
     NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
     [attr addAttribute:NSFontAttributeName
                   value:[UIFont systemFontOfSize:40.0]
@@ -385,8 +376,19 @@
     matchName.numberOfLines = 0;
     matchName.minimumScaleFactor = 0.5;
     matchName.adjustsFontSizeToFitWidth = YES;
+    [self.infoView addSubview:matchName];
     
+    [matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [matchName.topAnchor constraintEqualToAnchor:self.infoView.topAnchor constant:edge].active = YES;
+    [matchName.heightAnchor constraintEqualToConstant:40].active = YES;
+    [matchName.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [matchName.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+
+#pragma mark winner
+
     NSString *htmlString = [self.boardDict objectForKey:@"htmlString"];
+
     NSString *winnerText = [finishedMatchDict objectForKey:@"winnerName"];
     if([htmlString containsString:@"Predicted"])
         winnerText = [NSString stringWithFormat:@"(Predicted result) %@", winnerText];
@@ -404,6 +406,7 @@
     winner.adjustsFontSizeToFitWidth = YES;
     
     [self.infoView addSubview:winner];
+    
     [winner setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [winner.topAnchor constraintEqualToAnchor:matchName.bottomAnchor constant:0].active = YES;
@@ -411,17 +414,22 @@
     [winner.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
     [winner.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
+#pragma mark length
+
     UILabel *length = [[UILabel alloc] initWithFrame:CGRectZero];
     length.textAlignment = NSTextAlignmentLeft;
     NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
     length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
     [self.infoView addSubview:length];
+    
     [length setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [length.topAnchor constraintEqualToAnchor:winner.bottomAnchor constant:0].active = YES;
     [length.heightAnchor constraintEqualToConstant:30].active = YES;
     [length.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
     [length.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+
+#pragma mark buttonPlayer1 player1Score buttonPlayer2 player2Score
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
 
@@ -431,13 +439,10 @@
     [self.buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
     [self.infoView addSubview:self.buttonPlayer1];
 
-
     self.player1Score = [[UILabel alloc] initWithFrame:CGRectZero];
     self.player1Score.textAlignment = NSTextAlignmentCenter;
     self.player1Score.text = playerArray[1];
     [self.infoView addSubview:self.player1Score];
-//    self.player1Score.backgroundColor = [UIColor systemBlueColor];
-
 
     self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [self.buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
@@ -445,24 +450,22 @@
     [self.buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
     [self.infoView addSubview:self.buttonPlayer2];
 
-    [self.buttonPlayer2 setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-
     self.player2Score = [[UILabel alloc] initWithFrame:CGRectZero];
     self.player2Score.textAlignment = NSTextAlignmentCenter;
     self.player2Score.text = playerArray[3];
     [self.infoView addSubview:self.player2Score];
-//    self.player2Score.backgroundColor = [UIColor systemBlueColor];
 
+#pragma mark autoLayout buttonPlayer1 player1Score buttonPlayer2 player2Score
 
     [self.buttonPlayer1 setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
+    [self.player1Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.buttonPlayer2 setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.player2Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+
     [self.buttonPlayer1.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
     [self.buttonPlayer1.heightAnchor constraintEqualToConstant:30].active = YES;
     [self.buttonPlayer1.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
     [self.buttonPlayer1.widthAnchor constraintEqualToConstant:150].active = YES;
-
-    [self.player1Score setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [self.player1Score.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
     [self.player1Score.heightAnchor constraintEqualToConstant:30].active = YES;
@@ -472,8 +475,6 @@
     [self.buttonPlayer2.heightAnchor constraintEqualToConstant:30].active = YES;
     [self.buttonPlayer2.widthAnchor constraintEqualToConstant:150].active = YES;
 
-    [self.player2Score setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
     [self.player2Score.heightAnchor constraintEqualToConstant:30].active = YES;
     [self.player2Score.widthAnchor constraintEqualToConstant:50].active = YES;
 
@@ -502,6 +503,8 @@
         [NSLayoutConstraint activateConstraints:self.portraitConstraints];
     }
  
+#pragma mark buttonNext & buttonToTop & keyboardButton
+    
     DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
     [buttonNext addTarget:self action:@selector(actionNextFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
@@ -534,9 +537,8 @@
 
     if(withChat)
     {
-        
-        DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth * 2, buttonHight)];
-        [keyboardButton setTitle:@"hide keyboard" forState: UIControlStateNormal];
+        DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, 30, buttonHight)];
+        keyboardButton = [design designKeyBoardDownButton:keyboardButton];
         [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:keyboardButton];
         
@@ -547,6 +549,8 @@
         [keyboardButton.widthAnchor constraintEqualToConstant:160].active = YES;
         [keyboardButton.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
     }
+    
+#pragma mark finishedMatchChat & opponentChat
     if(withChat)
     {
         // Calculate maximum window height
@@ -586,26 +590,15 @@
         opponentChat.backgroundColor = [UIColor clearColor];
         opponentChat.textColor = [design getTintColorSchema];
         opponentChat.text = chatArray[0];
-        opponentChat.layer.borderWidth = 1;
         opponentChat.layer.borderColor = [design getTintColorSchema].CGColor;
-        opponentChat.layer.cornerRadius = 14.0f;
-        opponentChat.layer.masksToBounds = YES;
         [self.infoView addSubview:opponentChat];
 
-        
         [opponentChat setTranslatesAutoresizingMaskIntoConstraints:NO];
 
         [opponentChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
         [opponentChat.heightAnchor constraintEqualToConstant:80].active = YES;
         [opponentChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
         [opponentChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
-
-//        [chatLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
-//
-//        [chatLabel.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
-//        [chatLabel.heightAnchor constraintEqualToConstant:100].active = YES;
-//        [chatLabel.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-//        [chatLabel.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     }
 

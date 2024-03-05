@@ -107,6 +107,7 @@
 
     DGButton *button3 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button3 setTitle:@"Help" forState: UIControlStateNormal];
+    [button3 setImage:[self designButtonImage:@"questionmark.circle"] forState:UIControlStateNormal];
     button3.tag = 3;
     [self addSubview:button3];
     [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
@@ -121,6 +122,7 @@
 
     DGButton *button5 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
+    [button5 setImage:[self designButtonImage:@"door.right.hand.open"] forState:UIControlStateNormal];
     button5.tag = 5;
     [self addSubview:button5];
     [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
@@ -128,6 +130,7 @@
 
     DGButton *button6 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button6 setTitle:@"About" forState: UIControlStateNormal];
+    [button6 setImage:[self designButtonImage:@"info.circle"] forState:UIControlStateNormal];
     button6.tag = 6;
     [button6 addTarget:self action:@selector(AboutVC) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button6];
@@ -137,6 +140,7 @@
     {
         DGButton *button7 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
         [button7 setTitle:@"Rating" forState: UIControlStateNormal];
+        [button7 setImage:[self designButtonImage:@"chart.line.uptrend.xyaxis"] forState:UIControlStateNormal];
         button7.tag = 7;
         [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button7];
@@ -145,6 +149,7 @@
 
     DGButton *button8 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button8 setTitle:@"Players" forState: UIControlStateNormal];
+    [button8 setImage:[self designButtonImage:@"person.3"] forState:UIControlStateNormal];
     button8.tag = 8;
     [self addSubview:button8];
     [button8 addTarget:self action:@selector(playerVC) forControlEvents:UIControlEventTouchUpInside];
@@ -152,6 +157,7 @@
 
     DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
     [button9 setTitle:@"Lists" forState: UIControlStateNormal];
+    [button9 setImage:[self designButtonImage:@"list.number"] forState:UIControlStateNormal];
     button9.tag = 9;
     [self addSubview:button9];
     [button9 addTarget:self action:@selector(lists) forControlEvents:UIControlEventTouchUpInside];
@@ -182,7 +188,15 @@
 
     return;
 }
+-(UIImage *)designButtonImage:(NSString *)imageName
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [design getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:15];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:imageName withConfiguration:total];
 
+    return image;
+}
 - (void)dismiss
 {
     [self removeFromSuperview];
