@@ -475,15 +475,14 @@ didCompleteWithError:(NSError *)error
         {
             button = [[DGButton alloc]initWithFrame:CGRectMake(x + ((maxWidth - 100)/2)  , y, 100 , 35)];
             cell.backgroundColor = [UIColor colorNamed:@"ColorCV"];
-
+            [button setTitle:@"Sign Up" forState: UIControlStateNormal];
         }
         else
         {
             button = [[DGButton alloc]initWithFrame:CGRectMake(x  + ((maxWidth - 150)/2) , y, 150 , 35)];
             cell.backgroundColor = [UIColor colorNamed:@"ColorSignedUp"];
+            [button setTitle:@"Cancel Signup" forState: UIControlStateNormal];
         }
-
-        [button setTitle:[signUp objectForKey:@"Text"] forState: UIControlStateNormal];
 
         button.tag = indexPath.row;
         [button addTarget:self action:@selector(signUp:) forControlEvents:UIControlEventTouchUpInside];

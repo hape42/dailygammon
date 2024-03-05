@@ -91,7 +91,7 @@
     float y = edge;
 
     button1 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button1 setTitle:[NSString stringWithFormat:@"%d Top Page", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] forState: UIControlStateNormal];
+    [self designButton:button1 imageName:[NSString stringWithFormat:@"%d.square", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]] title:@"Top Page"];
 
     button1.tag = 1;
     [button1 addTarget:self action:@selector(topPage) forControlEvents:UIControlEventTouchUpInside];
@@ -99,39 +99,35 @@
     y += gap + buttonHight;
     
     DGButton *button2 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button2 setTitle:@"Game Lounge" forState: UIControlStateNormal];
+    [self designButton:button2 imageName:@"person.badge.plus" title:@"Game Lounge"];
     button2.tag = 2;
     [button2 addTarget:self action:@selector(GameLounge) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button2];
     y += gap + buttonHight;
 
     DGButton *button3 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button3 setTitle:@"Help" forState: UIControlStateNormal];
-    [button3 setImage:[self designButtonImage:@"questionmark.circle"] forState:UIControlStateNormal];
+    [self designButton:button3 imageName:@"questionmark.circle" title:@"Help"];
     button3.tag = 3;
     [self addSubview:button3];
     [button3 addTarget:self action:@selector(help) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
     
     DGButton *button4 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button4 setTitle:@"Settings" forState: UIControlStateNormal];
-    [button4 setImage:[self designButtonImage:@"gear.badge.questionmark"] forState:UIControlStateNormal];
+    [self designButton:button4 imageName:@"gear.badge.questionmark" title:@"Settings"];
     button4.tag = 4;
     [self addSubview:button4];
     [button4 addTarget:self action:@selector(SetUpVC:) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     DGButton *button5 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button5 setTitle:@"Log Out" forState: UIControlStateNormal];
-    [button5 setImage:[self designButtonImage:@"door.right.hand.open"] forState:UIControlStateNormal];
+    [self designButton:button5 imageName:@"door.right.hand.open" title:@"Log Out"];
     button5.tag = 5;
     [self addSubview:button5];
     [button5 addTarget:self action:@selector(logout) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     DGButton *button6 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button6 setTitle:@"About" forState: UIControlStateNormal];
-    [button6 setImage:[self designButtonImage:@"info.circle"] forState:UIControlStateNormal];
+    [self designButton:button6 imageName:@"info.circle" title:@"About"];
     button6.tag = 6;
     [button6 addTarget:self action:@selector(AboutVC) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button6];
@@ -140,8 +136,7 @@
     if(countDB > minDB)
     {
         DGButton *button7 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-        [button7 setTitle:@"Rating" forState: UIControlStateNormal];
-        [button7 setImage:[self designButtonImage:@"chart.line.uptrend.xyaxis"] forState:UIControlStateNormal];
+        [self designButton:button7 imageName:@"chart.line.uptrend.xyaxis" title:@"Rating"];
         button7.tag = 7;
         [button7 addTarget:self action:@selector(ratingVC) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button7];
@@ -149,23 +144,21 @@
     y += gap + buttonHight;
 
     DGButton *button8 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button8 setTitle:@"Players" forState: UIControlStateNormal];
-    [button8 setImage:[self designButtonImage:@"person.3"] forState:UIControlStateNormal];
+    [self designButton:button8 imageName:@"person.3" title:@"Players"];
     button8.tag = 8;
     [self addSubview:button8];
     [button8 addTarget:self action:@selector(playerVC) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     DGButton *button9 = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [button9 setTitle:@"Lists" forState: UIControlStateNormal];
-    [button9 setImage:[self designButtonImage:@"list.number"] forState:UIControlStateNormal];
+    [self designButton:button9 imageName:@"list.number" title:@"Lists"];
     [self addSubview:button9];
     button9.tag = 9;
     [button9 addTarget:self action:@selector(lists) forControlEvents:UIControlEventTouchUpInside];
     y += gap + buttonHight;
 
     DGButton *buttonClose = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHight)];
-    [buttonClose setTitle:@"Close" forState: UIControlStateNormal];
+    [buttonClose setTitle:@"Close Menu" forState: UIControlStateNormal];
     buttonClose.tag = 99;
     [buttonClose addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
 
@@ -189,15 +182,31 @@
 
     return;
 }
--(UIImage *)designButtonImage:(NSString *)imageName
+
+- (UIButton *)designButton:(UIButton *)button imageName:(NSString *)imageName title:(NSString *)title
 {
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [design getTintColorSchema]]];
-    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:15];
-
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:20];
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
     UIImage *image = [UIImage systemImageNamed:imageName withConfiguration:total];
-
-    return image;
+    float spaceForImage = 50;
+    float edge = 10;
+    float gap = 20;
+    float x = ((spaceForImage - image.size.width) / 2) + edge;
+    float y = ((button.frame.size.height - image.size.height) / 2);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, image.size.width, image.size.height)];
+    imageView.image = image;
+    [button addSubview:imageView];
+    x = edge + spaceForImage + gap;
+    y = 0;
+    DGLabel *titleLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, button.frame.size.width - x - edge, button.frame.size.height)];
+    titleLabel.text = title;
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.textColor = [design getTintColorSchema];
+    
+    [button addSubview:titleLabel];
+    
+    return button;
 }
 - (void)dismiss
 {
