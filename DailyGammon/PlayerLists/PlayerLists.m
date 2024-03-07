@@ -23,7 +23,6 @@
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet DGButton *activeMatchesButton;
 @property (weak, nonatomic) IBOutlet DGButton *activeTournamentsButton;
 @property (weak, nonatomic) IBOutlet DGButton *finishedMatchesButton;
@@ -31,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
+@property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
 @property (assign, atomic) BOOL loginOk;
@@ -66,15 +66,15 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
-    self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
     design      = [[Design alloc] init];
     tools       = [[Tools alloc] init];
 
     listTyp = 1;
     
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
     
 }
 
@@ -159,7 +159,7 @@
             [self readActiveMatches];
             break;
     }
-    [self updateTableView];
+    [self updateCollectionView];
 
 }
 
@@ -272,12 +272,12 @@
 
     
 #pragma mark collectionView autoLayout
-    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.tableView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
-    [self.tableView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-    [self.tableView.topAnchor constraintEqualToAnchor:self.tournamentWinsButton.bottomAnchor constant:edge].active = YES;
-    [self.tableView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.collectionView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.collectionView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.collectionView.topAnchor constraintEqualToAnchor:self.tournamentWinsButton.bottomAnchor constant:20].active = YES;
+    [self.collectionView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
 
     [self.view layoutIfNeeded];
 
@@ -354,7 +354,7 @@
 //    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
 //
     XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-    
+    [self updateCollectionView];
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -471,7 +471,7 @@ didCompleteWithError:(NSError *)error
 
                 [self.listArray addObject:topPageZeile];
             }
-            [self updateTableView];
+            [self updateCollectionView];
         }
         else
         {
@@ -538,7 +538,7 @@ didCompleteWithError:(NSError *)error
                 
                 [self.listArray addObject:topPageZeile];
             }
-            [self updateTableView];
+            [self updateCollectionView];
         }
         else
         {
@@ -604,7 +604,7 @@ didCompleteWithError:(NSError *)error
 
                 [self.listArray addObject:topPageZeile];
             }
-            [self updateTableView];
+            [self updateCollectionView];
         }
         else
         {
@@ -671,7 +671,7 @@ didCompleteWithError:(NSError *)error
 
                 [self.listArray addObject:topPageZeile];
             }
-            [self updateTableView];
+            [self updateCollectionView];
         }
         else
         {
@@ -680,39 +680,235 @@ didCompleteWithError:(NSError *)error
     }];
     request = nil;
 }
+#pragma mark - CollectionView dataSource
 
-#pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return self.listArray.count;
 }
-//This function is where all the magic happens
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //https://stackoverflow.com/questions/40203124/uitableviewcell-animation-only-once
-    UIView *cellContentView = [cell contentView];
-    CGFloat rotationAngleDegrees = -30;
-    CGFloat rotationAngleRadians = rotationAngleDegrees * (M_PI/180);
-    CGPoint offsetPositioning = CGPointMake(0, cell.contentView.frame.size.height*10);
-    CATransform3D transform = CATransform3DIdentity;
-    transform = CATransform3DRotate(transform, rotationAngleRadians, -50.0, 0.0, 1.0);
-    transform = CATransform3DTranslate(transform, offsetPositioning.x, offsetPositioning.y, -50.0);
-    cellContentView.layer.transform = transform;
-    cellContentView.layer.opacity = 0.8;
-    
-    [UIView animateWithDuration:0.95 delay:00 usingSpringWithDamping:0.85 initialSpringVelocity:0.8 options:0 animations:^{
-        cellContentView.layer.transform = CATransform3DIdentity;
-        cellContentView.layer.opacity = 1;
-    } completion:^(BOOL finished) {}];
-    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
-    return;
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    float edge = 5;
+    float gap = 5;
+
+    int labelHeight = 20;
+    int buttonHeight = 35;
+
+    int height = 300 ;
+    
+    switch(listTyp)
+    {
+        case 1:
+            height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + buttonHeight + gap + buttonHeight + edge;
+            break;
+        case 2:
+           break;
+        case 3:
+           break;
+        case 4:
+           break;
+        default:
+            break;
+   }
+
+    return CGSizeMake(190, height);
 }
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    for (UIView *subview in [cell.contentView subviews])
+    {
+        if ([subview isKindOfClass:[DGLabel class]])
+        {
+            [subview removeFromSuperview];
+        }
+        if ([subview isKindOfClass:[DGButton class]])
+        {
+            [subview removeFromSuperview];
+        }
+    }
+    cell.layer.cornerRadius = 14.0f;
+    cell.layer.masksToBounds = YES;
+    cell.backgroundColor = [UIColor colorNamed:@"ColorCV"];
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    UIColor *tintColor = [schemaDict objectForKey:@"TintColor"];
+
+    if(self.listArray.count < 1)
+        return cell;
+
+    NSArray *row = self.listArray[indexPath.row];
+
+    float edge = 5;
+    float gap = 5;
+    float x = edge;
+    float y = edge;
+    float maxWidth = cell.frame.size.width - edge - edge;
+    float firstRowWidth = maxWidth * 0.6;
+    float secondRowWidth = maxWidth * 0.4;
+    int labelHeight = 20;
+    int buttonHeight = 35;
+    
+    switch(listTyp)
+    {
+#pragma mark - active matches
+        case 1:
+        {
+#pragma mark 1. Line Tournament name
+            NSDictionary *event = row[1];
+            
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            eventLabel.textAlignment = NSTextAlignmentCenter;
+            [eventLabel setFont:[UIFont boldSystemFontOfSize: eventLabel.font.pointSize]];
+            
+            eventLabel.text = [event objectForKey:@"Text"];
+            eventLabel.adjustsFontSizeToFitWidth = YES;
+            
+            if([event objectForKey:@"href"])
+                [cell.contentView addSubview:eventButton];
+            else
+                [cell.contentView addSubview:eventLabel];
+            
+#pragma mark 2. Line length & rounds
+            y += eventButton.frame.size.height + gap;
+            
+            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,labelHeight)];
+            lengthLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *length = row[5];
+            
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Length: %@",[length objectForKey:@"Text"]]];
+            NSRange range = NSMakeRange(7, attributedString.length - 7);
+            NSDictionary *boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+            NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: tintColor};
+            NSMutableDictionary *combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];
+            lengthLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:lengthLabel];
+            
+            x += lengthLabel.frame.size.width;
+            
+            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,labelHeight)];
+            roundLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *round = row[4];
+            
+            attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Round: %@",[round objectForKey:@"Text"]]];
+            range = NSMakeRange(7, attributedString.length - 7);
+            boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+            combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];    roundLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:roundLabel];
+            
+#pragma mark 3. Line time & grace
+            y += roundLabel.frame.size.height + gap;
+            x = edge;
+            
+            DGLabel *timeLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,labelHeight)];
+            timeLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *time = row[3];
+            
+            attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Time: %@",[time objectForKey:@"Text"]]];
+            range = NSMakeRange(6, attributedString.length - 6);
+            boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+            combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];    timeLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:timeLabel];
+            
+            x += timeLabel.frame.size.width;
+            
+            DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,labelHeight)];
+            graceLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *grace = row[2];
+            
+            attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Grace: %@",[grace objectForKey:@"Text"]]];
+            range = NSMakeRange(7, attributedString.length - 7);
+            boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+            combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];    graceLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:graceLabel];
+            
+#pragma mark 4&5. Line opponent
+            
+            y += graceLabel.frame.size.height + gap;
+            x = edge;
+            
+             NSDictionary *opponent = row[6];
+            DGButton *opponentButton = [[DGButton alloc] initWithFrame:CGRectMake(x,y,maxWidth, buttonHeight)];
+            [opponentButton setTitle:[opponent objectForKey:@"Text"] forState: UIControlStateNormal];
+            opponentButton.tag = indexPath.row;
+            [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
+            [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
+            [cell.contentView addSubview:opponentButton];
+
+            y += opponentButton.frame.size.height + gap;
+
+            float reviewWidth = 70;
+            x = edge + ((maxWidth - reviewWidth)/2);
+
+            DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y, reviewWidth, buttonHeight)];
+            [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
+            reviewButton.tag = indexPath.row;
+            [reviewButton addTarget:self action:@selector(reviewAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:reviewButton];
+
+        }
+            break;
+        case 2:
+#pragma mark - active tournaments
+        {
+            
+        }
+           break;
+        case 3:
+#pragma mark - finished matches
+        {
+            
+        }
+          break;
+        case 4:
+#pragma mark - tournament wins
+        {
+            
+        }
+           break;
+        default:
+            break;
+   }
+
+    
+    return cell;
+}
+
+#pragma mark - CollectionView delegate
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+/*
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1214,8 +1410,8 @@ didCompleteWithError:(NSError *)error
     return headerView;
     
 }
-
-- (void)updateTableView
+*/
+- (void)updateCollectionView
 {
     NSString *headerText = @"";
     switch(listTyp)
@@ -1238,16 +1434,9 @@ didCompleteWithError:(NSError *)error
    }
     self.header.text = headerText;
     self.navigationBar.title = headerText;
-    [self.tableView reloadData];
+    [self.collectionView reloadData];
 
     [self stopActivityIndicator];
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self inProgress];
 }
 #pragma mark -
 

@@ -678,7 +678,7 @@ didCompleteWithError:(NSError *)error
     int buttonHeight = 35;
 
     int height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + (labelHeight*2) ;
-    return CGSizeMake(250, height);
+    return CGSizeMake(190, height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

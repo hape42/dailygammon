@@ -103,7 +103,8 @@
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.titleLabel.lineBreakMode = NSLineBreakByClipping; 
-
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
     if(title)
         [self setTitle:title forState: UIControlStateNormal];
     
@@ -193,6 +194,7 @@
     self.titleLabel.numberOfLines = 1;
     self.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.titleLabel.lineBreakMode = NSLineBreakByClipping;
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
 
 }
 
