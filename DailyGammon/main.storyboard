@@ -123,7 +123,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MQv-Bu-izG" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1172" y="-2200"/>
+            <point key="canvasLocation" x="888" y="-2213"/>
         </scene>
         <!--Play Match-->
         <scene sceneID="ptI-DJ-sfk">
@@ -619,7 +619,98 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gos-SE-7CY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3183.6017569546116" y="-1556.25"/>
+            <point key="canvasLocation" x="3109" y="-1540"/>
+        </scene>
+        <!--Player Lists-->
+        <scene sceneID="jc3-Zi-Lez">
+            <objects>
+                <viewController storyboardIdentifier="PlayerLists" id="uYK-ri-mtR" customClass="PlayerLists" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wIv-c7-Qud"/>
+                        <viewControllerLayoutGuide type="bottom" id="MxD-Fm-zPi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="svw-kz-vbG">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="MZD-TI-a6K">
+                                <rect key="frame" x="14" y="152" width="1324" height="849"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" name="ColorTableView"/>
+                                <color key="separatorColor" name="ColorTableView"/>
+                                <color key="sectionIndexBackgroundColor" name="ColorTableView"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="svw-kz-vbG" id="3pS-zr-hvx"/>
+                                    <outlet property="delegate" destination="svw-kz-vbG" id="mJ1-cu-oc6"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="smq-ue-vOd">
+                                <rect key="frame" x="1326" y="20" width="20" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="uYK-ri-mtR" eventType="touchUpInside" id="6ZY-Tm-wod"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ily-lg-mNF" customClass="DGButton">
+                                <rect key="frame" x="20" y="109" width="400" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="active matches"/>
+                                <connections>
+                                    <action selector="activeMatches:" destination="uYK-ri-mtR" eventType="touchUpInside" id="J9b-fe-Ik6"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7U-0L-Xl9" customClass="DGButton">
+                                <rect key="frame" x="210" y="109" width="400" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="active tournaments"/>
+                                <connections>
+                                    <action selector="activeTournaments:" destination="uYK-ri-mtR" eventType="touchUpInside" id="3dz-hN-Yee"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7MD-A4-KZQ" customClass="DGButton">
+                                <rect key="frame" x="400" y="109" width="400" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="finished matches"/>
+                                <connections>
+                                    <action selector="finishedMatches:" destination="uYK-ri-mtR" eventType="touchUpInside" id="uPZ-4o-81i"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-fg-fga" customClass="DGButton">
+                                <rect key="frame" x="596" y="109" width="400" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="tournament wins"/>
+                                <connections>
+                                    <action selector="tournamentWins:" destination="uYK-ri-mtR" eventType="touchUpInside" id="LBu-gH-kye"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="active tournaments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R25-2j-a9m">
+                                <rect key="frame" x="20" y="28" width="591" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="mgT-3K-JzG"/>
+                        <color key="backgroundColor" name="ColorSignedUpCenter"/>
+                        <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="SDx-G2-Stv"/>
+                    <connections>
+                        <outlet property="activeMatchesButton" destination="ily-lg-mNF" id="ikz-dx-Bio"/>
+                        <outlet property="activeTournamentsButton" destination="Q7U-0L-Xl9" id="bA4-6n-FlN"/>
+                        <outlet property="finishedMatchesButton" destination="7MD-A4-KZQ" id="grK-YU-idJ"/>
+                        <outlet property="header" destination="R25-2j-a9m" id="iKh-Mu-2RI"/>
+                        <outlet property="moreButton" destination="smq-ue-vOd" id="ymw-qb-6Yc"/>
+                        <outlet property="tableView" destination="MZD-TI-a6K" id="FAd-k4-3lQ"/>
+                        <outlet property="tournamentWinsButton" destination="Kti-fg-fga" id="Vo4-u4-OWZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="t08-wO-age" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3109" y="-2200"/>
         </scene>
     </scenes>
     <resources>
@@ -628,6 +719,12 @@ Did we make you curious?</string>
         <image name="iCloudOFF.png" width="35" height="35"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>
+        <namedColor name="ColorSignedUpCenter">
+            <color red="0.77999997138977051" green="0.97600001096725464" blue="0.0040000001899898052" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="ColorTableView">
+            <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="ColorViewBackground">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

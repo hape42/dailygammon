@@ -322,11 +322,8 @@
 - (void)lists
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
-
+    PlayerLists *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerLists"];
     [self.navigationController pushViewController:vc animated:NO];
 }
 

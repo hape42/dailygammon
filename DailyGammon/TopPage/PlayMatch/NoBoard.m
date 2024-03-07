@@ -537,7 +537,7 @@
 
     if(withChat)
     {
-        DGButton *keyboardButton = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, 30, buttonHight)];
+        UIButton *keyboardButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, buttonHight)];
         keyboardButton = [design designKeyBoardDownButton:keyboardButton];
         [keyboardButton addTarget:self action:@selector(textViewShouldEndEditing:) forControlEvents:UIControlEventTouchUpInside];
         [self.infoView addSubview:keyboardButton];
@@ -546,7 +546,7 @@
         
         [keyboardButton.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
         [keyboardButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
-        [keyboardButton.widthAnchor constraintEqualToConstant:160].active = YES;
+        [keyboardButton.widthAnchor constraintEqualToConstant:40].active = YES;
         [keyboardButton.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
     }
     
@@ -1010,7 +1010,10 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-        
+       
+    if (![self.navigationController.topViewController isKindOfClass:NoBoard.class])
+        return;
+
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
     if(safe.layoutFrame.size.width > (10 + 150 + 10 + 50 + 10 + 150 + 10 + 50 + 10) )

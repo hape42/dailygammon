@@ -787,7 +787,7 @@
     
     if([[self.actionDict objectForKey:@"Message"] length] != 0)
     {
-        UILabel *messageText = [[UILabel alloc] initWithFrame:CGRectMake(10,
+        DGLabel *messageText = [[DGLabel alloc] initWithFrame:CGRectMake(10,
                                                                          actionView.frame.size.height - 40 - 10 - 40,
                                                                          actionView.frame.size.width - 20,
                                                                          35)];

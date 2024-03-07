@@ -12,20 +12,14 @@
 #import "MenueView.h"
 
 @class Design;
-@class Preferences;
-@class Rating;
 @class Tools;
-@class RatingTools;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PlayerLists : UIViewController<MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
-@property (strong, readwrite, retain, atomic) Preferences *preferences;
-@property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
-@property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
 @property (readwrite, assign, atomic) int listTyp;
 

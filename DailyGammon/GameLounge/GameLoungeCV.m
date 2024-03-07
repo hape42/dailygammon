@@ -596,7 +596,7 @@ didCompleteWithError:(NSError *)error
 
     [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
-    [self.header.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
     [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
 #pragma mark collectionView autoLayout

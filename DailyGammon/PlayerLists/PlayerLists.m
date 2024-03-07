@@ -9,55 +9,53 @@
 #import "PlayerLists.h"
 #import "Design.h"
 #import "TFHpple.h"
-#import "PlayMatch.h"
-#import "Preferences.h"
-#import "Rating.h"
-#import "LoginVC.h"
-#import "DbConnect.h"
 #import "AppDelegate.h"
-#import "RatingVC.h"
-#import "Player.h"
 #import "Tools.h"
-#import "RatingTools.h"
-#import "NoInternet.h"
-#import <SafariServices/SafariServices.h>
-#import "About.h"
 #import "DGButton.h"
 #import "DGLabel.h"
-#import "TopPageCV.h"
 #import "Tournament.h"
 #import "Review.h"
 #import "Constants.h"
 #import "DGRequest.h"
+#import "LoginVC.h"
+#import "PlayMatch.h"
+#import "Player.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
-@property (readwrite, retain, nonatomic) NSMutableData *datenData;
-@property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (readwrite, retain, nonatomic) NSMutableArray *listArray;
-@property (readwrite, retain, nonatomic) NSMutableArray *listHeaderArray;
-
 @property (weak, nonatomic) IBOutlet DGButton *activeMatchesButton;
 @property (weak, nonatomic) IBOutlet DGButton *activeTournamentsButton;
 @property (weak, nonatomic) IBOutlet DGButton *finishedMatchesButton;
 @property (weak, nonatomic) IBOutlet DGButton *tournamentWinsButton;
 @property (weak, nonatomic) IBOutlet UILabel *header;
+@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
+
+@property (readwrite, retain, nonatomic) NSMutableData *datenData;
+@property (assign, atomic) BOOL loginOk;
+
+@property (readwrite, retain, nonatomic) NSMutableArray *listArray;
+@property (readwrite, retain, nonatomic) NSMutableArray *listHeaderArray;
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
+@property (readwrite, retain, nonatomic) NSArray       *landscapeConstraints;
+@property (readwrite, retain, nonatomic) NSArray       *portraitConstraints;
 
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
+@property (nonatomic, strong) NSLayoutConstraint *activeMatchesButtonLeftAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *activeTournamentsButtonLeftAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *finishedMatchesButtonLeftAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *finishedMatchesButtonTopAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *tournamentWinsButtonTopAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *tournamentWinsButtonLeftAnchor;
 
 
 @end
 
 @implementation PlayerLists
 
-@synthesize design, preferences, rating, tools, ratingTools;
+@synthesize design, tools;
 @synthesize listTyp;
 @synthesize waitView;
 @synthesize menueView;
@@ -70,31 +68,14 @@
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reDrawHeader) name:changeSchemaNotification object:nil];
-
     design      = [[Design alloc] init];
-    preferences = [[Preferences alloc] init];
-    rating      = [[Rating alloc] init];
     tools       = [[Tools alloc] init];
-    ratingTools = [[RatingTools alloc] init];
 
     listTyp = 1;
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    if([design isX])
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        UIWindow *keyWindow = (UIWindow *) windows[0];
-        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
-
-        CGRect frame = self.tableView.frame;
-        frame.origin.x = safeArea.left ;
-        frame.size.width = self.tableView.frame.size.width - safeArea.left ;
-        self.tableView.frame = frame;
-    }
-
 }
 
 #pragma mark - WaitView
@@ -121,57 +102,12 @@
 
 }
 
--(void) reDrawHeader
-{
-    
-    int maxWidth = [UIScreen mainScreen].bounds.size.width;
-    int edge = 20;
-    int gap  = 20;
-    float buttonWidth = (maxWidth - edge - gap - gap - gap - edge) / 4;
-    int x = edge;
-    
-    CGRect buttonFrame;
-    buttonFrame = self.activeMatchesButton.frame;
-    buttonFrame.origin.x = x;
-    buttonFrame.size.width = buttonWidth;
-    self.activeMatchesButton.frame = buttonFrame;
-    
-    x += buttonWidth + gap;
-    
-    buttonFrame = self.activeTournamentsButton.frame;
-    buttonFrame.origin.x = x;
-    buttonFrame.size.width = buttonWidth;
-    self.activeTournamentsButton.frame = buttonFrame;
-
-    x += buttonWidth + gap;
-    
-    buttonFrame = self.finishedMatchesButton.frame;
-    buttonFrame.origin.x = x;
-    buttonFrame.size.width = buttonWidth;
-    self.finishedMatchesButton.frame = buttonFrame;
-    
-    x += buttonWidth + gap;
-    
-    buttonFrame = self.tournamentWinsButton.frame;
-    buttonFrame.origin.x = x;
-    buttonFrame.size.width = buttonWidth;
-    self.tournamentWinsButton.frame = buttonFrame;
-    
-    self.navigationBar.leftBarButtonItems = nil;
-
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self.navigationController setNavigationBarHidden:YES animated:animated];
-    else
-        [self.navigationController setNavigationBarHidden:NO animated:animated];
-
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
 
     NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
@@ -193,14 +129,17 @@
     
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
-    [self reDrawHeader];
 
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self reDrawHeader];
+    
+    [self layoutObjects];
+
+    self.header.textColor = [design getTintColorSchema];
+    self.moreButton = [design designMoreButton:self.moreButton];
     
     switch(listTyp)
     {
@@ -222,6 +161,200 @@
     }
     [self updateTableView];
 
+}
+
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    
+#pragma mark moreButton autoLayout
+    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.header.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+    [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+
+#pragma mark buttons autoLayout
+    float buttonWidth = 180;
+    float gap = 10;
+    
+    if(safe.layoutFrame.size.width < 500 )
+        gap = (safe.layoutFrame.size.width - (2 * buttonWidth)) / 3;
+    else
+        gap = (safe.layoutFrame.size.width - (4 * buttonWidth)) / 5;
+
+    [self.activeMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.activeMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
+    [self.activeMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.activeMatchesButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    
+    self.activeMatchesButtonLeftAnchor = [self.activeMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
+    self.activeMatchesButtonLeftAnchor.active = YES;
+
+    [self.activeTournamentsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.activeTournamentsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
+    [self.activeTournamentsButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.activeTournamentsButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    
+    self.activeTournamentsButtonLeftAnchor = [self.activeTournamentsButton.leftAnchor constraintEqualToAnchor:self.activeMatchesButton.rightAnchor constant:gap];
+    self.activeTournamentsButtonLeftAnchor.active = YES;
+
+    [self.finishedMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.finishedMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.finishedMatchesButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    
+    self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
+    self.finishedMatchesButtonLeftAnchor.active = YES;
+    self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+    self.finishedMatchesButtonTopAnchor.active = YES;
+
+    [self.tournamentWinsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.tournamentWinsButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.tournamentWinsButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+
+    self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
+    self.tournamentWinsButtonLeftAnchor.active = YES;
+    self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+    self.tournamentWinsButtonTopAnchor.active = YES;
+
+
+    if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
+    {
+        [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
+        self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
+        self.finishedMatchesButtonLeftAnchor.active = YES;
+
+        [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
+        self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
+        self.finishedMatchesButtonTopAnchor.active = YES;
+
+        [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
+        self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
+        self.tournamentWinsButtonTopAnchor.active = YES;
+
+        [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
+        self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
+        self.tournamentWinsButtonLeftAnchor.active = YES;
+    }
+    else
+    {
+        [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
+        self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
+        self.finishedMatchesButtonLeftAnchor.active = YES;
+
+        [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
+        self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+        self.finishedMatchesButtonTopAnchor.active = YES;
+
+        [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
+        self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+        self.tournamentWinsButtonTopAnchor.active = YES;
+
+        [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
+        self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
+        self.tournamentWinsButtonLeftAnchor.active = YES;
+    }
+
+    
+#pragma mark collectionView autoLayout
+    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.tableView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.tableView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.tableView.topAnchor constraintEqualToAnchor:self.tournamentWinsButton.bottomAnchor constant:edge].active = YES;
+    [self.tableView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+
+    [self.view layoutIfNeeded];
+
+}
+
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    if (![self.navigationController.topViewController isKindOfClass:PlayerLists.class])
+        return;
+   // XLog(@"navStack 1: %@", self.navigationController.viewControllers);
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed during the animation
+        UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+
+        float buttonWidth = 180;
+        float gap = 10;
+        float edge = 5.0;
+
+        if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
+            gap = (safe.layoutFrame.size.width - (2 * buttonWidth)) / 3;
+        else
+            gap = (safe.layoutFrame.size.width - (4 * buttonWidth)) / 5;
+        
+        self.activeMatchesButtonLeftAnchor.constant = gap;
+        self.activeTournamentsButtonLeftAnchor.constant = gap;
+
+        if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
+        {
+            [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
+            self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
+            self.finishedMatchesButtonLeftAnchor.active = YES;
+
+            [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
+            self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
+            self.finishedMatchesButtonTopAnchor.active = YES;
+
+            [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
+            self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
+            self.tournamentWinsButtonTopAnchor.active = YES;
+
+            [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
+            self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
+            self.tournamentWinsButtonLeftAnchor.active = YES;
+        }
+        else
+        {
+            [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
+            self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
+            self.finishedMatchesButtonLeftAnchor.active = YES;
+
+            [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
+            self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+            self.finishedMatchesButtonTopAnchor.active = YES;
+
+            [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
+            self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
+            self.tournamentWinsButtonTopAnchor.active = YES;
+
+            [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
+            self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
+            self.tournamentWinsButtonLeftAnchor.active = YES;
+        }
+       [self.view layoutIfNeeded];
+
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+           // XLog(@"navStack 2: %@", self.navigationController.viewControllers);
+     }];
+//    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
+//
+    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+    
 }
 
 #pragma mark - NSURLSessionDataDelegate
