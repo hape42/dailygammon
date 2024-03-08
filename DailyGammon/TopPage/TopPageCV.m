@@ -696,7 +696,11 @@ didCompleteWithError:(NSError *)error
         {
             [subview removeFromSuperview];
         }
-    }
+        if ([subview isKindOfClass:[DGButton class]])
+        {
+            [subview removeFromSuperview];
+        }
+   }
     cell.layer.cornerRadius = 14.0f;
     cell.layer.masksToBounds = YES;
     cell.backgroundColor = [UIColor colorNamed:@"ColorCV"];

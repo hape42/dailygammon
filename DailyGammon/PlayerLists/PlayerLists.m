@@ -60,6 +60,8 @@
 @synthesize waitView;
 @synthesize menueView;
 
+#define BUTTON_WIDTH 180
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -186,19 +188,19 @@
     [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
 #pragma mark buttons autoLayout
-    float buttonWidth = 180;
+
     float gap = 10;
     
     if(safe.layoutFrame.size.width < 500 )
-        gap = (safe.layoutFrame.size.width - (2 * buttonWidth)) / 3;
+        gap = (safe.layoutFrame.size.width - (2 * BUTTON_WIDTH)) / 3;
     else
-        gap = (safe.layoutFrame.size.width - (4 * buttonWidth)) / 5;
+        gap = (safe.layoutFrame.size.width - (4 * BUTTON_WIDTH)) / 5;
 
     [self.activeMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.activeMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
     [self.activeMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.activeMatchesButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    [self.activeMatchesButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
     
     self.activeMatchesButtonLeftAnchor = [self.activeMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
     self.activeMatchesButtonLeftAnchor.active = YES;
@@ -207,7 +209,7 @@
 
     [self.activeTournamentsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
     [self.activeTournamentsButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.activeTournamentsButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    [self.activeTournamentsButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
     
     self.activeTournamentsButtonLeftAnchor = [self.activeTournamentsButton.leftAnchor constraintEqualToAnchor:self.activeMatchesButton.rightAnchor constant:gap];
     self.activeTournamentsButtonLeftAnchor.active = YES;
@@ -215,7 +217,7 @@
     [self.finishedMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.finishedMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.finishedMatchesButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    [self.finishedMatchesButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
     
     self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
     self.finishedMatchesButtonLeftAnchor.active = YES;
@@ -225,7 +227,7 @@
     [self.tournamentWinsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.tournamentWinsButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.tournamentWinsButton.widthAnchor constraintEqualToConstant:buttonWidth].active = YES;
+    [self.tournamentWinsButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
 
     self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
     self.tournamentWinsButtonLeftAnchor.active = YES;
@@ -233,7 +235,7 @@
     self.tournamentWinsButtonTopAnchor.active = YES;
 
 
-    if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
+    if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
     {
         [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
         self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
@@ -296,19 +298,18 @@
          // Code to be executed during the animation
         UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
-        float buttonWidth = 180;
         float gap = 10;
         float edge = 5.0;
 
-        if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
-            gap = (safe.layoutFrame.size.width - (2 * buttonWidth)) / 3;
+        if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
+            gap = (safe.layoutFrame.size.width - (2 * BUTTON_WIDTH)) / 3;
         else
-            gap = (safe.layoutFrame.size.width - (4 * buttonWidth)) / 5;
+            gap = (safe.layoutFrame.size.width - (4 * BUTTON_WIDTH)) / 5;
         
         self.activeMatchesButtonLeftAnchor.constant = gap;
         self.activeTournamentsButtonLeftAnchor.constant = gap;
 
-        if(safe.layoutFrame.size.width < ((buttonWidth * 4) + (gap * 5)) )
+        if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
         {
             [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
             self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
@@ -716,6 +717,7 @@ didCompleteWithError:(NSError *)error
             height = edge + buttonHeight + gap + labelHeight + gap + buttonHeight + gap + gap + buttonHeight + edge;
            break;
         case 4:
+            height = edge + buttonHeight + gap + labelHeight + edge;
            break;
         default:
             break;
@@ -1027,7 +1029,30 @@ didCompleteWithError:(NSError *)error
         case 4:
 #pragma mark - tournament wins
         {
+#pragma mark 1. Line Tournament name
+            NSDictionary *event = row[0];
             
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.contentView addSubview:eventButton];
+
+#pragma mark 2. Line date
+
+            y += eventButton.frame.size.height + gap ;
+
+            DGLabel *dateLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,labelHeight)];
+            dateLabel.textAlignment = NSTextAlignmentCenter;
+            NSDictionary *wins = row[1];
+            dateLabel.text = [wins objectForKey:@"Text"];
+            dateLabel.adjustsFontSizeToFitWidth = YES;
+            
+            [cell.contentView addSubview:dateLabel];
+
         }
            break;
         default:
@@ -1044,365 +1069,6 @@ didCompleteWithError:(NSError *)error
     return YES;
 }
 
-/*
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
-    for (UIView *subview in [cell.contentView subviews])
-    {
-        if ([subview isKindOfClass:[UILabel class]])
-        {
-            [subview removeFromSuperview];
-        }
-        if ([subview isKindOfClass:[DGButton class]])
-        {
-            [subview removeFromSuperview];
-        }
-
-    }
-    
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    
-    NSArray *row = self.listArray[indexPath.row];
-    
-    int x = 0;
-    int labelHeight = cell.frame.size.height;
-    int cellWidth   = tableView.frame.size.width - 50;
-
-    switch(listTyp)
-    {
-        case 3:
-        {
-            float numberWidth   = cellWidth *.05;
-            float eventWidth    = cellWidth *.3;
-            float roundWidth    = cellWidth *.05;
-            float lengthWidth   = cellWidth *.05;
-            float opponentWidth = cellWidth *.3;
-            float reviewWidth   = cellWidth *.1;
-
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *number = row[0];
-            numberLabel.text = [number objectForKey:@"Text"];
-            
-            x += numberWidth;
-            
-            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
-            eventLabel.textAlignment = NSTextAlignmentLeft;
-            NSDictionary *event = row[1];
-            eventLabel.text = [event objectForKey:@"Text"];
-            eventLabel.adjustsFontSizeToFitWidth = YES;
-            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
-            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
-            eventButton.tag = indexPath.row;
-            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
-            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
-            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            x += eventWidth;
-                        
-            UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundWidth,labelHeight)];
-            roundLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *round = row[2];
-            roundLabel.text = [round objectForKey:@"Text"];
-            roundLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += roundWidth;
-            
-            UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,labelHeight)];
-            lengthLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *length = row[3];
-            lengthLabel.text = [length objectForKey:@"Text"];
-            lengthLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += lengthWidth;
-            
-            NSDictionary *opponent = row[4];
-            DGButton *opponentButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,opponentWidth-6,labelHeight-6)];
-            [opponentButton setTitle:[opponent objectForKey:@"Text"] forState: UIControlStateNormal];
-            opponentButton.tag = indexPath.row;
-            [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
-            [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
-            
-            x += opponentWidth;
-            
-            DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
-            [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
-            reviewButton.tag = indexPath.row;
-            [reviewButton addTarget:self action:@selector(reviewAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            x += reviewWidth;
-            
-            DGButton *exportButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
-            [exportButton setTitle:@"Export" forState: UIControlStateNormal];
-            exportButton.tag = indexPath.row;
-            [exportButton addTarget:self action:@selector(exportAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            [cell.contentView addSubview:numberLabel];
-            if(event.count == 1)
-                [cell.contentView addSubview:eventLabel];
-            else
-                [cell.contentView addSubview:eventButton];
-            [cell.contentView addSubview:roundLabel];
-            [cell.contentView addSubview:lengthLabel];
-            [cell.contentView addSubview:opponentButton];
-            [cell.contentView addSubview:reviewButton];
-            [cell.contentView addSubview:exportButton];
-        }
-            break;
-        case 4:
-        {
-            float eventWidth    = cellWidth *.5;
-            float dateWidth     = cellWidth *.3;
-
-           
-            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
-            eventLabel.textAlignment = NSTextAlignmentLeft;
-            NSDictionary *event = row[0];
-            eventLabel.text = [event objectForKey:@"Text"];
-            eventLabel.adjustsFontSizeToFitWidth = YES;
-            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
-            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
-            eventButton.tag = indexPath.row;
-            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
-            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
-            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            x += eventWidth;
-            
-            UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,dateWidth,labelHeight)];
-            dateLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *wins = row[1];
-            dateLabel.text = [wins objectForKey:@"Text"];
-            dateLabel.adjustsFontSizeToFitWidth = YES;
-            
-            [cell.contentView addSubview:eventButton];
-            [cell.contentView addSubview:dateLabel];
-
-       }
-            break;
-        default:
-            break;
-   }
-
-    return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
-    headerView.backgroundColor = [UIColor lightGrayColor];
-
-    int x = 0;
-    int cellWidth   = tableView.frame.size.width - 50;
-
-    switch(listTyp)
-    {
-        case 1:
-        {
-            float numberWidth   = cellWidth *.05;
-            float eventWidth    = cellWidth *.3;
-            float graceWidth    = cellWidth *.05;
-            float poolWidth     = cellWidth *.1;
-            float roundWidth    = cellWidth *.05;
-            float lengthWidth   = cellWidth *.05;
-            float opponentWidth = cellWidth *.3;
-            
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            numberLabel.text = self.listHeaderArray[0];
-            numberLabel.textColor = [UIColor whiteColor];
-            x += numberWidth;
-            
-            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
-            eventLabel.textAlignment = NSTextAlignmentCenter;
-            eventLabel.text = self.listHeaderArray[1];
-            eventLabel.textColor = [UIColor whiteColor];
-            
-            x += eventWidth;
-            
-            DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, graceWidth-2, 30)];
-            graceLabel.textAlignment = NSTextAlignmentCenter;
-            graceLabel.text = self.listHeaderArray[2];
-            graceLabel.textColor = [UIColor whiteColor];
-             
-            x += graceWidth;
-            
-            DGLabel *poolLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, poolWidth-2,30)];
-            poolLabel.textAlignment = NSTextAlignmentCenter;
-            poolLabel.text = self.listHeaderArray[3];
-            poolLabel.textColor = [UIColor whiteColor];
-            
-            x += poolWidth;
-            
-            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, roundWidth-2,30)];
-            roundLabel.textAlignment = NSTextAlignmentCenter;
-            roundLabel.text = self.listHeaderArray[4];
-            roundLabel.textColor = [UIColor whiteColor];
-            
-            x += roundWidth;
-            
-            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , lengthWidth-2,30)];
-            lengthLabel.textAlignment = NSTextAlignmentCenter;
-            lengthLabel.text = self.listHeaderArray[5];
-            lengthLabel.textColor = [UIColor whiteColor];
-             
-            x += lengthWidth;
-            
-            DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , opponentWidth,30)];
-            opponentLabel.textAlignment = NSTextAlignmentCenter;
-            opponentLabel.text = self.listHeaderArray[6];
-            opponentLabel.textColor = [UIColor whiteColor];
-            
-            [headerView addSubview:numberLabel];
-            [headerView addSubview:eventLabel];
-            [headerView addSubview:graceLabel];
-            [headerView addSubview:poolLabel];
-            [headerView addSubview:roundLabel];
-            [headerView addSubview:lengthLabel];
-            [headerView addSubview:opponentLabel];
-
-            [headerView layoutIfNeeded];
-            float minFontSize = poolLabel.font.pointSize;
-            if(lengthLabel.font.pointSize < minFontSize)
-                minFontSize = lengthLabel.font.pointSize;
-            if(graceLabel.font.pointSize < minFontSize)
-                minFontSize = graceLabel.font.pointSize;
-            if(roundLabel.font.pointSize < minFontSize)
-                minFontSize = roundLabel.font.pointSize;
-
-            [roundLabel setFont:[roundLabel.font fontWithSize: minFontSize]];
-            [lengthLabel setFont:[lengthLabel.font fontWithSize: minFontSize]];
-            [graceLabel setFont:[graceLabel.font fontWithSize: minFontSize]];
-            [poolLabel setFont:[poolLabel.font fontWithSize: minFontSize]];
-
-
-        }
-            break;
-        case 2:
-        {
-            float numberWidth   = cellWidth *.1;
-            float eventWidth    = cellWidth *.5;
-            float winsWidth     = cellWidth *.2;
-            
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            numberLabel.text = self.listHeaderArray[0];
-            numberLabel.textColor = [UIColor whiteColor];
-            x += numberWidth;
-            
-            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
-            eventLabel.textAlignment = NSTextAlignmentCenter;
-            eventLabel.text = self.listHeaderArray[1];
-            eventLabel.textColor = [UIColor whiteColor];
-            
-            x += eventWidth;
-            
-            DGLabel *winsLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, winsWidth, 30)];
-            winsLabel.textAlignment = NSTextAlignmentCenter;
-            NSArray* words = [self.listHeaderArray[2] componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSString* nospacestring = [words componentsJoinedByString:@""];
-            winsLabel.text = [nospacestring stringByReplacingOccurrencesOfString:@" " withString:@""];
-            winsLabel.textColor = [UIColor whiteColor];
-             
-            x += winsWidth;
-                        
-            [headerView addSubview:numberLabel];
-            [headerView addSubview:eventLabel];
-            [headerView addSubview:winsLabel];
-        }
-            break;
-        case 3:
-        {
-            float numberWidth   = cellWidth *.05;
-            float eventWidth    = cellWidth *.3;
-            float roundWidth    = cellWidth *.05;
-            float lengthWidth   = cellWidth *.05;
-            float opponentWidth = cellWidth *.3;
-            
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,30)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            numberLabel.text = self.listHeaderArray[0];
-            numberLabel.textColor = [UIColor whiteColor];
-            x += numberWidth;
-            
-            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
-            eventLabel.textAlignment = NSTextAlignmentCenter;
-            eventLabel.text = self.listHeaderArray[1];
-            eventLabel.textColor = [UIColor whiteColor];
-            
-            x += eventWidth;
-            
-            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, roundWidth-5,30)];
-            roundLabel.textAlignment = NSTextAlignmentCenter;
-            roundLabel.text = self.listHeaderArray[2];
-            roundLabel.textColor = [UIColor whiteColor];
-            
-            x += roundWidth;
-            
-            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , lengthWidth-5,30)];
-            lengthLabel.textAlignment = NSTextAlignmentCenter;
-            lengthLabel.text = self.listHeaderArray[3];
-            lengthLabel.textColor = [UIColor whiteColor];
-             
-            int minFontSize = roundLabel.font.pointSize;
-            if(lengthLabel.font.pointSize < minFontSize)
-                minFontSize = lengthLabel.font.pointSize;
-            
-            [roundLabel setFont:[roundLabel.font fontWithSize: minFontSize]];
-            [lengthLabel setFont:[roundLabel.font fontWithSize: minFontSize]];
-
-            x += lengthWidth;
-            
-            DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 , opponentWidth,30)];
-            opponentLabel.textAlignment = NSTextAlignmentCenter;
-            opponentLabel.text = self.listHeaderArray[4];
-            opponentLabel.textColor = [UIColor whiteColor];
-            
-            [headerView addSubview:numberLabel];
-            [headerView addSubview:eventLabel];
-            [headerView addSubview:roundLabel];
-            [headerView addSubview:lengthLabel];
-            [headerView addSubview:opponentLabel];
-        }
-            break;
-        case 4:
-        {
-            float eventWidth    = cellWidth *.5;
-            float dateWidth     = cellWidth *.3;
-                        
-            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,30)];
-            eventLabel.textAlignment = NSTextAlignmentCenter;
-            eventLabel.text = self.listHeaderArray[0];
-            eventLabel.textColor = [UIColor whiteColor];
-            
-            x += eventWidth;
-            
-            DGLabel *dateLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0, dateWidth, 30)];
-            dateLabel.textAlignment = NSTextAlignmentCenter;
-            NSArray* words = [self.listHeaderArray[1] componentsSeparatedByCharactersInSet :[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSString* nospacestring = [words componentsJoinedByString:@""];
-            dateLabel.text = [nospacestring stringByReplacingOccurrencesOfString:@" " withString:@""];
-            dateLabel.textColor = [UIColor whiteColor];
-             
-            [headerView addSubview:eventLabel];
-            [headerView addSubview:dateLabel];
-        }
-            break;
-        default:
-            break;
-   }
-
-    return headerView;
-    
-}
-*/
 - (void)updateCollectionView
 {
     NSString *headerText = @"";
@@ -1452,27 +1118,6 @@ didCompleteWithError:(NSError *)error
 {
     listTyp = 4;
     [self readTournamentWins];
-}
-
--(void)inProgress
-{
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Information"
-                                 message:@"I am very sorry. This feature is still under development."
-                                 preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    
-                                }];
-    
-    [alert addAction:yesButton];
-        
-    [self presentViewController:alert animated:YES completion:nil];
-    
 }
 
 - (IBAction)eventAction:(UIButton*)button
