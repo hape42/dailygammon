@@ -713,6 +713,7 @@ didCompleteWithError:(NSError *)error
             height = edge + buttonHeight + gap + gap + buttonHeight + edge;
           break;
         case 3:
+            height = edge + buttonHeight + gap + labelHeight + gap + buttonHeight + gap + gap + buttonHeight + edge;
            break;
         case 4:
            break;
@@ -864,7 +865,7 @@ didCompleteWithError:(NSError *)error
             [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
             [cell.contentView addSubview:opponentButton];
 
-#pragma mark 4. Line Review
+#pragma mark 5. Line Review
             y += opponentButton.frame.size.height + gap + gap;
 
             float reviewWidth = 70;
@@ -932,7 +933,95 @@ didCompleteWithError:(NSError *)error
         case 3:
 #pragma mark - finished matches
         {
+#pragma mark 1. Line Tournament name
+            NSDictionary *event = row[1];
             
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            eventLabel.textAlignment = NSTextAlignmentCenter;
+            [eventLabel setFont:[UIFont boldSystemFontOfSize: eventLabel.font.pointSize]];
+            
+            eventLabel.text = [event objectForKey:@"Text"];
+            eventLabel.adjustsFontSizeToFitWidth = YES;
+            
+            if([event objectForKey:@"href"])
+                [cell.contentView addSubview:eventButton];
+            else
+                [cell.contentView addSubview:eventLabel];
+            
+#pragma mark 2. Line length & rounds
+            y += eventButton.frame.size.height + gap;
+            
+            DGLabel *roundLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth/2,labelHeight)];
+            roundLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *round = row[2];
+            
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Round: %@",[round objectForKey:@"Text"]]];
+            NSRange range = NSMakeRange(7, attributedString.length - 7);
+            NSDictionary *boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: roundLabel.font.pointSize]};
+            NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: tintColor};
+            NSMutableDictionary *combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];    roundLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:roundLabel];
+
+            x += roundLabel.frame.size.width;
+
+            DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth/2,labelHeight)];
+            lengthLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *length = row[3];
+            
+            attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Length: %@",[length objectForKey:@"Text"]]];
+            range = NSMakeRange(7, attributedString.length - 7);
+            boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: lengthLabel.font.pointSize]};
+            combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];
+            lengthLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:lengthLabel];
+            
+#pragma mark 3. Line opponent
+            
+            y += lengthLabel.frame.size.height + gap;
+            x = edge;
+            
+            NSDictionary *opponent = row[4];
+            DGButton *opponentButton = [[DGButton alloc] initWithFrame:CGRectMake(x,y,maxWidth, buttonHeight)];
+            [opponentButton setTitle:[opponent objectForKey:@"Text"] forState: UIControlStateNormal];
+            opponentButton.tag = indexPath.row;
+            [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
+            [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
+            [cell.contentView addSubview:opponentButton];
+
+#pragma mark 4. Line Review
+            y += opponentButton.frame.size.height + gap + gap;
+
+            float buttonWidth = (maxWidth - gap) / 2;
+            x = edge ;
+
+            DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y, buttonWidth, buttonHeight)];
+            [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
+            reviewButton.tag = indexPath.row;
+            [reviewButton addTarget:self action:@selector(reviewAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:reviewButton];
+
+            x += reviewButton.frame.size.width + gap;
+            
+            DGButton *exportButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,buttonWidth, buttonHeight)];
+            [exportButton setTitle:@"Export" forState: UIControlStateNormal];
+            exportButton.tag = indexPath.row;
+            [exportButton addTarget:self action:@selector(exportAction:) forControlEvents:UIControlEventTouchUpInside];
+
+            [cell.contentView addSubview:exportButton];
+
         }
           break;
         case 4:
@@ -988,150 +1077,6 @@ didCompleteWithError:(NSError *)error
 
     switch(listTyp)
     {
-        case 1:
-        {
-            float numberWidth   = cellWidth *.05;
-            float eventWidth    = cellWidth *.3;
-            float graceWidth    = cellWidth *.05;
-            float poolWidth     = cellWidth *.1;
-            float roundWidth    = cellWidth *.05;
-            float lengthWidth   = cellWidth *.05;
-            float opponentWidth = cellWidth *.3;
-            float reviewWidth   = cellWidth *.1;
-
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *number = row[0];
-            numberLabel.text = [number objectForKey:@"Text"];
-            
-            x += numberWidth;
-            
-            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
-            eventLabel.textAlignment = NSTextAlignmentLeft;
-            NSDictionary *event = row[1];
-            eventLabel.text = [event objectForKey:@"Text"];
-            eventLabel.adjustsFontSizeToFitWidth = YES;
-            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
-            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
-            eventButton.tag = indexPath.row;
-            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
-            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
-
-            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            x += eventWidth;
-            
-            UILabel *graceLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,graceWidth,labelHeight)];
-            graceLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *grace = row[2];
-            graceLabel.text = [grace objectForKey:@"Text"];
-            graceLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += graceWidth;
-            
-            UILabel *poolLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,poolWidth,labelHeight)];
-            poolLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *pool = row[3];
-            poolLabel.text = [pool objectForKey:@"Text"];
-            poolLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += poolWidth;
-            
-            UILabel *roundLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,roundWidth,labelHeight)];
-            roundLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *round = row[4];
-            roundLabel.text = [round objectForKey:@"Text"];
-            roundLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += roundWidth;
-            
-            UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,lengthWidth,labelHeight)];
-            lengthLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *length = row[5];
-            lengthLabel.text = [length objectForKey:@"Text"];
-            lengthLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += lengthWidth;
-            
-            NSDictionary *opponent = row[6];
-            DGButton *opponentButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,opponentWidth-6,labelHeight-6)];
-            [opponentButton setTitle:[opponent objectForKey:@"Text"] forState: UIControlStateNormal];
-            opponentButton.tag = indexPath.row;
-            [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
-            [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
-            
-            x += opponentWidth;
-            
-            DGButton *reviewButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,reviewWidth-6,labelHeight-6)];
-            [reviewButton setTitle:@"Review" forState: UIControlStateNormal];
-            reviewButton.tag = indexPath.row;
-            [reviewButton addTarget:self action:@selector(reviewAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            [cell.contentView addSubview:numberLabel];
-            if(event.count == 1)
-                [cell.contentView addSubview:eventLabel];
-            else
-                [cell.contentView addSubview:eventButton];
-            [cell.contentView addSubview:graceLabel];
-            [cell.contentView addSubview:poolLabel];
-            [cell.contentView addSubview:roundLabel];
-            [cell.contentView addSubview:lengthLabel];
-            [cell.contentView addSubview:opponentButton];
-            [cell.contentView addSubview:reviewButton];
-       }
-            break;
-        case 2:
-        {
-            float numberWidth   = cellWidth *.1;
-            float eventWidth    = cellWidth *.5;
-            float winsWidth     = cellWidth *.2;
-            float activeWidth   = cellWidth *.2;
-
-            DGLabel *numberLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,numberWidth,labelHeight)];
-            numberLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *number = row[1];
-            numberLabel.text = [number objectForKey:@"Text"];
-            
-            x += numberWidth;
-            
-            UILabel *eventLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,eventWidth,labelHeight)];
-            eventLabel.textAlignment = NSTextAlignmentLeft;
-            NSDictionary *event = row[3];
-            eventLabel.text = [event objectForKey:@"Text"];
-            eventLabel.adjustsFontSizeToFitWidth = YES;
-            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,eventWidth-6,labelHeight-6)];
-            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
-            eventButton.tag = indexPath.row;
-            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
-            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
-            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
-
-            x += eventWidth;
-            
-            UILabel *winsLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,winsWidth,labelHeight)];
-            winsLabel.textAlignment = NSTextAlignmentCenter;
-            NSDictionary *wins = row[4];
-            winsLabel.text = [wins objectForKey:@"Text"];
-            winsLabel.adjustsFontSizeToFitWidth = YES;
-            
-            x += winsWidth;
-            
-            DGButton *activeGameButton = [[DGButton alloc] initWithFrame:CGRectMake(x+3, 3 ,activeWidth-6,labelHeight-6)];
-
-            if(row.count == 6)
-            {
-                [activeGameButton setTitle:@"Active Game" forState: UIControlStateNormal];
-                activeGameButton.tag = indexPath.row;
-                [activeGameButton addTarget:self action:@selector(activeGameAction:) forControlEvents:UIControlEventTouchUpInside];
-            }
-            [cell.contentView addSubview:numberLabel];
-            [cell.contentView addSubview:eventButton];
-            [cell.contentView addSubview:winsLabel];
-            if(row.count == 6)
-                [cell.contentView addSubview:activeGameButton];
-
-        }
-            break;
         case 3:
         {
             float numberWidth   = cellWidth *.05;
