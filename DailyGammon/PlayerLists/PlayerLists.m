@@ -723,7 +723,7 @@ didCompleteWithError:(NSError *)error
             break;
    }
 
-    return CGSizeMake(190, height);
+    return CGSizeMake(185, height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

@@ -633,113 +633,6 @@
             </objects>
             <point key="canvasLocation" x="-523" y="-14"/>
         </scene>
-        <!--Top PageVC-->
-        <scene sceneID="JPa-0s-Hvv">
-            <objects>
-                <viewController storyboardIdentifier="TopPageVC" id="m5C-9Q-GtC" customClass="TopPageVC" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YEm-or-rZl"/>
-                        <viewControllerLayoutGuide type="bottom" id="Xr4-6T-vGS"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cAz-d2-b52">
-                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Hfy-OI-5GL">
-                                <rect key="frame" x="14" y="148" width="982" height="597"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" name="ColorTableView"/>
-                                <color key="separatorColor" name="ColorTableView"/>
-                                <color key="sectionIndexBackgroundColor" name="ColorTableView"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="cAz-d2-b52" id="Mhe-Wk-14q"/>
-                                    <outlet property="delegate" destination="cAz-d2-b52" id="EtH-gc-qcM"/>
-                                </connections>
-                            </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xB2-d8-4Kr">
-                                <rect key="frame" x="976" y="28" width="20" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="PlZ-CX-Wdb"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sort Matches by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qs2-C2-mS8">
-                                <rect key="frame" x="14" y="76" width="126" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Matches where you can move:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ja2-VG-p1u">
-                                <rect key="frame" x="114" y="29" width="591" height="32"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bFY-MO-u2J" customClass="DGButton">
-                                <rect key="frame" x="14" y="105" width="170" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Grace then Pool"/>
-                                <connections>
-                                    <action selector="sortGrace:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="EOj-tY-lkZ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5XJ-uA-kpU" customClass="DGButton">
-                                <rect key="frame" x="204" y="105" width="170" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Pool"/>
-                                <connections>
-                                    <action selector="sortPool:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="5bq-4v-qgY"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0MV-TS-WwJ" customClass="DGButton">
-                                <rect key="frame" x="394" y="105" width="170" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Grace+Pool Total"/>
-                                <connections>
-                                    <action selector="sortGracePool:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="X4v-Ha-kme"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="czI-Ch-bJq" customClass="DGButton">
-                                <rect key="frame" x="590" y="105" width="170" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Recent Opponent Move"/>
-                                <connections>
-                                    <action selector="sortRecent:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="Bqc-kp-fgO"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="01F-2x-kit" customClass="DGButton">
-                                <rect key="frame" x="14" y="28" width="90" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Refresh">
-                                    <color key="titleColor" systemColor="darkTextColor"/>
-                                </state>
-                                <connections>
-                                    <action selector="refreshAction:" destination="m5C-9Q-GtC" eventType="touchUpInside" id="AX6-aE-504"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" name="Color"/>
-                        <color key="tintColor" red="0.0" green="0.40000000000000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="T6V-jV-csN"/>
-                    <connections>
-                        <outlet property="header" destination="Ja2-VG-p1u" id="ffJ-0X-3Dh"/>
-                        <outlet property="refreshButtonIPAD" destination="01F-2x-kit" id="fuR-II-zFI"/>
-                        <outlet property="sortGraceButton" destination="bFY-MO-u2J" id="dOL-4G-ZbU"/>
-                        <outlet property="sortGracePoolButton" destination="0MV-TS-WwJ" id="e4G-nq-SEq"/>
-                        <outlet property="sortPoolButton" destination="5XJ-uA-kpU" id="KmT-aP-077"/>
-                        <outlet property="sortRecentButton" destination="czI-Ch-bJq" id="HnM-70-2Dl"/>
-                        <outlet property="tableView" destination="Hfy-OI-5GL" id="oPo-es-X5m"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="DZ4-qm-GDm" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="396.6796875" y="-798.4375"/>
-        </scene>
         <!--Review-->
         <scene sceneID="ENn-7t-G0J">
             <objects>
@@ -816,9 +709,6 @@
         <namedColor name="ColorTableViewCell">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="darkTextColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -25,25 +25,6 @@
             </objects>
             <point key="canvasLocation" x="-479" y="-772"/>
         </scene>
-        <!--iPhone Menue-->
-        <scene sceneID="sgF-LN-HcA">
-            <objects>
-                <viewController storyboardIdentifier="iPhoneMenue" id="63M-pW-sLE" customClass="iPhoneMenue" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="87R-q8-Wgy"/>
-                        <viewControllerLayoutGuide type="bottom" id="lJL-7R-GpY"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="JQR-Zx-vCt">
-                        <rect key="frame" x="0.0" y="0.0" width="926" height="428"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="6Cc-MN-Fbd"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="WD5-3t-30I" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="223" y="-1507"/>
-        </scene>
         <!--Board SchemeVC-->
         <scene sceneID="4HE-s9-lV7">
             <objects>
