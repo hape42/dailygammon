@@ -105,6 +105,9 @@
     self.titleLabel.lineBreakMode = NSLineBreakByClipping; 
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
     
+    self.minimumContentSizeCategory = UIContentSizeCategorySmall;
+    self.maximumContentSizeCategory = UIContentSizeCategorySmall;
+
     if(title)
         [self setTitle:title forState: UIControlStateNormal];
     
@@ -195,6 +198,9 @@
     self.titleLabel.adjustsFontSizeToFitWidth = YES;
     self.titleLabel.lineBreakMode = NSLineBreakByClipping;
     self.titleLabel.textAlignment = NSTextAlignmentCenter;
+
+    self.minimumContentSizeCategory = UIContentSizeCategorySmall;
+    self.maximumContentSizeCategory = UIContentSizeCategorySmall;
 
 }
 

@@ -707,10 +707,11 @@ didCompleteWithError:(NSError *)error
     switch(listTyp)
     {
         case 1:
-            height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + buttonHeight + gap + buttonHeight + edge;
+            height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + buttonHeight + gap + gap + buttonHeight + edge;
             break;
         case 2:
-           break;
+            height = edge + buttonHeight + gap + gap + buttonHeight + edge;
+          break;
         case 3:
            break;
         case 4:
@@ -850,7 +851,7 @@ didCompleteWithError:(NSError *)error
             
             [cell.contentView addSubview:graceLabel];
             
-#pragma mark 4&5. Line opponent
+#pragma mark 4. Line opponent
             
             y += graceLabel.frame.size.height + gap;
             x = edge;
@@ -863,7 +864,8 @@ didCompleteWithError:(NSError *)error
             [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
             [cell.contentView addSubview:opponentButton];
 
-            y += opponentButton.frame.size.height + gap;
+#pragma mark 4. Line Review
+            y += opponentButton.frame.size.height + gap + gap;
 
             float reviewWidth = 70;
             x = edge + ((maxWidth - reviewWidth)/2);
@@ -879,7 +881,52 @@ didCompleteWithError:(NSError *)error
         case 2:
 #pragma mark - active tournaments
         {
+#pragma mark 1. Line Tournament name
+            NSDictionary *event = row[3];
             
+            DGButton *eventButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
+            [eventButton setTitle:[event objectForKey:@"Text"] forState: UIControlStateNormal];
+            eventButton.tag = indexPath.row;
+            [eventButton.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
+            [eventButton.layer setValue:[event objectForKey:@"Text"] forKey:@"Text"];
+            [eventButton addTarget:self action:@selector(eventAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            [cell.contentView addSubview:eventButton];
+            
+#pragma mark 2. Line wins & active game
+            y += eventButton.frame.size.height + gap + gap;
+            
+            DGLabel *winsLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,60,buttonHeight)];
+            winsLabel.textAlignment = NSTextAlignmentLeft;
+            NSDictionary *wins = row[4];
+
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"Wins: %@",[wins objectForKey:@"Text"]]];
+            NSRange range = NSMakeRange(7, attributedString.length - 7);
+            NSDictionary *boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: winsLabel.font.pointSize]};
+            NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: tintColor};
+            NSMutableDictionary *combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+            [combinedAttributes addEntriesFromDictionary:colorAttributes];
+            [attributedString setAttributes:combinedAttributes range:range];
+            winsLabel.attributedText = attributedString;
+            
+            [cell.contentView addSubview:winsLabel];
+            
+            winsLabel.adjustsFontSizeToFitWidth = YES;
+            
+            x += winsLabel.frame.size.width;
+
+            DGButton *activeGameButton = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,maxWidth - winsLabel.frame.size.width,buttonHeight)];
+
+            if(row.count == 6)
+            {
+                [activeGameButton setTitle:@"Active Game" forState: UIControlStateNormal];
+                activeGameButton.tag = indexPath.row;
+                [activeGameButton addTarget:self action:@selector(activeGameAction:) forControlEvents:UIControlEventTouchUpInside];
+            }
+            if(row.count == 6)
+                [cell.contentView addSubview:activeGameButton];
+
+
         }
            break;
         case 3:
