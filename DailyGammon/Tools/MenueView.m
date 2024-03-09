@@ -176,9 +176,9 @@
     [self.widthAnchor constraintEqualToConstant:self.frame.size.width].active = YES;
 
     [self setNeedsUpdateConstraints];
-    [UIView animateWithDuration:1.0  animations:^{
+//    [UIView animateWithDuration:1.0  animations:^{
             [self layoutIfNeeded];
-        }];
+//        }];
 
     return;
 }
