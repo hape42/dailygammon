@@ -495,7 +495,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BAs-D1-W2V" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1840" y="-2200"/>
+            <point key="canvasLocation" x="1567" y="-2213"/>
         </scene>
         <!--RatingVC-->
         <scene sceneID="Isv-7j-fvd">
@@ -580,7 +580,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6O4-AC-W5o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2469" y="-2200"/>
+            <point key="canvasLocation" x="2218" y="-2213"/>
         </scene>
         <!--Tournament-->
         <scene sceneID="lDd-jn-XzL">
@@ -619,7 +619,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gos-SE-7CY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3109" y="-1540"/>
+            <point key="canvasLocation" x="2891" y="-1540"/>
         </scene>
         <!--Player Lists-->
         <scene sceneID="jc3-Zi-Lez">
@@ -724,7 +724,314 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t08-wO-age" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3108.9311859443628" y="-2200.1953125"/>
+            <point key="canvasLocation" x="2891" y="-2213"/>
+        </scene>
+        <!--Set UpVC-->
+        <scene sceneID="5DM-Ug-JjJ">
+            <objects>
+                <viewController storyboardIdentifier="SetUpVC" id="2Rf-Go-08u" customClass="SetUpVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="EQ6-6j-Tj6"/>
+                        <viewControllerLayoutGuide type="bottom" id="9eT-ms-GpK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="uWn-uf-0m0">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhK-6X-8IS" customClass="DGButton">
+                                <rect key="frame" x="20" y="161" width="200" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Board Scheme"/>
+                                <connections>
+                                    <action selector="boardSchemeAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="aEf-qz-0Mu"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxa-kE-qLV" customClass="DGButton">
+                                <rect key="frame" x="1032" y="161" width="300" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="DailyGammon Preferences"/>
+                                <connections>
+                                    <action selector="preferencesAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="QGj-Hs-uuD"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qvF-Qc-R29">
+                                <rect key="frame" x="131" y="355" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="iCloudAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="UrB-Y6-CtP"/>
+                                    <action selector="showWinLossAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="m5k-Jq-TZh"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use iCloud for Rating data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cem-uN-8qs" customClass="DGLabel">
+                                <rect key="frame" x="210" y="360" width="199" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="iCloudOFF.png" translatesAutoresizingMaskIntoConstraints="NO" id="PpV-zk-ZEl">
+                                <rect key="frame" x="461" y="355" width="35" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="iCloud" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8M-EM-m51" customClass="DGLabel">
+                                <rect key="frame" x="499" y="360" width="48.5" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Button Design" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V3Y-ux-NqP" customClass="DGLabel">
+                                <rect key="frame" x="629" y="851" width="108" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qcS-ve-1Xy">
+                                <rect key="frame" x="518" y="943" width="331" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <segments>
+                                    <segment title="Outline"/>
+                                    <segment title="Gradient"/>
+                                    <segment title="Combined"/>
+                                    <segment title="Flat"/>
+                                </segments>
+                                <connections>
+                                    <action selector="buttonDesignAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Wkj-tq-Bke"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pd-Qo-XdU">
+                                <rect key="frame" x="1300" y="32" width="20" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <state key="normal" image="menue.png"/>
+                                <connections>
+                                    <action selector="moreAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="A0E-tV-ljE"/>
+                                </connections>
+                            </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B5Q-LF-Dwt">
+                                <rect key="frame" x="131" y="225" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="showRatingsAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Fmc-Mh-azT"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Ratings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjB-6V-aqk" customClass="DGLabel">
+                                <rect key="frame" x="212" y="225" width="104" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UTo-1m-rMW">
+                                <rect key="frame" x="131" y="277" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="showWinLossAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="ByR-bT-hML"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Opponent history information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KL-L2-hDi" customClass="DGLabel">
+                                <rect key="frame" x="210" y="277" width="270" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="OdQ-Rh-NwZ"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <connections>
+                        <outlet property="boardSchemeButton" destination="KhK-6X-8IS" id="ZxX-Vs-BZ1"/>
+                        <outlet property="buttonDesignLabel" destination="V3Y-ux-NqP" id="icv-76-kog"/>
+                        <outlet property="buttonDesignOutlet" destination="qcS-ve-1Xy" id="KSU-Sm-n8Y"/>
+                        <outlet property="iCloudConnected" destination="PpV-zk-ZEl" id="t9h-sM-8LQ"/>
+                        <outlet property="iCloudLabel" destination="I8M-EM-m51" id="PjU-Eg-FqD"/>
+                        <outlet property="iCloudOutlet" destination="qvF-Qc-R29" id="zMv-od-fA6"/>
+                        <outlet property="moreButton" destination="8Pd-Qo-XdU" id="jmj-9i-ipd"/>
+                        <outlet property="preferencesButton" destination="bxa-kE-qLV" id="gcm-qZ-Nwq"/>
+                        <outlet property="showRatingsLabel" destination="cjB-6V-aqk" id="cyh-1c-3tC"/>
+                        <outlet property="showRatingsOutlet" destination="B5Q-LF-Dwt" id="Ivn-hw-iBZ"/>
+                        <outlet property="showWinLossLabel" destination="5KL-L2-hDi" id="Yv6-o5-XFF"/>
+                        <outlet property="showWinLossOutlet" destination="UTo-1m-rMW" id="10e-Hw-NbF"/>
+                        <outlet property="useIcloudLabel" destination="Cem-uN-8qs" id="iwu-86-jpI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mSe-Hu-sbt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3553" y="-2213"/>
+        </scene>
+        <!--PreferencesVC-->
+        <scene sceneID="2j2-xZ-Ebx">
+            <objects>
+                <viewController storyboardIdentifier="PreferencesVC" id="NTw-IB-0hS" customClass="PreferencesVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RZk-7F-WWj"/>
+                        <viewControllerLayoutGuide type="bottom" id="GxG-sI-1Sd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="R4b-Le-Ioi">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Personal Preferences" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H46-dB-gHZ" customClass="DGLabel">
+                                <rect key="frame" x="111" y="27" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t81-3K-B7I" customClass="DGButton">
+                                <rect key="frame" x="20" y="20" width="83" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="doneAction:" destination="NTw-IB-0hS" eventType="touchUpInside" id="OxJ-hF-buj"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Confirmation on offering doubles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJS-aE-mwV" customClass="DGLabel">
+                                <rect key="frame" x="112" y="84" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="8Ft-1B-TyK">
+                                <rect key="frame" x="20" y="79" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="ConfirmationDoubleAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="fKE-41-bUg"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Confirmation on accepting doubles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NFQ-rl-yOf" customClass="DGLabel">
+                                <rect key="frame" x="112" y="134" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uaT-Ff-mhs">
+                                <rect key="frame" x="20" y="129" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="ConfirmationTakeAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="z79-yk-6ak"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" Confirmation on declining doubles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hj6-eF-2sX" customClass="DGLabel">
+                                <rect key="frame" x="112" y="184" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="S55-9i-bgo">
+                                <rect key="frame" x="20" y="179" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="ConfirmationPassAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="Wdv-yH-Neq"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Player Name links on game page" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Dw-he-1pP" customClass="DGLabel">
+                                <rect key="frame" x="112" y="234" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="4ZU-AM-VAk">
+                                <rect key="frame" x="20" y="229" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="NameLinkAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="quR-dk-IC2"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Skip Opponent's &quot;Roll Dice&quot; pages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aOv-3p-vEb" customClass="DGLabel">
+                                <rect key="frame" x="112" y="284" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ls9-Wt-pBV">
+                                <rect key="frame" x="20" y="279" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="SkipOpponentRollDiceAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="KKV-E1-5mf"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Skip all automatic pages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPQ-fT-CPf" customClass="DGLabel">
+                                <rect key="frame" x="112" y="334" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="vea-Bj-e3A">
+                                <rect key="frame" x="20" y="329" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="SkipAutomaticAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="wAa-xS-RXl"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hide pip counts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="URN-pH-9Sj" customClass="DGLabel">
+                                <rect key="frame" x="112" y="384" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sYS-Cv-YW2">
+                                <rect key="frame" x="20" y="379" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="HidePipCountAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="5mr-ke-DcE"/>
+                                </connections>
+                            </switch>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="d2d-Kp-Mes">
+                                <rect key="frame" x="20" y="429" width="49" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="HomeBoardleftSideAction:" destination="NTw-IB-0hS" eventType="valueChanged" id="nKs-9x-zUN"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Home boards on left side" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JOx-SI-f7Q" customClass="DGLabel">
+                                <rect key="frame" x="112" y="439" width="300" height="21"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="rk6-PR-Rzb"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="450" height="400"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="450" height="400"/>
+                    <connections>
+                        <outlet property="ConfirmationDouble" destination="8Ft-1B-TyK" id="IPT-Us-rXc"/>
+                        <outlet property="ConfirmationDoubleLabel" destination="UJS-aE-mwV" id="iln-Qm-bcc"/>
+                        <outlet property="ConfirmationPass" destination="S55-9i-bgo" id="DHx-7e-U4H"/>
+                        <outlet property="ConfirmationPassLabel" destination="Hj6-eF-2sX" id="3Fd-DR-PpN"/>
+                        <outlet property="ConfirmationTake" destination="uaT-Ff-mhs" id="CUy-MG-pRF"/>
+                        <outlet property="ConfirmationTakeLabel" destination="NFQ-rl-yOf" id="H1Q-qI-5qi"/>
+                        <outlet property="HidePipCount" destination="sYS-Cv-YW2" id="rbu-8F-otT"/>
+                        <outlet property="HidePipCountLabel" destination="URN-pH-9Sj" id="aPU-fK-QAj"/>
+                        <outlet property="HomeBoardleftSide" destination="d2d-Kp-Mes" id="n6V-0F-6gJ"/>
+                        <outlet property="HomeBoardleftSideLabel" destination="JOx-SI-f7Q" id="Cc3-ho-K9m"/>
+                        <outlet property="NameLink" destination="4ZU-AM-VAk" id="cck-aB-0hN"/>
+                        <outlet property="NameLinkLabel" destination="6Dw-he-1pP" id="1JO-xq-0FV"/>
+                        <outlet property="SkipAutomatic" destination="vea-Bj-e3A" id="E6U-xy-brX"/>
+                        <outlet property="SkipAutomaticLabel" destination="dPQ-fT-CPf" id="VeF-ZO-rTg"/>
+                        <outlet property="SkipOpponentRollDice" destination="ls9-Wt-pBV" id="aUr-CK-A0w"/>
+                        <outlet property="SkipOpponentRollDiceLabel" destination="aOv-3p-vEb" id="34U-RK-Fko"/>
+                        <outlet property="doneButton" destination="t81-3K-B7I" id="Agq-ae-unw"/>
+                        <outlet property="header" destination="H46-dB-gHZ" id="UOt-ll-zlU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0oJ-jZ-j2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3568" y="-1607"/>
         </scene>
     </scenes>
     <resources>

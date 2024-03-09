@@ -268,8 +268,9 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    SetUpVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
-    
+    SetUpVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetUpVC"];
+    [self.navigationController pushViewController:vc animated:NO];
+    return;;
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
     {
         vc.modalPresentationStyle = UIModalPresentationPopover;

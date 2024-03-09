@@ -11,12 +11,14 @@
 #import "TFHpple.h"
 #import "Preferences.h"
 #import <SafariServices/SafariServices.h>
+#import "DGButton.h"
 
 @interface PreferencesVC ()<NSURLSessionDataDelegate>
 
 @property (readwrite, retain, nonatomic) NSMutableArray *preferencesArray;
 
-@property (weak, nonatomic) IBOutlet UIButton *doneButton;
+@property (weak, nonatomic) IBOutlet DGButton *doneButton;
+@property (weak, nonatomic) IBOutlet DGLabel *header;
 
 @property (weak, nonatomic) IBOutlet UISwitch *ConfirmationDouble;
 @property (weak, nonatomic) IBOutlet UISwitch *ConfirmationTake;
@@ -26,7 +28,17 @@
 @property (weak, nonatomic) IBOutlet UISwitch *SkipAutomatic;
 @property (weak, nonatomic) IBOutlet UISwitch *HidePipCount;
 @property (weak, nonatomic) IBOutlet UISwitch *HomeBoardleftSide;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+
+@property (weak, nonatomic) IBOutlet DGLabel *ConfirmationDoubleLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *ConfirmationTakeLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *ConfirmationPassLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *NameLinkLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *SkipOpponentRollDiceLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *SkipAutomaticLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *HidePipCountLabel;
+@property (weak, nonatomic) IBOutlet DGLabel *HomeBoardleftSideLabel;
 
 @end
 
@@ -42,7 +54,6 @@
     preferences = [[Preferences alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -54,16 +65,157 @@
 
     [self initSwitches];
         
-    self.ConfirmationDouble = [design makeNiceSwitch:self.ConfirmationDouble];
-    self.ConfirmationTake = [design makeNiceSwitch:self.ConfirmationTake];
-    self.ConfirmationPass = [design makeNiceSwitch:self.ConfirmationPass];
-    self.NameLink = [design makeNiceSwitch:self.NameLink];
+    self.ConfirmationDouble   = [design makeNiceSwitch:self.ConfirmationDouble];
+    self.ConfirmationTake     = [design makeNiceSwitch:self.ConfirmationTake];
+    self.ConfirmationPass     = [design makeNiceSwitch:self.ConfirmationPass];
+    self.NameLink             = [design makeNiceSwitch:self.NameLink];
     self.SkipOpponentRollDice = [design makeNiceSwitch:self.SkipOpponentRollDice];
-    self.SkipAutomatic = [design makeNiceSwitch:self.SkipAutomatic];
-    self.HidePipCount = [design makeNiceSwitch:self.HidePipCount];
-    self.HomeBoardleftSide = [design makeNiceSwitch:self.HomeBoardleftSide];
+    self.SkipAutomatic        = [design makeNiceSwitch:self.SkipAutomatic];
+    self.HidePipCount         = [design makeNiceSwitch:self.HidePipCount];
+    self.HomeBoardleftSide    = [design makeNiceSwitch:self.HomeBoardleftSide];
 
 }
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationItem.hidesBackButton = YES;
+
+    [self layoutObjects];
+}
+
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 10.0;
+    float gap  = 10.0;
+    
+#pragma mark doneButton autoLayout
+    [self.doneButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.doneButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
+    [self.doneButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.doneButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.doneButton.widthAnchor  constraintEqualToConstant:60].active = YES;
+
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.header.topAnchor     constraintEqualToAnchor:safe.topAnchor                 constant:edge].active = YES;
+    [self.header.leadingAnchor constraintEqualToAnchor:self.doneButton.trailingAnchor constant:edge].active = YES;
+    [self.header.rightAnchor   constraintEqualToAnchor:safe.rightAnchor               constant:-edge].active = YES;
+    [self.header.heightAnchor  constraintEqualToConstant:35].active = YES;
+
+#pragma mark ConfirmationDouble autoLayout
+    [self.ConfirmationDouble setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationDouble.topAnchor  constraintEqualToAnchor:self.doneButton.bottomAnchor constant:gap*2].active = YES;
+    [self.ConfirmationDouble.leftAnchor constraintEqualToAnchor:safe.leftAnchor              constant:edge].active = YES;
+
+#pragma mark ConfirmationDoubleLabel autoLayout
+    [self.ConfirmationDoubleLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationDoubleLabel.topAnchor    constraintEqualToAnchor:self.ConfirmationDouble.topAnchor    constant:0].active = YES;
+    [self.ConfirmationDoubleLabel.leftAnchor   constraintEqualToAnchor:self.ConfirmationDouble.rightAnchor  constant:gap].active = YES;
+    [self.ConfirmationDoubleLabel.heightAnchor constraintEqualToAnchor:self.ConfirmationDouble.heightAnchor constant:0].active = YES;
+
+#pragma mark ConfirmationTake autoLayout
+    [self.ConfirmationTake setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationTake.topAnchor  constraintEqualToAnchor:self.ConfirmationDouble.bottomAnchor constant:gap].active = YES;
+    [self.ConfirmationTake.leftAnchor constraintEqualToAnchor:safe.leftAnchor                      constant:edge].active = YES;
+
+#pragma mark ConfirmationTakeLabel autoLayout
+    [self.ConfirmationTakeLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationTakeLabel.topAnchor    constraintEqualToAnchor:self.ConfirmationTake.topAnchor    constant:0].active = YES;
+    [self.ConfirmationTakeLabel.leftAnchor   constraintEqualToAnchor:self.ConfirmationTake.rightAnchor  constant:gap].active = YES;
+    [self.ConfirmationTakeLabel.heightAnchor constraintEqualToAnchor:self.ConfirmationTake.heightAnchor constant:0].active = YES;
+
+#pragma mark ConfirmationPass autoLayout
+    [self.ConfirmationPass setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationPass.topAnchor  constraintEqualToAnchor:self.ConfirmationTake.bottomAnchor constant:gap].active = YES;
+    [self.ConfirmationPass.leftAnchor constraintEqualToAnchor:safe.leftAnchor                    constant:edge].active = YES;
+
+#pragma mark ConfirmationPassLabel autoLayout
+    [self.ConfirmationPassLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.ConfirmationPassLabel.topAnchor    constraintEqualToAnchor:self.ConfirmationPass.topAnchor    constant:0].active = YES;
+    [self.ConfirmationPassLabel.leftAnchor   constraintEqualToAnchor:self.ConfirmationPass.rightAnchor  constant:gap].active = YES;
+    [self.ConfirmationPassLabel.heightAnchor constraintEqualToAnchor:self.ConfirmationPass.heightAnchor constant:0].active = YES;
+
+#pragma mark NameLink autoLayout
+    [self.NameLink setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.NameLink.topAnchor  constraintEqualToAnchor:self.ConfirmationPass.bottomAnchor constant:gap].active = YES;
+    [self.NameLink.leftAnchor constraintEqualToAnchor:safe.leftAnchor                    constant:edge].active = YES;
+
+#pragma mark NameLinkLabel autoLayout
+    [self.NameLinkLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.NameLinkLabel.topAnchor    constraintEqualToAnchor:self.NameLink.topAnchor    constant:0].active = YES;
+    [self.NameLinkLabel.leftAnchor   constraintEqualToAnchor:self.NameLink.rightAnchor  constant:gap].active = YES;
+    [self.NameLinkLabel.heightAnchor constraintEqualToAnchor:self.NameLink.heightAnchor constant:0].active = YES;
+
+#pragma mark SkipOpponentRollDice autoLayout
+    [self.SkipOpponentRollDice setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.SkipOpponentRollDice.topAnchor  constraintEqualToAnchor:self.NameLink.bottomAnchor constant:gap].active  = YES;
+    [self.SkipOpponentRollDice.leftAnchor constraintEqualToAnchor:safe.leftAnchor            constant:edge].active = YES;
+
+#pragma mark SkipOpponentRollDiceLabel autoLayout
+    [self.SkipOpponentRollDiceLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.SkipOpponentRollDiceLabel.topAnchor    constraintEqualToAnchor:self.SkipOpponentRollDice.topAnchor    constant:0].active   = YES;
+    [self.SkipOpponentRollDiceLabel.leftAnchor   constraintEqualToAnchor:self.SkipOpponentRollDice.rightAnchor  constant:gap].active = YES;
+    [self.SkipOpponentRollDiceLabel.heightAnchor constraintEqualToAnchor:self.SkipOpponentRollDice.heightAnchor constant:0].active   = YES;
+
+#pragma mark SkipAutomatic autoLayout
+    [self.SkipAutomatic setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.SkipAutomatic.topAnchor  constraintEqualToAnchor:self.SkipOpponentRollDice.bottomAnchor constant:gap].active  = YES;
+    [self.SkipAutomatic.leftAnchor constraintEqualToAnchor:safe.leftAnchor                        constant:edge].active = YES;
+
+#pragma mark SkipAutomaticLabel autoLayout
+    [self.SkipAutomaticLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.SkipAutomaticLabel.topAnchor    constraintEqualToAnchor:self.SkipAutomatic.topAnchor    constant:0].active   = YES;
+    [self.SkipAutomaticLabel.leftAnchor   constraintEqualToAnchor:self.SkipAutomatic.rightAnchor  constant:gap].active = YES;
+    [self.SkipAutomaticLabel.heightAnchor constraintEqualToAnchor:self.SkipAutomatic.heightAnchor constant:0].active   = YES;
+
+#pragma mark HidePipCount autoLayout
+    [self.HidePipCount setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.HidePipCount.topAnchor  constraintEqualToAnchor:self.SkipAutomatic.bottomAnchor constant:gap].active  = YES;
+    [self.HidePipCount.leftAnchor constraintEqualToAnchor:safe.leftAnchor                 constant:edge].active = YES;
+
+#pragma mark HidePipCountLabel autoLayout
+    [self.HidePipCountLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.HidePipCountLabel.topAnchor    constraintEqualToAnchor:self.HidePipCount.topAnchor    constant:0].active   = YES;
+    [self.HidePipCountLabel.leftAnchor   constraintEqualToAnchor:self.HidePipCount.rightAnchor  constant:gap].active = YES;
+    [self.HidePipCountLabel.heightAnchor constraintEqualToAnchor:self.HidePipCount.heightAnchor constant:0].active   = YES;
+
+#pragma mark HomeBoardleftSide autoLayout
+    [self.HomeBoardleftSide setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.HomeBoardleftSide.topAnchor  constraintEqualToAnchor:self.HidePipCount.bottomAnchor constant:gap].active  = YES;
+    [self.HomeBoardleftSide.leftAnchor constraintEqualToAnchor:safe.leftAnchor                 constant:edge].active = YES;
+
+#pragma mark HomeBoardleftSideLabel autoLayout
+    [self.HomeBoardleftSideLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.HomeBoardleftSideLabel.topAnchor    constraintEqualToAnchor:self.HomeBoardleftSide.topAnchor    constant:0].active   = YES;
+    [self.HomeBoardleftSideLabel.leftAnchor   constraintEqualToAnchor:self.HomeBoardleftSide.rightAnchor  constant:gap].active = YES;
+    [self.HomeBoardleftSideLabel.heightAnchor constraintEqualToAnchor:self.HomeBoardleftSide.heightAnchor constant:0].active   = YES;
+
+
+
+}
+
 - (void)initSwitches
 {
     self.preferencesArray = [preferences readPreferences];
@@ -129,6 +281,8 @@
 
 - (IBAction)doneAction:(id)sender
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
+
     if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
         [self dismissViewControllerAnimated:YES completion:nil];
     else

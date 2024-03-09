@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "MenueView.h"
 
 @class Design;
 @class RatingTools;
@@ -18,6 +19,8 @@
 @property (strong, readwrite, retain, atomic) RatingTools *ratingTools;
 
 @property (readwrite, assign, atomic) BOOL fromRating;
+
+@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 
