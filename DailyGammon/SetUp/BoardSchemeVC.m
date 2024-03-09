@@ -14,15 +14,18 @@
 
 @interface BoardSchemeVC ()
 
+@property (weak, nonatomic) IBOutlet DGButton *doneButton;
+
 @property (strong, nonatomic) IBOutlet UIView *viewBoard;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *selectBoard;
-@property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *myColor;
 @property (weak, nonatomic) IBOutlet UILabel *titleCheckerColor;
-@property (readwrite, retain, nonatomic) UIView *buttonFrame;
-@property (readwrite, retain, nonatomic) DGButton *infoButton;
+
+@property (weak, nonatomic) IBOutlet DGButton *infoButton;
+
+@property (weak, nonatomic) IBOutlet UIToolbar *toolBar;
 
 @end
 
@@ -125,56 +128,6 @@
     
     NSMutableDictionary *schemaDict = [design schema:boardSchema];
 
-    int maxWidth  = self.view.frame.size.width;
-    int maxHeight = self.view.frame.size.height - 20;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        maxWidth = 800;
-        maxHeight = 400;
-    }
-    self.buttonFrame =  [[UIView alloc] initWithFrame:CGRectMake(50,
-                                                                maxHeight - 45,
-                                                                maxWidth - 100,
-                                                                45)];
-    self.buttonFrame.layer.borderWidth = 1;
-    self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
-    self.buttonFrame.layer.cornerRadius = 14.0f;
-
-    [self.view addSubview:self.buttonFrame];
-    
-    
-    self.infoButton = [[DGButton alloc] initWithFrame:CGRectMake((self.buttonFrame.frame.size.width / 2) - 25,
-                                                                 (self.buttonFrame.frame.size.height / 2) - 15,
-                                                            50,
-                                                            30)];
-    self.infoButton.layer.cornerRadius = 14.0f;
-    [self.infoButton setTitle:@"Info" forState: UIControlStateNormal];
-    //mittig in buttonFrame setzen
-    [self.infoButton addTarget:self action:@selector(info:) forControlEvents:UIControlEventTouchUpInside];
-    [self.buttonFrame addSubview:self.infoButton];
-    int gap = 5;
-    CGRect frame = self.myColor.frame;
-    frame.origin.y = self.buttonFrame.frame.origin.y - self.myColor.frame.size.height - gap;
-    frame.origin.x = self.buttonFrame.frame.origin.x;
-    frame.size.width = self.buttonFrame.frame.size.width;
-    self.myColor.frame = frame;
-    
-    frame = self.titleCheckerColor.frame;
-    frame.origin.y = self.myColor.frame.origin.y - self.titleCheckerColor.frame.size.height - gap ;
-    frame.origin.x = self.buttonFrame.frame.origin.x;
-    self.titleCheckerColor.frame = frame;
-
-    frame = self.selectBoard.frame;
-    frame.origin.y = self.toolBar.frame.size.height + gap + gap;
-    frame.origin.x = self.buttonFrame.frame.origin.x;
-    self.selectBoard.frame = frame;
-
-    frame = self.tableView.frame;
-    frame.origin.y = self.selectBoard.frame.origin.y + self.selectBoard.frame.size.height + gap;
-    frame.origin.x = self.buttonFrame.frame.origin.x;
-    frame.size.width = self.buttonFrame.frame.size.width;
-    frame.size.height = self.titleCheckerColor.frame.origin.y - self.selectBoard.frame.origin.y - self.selectBoard.frame.size.height - gap;
-    self.tableView.frame = frame;
     self.tableView.layer.borderWidth = 1;
     self.tableView.layer.cornerRadius = 14.0f;
     self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
@@ -199,12 +152,70 @@
 
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    self.navigationItem.hidesBackButton = YES;
+
+    [self layoutObjects];
+}
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 10.0;
+    float gap  = 10.0;
+    
+#pragma mark doneButton autoLayout
+    [self.doneButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.doneButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
+    [self.doneButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.doneButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.doneButton.widthAnchor  constraintEqualToConstant:60].active = YES;
+
+#pragma mark select checker color autoLayout
+    [self.infoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.infoButton.bottomAnchor    constraintEqualToAnchor:safe.bottomAnchor  constant:-edge].active = YES;
+    [self.infoButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.infoButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.infoButton.widthAnchor  constraintEqualToConstant:60].active = YES;
+
+    [self.myColor setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.myColor.centerYAnchor     constraintEqualToAnchor:self.infoButton.centerYAnchor                constant:0].active = YES;
+    [self.myColor.leftAnchor constraintEqualToAnchor:self.infoButton.rightAnchor constant:edge].active = YES;
+    [self.myColor.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+    [self.titleCheckerColor setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.titleCheckerColor.bottomAnchor     constraintEqualToAnchor:self.myColor.topAnchor                constant:-gap].active = YES;
+    [self.titleCheckerColor.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [self.titleCheckerColor.heightAnchor  constraintEqualToConstant:35].active = YES;
+
+#pragma mark selectBoard autoLayout
+    [self.selectBoard setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.selectBoard.topAnchor     constraintEqualToAnchor:safe.topAnchor               constant:edge].active = YES;
+    [self.selectBoard.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [self.selectBoard.heightAnchor  constraintEqualToConstant:35].active = YES;
+
+
+    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.tableView.topAnchor     constraintEqualToAnchor:self.selectBoard.bottomAnchor                constant:gap].active = YES;
+    [self.tableView.bottomAnchor     constraintEqualToAnchor:self.titleCheckerColor.topAnchor                constant:-gap].active = YES;
+    [self.tableView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.tableView.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+}
+
 - (IBAction)doneAction:(id)sender
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self dismissViewControllerAnimated:YES completion:nil];
-    else
-        [self.navigationController popViewControllerAnimated:TRUE];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)myColorAction:(id)sender
@@ -265,14 +276,18 @@
         {
             [subview removeFromSuperview];
         }
-        if ([subview isKindOfClass:[UIImageView class]])
+        if ([subview isKindOfClass:[DGLabel class]])
+        {
+            [subview removeFromSuperview];
+        }
+       if ([subview isKindOfClass:[UIImageView class]])
         {
             [subview removeFromSuperview];
         }
     }
     cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];;
 
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryNone;
 
     NSDictionary *dict = self.boardsArray[indexPath.row];
 
@@ -284,35 +299,41 @@
     int x = 0;
     int labelHeight = cell.contentView.frame.size.height;
     labelHeight = 100;
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,200,labelHeight/2)];
+    
+    UILabel *checkLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,50,labelHeight)];
+    checkLabel.textAlignment = NSTextAlignmentCenter;
+    if([[dict objectForKey:@"number"]intValue] == boardSchema)
+        checkLabel.text = @"✅";
+    [cell.contentView addSubview:checkLabel];
+
+    x += 50;
+    
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d/board",[[dict objectForKey:@"number"]intValue ]]];
+    if(!image)
+        image = [UIImage imageNamed:@"DeadShot"];
+    float factor = image.size.width / image.size.height;
+    UIImageView *board =  [[UIImageView alloc] initWithFrame:CGRectMake(x, 5 ,labelHeight * factor,labelHeight-10)];
+    board.image = image;
+    [cell.contentView addSubview:board];
+
+    x += board.frame.size.width + 5;
+    int labelWidth = cell.contentView.frame.size.width - x;
+
+    DGLabel *nameLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,labelWidth,labelHeight/2)];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"name"]];
     nameLabel.textColor = [schemaDict objectForKey:@"TintColor"] ;
     [cell.contentView addSubview:nameLabel];
     
-    nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/2 ,200,labelHeight/4)];
+    nameLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, labelHeight/2 ,labelWidth,labelHeight/4)];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.text = [NSString stringWithFormat:@"Designed by"];
     [cell.contentView addSubview:nameLabel];
     
-    nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, labelHeight/4*3 ,200,labelHeight/4)];
+    nameLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, labelHeight/4*3 ,labelWidth,labelHeight/4)];
     nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.text = [NSString stringWithFormat:@"%@",  [dict objectForKey:@"design"] ];
     [cell.contentView addSubview:nameLabel];
-
-    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%d/board",[[dict objectForKey:@"number"]intValue ]]];
-    if(!image)
-        image = [UIImage imageNamed:@"DeadShot"];
-    float factor = image.size.width / image.size.height;
-    UIImageView *board =  [[UIImageView alloc] initWithFrame:CGRectMake(200, 5 ,labelHeight * factor,labelHeight-10)];
-    board.image = image;
-    [cell.contentView addSubview:board];
-
-    UILabel *checkLabel = [[UILabel alloc] initWithFrame:CGRectMake(400, 0 ,50,labelHeight)];
-    checkLabel.textAlignment = NSTextAlignmentCenter;
-    if([[dict objectForKey:@"number"]intValue] == boardSchema)
-        checkLabel.text = @"✅";
-    [cell.contentView addSubview:checkLabel];
 
     return cell;
 }
@@ -330,11 +351,27 @@
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
     [UIApplication sharedApplication].delegate.window.tintColor = [schemaDict objectForKey:@"TintColor"];
-    self.buttonFrame.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     [[NSNotificationCenter defaultCenter] postNotificationName:changeSchemaNotification object:self];
 
     [self.tableView reloadData];
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+        [self.tableView reloadData];
+
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+
+    //XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
+
 }
 
 @end

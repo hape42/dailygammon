@@ -200,6 +200,11 @@
     self.minimumContentSizeCategory = UIContentSizeCategorySmall;
     self.maximumContentSizeCategory = UIContentSizeCategorySmall;
 
+    if(title)
+          [self setTitle:title forState: UIControlStateNormal];
+    else
+        [self setTitle:self.titleLabel.text forState: UIControlStateNormal];
+
 }
 
 @end

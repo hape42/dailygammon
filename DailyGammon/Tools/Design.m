@@ -382,7 +382,7 @@
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
     UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
-    UIImage *image = [UIImage systemImageNamed:@"contextualmenu.and.cursorarrow" withConfiguration:total];
+    UIImage *image = [UIImage systemImageNamed:@"book.pages" withConfiguration:total];
 
     [moreButton setImage:image forState:UIControlStateNormal];
     return moreButton;

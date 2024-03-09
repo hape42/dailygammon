@@ -282,11 +282,6 @@
 - (IBAction)doneAction:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self dismissViewControllerAnimated:YES completion:nil];
-    else
-        [self.navigationController popViewControllerAnimated:TRUE];
 }
 
 -(void)savePreferences:(int)typ

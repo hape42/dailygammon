@@ -212,32 +212,22 @@
 
 - (IBAction)boardSchemeAction:(id)sender
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-        UIViewController *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
-        
-        // present the controller
-        // on iPad, this will be a Popover
-        // on iPhone, this will be an action sheet
-        controller.modalPresentationStyle = UIModalPresentationPopover;
-        [self presentViewController:controller animated:YES completion:nil];
-        
-        UIPopoverPresentationController *popController = [controller popoverPresentationController];
-        popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
-        popController.delegate = self;
-        
-        UIButton *button = (UIButton *)sender;
-        popController.sourceView = button;
-        popController.sourceRect = button.bounds;
-    }
-    else
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        BoardSchemeVC *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
-        [self.navigationController pushViewController:vc animated:NO];
-    }
+    UIViewController *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"BoardSchemeVC"];
+    
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 - (IBAction)showRatingsAction:(id)sender
 {
@@ -304,25 +294,26 @@
 
 - (IBAction)preferencesAction:(id)sender
 {
-        UIViewController *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PreferencesVC"];
-        
-        // present the controller
-        // on iPad, this will be a Popover
-        // on iPhone, this will be an action sheet
-        controller.modalPresentationStyle = UIModalPresentationPopover;
-        [self presentViewController:controller animated:NO completion:nil];
-        
-        UIPopoverPresentationController *popController = [controller popoverPresentationController];
-        popController.permittedArrowDirections = UIPopoverArrowDirectionRight;
-        popController.delegate = self;
-        
-        UIButton *button = (UIButton *)sender;
-        popController.sourceView = button;
-        popController.sourceRect = button.bounds;
+    UIViewController *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PreferencesVC"];
+    
+    // present the controller
+    // on iPad, this will be a Popover
+    // on iPhone, this will be an action sheet
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionRight;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 
 }
 - (IBAction)buttonDesignAction:(id)sender
 {
+    [menueView dismiss];
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"buttonDesign"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonDesign" object:self];
