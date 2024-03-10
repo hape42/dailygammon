@@ -57,6 +57,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillAppear:) name:changeSchemaNotification object:nil];
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    [self layoutObjects];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,7 +91,6 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
 
-    [self layoutObjects];
     
 }
 

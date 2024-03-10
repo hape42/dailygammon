@@ -132,6 +132,8 @@
     self.tableView.layer.cornerRadius = 14.0f;
     self.tableView.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
 
+    [self layoutObjects];
+
     return;
 }
 - (void)viewWillAppear:(BOOL)animated
@@ -159,7 +161,6 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
 
-    [self layoutObjects];
 }
 #pragma mark - autoLayout
 -(void)layoutObjects
