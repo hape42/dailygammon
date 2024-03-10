@@ -81,12 +81,12 @@
 
             break;
         case 1:
-            [self.layer insertSublayer:gradient below:self.imageView.layer];
+            [self.layer insertSublayer:gradient atIndex:0];
             break;
         case 2:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
-            [self.layer insertSublayer:gradient below:self.imageView.layer];
+            [self.layer insertSublayer:gradient atIndex:0];
             break;
         case 3:
             self.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientEdge"];
@@ -171,13 +171,13 @@
             break;
         case 1:
             self.layer.borderWidth = 0;
-            [self.layer insertSublayer:gradient below:self.imageView.layer];
+            [self.layer insertSublayer:gradient atIndex:0];
 
             break;
         case 2:
             self.layer.borderColor = tintColor.CGColor;
             self.layer.borderWidth = 1;
-            [self.layer insertSublayer:gradient below:self.imageView.layer];
+            [self.layer insertSublayer:gradient atIndex:0];
 
             break;
         case 3:

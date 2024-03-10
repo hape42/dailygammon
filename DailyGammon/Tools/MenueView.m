@@ -45,11 +45,16 @@
         self.layer.cornerRadius = 14.0f;
         self.layer.masksToBounds = YES;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMatchCount) name:matchCountChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(buttonDesignChanged) name:@"buttonDesign" object:nil];
 
     }
     return self;
 }
 
+-(void)buttonDesignChanged
+{
+    [self setNeedsDisplay];
+}
 - (void)showMenueInView:(UIView *)view
 {
     tools = [[Tools alloc] init];
@@ -264,31 +269,18 @@
 
 -(void) SetUpVC:(id)sender
 {
- //   [self.navigationController popToRootViewControllerAnimated:NO];
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     SetUpVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetUpVC"];
-    [self.navigationController pushViewController:vc animated:NO];
-    return;;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        vc.modalPresentationStyle = UIModalPresentationPopover;
-        [self.navigationController presentViewController:vc animated:YES completion:nil];
-        
-        UIPopoverPresentationController *popController = [vc popoverPresentationController];
-        popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-        popController.delegate = self;
-        
-        UIButton *button = (UIButton *)sender;
-        popController.sourceView = button;
-        popController.sourceRect = button.bounds;
-    }
-    else
-    {
-        [self dismiss];
-        [self.navigationController pushViewController:vc animated:NO];
-    }
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 
 - (void)logout

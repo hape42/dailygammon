@@ -21,7 +21,7 @@
 
 @interface SetUpVC ()
 
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
+@property (weak, nonatomic) IBOutlet DGButton *doneButton;
 
 @property (weak, nonatomic) IBOutlet DGButton *boardSchemeButton;
 @property (weak, nonatomic) IBOutlet DGButton *preferencesButton;
@@ -90,8 +90,6 @@
     self.navigationItem.hidesBackButton = YES;
 
     [self layoutObjects];
-
-    self.moreButton = [design designMoreButton:self.moreButton];
     
 }
 
@@ -102,27 +100,27 @@
     float edge = 10.0;
     float gap = 5;
     
-#pragma mark moreButton autoLayout
-    [self.moreButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+#pragma mark doneButton autoLayout
+    [self.doneButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.moreButton.topAnchor    constraintEqualToAnchor:safe.topAnchor   constant:edge].active = YES;
-    [self.moreButton.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
-    [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
-    [self.moreButton.widthAnchor  constraintEqualToConstant:40].active = YES;
+    [self.doneButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
+    [self.doneButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.doneButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.doneButton.widthAnchor  constraintEqualToConstant:60].active = YES;
 
 #pragma mark boardScheme Button autoLayout
     [self.boardSchemeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.boardSchemeButton.centerYAnchor constraintEqualToAnchor:self.moreButton.centerYAnchor constant:0].active = YES;
-    [self.boardSchemeButton.leftAnchor    constraintEqualToAnchor:safe.leftAnchor               constant:edge].active = YES;
+    [self.boardSchemeButton.topAnchor constraintEqualToAnchor:self.doneButton.bottomAnchor constant:gap].active = YES;
+    [self.boardSchemeButton.leftAnchor    constraintEqualToAnchor:safe.leftAnchor              constant:gap].active = YES;
     [self.boardSchemeButton.heightAnchor  constraintEqualToConstant:40].active = YES;
     [self.boardSchemeButton.widthAnchor   constraintEqualToConstant:120].active = YES;
 
 #pragma mark preferences Button autoLayout
     [self.preferencesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.preferencesButton.centerYAnchor constraintEqualToAnchor:self.moreButton.centerYAnchor constant:0].active = YES;
-    [self.preferencesButton.rightAnchor   constraintEqualToAnchor:self.moreButton.leftAnchor    constant:-gap].active = YES;
+    [self.preferencesButton.centerYAnchor constraintEqualToAnchor:self.boardSchemeButton.centerYAnchor constant:0].active = YES;
+    [self.preferencesButton.rightAnchor   constraintEqualToAnchor:safe.rightAnchor    constant:-gap].active = YES;
     [self.preferencesButton.heightAnchor  constraintEqualToConstant:40].active = YES;
     [self.preferencesButton.widthAnchor   constraintEqualToConstant:200].active = YES;
 
@@ -143,7 +141,7 @@
 #pragma mark showRatings autoLayout
     [self.showRatingsOutlet setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.showRatingsOutlet.topAnchor   constraintEqualToAnchor:self.boardSchemeButton.bottomAnchor constant:gap*8].active = YES;
+    [self.showRatingsOutlet.topAnchor   constraintEqualToAnchor:self.boardSchemeButton.bottomAnchor constant:gap*4].active = YES;
     [self.showRatingsOutlet.leftAnchor  constraintEqualToAnchor:safe.leftAnchor                     constant:edge].active = YES;
 
     [self.showRatingsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -189,25 +187,10 @@
 
 }
 
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
-}
 
 - (IBAction)doneAction:(id)sender
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self dismissViewControllerAnimated:YES completion:nil];
-    else
-        [self.navigationController popViewControllerAnimated:TRUE];
-    if(fromRating)
-        [self dismissViewControllerAnimated:YES completion:nil];
-
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)boardSchemeAction:(id)sender
@@ -219,7 +202,7 @@
     // on iPad, this will be a Popover
     // on iPhone, this will be an action sheet
     controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
+    [self presentViewController:controller animated:NO completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
     popController.permittedArrowDirections = UIPopoverArrowDirectionUp;

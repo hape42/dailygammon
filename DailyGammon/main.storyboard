@@ -735,19 +735,56 @@ Did we make you curious?</string>
                         <viewControllerLayoutGuide type="bottom" id="9eT-ms-GpK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uWn-uf-0m0">
-                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y4b-ts-eSw" customClass="DGButton">
+                                <rect key="frame" x="36" y="32" width="83" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Done"/>
+                                <connections>
+                                    <action selector="doneAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="PFE-f1-wKz"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KhK-6X-8IS" customClass="DGButton">
-                                <rect key="frame" x="20" y="161" width="200" height="40"/>
+                                <rect key="frame" x="20" y="75" width="200" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Board Scheme"/>
                                 <connections>
                                     <action selector="boardSchemeAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="aEf-qz-0Mu"/>
                                 </connections>
                             </button>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B5Q-LF-Dwt">
+                                <rect key="frame" x="60" y="123" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="showRatingsAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Fmc-Mh-azT"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Ratings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjB-6V-aqk" customClass="DGLabel">
+                                <rect key="frame" x="141" y="123" width="104" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UTo-1m-rMW">
+                                <rect key="frame" x="60" y="175" width="51" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="showWinLossAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="ByR-bT-hML"/>
+                                </connections>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Opponent history information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KL-L2-hDi" customClass="DGLabel">
+                                <rect key="frame" x="139" y="175" width="270" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bxa-kE-qLV" customClass="DGButton">
-                                <rect key="frame" x="1032" y="161" width="300" height="40"/>
+                                <rect key="frame" x="280" y="75" width="300" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="DailyGammon Preferences"/>
                                 <connections>
@@ -755,7 +792,7 @@ Did we make you curious?</string>
                                 </connections>
                             </button>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qvF-Qc-R29">
-                                <rect key="frame" x="131" y="355" width="51" height="31"/>
+                                <rect key="frame" x="60" y="214" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="iCloudAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="UrB-Y6-CtP"/>
@@ -763,32 +800,32 @@ Did we make you curious?</string>
                                 </connections>
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Use iCloud for Rating data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cem-uN-8qs" customClass="DGLabel">
-                                <rect key="frame" x="210" y="360" width="199" height="21"/>
+                                <rect key="frame" x="139" y="219" width="199" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="iCloudOFF.png" translatesAutoresizingMaskIntoConstraints="NO" id="PpV-zk-ZEl">
-                                <rect key="frame" x="461" y="355" width="35" height="35"/>
+                                <rect key="frame" x="390" y="214" width="35" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="iCloud" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8M-EM-m51" customClass="DGLabel">
-                                <rect key="frame" x="499" y="360" width="48.5" height="21"/>
+                                <rect key="frame" x="428" y="219" width="48.5" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Button Design" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V3Y-ux-NqP" customClass="DGLabel">
-                                <rect key="frame" x="629" y="851" width="108" height="30"/>
+                                <rect key="frame" x="50" y="300" width="108" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qcS-ve-1Xy">
-                                <rect key="frame" x="518" y="943" width="331" height="32"/>
+                                <rect key="frame" x="50" y="320" width="331" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="Outline"/>
@@ -800,55 +837,20 @@ Did we make you curious?</string>
                                     <action selector="buttonDesignAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Wkj-tq-Bke"/>
                                 </connections>
                             </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Pd-Qo-XdU">
-                                <rect key="frame" x="1300" y="32" width="20" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="2Rf-Go-08u" eventType="touchUpInside" id="A0E-tV-ljE"/>
-                                </connections>
-                            </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B5Q-LF-Dwt">
-                                <rect key="frame" x="131" y="225" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="showRatingsAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Fmc-Mh-azT"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Ratings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjB-6V-aqk" customClass="DGLabel">
-                                <rect key="frame" x="212" y="225" width="104" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UTo-1m-rMW">
-                                <rect key="frame" x="131" y="277" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="showWinLossAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="ByR-bT-hML"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Opponent history information" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KL-L2-hDi" customClass="DGLabel">
-                                <rect key="frame" x="210" y="277" width="270" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OdQ-Rh-NwZ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="600"/>
+                    <size key="freeformSize" width="600" height="400"/>
                     <connections>
                         <outlet property="boardSchemeButton" destination="KhK-6X-8IS" id="ZxX-Vs-BZ1"/>
                         <outlet property="buttonDesignLabel" destination="V3Y-ux-NqP" id="icv-76-kog"/>
                         <outlet property="buttonDesignOutlet" destination="qcS-ve-1Xy" id="KSU-Sm-n8Y"/>
+                        <outlet property="doneButton" destination="y4b-ts-eSw" id="2bo-eG-saC"/>
                         <outlet property="iCloudConnected" destination="PpV-zk-ZEl" id="t9h-sM-8LQ"/>
                         <outlet property="iCloudLabel" destination="I8M-EM-m51" id="PjU-Eg-FqD"/>
                         <outlet property="iCloudOutlet" destination="qvF-Qc-R29" id="zMv-od-fA6"/>
-                        <outlet property="moreButton" destination="8Pd-Qo-XdU" id="jmj-9i-ipd"/>
                         <outlet property="preferencesButton" destination="bxa-kE-qLV" id="gcm-qZ-Nwq"/>
                         <outlet property="showRatingsLabel" destination="cjB-6V-aqk" id="cyh-1c-3tC"/>
                         <outlet property="showRatingsOutlet" destination="B5Q-LF-Dwt" id="Ivn-hw-iBZ"/>
