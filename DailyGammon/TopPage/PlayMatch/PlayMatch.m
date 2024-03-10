@@ -1050,10 +1050,8 @@
 }
 
 - (void)actionAllMoves:(UIButton*)button
-{
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    Review *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"Review"];
+{    
+    Review *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"Review"];
     vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]];
 
     [self.navigationController pushViewController:vc animated:NO];

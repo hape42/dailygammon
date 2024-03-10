@@ -301,11 +301,11 @@
         float gap = 10;
         float edge = 5.0;
 
-        if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
+        if(safe.layoutFrame.size.width < 500 )
             gap = (safe.layoutFrame.size.width - (2 * BUTTON_WIDTH)) / 3;
         else
             gap = (safe.layoutFrame.size.width - (4 * BUTTON_WIDTH)) / 5;
-        
+
         self.activeMatchesButtonLeftAnchor.constant = gap;
         self.activeTournamentsButtonLeftAnchor.constant = gap;
 
@@ -723,7 +723,7 @@ didCompleteWithError:(NSError *)error
             break;
    }
 
-    return CGSizeMake(185, height);
+    return CGSizeMake(175, height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -757,8 +757,8 @@ didCompleteWithError:(NSError *)error
     float x = edge;
     float y = edge;
     float maxWidth = cell.frame.size.width - edge - edge;
-    float firstRowWidth = maxWidth * 0.6;
-    float secondRowWidth = maxWidth * 0.4;
+    float firstRowWidth = maxWidth * 0.5;
+    float secondRowWidth = maxWidth * 0.5;
     int labelHeight = 20;
     int buttonHeight = 35;
     
@@ -1138,9 +1138,8 @@ didCompleteWithError:(NSError *)error
         index = 5;
     NSDictionary *review = row[index];
 
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    Review *vc = [app.activeStoryBoard  instantiateViewControllerWithIdentifier:@"Review"];
+    Review *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"Review"];
     vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", [review objectForKey:@"href"]]];
     switch(listTyp)
     {

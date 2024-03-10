@@ -37,7 +37,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
@@ -65,27 +64,12 @@
     design      = [[Design alloc] init];
     tools       = [[Tools alloc] init];
 
-    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.moreButton setImage:image forState:UIControlStateNormal];
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.moreButton.tintColor = [schemaDict objectForKey:@"TintColor"];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     listArray = [[NSMutableArray alloc]init];
 
-    if([design isX])
-    {
-        NSArray *windows = [[UIApplication sharedApplication] windows];
-        UIWindow *keyWindow = (UIWindow *) windows[0];
-        UIEdgeInsets safeArea = keyWindow.safeAreaInsets;
-
-        CGRect frame = self.tableView.frame;
-        frame.origin.x = safeArea.left ;
-        frame.size.width = self.tableView.frame.size.width - safeArea.left ;
-        self.tableView.frame = frame;
-    }
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
     
     self.tableView.backgroundColor = [UIColor colorNamed:@"ColorTableView"];
@@ -124,6 +108,41 @@
     request = nil;
 
     self.matchLengthLabel.text = [NSString stringWithFormat:@"%d point match",matchLength];
+    
+    [self layoutObjects];
+}
+
+#pragma mark - autoLayout
+-(void)layoutObjects
+{
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 10.0;
+    float gap  = 10.0;
+    
+#pragma mark header autoLayout
+    [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.header.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
+    [self.header.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.header.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark matchLength autoLayout
+    [self.matchLengthLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.matchLengthLabel.topAnchor    constraintEqualToAnchor:self.header.bottomAnchor  constant:gap].active = YES;
+    [self.matchLengthLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.matchLengthLabel.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.matchLengthLabel.heightAnchor constraintEqualToConstant:35].active = YES;
+
+#pragma mark tableView autoLayout
+    [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.tableView.topAnchor     constraintEqualToAnchor:self.matchLengthLabel.bottomAnchor                constant:gap].active = YES;
+    [self.tableView.bottomAnchor     constraintEqualToAnchor:safe.bottomAnchor                constant:-gap].active = YES;
+    [self.tableView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.tableView.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
 }
 
 #pragma mark - WaitView
@@ -151,7 +170,6 @@
     
     self.navigationBar.leftBarButtonItems = nil;
 
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
 }
 -(void)readReviewList:(NSString *)htmlString
@@ -392,18 +410,26 @@
 #pragma mark "hape42:0  opponent:1"
 
                 int x = edge + diceSize + gap + diceSize + gap;
-                DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
+                DGLabel *player1 = [[DGLabel alloc] initWithFrame:CGRectMake(edge, y, halfWidth , labelHeight)];
                 player1.textAlignment = NSTextAlignmentCenter;
-                
+                player1.adjustsFontSizeToFitWidth = YES;
+                [player1 setFont:[UIFont boldSystemFontOfSize: 20.0]];
+                player1.numberOfLines = 0;
+                player1.minimumScaleFactor = 0.1;
+
                 x += player1.frame.size.width + gap + diceSize + gap + diceSize + gap;
-                DGLabel *player2 = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, halfWidth - (diceSize + gap + diceSize + gap), labelHeight)];
+                DGLabel *player2 = [[DGLabel alloc] initWithFrame:CGRectMake(edge+halfWidth, y, halfWidth , labelHeight)];
                 player2.textAlignment = NSTextAlignmentCenter;
-                
+                player2.adjustsFontSizeToFitWidth = YES;
+                [player2 setFont:[UIFont boldSystemFontOfSize: 20.0]];
+                player2.numberOfLines = 0;
+                player2.minimumScaleFactor = 0.1;
                 dict = row[1];
-                player1.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
+                player1.text = [NSString stringWithFormat:@"%@", [[dict objectForKey:@"Text"] stringByTrimmingCharactersInSet:
+                                                                  [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
                 dict = row[2];
-                player2.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"Text"]];
-                
+                player2.text = [NSString stringWithFormat:@"%@", [[dict objectForKey:@"Text"] stringByTrimmingCharactersInSet:
+                                                                  [NSCharacterSet whitespaceAndNewlineCharacterSet]]];
                 [cell.contentView addSubview:player1];
                 [cell.contentView addSubview:player2];
                 return cell;
@@ -715,15 +741,6 @@
     [doubleView addSubview:move];
     return doubleView;
 }
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
-}
 
 - (IBAction)moveAction:(UIButton*)button
 {
@@ -735,6 +752,26 @@
  
     return;
 
+
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    if (![self.navigationController.topViewController isKindOfClass:Review.class])
+        return;
+
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+        [self.tableView reloadData];
+
+     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
+     {
+         // Code to be executed after the animation is completed
+     }];
+
+    //XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
 
 }
 

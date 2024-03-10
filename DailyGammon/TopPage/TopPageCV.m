@@ -679,7 +679,7 @@ didCompleteWithError:(NSError *)error
     int buttonHeight = 35;
 
     int height = edge + buttonHeight + gap + labelHeight + gap + labelHeight + gap + (labelHeight*2) ;
-    return CGSizeMake(185, height);
+    return CGSizeMake(175, height);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -717,8 +717,8 @@ didCompleteWithError:(NSError *)error
     float x = edge;
     float y = edge;
     float maxWidth = cell.frame.size.width - edge - edge;
-    float firstRowWidth = maxWidth * 0.6;
-    float secondRowWidth = maxWidth * 0.4;
+    float firstRowWidth = maxWidth * 0.5;
+    float secondRowWidth = maxWidth * 0.5;
     int labelHeight = 20;
     int buttonHeight = 35;
 #pragma mark 1. Line Tournament name
