@@ -741,7 +741,7 @@
 }
 
 #pragma mark - draw actionView
--(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth isPortrait:(BOOL) isPortrait
+-(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth isPortrait:(BOOL) isPortrait maxHeight:(int)maxHeight
 {
     int nameLabelHeight = 0;
     int detailLabelHeight = 0;
@@ -883,6 +883,8 @@
     if(isPortrait)
     {
         actionViewHeight = 200;
+
+        actionViewHeight = maxHeight - boardView.frame.size.height - nameLabelHeight - ( 3 * detailLabelHeight) - nameLabelHeight - ( 3 * detailLabelHeight);
     }
 
     UIView *actionView = [[UIView alloc] initWithFrame:CGRectMake(x,y,

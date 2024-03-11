@@ -307,7 +307,9 @@
     }
     [self.view addSubview:boardView];
    // return;
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth isPortrait:isPortrait];
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+
+    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth isPortrait:isPortrait maxHeight:safe.layoutFrame.size.height];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
@@ -743,15 +745,20 @@
         }
         case REVIEW:
         {
-#pragma mark - preview match
+#pragma mark - review match
+            
+            float skipHeight = 40;
             float gap = 20;
             
             float reviewButtonHeight  = MIN(30,(actionView.layer.frame.size.height / 4) - gap - 5);
             
+            reviewButtonHeight  = MIN(30,((actionView.layer.frame.size.height-skipHeight) / 2)/4);
+            gap  = MIN(20,((actionView.layer.frame.size.height-skipHeight) / 2)/5);
+
             NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
             float width = 150;
             float x = (actionView.frame.size.width/2) - (width / 2);
-            float y = 20;
+            float y = gap;
             NSArray *reviewText = [NSArray arrayWithObjects: @"First Move", @"Prev Move", @"Next Move", @"Last Move",nil];
             for(int i = 0; i < reviewText.count; i++)
             {
