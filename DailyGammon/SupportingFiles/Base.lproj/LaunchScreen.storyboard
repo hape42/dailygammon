@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="ipad12_9" orientation="landscape" layout="fullscreen" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="ipad12_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,27 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startscreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="JXW-7T-cuD">
-                                <rect key="frame" x="0.0" y="362" width="1366" height="300"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dg_startScreen300" translatesAutoresizingMaskIntoConstraints="NO" id="JXW-7T-cuD">
+                                <rect key="frame" x="533" y="362" width="300" height="300"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="ColorViewBackground"/>
                         <constraints>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="0zp-df-rRT"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="4gh-o6-2bE"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5oY-fv-LMd"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="8S8-YN-gUg"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="9b5-Fj-Fng"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="G9B-cb-8gs"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="J5j-Ov-mcp"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="KbC-II-b23"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="RcT-Xt-2xu"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="Tfk-W4-RoZ"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="YkK-Bs-aQP"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Zg8-vk-Gta"/>
-                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="c2U-7k-Ik0"/>
-                            <constraint firstAttribute="trailing" secondItem="JXW-7T-cuD" secondAttribute="trailing" id="jwj-sX-FJh"/>
+                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="ET0-v2-BRX"/>
+                            <constraint firstItem="JXW-7T-cuD" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="rvv-Og-2NL"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -47,7 +35,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="startscreen.png" width="1024" height="300"/>
+        <image name="dg_startScreen300" width="300" height="300"/>
         <namedColor name="ColorViewBackground">
             <color red="0.92156862745098034" green="0.92156862745098034" blue="0.92156862745098034" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
