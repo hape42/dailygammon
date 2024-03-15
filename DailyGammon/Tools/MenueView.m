@@ -245,6 +245,8 @@
 }
 -(void) ratingVC
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     RatingVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"RatingVC"];
     [self.navigationController pushViewController:vc animated:NO];
 }
@@ -262,7 +264,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
-    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

@@ -33,5 +33,7 @@
 
 @property (strong, readwrite, retain, atomic) NSString *chatBuffer;
 
+- (UIMenu *)mainMenu:(UINavigationController *)navigationController button:(UIButton *)menuButton;
+
 @end
 

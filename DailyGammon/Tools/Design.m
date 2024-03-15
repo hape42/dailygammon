@@ -439,7 +439,15 @@
     NSMutableDictionary *schemaDict = [self schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
 
     return [schemaDict objectForKey:@"TintColor"];
+}
 
+- (UIImage *)designSystemImage:(NSString *)imageName
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:20];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    return  [UIImage systemImageNamed:imageName withConfiguration:total];
+    
 }
 - (BOOL)isX
 {

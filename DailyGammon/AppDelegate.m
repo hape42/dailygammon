@@ -25,6 +25,14 @@
 #import "NoInternet.h"
 #import "NoBoard.h"
 #import "SetUp/SetUpVC.h"
+#import "RatingVC.h"
+#import "LoginVC.h"
+#import "SetupVC.h"
+#import "About.h"
+#import <SafariServices/SafariServices.h>
+#import "Player.h"
+#import "GameLoungeCV.h"
+#import "PlayerLists.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -77,7 +85,131 @@
 
     return rootViewController;
 }
+- (UIMenu *)mainMenu:(UINavigationController *)navigationController button:(UIButton *)menuButton
+{
     
+    int countDB = [self.dbConnect countRating];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"iCloud"]boolValue])
+        countDB = 99;
+    int minDB = 5;
+
+    NSMutableArray  *menuArray = [[NSMutableArray alloc] initWithCapacity:9];
+
+ 
+    [menuArray addObject:[UIAction actionWithTitle:@"Top Page"
+                                             image:[design designSystemImage:[NSString stringWithFormat:@"%d.square", [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue]]]
+                                        identifier:@"1"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+        
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        [navigationController pushViewController:vc animated:NO];
+
+    }]];
+    
+    [menuArray addObject:[UIAction actionWithTitle:@"Game Lounge"
+                                             image:[design designSystemImage:@"person.badge.plus"]
+                                        identifier:@"2"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+        
+        GameLoungeCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"GameLoungeCV"];
+        [navigationController pushViewController:vc animated:NO];
+
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Help"
+                                             image:[design designSystemImage:@"questionmark.circle"]
+                                        identifier:@"3"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+        
+        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
+        
+        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Settings"
+                                             image:[design designSystemImage:@"gear.badge.questionmark"]
+                                        identifier:@"4"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        SetUpVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetUpVC"];
+        vc.modalPresentationStyle = UIModalPresentationPopover;
+        [navigationController presentViewController:vc animated:NO completion:nil];
+        
+        UIPopoverPresentationController *popController = [vc popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+       // popController.delegate = self;
+        
+        popController.sourceView = menuButton;
+        popController.sourceRect = menuButton.bounds;
+
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Logout"
+                                             image:[design designSystemImage:@"door.right.hand.open"]
+                                        identifier:@"5"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"user"];
+        [[NSUserDefaults standardUserDefaults] setValue:@"" forKey:@"password"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [navigationController popToRootViewControllerAnimated:NO];
+
+        LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
+        [navigationController pushViewController:vc animated:NO];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"About"
+                                             image:[design designSystemImage:@"info.circle"]
+                                        identifier:@"6"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+
+        About *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"About"];
+        vc.showRemindMeLaterButton = NO;
+        [navigationController pushViewController:vc animated:NO];
+    }]];
+
+    if(countDB > minDB)
+    {
+        [menuArray addObject:[UIAction actionWithTitle:@"Rating"
+                                                 image:[design designSystemImage:@"chart.line.uptrend.xyaxis"]
+                                            identifier:@"7"
+                                               handler:^(__kindof UIAction* _Nonnull action) {
+            [navigationController popToRootViewControllerAnimated:NO];
+
+            RatingVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"RatingVC"];
+            [navigationController pushViewController:vc animated:NO];
+        }]];
+   }
+    
+    [menuArray addObject:[UIAction actionWithTitle:@"Players"
+                                             image:[design designSystemImage:@"person.3"]
+                                        identifier:@"8"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+
+        Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
+        
+        [navigationController pushViewController:vc animated:NO];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Lists"
+                                             image:[design designSystemImage:@"list.number"]
+                                        identifier:@"9"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+        
+        PlayerLists *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerLists"];
+        [navigationController pushViewController:vc animated:NO];
+    }]];
+
+    return [UIMenu menuWithChildren:menuArray];
+
+}
+
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     

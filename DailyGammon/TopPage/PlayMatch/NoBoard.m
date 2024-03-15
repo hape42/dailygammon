@@ -136,6 +136,8 @@
 #pragma mark TopPage
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
         [self.navigationController pushViewController:vc animated:NO];
@@ -222,6 +224,7 @@
 
 -(void)playMatch:(NSString *)matchLink
 {
+    [self.navigationController popToRootViewControllerAnimated:NO];
 
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     vc.matchLink = matchLink;
@@ -236,6 +239,8 @@
     if([ [self.boardDict objectForKey:@"htmlString"] isEqualToString:@""])
     {
         XLog(@"---------> empty htmlString");
+        [self.navigationController popToRootViewControllerAnimated:NO];
+
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
@@ -608,7 +613,8 @@
 - (void)player:(UIButton*)sender
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
+    [self.navigationController popToRootViewControllerAnimated:NO];
+
     Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
 
@@ -631,6 +637,8 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
                                  }];
@@ -710,6 +718,8 @@
                                         } else {
                                             [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
                                         }
+                                                [self.navigationController popToRootViewControllerAnimated:NO];
+
                                                 TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                                 [self.navigationController pushViewController:vc animated:NO];
@@ -938,6 +948,8 @@
                           {
         if (success)
         {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+
             TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
             [self.navigationController pushViewController:vc animated:NO];
