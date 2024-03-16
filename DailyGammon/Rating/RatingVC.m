@@ -65,8 +65,6 @@
 
 @synthesize ratingHigh, ratingLow, dateHigh, dateLow;
 
-@synthesize menueView;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -149,23 +147,13 @@
             break;
     }
 
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
     self.filterButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
 
-    self.moreButton.tintColor = [UIColor yellowColor];
-
-    UIImage *image = [[UIImage imageNamed:@"menue.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self.moreButton setImage:image forState:UIControlStateNormal];
-    
-    self.moreButton.tintColor = [UIColor colorNamed:@"ColorSwitch"];
-
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithHierarchicalColor:[design getTintColorSchema]];
-
     UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
-
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
 
-    image = [UIImage systemImageNamed:@"slider.horizontal.3" withConfiguration:total];
+    UIImage *image = [UIImage systemImageNamed:@"slider.horizontal.3" withConfiguration:total];
     
     [self.filterButton setImage:image forState:UIControlStateNormal];
     self.filterButton.tintColor = [design getTintColorSchema];
@@ -174,6 +162,10 @@
     ratingLow = 99999;
     dateHigh = @"";
     dateLow = @"";
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
 
 }
 
@@ -225,11 +217,6 @@
     self.header.textColor = [design getTintColorSchema];
     self.moreButton = [design designMoreButton:self.moreButton];
     
-//    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-//    UIImage *image = [[UIImage imageNamed:@"slider"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    [self.filterButton setImage:image forState:UIControlStateNormal];
-//    self.filterButton.tintColor = [schemaDict objectForKey:@"TintColor"];
-
     [self layoutObjects];
     [self initGraph];
 
@@ -416,16 +403,6 @@
 
     [self presentViewController:shareVC animated:YES completion:nil];
 
-}
-
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
 }
 
 #pragma mark - Filter

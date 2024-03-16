@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import "MenueView.h"
 #import "ChatView.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -33,7 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) BOOL isReview;
 @property (readwrite, assign, atomic) float zoomFactor;
 
-@property (strong, nonatomic, readwrite) MenueView *menueView;
 @property (strong, nonatomic, readwrite) ChatView  *chatView;
 
 @property (strong, nonatomic, readwrite) UIView *boardView;

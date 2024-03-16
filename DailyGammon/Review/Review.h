@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "WaitView.h"
-#import "MenueView.h"
 
 @class Design;
 @class Tools;
@@ -27,7 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, retain, nonatomic) NSMutableArray *listArray;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
-@property (strong, nonatomic, readwrite) MenueView *menueView;
 
 @end
 

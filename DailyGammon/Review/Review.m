@@ -54,7 +54,6 @@
 @synthesize player1wonGame;
 
 @synthesize waitView;
-@synthesize menueView;
 
 - (void)viewDidLoad
 {

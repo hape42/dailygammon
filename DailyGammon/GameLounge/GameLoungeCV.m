@@ -42,7 +42,6 @@
 
 @synthesize design, preferences, rating, tools;
 @synthesize waitView;
-@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -59,6 +58,9 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
 }
 
 #pragma mark - WaitView
@@ -563,18 +565,6 @@ didCompleteWithError:(NSError *)error
     alert = [design makeBackgroundColor:alert];
     
     [self presentViewController:alert animated:YES completion:nil];
-}
-
-#pragma mark - Header
-
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
 }
 
 #pragma mark - autoLayout

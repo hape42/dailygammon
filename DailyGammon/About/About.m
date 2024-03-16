@@ -44,8 +44,6 @@
 
 @synthesize showRemindMeLaterButton;
 
-@synthesize menueView;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -79,7 +77,10 @@
     self.infoText.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
     self.infoText.font = [UIFont systemFontOfSize:25.f];
     
-    return;
+    
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
 
 }
 #define DATE [NSString stringWithUTF8String:__DATE__]
@@ -471,16 +472,6 @@ didCompleteWithError:(NSError *)error
     [self.infoText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.infoText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
 
-}
-#pragma mark -  menue
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
 }
 
 @end

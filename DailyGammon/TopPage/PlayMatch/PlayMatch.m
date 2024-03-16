@@ -79,7 +79,6 @@
 
 @synthesize matchTools;
 
-@synthesize menueView;
 @synthesize chatView;
 
 @synthesize boardView, actionView;
@@ -129,6 +128,10 @@
     self.matchCount = [[[NSUserDefaults standardUserDefaults] valueForKey:@"matchCount"]intValue];
     [self.matchCountLabel setText:[NSString stringWithFormat:@"%d", self.matchCount]];
 
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,17 +159,6 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
 }
 
 - (void) showMatchCount
@@ -1522,7 +1514,6 @@
      {
          // Code to be executed during the animation
         [self->chatView dismiss];
-        [self->menueView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch:NO];

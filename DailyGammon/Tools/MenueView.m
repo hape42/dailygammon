@@ -25,7 +25,7 @@
 
 #import "TopPageCV.h"
 
-@implementation MenueView
+@implementation MenueViewx
 
 @synthesize design, tools;
 @synthesize presentingView;

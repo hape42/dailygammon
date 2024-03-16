@@ -52,7 +52,6 @@
 @synthesize design, tools;
 
 @synthesize name;
-@synthesize menueView;
 
 @synthesize chooseArray;
 
@@ -532,16 +531,6 @@
     [self.navigationController pushViewController:vc animated:NO];
 }
 */
-- (IBAction)moreAction:(id)sender
-{
-    return;
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
-}
 
 #pragma mark - Search Implementation
 

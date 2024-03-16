@@ -65,7 +65,6 @@
 
 @synthesize design, preferences, rating, tools;
 @synthesize waitView;
-@synthesize menueView;
 
 @synthesize finishedMatchChat, finishedmatchChatViewFrame, isFinishedMatch;
 @synthesize quickmessageChat, quickmessageChatViewFrame, isQuickmessage;
@@ -86,6 +85,10 @@
     oneFingerTap.numberOfTapsRequired = 1;
     oneFingerTap.numberOfTouchesRequired = 1;
     [self.view addGestureRecognizer:oneFingerTap];
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
 
 }
 
@@ -991,16 +994,6 @@
 }
 
 #pragma mark - Header
-
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
-}
 
 //- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 //{

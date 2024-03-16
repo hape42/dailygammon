@@ -154,9 +154,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="8z1-bn-naV" eventType="touchUpInside" id="Bzo-Iq-d9M"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="27" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sx3-1W-YLW">
                                 <rect key="frame" x="932" y="30" width="40" height="22"/>
@@ -260,9 +257,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="jRp-st-V13" eventType="touchUpInside" id="6we-BQ-z2e"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="twk-a7-fNW"/>
@@ -298,9 +292,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="fCj-kU-dF3" eventType="touchUpInside" id="99A-7h-KEA"/>
-                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ssa-3T-006">
                                 <rect key="frame" x="20" y="72" width="1316" height="912"/>
@@ -361,9 +352,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="3so-3D-kpy" eventType="touchUpInside" id="KQW-DL-8ZD"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="chZ-h7-lJp"/>
@@ -401,9 +389,6 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="KJQ-X5-cG5" eventType="touchUpInside" id="wTo-Aj-lzQ"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rxG-Em-ML2">
                                 <rect key="frame" x="54" y="172" width="1292" height="563"/>
@@ -546,9 +531,6 @@ Did we make you curious?</string>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <color key="tintColor" systemColor="systemPurpleColor"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="OV7-UT-Ozl" eventType="touchUpInside" id="t6G-be-jxZ"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p14-Tr-aB6">
                                 <rect key="frame" x="1253" y="8" width="21" height="25"/>
@@ -638,9 +620,6 @@ Did we make you curious?</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="uYK-ri-mtR" eventType="touchUpInside" id="6ZY-Tm-wod"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ily-lg-mNF" customClass="DGButton">
                                 <rect key="frame" x="20" y="109" width="400" height="35"/>
@@ -1206,9 +1185,6 @@ Did we make you curious?</string>
                                 <rect key="frame" x="1326" y="29" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="menue.png"/>
-                                <connections>
-                                    <action selector="moreAction:" destination="QvS-W2-5mE" eventType="touchUpInside" id="Z5L-1k-e5v"/>
-                                </connections>
                             </button>
                             <searchBar contentMode="redraw" fixedFrame="YES" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R52-Mn-bg4">
                                 <rect key="frame" x="20" y="150" width="1328" height="56"/>

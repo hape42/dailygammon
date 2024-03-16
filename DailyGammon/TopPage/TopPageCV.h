@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "WaitView.h"
-#import "MenueView.h"
 #import "SortView.h"
 
 @class Design;
@@ -34,7 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
 
-@property (strong, nonatomic, readwrite) MenueView *menueView;
 @property (strong, nonatomic, readwrite) SortView *sortView;
 
 @end

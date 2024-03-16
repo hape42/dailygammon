@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Tools;
 @class DGButton;
 
-@interface MenueView : UIView<UIPopoverPresentationControllerDelegate>
+@interface MenueViewx : UIView<UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) UINavigationController *navigationController;
 @property (strong, readwrite, retain, atomic) UIView *presentingView;

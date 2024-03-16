@@ -45,7 +45,6 @@
 
 @synthesize design, ratingTools;
 @synthesize fromRating;
-@synthesize menueView;
 
 - (void)viewDidLoad
 {
@@ -297,7 +296,6 @@
 }
 - (IBAction)buttonDesignAction:(id)sender
 {
-    [menueView dismiss];
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"buttonDesign"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonDesign" object:self];

@@ -58,7 +58,6 @@
 @synthesize design, tools;
 @synthesize listTyp;
 @synthesize waitView;
-@synthesize menueView;
 
 #define BUTTON_WIDTH 180
 
@@ -77,7 +76,11 @@
     
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
-    
+  
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
+
 }
 
 #pragma mark - WaitView
@@ -1220,16 +1223,6 @@ didCompleteWithError:(NSError *)error
 
     return;
 
-}
-
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
 }
 
 - (IBAction)opponentAction:(UIButton*)button
