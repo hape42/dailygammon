@@ -223,9 +223,6 @@
                                 <rect key="frame" x="176" y="100" width="532" height="35"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Recent Opponent Move"/>
-                                <connections>
-                                    <action selector="sortAction:" destination="jRp-st-V13" eventType="touchUpInside" id="7bt-n8-o6p"/>
-                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="woT-G4-6Qd">
                                 <rect key="frame" x="0.0" y="140" width="1366" height="881"/>
@@ -1222,7 +1219,7 @@ Did we make you curious?</string>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jOe-dv-Otc" customClass="DGButton">
                                 <rect key="frame" x="20" y="89" width="158" height="35"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Sort By Rating"/>
+                                <state key="normal" title="Choose"/>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Uqn-5J-n2g"/>

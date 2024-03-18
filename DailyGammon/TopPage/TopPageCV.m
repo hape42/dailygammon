@@ -41,7 +41,7 @@
 
 @implementation TopPageCV
 
-@synthesize menueView, sortView, waitView;
+@synthesize waitView;
 @synthesize design, preferences, rating, tools, ratingTools;
 @synthesize timeRefresh, refreshButtonPressed, timer;
 
@@ -67,6 +67,12 @@
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
+    self.moreButton.showsMenuAsPrimaryAction = YES;
+
+    [self sortUpdate];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -350,44 +356,76 @@ didCompleteWithError:(NSError *)error
     [self stopActivityIndicator];
 }
 #pragma mark - sort
-- (void)sortUpdate
+-(void)sortUpdate
 {
-    // organize all the sort things here
-    switch([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue])
-    {
-        case 1:
-            [self matchOrdering:0];
-            [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
-            break;
-        case 2:
-            [self matchOrdering:1];
-            [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
-           break;
-        case 3:
-            [self matchOrdering:2];
-            [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
-            break;
-        case 4:
-            [self matchOrdering:3];
-            [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
-           break;
-        case 5:
-            [self sortEvent];
-            [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
-            break;
-        case 6:
-            [self sortRound];
-            [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
-            break;
-        case 7:
-            [self sortLength];
-            [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
-            break;
-        case 8:
-            [self sortOpponent];
-            [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
-            break;
-    }
+    NSMutableArray  *menuArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Grace then Pool"
+                                             image:nil
+                                        identifier:@"0"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self matchOrdering:0];
+        [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
+   }]];
+   
+    [menuArray addObject:[UIAction actionWithTitle:@"Pool"
+                                             image:nil
+                                        identifier:@"1"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self matchOrdering:1];
+        [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Grace + Pool"
+                                             image:nil
+                                        identifier:@"2"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self matchOrdering:2];
+        [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Recent Opponent Move"
+                                             image:nil
+                                        identifier:@"3"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self matchOrdering:3];
+        [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Event"
+                                             image:nil
+                                        identifier:@"4"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self sortEvent];
+        [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Round"
+                                             image:nil
+                                        identifier:@"5"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self sortRound];
+        [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Length"
+                                             image:nil
+                                        identifier:@"6"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self sortLength];
+        [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Opponent Name"
+                                             image:nil
+                                        identifier:@"7"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self sortOpponent];
+        [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
+    }]];
+
+    self.sortButton.menu = [UIMenu menuWithChildren:menuArray];
+    self.sortButton.showsMenuAsPrimaryAction = YES;
     [self.collectionView reloadData];
 
 }
@@ -855,25 +893,6 @@ didCompleteWithError:(NSError *)error
 
     return;
 
-}
-- (IBAction)moreAction:(id)sender
-{
-    if(!menueView)
-    {
-        menueView = [[MenueView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [menueView showMenueInView:self.view];
-}
-
-- (IBAction)sortAction:(id)sender
-{
-    if(!sortView)
-    {
-        sortView = [[SortView alloc]init];
-        menueView.navigationController = self.navigationController;
-    }
-    [sortView showMenueInView:self.view];
 }
 
 - (IBAction)eventAction:(UIButton*)button

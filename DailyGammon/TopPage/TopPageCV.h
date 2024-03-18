@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 #import "WaitView.h"
-#import "SortView.h"
 
 @class Design;
 @class Preferences;
@@ -32,8 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, assign, atomic) bool refreshButtonPressed;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
-
-@property (strong, nonatomic, readwrite) SortView *sortView;
 
 @end
 
