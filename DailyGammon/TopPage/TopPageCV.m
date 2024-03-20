@@ -869,6 +869,8 @@ didCompleteWithError:(NSError *)error
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     if([preferences isMiniBoard])
     {
         [self miniBoardSchemaWarning];
@@ -885,7 +887,7 @@ didCompleteWithError:(NSError *)error
     
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
     NSDictionary *match = row[8];
-    vc.matchLink = [match objectForKey:@"href"];
+    app.matchLink = [match objectForKey:@"href"];
     vc.topPageArray = self.topPageArray;
     [self.navigationController pushViewController:vc animated:NO];
     

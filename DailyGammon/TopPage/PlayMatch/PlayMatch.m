@@ -72,7 +72,8 @@
 @implementation PlayMatch
 
 @synthesize design, match, rating, tools;
-@synthesize matchLink, isReview;
+//@synthesize matchLink, isReview;
+@synthesize isReview;
 @synthesize ratingDict;
 
 @synthesize topPageArray;
@@ -167,6 +168,8 @@
 }
 -(void)showMatch:(BOOL)readMatch
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     [tools matchCount];
 
     [chatView dismiss];
@@ -193,7 +196,7 @@
 
     if(readMatch || (self.boardDict == nil))
     {
-        self.boardDict = [match readMatch:matchLink reviewMatch:isReview];
+        self.boardDict = [match readMatch:app.matchLink reviewMatch:isReview];
       //  XLog(@" gelesen");
     }
 //    else
@@ -204,6 +207,7 @@
     {
         NoBoard *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"NoBoard"];
         vc.boardDict = self.boardDict;
+        vc.presentingVC = self;
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -232,7 +236,6 @@
     }
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
         TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
@@ -269,6 +272,8 @@
 
 -(void)drawPlayingAreas
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
 
@@ -381,9 +386,10 @@
         case NEXTGAME:
         {
             // seltsamer -0- Something unexpected happend!
-            
-            matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
-            NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
+            NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
             //    XLog(@"%@",urlMatch);
             NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
             
@@ -827,16 +833,18 @@
 {
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch:YES];
 }
 - (void)actionSubmitForcedMove
 {
     //NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     //NSMutableDictionary *dict = attributesArray[0];
-    
-    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 
@@ -844,20 +852,25 @@
 {
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
-    
-    matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch:YES];
 }
 
 - (void)actionUnDoMove
 {
-    matchLink = [self.actionDict objectForKey:@"UndoMove"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [self.actionDict objectForKey:@"UndoMove"];
     [self showMatch:YES];
 }
 
 - (void)actionSwap
 {
-    matchLink = [self.actionDict objectForKey:@"SwapDice"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [self.actionDict objectForKey:@"SwapDice"];
     [self showMatch:YES];
 }
 
@@ -876,17 +889,21 @@
 
 - (void)actionRoll
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionDouble
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 3)
     {
         if(self.verifiedDouble)
         {
-            matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [self.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -912,23 +929,29 @@
     }
     else
     {
-        matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
 - (void)actionBeaver
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionTakeBeaver
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 
 - (void)actionTake
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     BOOL verify = FALSE;
     if(attributesArray.count > 2)
@@ -948,7 +971,7 @@
     {
         if(self.verifiedTake)
         {
-            matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -971,12 +994,14 @@
     }
     else
     {
-        matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [self.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
 - (void)actionPass
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     BOOL verify = FALSE;
     if(attributesArray.count > 2)
@@ -996,7 +1021,7 @@
     {
         if(self.verifiedPass)
         {
-            matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [self.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -1019,32 +1044,40 @@
     }
     else
     {
-        matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [self.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
 
 - (void)actionNext
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionNext__
 {
-    matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
     [self showMatch:YES];
 }
 
 - (void)actionSkipGame
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     [chatView dismiss];
-    matchLink = [self.actionDict objectForKey:@"SkipGame"];
+    app.matchLink = [self.actionDict objectForKey:@"SkipGame"];
     [self showMatch:YES];
 }
 
 - (void)actionReview:(UIButton*)button
 {
-    matchLink = (NSString *)[button.layer valueForKey:@"href"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    app.matchLink = (NSString *)[button.layer valueForKey:@"href"];
     [self showMatch:YES];
 }
 
@@ -1083,6 +1116,8 @@
 // are triggered by notification from chatView
 - (IBAction)chatNextButton:(NSNotification *)notification
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
     
@@ -1101,7 +1136,7 @@
 
     NSString *chatString = [tools cleanChatString:chat];
 
-    matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
@@ -1113,7 +1148,7 @@
     
     if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > 3)
     {
-        NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+        NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
         //    XLog(@"%@",urlMatch);
         NSError *error = nil;
         [NSData dataWithContentsOfURL:urlMatch options:NSDataReadingUncached error:&error];
@@ -1124,7 +1159,7 @@
             [topPageArray removeObjectAtIndex:0];
             NSArray *zeile = topPageArray[0];
             NSDictionary *match = zeile[8];
-            matchLink = [match objectForKey:@"href"];
+            app.matchLink = [match objectForKey:@"href"];
         }
     }
     [self showMatch:YES];
@@ -1132,6 +1167,8 @@
 }
 - (IBAction)chatTopButton:(NSNotification *)notification
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
 
@@ -1149,7 +1186,7 @@
     }
     NSString *chatString = [tools cleanChatString:chat];
 
-    matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [self.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
@@ -1238,6 +1275,8 @@
 }
 - (void)cellTouched:(UIGestureRecognizer *)gesture
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     CGPoint tapLocation = [gesture locationInView:self.view];
     for(NSMutableDictionary *dict in self.moveArray)
     {
@@ -1249,7 +1288,7 @@
         {
             if([[dict objectForKey:@"href"] length] != 0)
             {
-                matchLink = [dict objectForKey:@"href"];
+                app.matchLink = [dict objectForKey:@"href"];
                 [self showMatch:YES];
             }
         }

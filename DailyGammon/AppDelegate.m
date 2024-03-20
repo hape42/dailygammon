@@ -43,6 +43,8 @@
 @synthesize design,tools, preferences, ratingCD,activeStoryBoard;
 @synthesize chatBuffer;
 
+@synthesize matchLink;
+
 //- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 //{
 //    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;

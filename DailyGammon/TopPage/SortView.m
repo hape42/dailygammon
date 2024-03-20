@@ -173,7 +173,7 @@
 
     return;
 }
-
+ 
 -(void) sortNotification:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setInteger:((DGButton*)sender).tag  forKey:sortButton];

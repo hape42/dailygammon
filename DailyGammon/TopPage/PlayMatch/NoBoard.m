@@ -69,6 +69,8 @@
 @synthesize finishedMatchChat, finishedmatchChatViewFrame, isFinishedMatch;
 @synthesize quickmessageChat, quickmessageChatViewFrame, isQuickmessage;
 
+@synthesize presentingVC;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -227,11 +229,10 @@
 
 -(void)playMatch:(NSString *)matchLink
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-    vc.matchLink = matchLink;
-    [self.navigationController pushViewController:vc animated:NO];
+    app.matchLink = matchLink;
+    [self.navigationController popToViewController:presentingVC animated:NO];
 
     return;
 }
@@ -341,13 +342,14 @@
     isFinishedMatch = YES;
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     bool withChat = NO;
-    if([chatArray[0] containsString:@"chat"])
+    if([chatArray[0] containsString:@"chat"] || ([chatArray[0] containsString:@"Quote previous message"]))
         withChat = YES;
     int edge = 10;
     int gap = 10;
     float buttonWidth = 150.0;
     float buttonHight = 30;
-
+    float scoreWidth = 50;
+    
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
 #pragma mark infoView
@@ -359,7 +361,7 @@
 
     if(withChat)
     {
-        [self.infoView.heightAnchor constraintEqualToAnchor:safe.heightAnchor constant:-50].active = YES;
+        [self.infoView.heightAnchor constraintEqualToAnchor:safe.heightAnchor constant:-edge].active = YES;
         [self.infoView.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-edge].active = YES;
     }
     else
@@ -367,8 +369,8 @@
         [self.infoView.heightAnchor constraintEqualToConstant:350].active = YES;
         [self.infoView.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     }
-    [self.infoView.leftAnchor   constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-    [self.infoView.rightAnchor  constraintEqualToAnchor:self.moreButton.leftAnchor constant:0].active = YES;
+    [self.infoView.leftAnchor   constraintEqualToAnchor:safe.leftAnchor            constant:edge].active  = YES;
+    [self.infoView.rightAnchor  constraintEqualToAnchor:self.moreButton.leftAnchor constant:0].active     = YES;
 
 #pragma mark matchName
 
@@ -388,10 +390,10 @@
     
     [matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [matchName.topAnchor constraintEqualToAnchor:self.infoView.topAnchor constant:edge].active = YES;
-    [matchName.heightAnchor constraintEqualToConstant:40].active = YES;
-    [matchName.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [matchName.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [matchName.topAnchor    constraintEqualToAnchor:self.infoView.topAnchor   constant:0].active     = YES;
+    [matchName.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [matchName.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [matchName.heightAnchor constraintEqualToConstant:30].active                                     = YES;
 
 #pragma mark winner
 
@@ -410,17 +412,17 @@
     [winner setAttributedText:attr];
     winner.adjustsFontSizeToFitWidth = YES;
     winner.numberOfLines = 0;
-    winner.minimumScaleFactor = 0.5;
+    winner.minimumScaleFactor = 0.1;
     winner.adjustsFontSizeToFitWidth = YES;
     
     [self.infoView addSubview:winner];
     
     [winner setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [winner.topAnchor constraintEqualToAnchor:matchName.bottomAnchor constant:0].active = YES;
-    [winner.heightAnchor constraintEqualToConstant:30].active = YES;
-    [winner.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [winner.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [winner.topAnchor    constraintEqualToAnchor:matchName.bottomAnchor    constant:0].active     = YES;
+    [winner.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [winner.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [winner.heightAnchor constraintEqualToConstant:30].active                                     = YES;
 
 #pragma mark length
 
@@ -432,10 +434,10 @@
     
     [length setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [length.topAnchor constraintEqualToAnchor:winner.bottomAnchor constant:0].active = YES;
-    [length.heightAnchor constraintEqualToConstant:30].active = YES;
-    [length.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [length.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [length.topAnchor    constraintEqualToAnchor:winner.bottomAnchor       constant:0].active     = YES;
+    [length.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [length.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [length.heightAnchor constraintEqualToConstant:30].active                                     = YES;
 
 #pragma mark buttonPlayer1 player1Score buttonPlayer2 player2Score
 
@@ -466,41 +468,41 @@
 #pragma mark autoLayout buttonPlayer1 player1Score buttonPlayer2 player2Score
 
     [self.buttonPlayer1 setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.player1Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.player1Score  setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.buttonPlayer2 setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.player2Score setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.player2Score  setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.buttonPlayer1.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
-    [self.buttonPlayer1.heightAnchor constraintEqualToConstant:30].active = YES;
-    [self.buttonPlayer1.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [self.buttonPlayer1.widthAnchor constraintEqualToConstant:150].active = YES;
-    
-    [self.player1Score.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap].active = YES;
-    [self.player1Score.heightAnchor constraintEqualToConstant:30].active = YES;
-    [self.player1Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer1.rightAnchor constant:gap].active = YES;
-    [self.player1Score.widthAnchor constraintEqualToConstant:50].active = YES;
+    [self.buttonPlayer1.topAnchor    constraintEqualToAnchor:length.bottomAnchor      constant:gap].active  = YES;
+    [self.buttonPlayer1.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [self.buttonPlayer1.widthAnchor  constraintEqualToConstant:buttonWidth].active                          = YES;
+    [self.buttonPlayer1.heightAnchor constraintEqualToConstant:buttonHight].active                          = YES;
 
-    [self.buttonPlayer2.heightAnchor constraintEqualToConstant:30].active = YES;
-    [self.buttonPlayer2.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.player1Score.topAnchor    constraintEqualToAnchor:length.bottomAnchor            constant:gap].active = YES;
+    [self.player1Score.leftAnchor   constraintEqualToAnchor:self.buttonPlayer1.rightAnchor constant:gap].active = YES;
+    [self.player1Score.widthAnchor  constraintEqualToConstant:scoreWidth].active  = YES;
+    [self.player1Score.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
 
-    [self.player2Score.heightAnchor constraintEqualToConstant:30].active = YES;
-    [self.player2Score.widthAnchor constraintEqualToConstant:50].active = YES;
+    [self.buttonPlayer2.heightAnchor constraintEqualToConstant:buttonHight].active  = YES;
+    [self.buttonPlayer2.widthAnchor  constraintEqualToConstant:buttonWidth].active  = YES;
+
+    [self.player2Score.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [self.player2Score.widthAnchor constraintEqualToConstant:scoreWidth].active   = YES;
 
     self.landscapeConstraints = @[
-        [self.buttonPlayer2.topAnchor constraintEqualToAnchor:length.bottomAnchor constant:gap],
-        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.player1Score.rightAnchor constant:gap],
-        [self.player2Score.topAnchor constraintEqualToAnchor:self.buttonPlayer2.topAnchor constant:0],
-        [self.player2Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
+        [self.buttonPlayer2.topAnchor  constraintEqualToAnchor:length.bottomAnchor            constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.player1Score.rightAnchor  constant:gap],
+        [self.player2Score.topAnchor   constraintEqualToAnchor:self.buttonPlayer2.topAnchor   constant:0],
+        [self.player2Score.leftAnchor  constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
 
     ];
     self.portraitConstraints = @[
-        [self.buttonPlayer2.topAnchor constraintEqualToAnchor:self.buttonPlayer1.bottomAnchor constant:gap],
-        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge] ,
-        [self.player2Score.topAnchor constraintEqualToAnchor:self.buttonPlayer2.topAnchor constant:0],
-        [self.player2Score.leftAnchor constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
+        [self.buttonPlayer2.topAnchor  constraintEqualToAnchor:self.buttonPlayer1.bottomAnchor constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor        constant:edge] ,
+        [self.player2Score.topAnchor   constraintEqualToAnchor:self.buttonPlayer2.topAnchor    constant:0],
+        [self.player2Score.leftAnchor  constraintEqualToAnchor:self.buttonPlayer2.rightAnchor  constant:gap]
     ];
 
-    if(safe.layoutFrame.size.width > (10 + 150 + 10 + 50 + 10 + 150 + 10 + 50 + 10) )
+    if(safe.layoutFrame.size.width > (edge + buttonWidth + gap + scoreWidth + gap + buttonWidth + gap + scoreWidth + edge) )
     {
         [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
         [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
@@ -561,19 +563,10 @@
 #pragma mark finishedMatchChat & opponentChat
     if(withChat)
     {
-        // Calculate maximum window height
         XLog(@"with chat");
         finishedMatchChat  = [[UITextView alloc] initWithFrame:CGRectZero];
         finishedmatchChatViewFrame = finishedMatchChat.frame;
         finishedMatchChat.textAlignment = NSTextAlignmentLeft;
-        NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
-        NSString *chatString = @"";
-        for( NSString *chatZeile in chatArray)
-        {
-            if(![chatZeile containsString:@"You may chat with"])
-                chatString = [NSString stringWithFormat:@"%@ %@", chatString, chatZeile];
-        }
-        finishedMatchChat.text = chatString;
         finishedMatchChat.editable = YES;
         [finishedMatchChat setDelegate:self];
         finishedMatchChat.tag = 1000;
@@ -583,32 +576,45 @@
         [finishedMatchChat setTranslatesAutoresizingMaskIntoConstraints:NO];
 
         [finishedMatchChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
-        [finishedMatchChat.heightAnchor constraintEqualToConstant:100].active = YES;
+        [finishedMatchChat.heightAnchor constraintEqualToConstant:90].active = YES;
         [finishedMatchChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
         [finishedMatchChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
 
     }
-    else
+
+    NSString *opponentMessage = chatArray[0];
+    NSRange range = [opponentMessage rangeOfString:@"Quote previous message"];
+
+    if (range.location != NSNotFound) 
     {
-        XLog(@"no chat, just a message");
-
-        UITextView *opponentChat = [[UITextView alloc] init];
-        opponentChat.editable = NO;
-        [opponentChat setFont:[UIFont systemFontOfSize:15]];
-        opponentChat.backgroundColor = [UIColor clearColor];
-        opponentChat.textColor = [design getTintColorSchema];
-        opponentChat.text = chatArray[0];
-        opponentChat.layer.borderColor = [design getTintColorSchema].CGColor;
-        [self.infoView addSubview:opponentChat];
-
-        [opponentChat setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-        [opponentChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
-        [opponentChat.heightAnchor constraintEqualToConstant:80].active = YES;
-        [opponentChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-        [opponentChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
-
+        opponentMessage = [opponentMessage substringToIndex:range.location];
     }
+    if ([opponentMessage hasPrefix:@"\n"]) 
+    {
+        opponentMessage = [opponentMessage substringFromIndex:1];
+    }
+
+    UITextView *opponentChat = [[UITextView alloc] init];
+    opponentChat.editable = NO;
+    [opponentChat setFont:[UIFont systemFontOfSize:15]];
+    opponentChat.backgroundColor = [UIColor clearColor];
+    opponentChat.textColor = [design getTintColorSchema];
+    opponentChat.text = opponentMessage;
+    opponentChat.layer.borderColor = [design getTintColorSchema].CGColor;
+    [self.infoView addSubview:opponentChat];
+
+    [opponentChat setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [opponentChat.topAnchor constraintEqualToAnchor:self.buttonPlayer2.bottomAnchor constant:gap].active = YES;
+    if(withChat)
+        [opponentChat.bottomAnchor constraintEqualToAnchor:finishedMatchChat.topAnchor constant:0].active = YES;
+    else
+        [opponentChat.bottomAnchor constraintEqualToAnchor:buttonNext.topAnchor constant:-edge].active = YES;
+
+    [opponentChat.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [opponentChat.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+
+    
 
     return;
 }

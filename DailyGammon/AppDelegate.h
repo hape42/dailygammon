@@ -35,5 +35,7 @@
 
 - (UIMenu *)mainMenu:(UINavigationController *)navigationController button:(UIButton *)menuButton;
 
+@property (strong, readwrite, retain, atomic) NSString *matchLink;
+
 @end
 

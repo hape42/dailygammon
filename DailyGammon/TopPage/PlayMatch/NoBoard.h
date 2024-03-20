@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, retain, nonatomic) UITextView *quickmessageChat;
 @property (readwrite, assign, atomic) BOOL isQuickmessage;
 
+@property (strong, readwrite, retain, atomic) UIViewController *presentingVC;
+
 @end
 
 NS_ASSUME_NONNULL_END

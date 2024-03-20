@@ -743,8 +743,10 @@
 
 - (IBAction)moveAction:(UIButton*)button
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-    vc.matchLink = (NSString *)[button.layer valueForKey:@"href"];
+    app.matchLink = (NSString *)[button.layer valueForKey:@"href"];
     vc.isReview = TRUE;
     vc.topPageArray = [[NSMutableArray alloc]init];
     [self.navigationController pushViewController:vc animated:NO];

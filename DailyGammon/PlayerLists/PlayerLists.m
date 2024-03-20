@@ -1168,9 +1168,10 @@ didCompleteWithError:(NSError *)error
     NSArray *row = self.listArray[button.tag];
     
     NSDictionary *match = row[5];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
-    vc.matchLink = [match objectForKey:@"href"];
+    app.matchLink = [match objectForKey:@"href"];
     vc.isReview = TRUE;
     vc.topPageArray = [[NSMutableArray alloc]init];
     [self.navigationController pushViewController:vc animated:NO];
