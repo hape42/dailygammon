@@ -1228,13 +1228,10 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)opponentAction:(UIButton*)button
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[button.layer valueForKey:@"name"];
 
     [self.navigationController pushViewController:vc animated:NO];
-
 
 }
 

@@ -621,10 +621,9 @@
 
 - (void)player:(UIButton*)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [self.navigationController popToRootViewControllerAnimated:NO];
 
-    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
 
     [self.navigationController pushViewController:vc animated:NO];

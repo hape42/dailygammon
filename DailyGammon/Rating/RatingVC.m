@@ -355,10 +355,8 @@
                                 actionWithTitle:@"Setting"
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
-                                {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        SetUpVC *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"SetUpVC"];
+                                {        
+        SetUpVC *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"SetUpVC"];
         controller.fromRating = TRUE;
         // present the controller
         // on iPad, this will be a Popover

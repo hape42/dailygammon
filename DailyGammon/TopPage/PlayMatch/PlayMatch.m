@@ -236,8 +236,7 @@
     }
     if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
     {
-
-        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -245,10 +244,8 @@
         [self errorAction:1];
 
     if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
-    {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        TopPageCV *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"TopPageCV"];
+    {        
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
@@ -1093,18 +1090,14 @@
 
 - (void)playerLists:(UIButton*)sender
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    PlayerLists *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerLists"];
+    PlayerLists *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerLists"];
 
     [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void)opponent:(UIButton*)sender
-{
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
-    Player *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"PlayerVC"];
+{    
+    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
 
     [self.navigationController pushViewController:vc animated:NO];
