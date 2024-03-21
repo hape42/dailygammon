@@ -427,7 +427,6 @@ didCompleteWithError:(NSError *)error
     self.sortButton.menu = [UIMenu menuWithChildren:menuArray];
     self.sortButton.showsMenuAsPrimaryAction = YES;
     [self.collectionView reloadData];
-
 }
 
 -(void)matchOrdering:(int)typ

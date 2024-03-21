@@ -654,7 +654,6 @@
     [alert addAction:okButton];
     alert.view.tag = ALERT_VIEW_TAG;
 
-    alert = [design makeBackgroundColor:alert];
     
     [self presentViewController:alert animated:YES completion:nil];
     

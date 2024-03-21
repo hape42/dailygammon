@@ -561,9 +561,7 @@ didCompleteWithError:(NSError *)error
     }];
     alert.view.tag = ALERT_VIEW_TAG;
     [alert addAction:okButton];
-    
-    alert = [design makeBackgroundColor:alert];
-    
+        
     [self presentViewController:alert animated:YES completion:nil];
 }
 

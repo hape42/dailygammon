@@ -61,9 +61,8 @@
 @implementation RatingVC
 
 @synthesize design, preferences, rating, tools, ratingTools, ratingCD;
-@synthesize filterView;
 
-@synthesize ratingHigh, ratingLow, dateHigh, dateLow;
+@synthesize infoView;
 
 - (void)viewDidLoad
 {
@@ -158,10 +157,7 @@
     [self.filterButton setImage:image forState:UIControlStateNormal];
     self.filterButton.tintColor = [design getTintColorSchema];
 
-    ratingHigh = 0;
-    ratingLow = 99999;
-    dateHigh = @"";
-    dateLow = @"";
+    [self filterMenu];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
@@ -181,20 +177,6 @@
 
     self.ratingArray = [self filterDataArray];
     
-    for( NSMutableDictionary *ratingDict in self.ratingArrayAll)
-    {
-        if([[ratingDict objectForKey:@"rating"]floatValue] > ratingHigh)
-        {
-            ratingHigh = [[ratingDict objectForKey:@"rating"]floatValue];
-            dateHigh = [ratingDict objectForKey:@"datum"];
-        }
-        if([[ratingDict objectForKey:@"rating"]floatValue] < ratingLow)
-        {
-            ratingLow = [[ratingDict objectForKey:@"rating"]floatValue];
-            dateLow = [ratingDict objectForKey:@"datum"];
-        }
-
-    }
 
     if ( [[NSFileManager defaultManager] ubiquityIdentityToken] != nil)
         [self.iCloudConnected setImage:[UIImage imageNamed:@"iCloudON.png"]];
@@ -316,25 +298,163 @@
 
 - (IBAction)info:(id)sender
 {
-    UIAlertController * alert = [UIAlertController
-                                 alertControllerWithTitle:@"Rating"
-                                 message:[NSString stringWithFormat:@"Every time you play via the app your highest rating for the day will be saved.\n\nHighest rating %3.1f %@\nLowest rating %3.1f %@",ratingHigh, dateHigh, ratingLow, dateLow]
-                                 preferredStyle:UIAlertControllerStyleAlert];
-
-    UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-
-                                }];
-
-    [alert addAction:yesButton];
-
-    alert = [design makeBackgroundColor:alert];
-
-    [self presentViewController:alert animated:YES completion:nil];
     
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5;
+    int width = 320;
+    int height  = 200;
+    
+    infoView = [[UIView alloc] init];
+    
+    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    infoView.layer.borderWidth = 1;
+    infoView.tag = 42;
+    infoView.layer.cornerRadius = 14.0f;
+    infoView.layer.masksToBounds = YES;
+    [self.view addSubview:infoView];
+    
+    [infoView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [infoView.centerYAnchor constraintEqualToAnchor:safe.centerYAnchor constant:0].active = YES;
+    [infoView.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [infoView.heightAnchor constraintEqualToConstant:height].active = YES;
+    [infoView.widthAnchor constraintEqualToConstant:width].active = YES;
+
+    DGLabel *title = [[DGLabel alloc] init];
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:@"Rating"];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont boldSystemFontOfSize:25.0]
+                 range:NSMakeRange(0, [attr length])];
+    [title setAttributedText:attr];
+
+    title.textAlignment = NSTextAlignmentCenter;
+    [infoView addSubview:title];
+    
+    [title setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [title.topAnchor constraintEqualToAnchor:infoView.topAnchor constant:edge].active = YES;
+    [title.centerXAnchor constraintEqualToAnchor:infoView.centerXAnchor constant:0].active = YES;
+    [title.heightAnchor constraintEqualToConstant:25].active = YES;
+
+    DGLabel *message = [[DGLabel alloc] init];
+    message.text = @"Every time you play via the app your highest rating for the day will be saved.";
+    message.numberOfLines = 0;
+    message.textAlignment = NSTextAlignmentCenter;
+    [infoView addSubview:message];
+
+    [message setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [message.topAnchor constraintEqualToAnchor:title.bottomAnchor constant:gap].active = YES;
+    [message.rightAnchor constraintEqualToAnchor:infoView.rightAnchor constant:-edge].active = YES;
+    [message.leftAnchor constraintEqualToAnchor:infoView.leftAnchor constant:edge].active = YES;
+    [message.heightAnchor constraintEqualToConstant:50].active = YES;
+
+    Ratings *dictBest =  [ratingCD bestRating];
+    Ratings *dictWorst =  [ratingCD worstRating];
+
+    NSDateFormatter *format = [[NSDateFormatter alloc] init];
+    [format setDateFormat:@"yyyy-MM-dd"];
+
+    NSDate *dateDBBest = [format dateFromString:dictBest.dateRating];
+
+    DGLabel *highText = [[DGLabel alloc] init];
+    highText.text = [NSString stringWithFormat:@"Highest"];
+    highText.textAlignment = NSTextAlignmentLeft;
+    [infoView addSubview:highText];
+
+    [highText setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [highText.topAnchor constraintEqualToAnchor:message.bottomAnchor constant:gap].active = YES;
+    [highText.leftAnchor constraintEqualToAnchor:infoView.leftAnchor constant:edge].active = YES;
+    [highText.heightAnchor constraintEqualToConstant:25].active = YES;
+    [highText.widthAnchor constraintEqualToConstant:70].active = YES;
+
+    DGLabel *highRating = [[DGLabel alloc] init];
+    highRating.text = [NSString stringWithFormat:@"%3.1f",dictBest.rating];
+    highRating.textColor = [UIColor colorNamed:@"ColorRatingHigh"];
+    highRating.textAlignment = NSTextAlignmentLeft;
+    [infoView addSubview:highRating];
+
+    [highRating setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [highRating.topAnchor constraintEqualToAnchor:message.bottomAnchor constant:gap].active = YES;
+    [highRating.leftAnchor constraintEqualToAnchor:highText.rightAnchor constant:gap].active = YES;
+    [highRating.heightAnchor constraintEqualToConstant:25].active = YES;
+
+    NSLog(@"Date: %@", [NSDateFormatter localizedStringFromDate:NSDate.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle]);
+
+    DGLabel *highDate = [[DGLabel alloc] init];
+    highDate.text = [NSDateFormatter localizedStringFromDate:dateDBBest dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle];
+    highDate.textAlignment = NSTextAlignmentCenter;
+    [infoView addSubview:highDate];
+
+    [highDate setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [highDate.topAnchor constraintEqualToAnchor:message.bottomAnchor constant:gap].active = YES;
+    [highDate.rightAnchor constraintEqualToAnchor:infoView.rightAnchor constant:-edge].active = YES;
+    [highDate.leftAnchor constraintEqualToAnchor:highRating.rightAnchor constant:gap].active = YES;
+    [highDate.heightAnchor constraintEqualToConstant:25].active = YES;
+
+    DGLabel *lowText = [[DGLabel alloc] init];
+    lowText.text = [NSString stringWithFormat:@"Lowest"];
+    lowText.textAlignment = NSTextAlignmentLeft;
+    [infoView addSubview:lowText];
+
+    [lowText setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [lowText.topAnchor constraintEqualToAnchor:highText.bottomAnchor constant:gap].active = YES;
+    [lowText.leftAnchor constraintEqualToAnchor:infoView.leftAnchor constant:edge].active = YES;
+    [lowText.heightAnchor constraintEqualToConstant:25].active = YES;
+    [lowText.widthAnchor constraintEqualToConstant:70].active = YES;
+
+    DGLabel *lowRating = [[DGLabel alloc] init];
+    lowRating.text = [NSString stringWithFormat:@"%3.1f",dictWorst.rating];
+    lowRating.textColor = [UIColor colorNamed:@"ColorRatingLow"];
+    lowRating.textAlignment = NSTextAlignmentLeft;
+    [infoView addSubview:lowRating];
+
+    [lowRating setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [lowRating.topAnchor constraintEqualToAnchor:highText.bottomAnchor constant:gap].active = YES;
+    [lowRating.leftAnchor constraintEqualToAnchor:lowText.rightAnchor constant:gap].active = YES;
+    [lowRating.heightAnchor constraintEqualToConstant:25].active = YES;
+
+    [format setDateFormat:@"yyyy-MM-dd"];
+    NSDate *dateDBWorst = [format dateFromString:dictWorst.dateRating];
+
+    DGLabel *lowDate = [[DGLabel alloc] init];
+    lowDate.text = [NSString stringWithFormat:@"%@",[format stringFromDate:dateDBWorst]];
+    lowDate.text = [NSDateFormatter localizedStringFromDate:dateDBWorst dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle];
+
+    lowDate.textAlignment = NSTextAlignmentRight;
+    [infoView addSubview:lowDate];
+
+    [lowDate setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [lowDate.topAnchor constraintEqualToAnchor:highText.bottomAnchor constant:gap].active = YES;
+    [lowDate.rightAnchor constraintEqualToAnchor:infoView.rightAnchor constant:-edge].active = YES;
+    [lowDate.leftAnchor constraintEqualToAnchor:lowRating.rightAnchor constant:gap].active = YES;
+    [lowDate.heightAnchor constraintEqualToConstant:25].active = YES;
+
+    DGButton *buttonClose = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, 100, 40)];
+    [buttonClose setTitle:@"Close" forState: UIControlStateNormal];
+    [buttonClose addTarget:self action:@selector(closeInfo) forControlEvents:UIControlEventTouchUpInside];
+    [infoView addSubview:buttonClose];
+    
+    [buttonClose setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [buttonClose.bottomAnchor constraintEqualToAnchor:infoView.bottomAnchor constant:-edge].active = YES;
+    [buttonClose.centerXAnchor constraintEqualToAnchor:infoView.centerXAnchor constant:0].active = YES;
+    [buttonClose.heightAnchor constraintEqualToConstant:25].active = YES;
+    [buttonClose.widthAnchor constraintEqualToConstant:70].active = YES;
+
+    
+}
+
+-(void)closeInfo
+{
+    [infoView removeFromSuperview];
+
 }
 - (IBAction)iCloudAction:(id)sender
 {
@@ -376,10 +496,8 @@
 
     [alert addAction:yesButton];
     [alert addAction:iCloudButton];
-    alert = [design makeBackgroundColor:alert];
 
     [self presentViewController:alert animated:YES completion:nil];
-    
 }
 
 - (IBAction)share:(id)sender
@@ -403,193 +521,145 @@
 
 }
 
+#pragma mark - filter Menu
+-(void)filterMenu
+{
+    
+    NSMutableArray  *menuAverageArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    [menuAverageArray addObject:[UIAction actionWithTitle:@"No"
+                                             image:nil
+                                        identifier:@"0"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self averageAction:0];
+   }]];
+   
+    [menuAverageArray addObject:[UIAction actionWithTitle:@"7"
+                                             image:nil
+                                        identifier:@"1"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self averageAction:1];
+    }]];
+    [menuAverageArray addObject:[UIAction actionWithTitle:@"30"
+                                             image:nil
+                                        identifier:@"2"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self averageAction:2];
+    }]];
+    [menuAverageArray addObject:[UIAction actionWithTitle:@"90"
+                                             image:nil
+                                        identifier:@"3"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self averageAction:3];
+    }]];
+    [menuAverageArray addObject:[UIAction actionWithTitle:@"365"
+                                             image:nil
+                                        identifier:@"4"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self averageAction:4];
+    }]];
+
+    UIMenu *averageMenu = [UIMenu menuWithTitle:@"Average"  children:menuAverageArray];
+    
+    NSMutableArray  *menuDaysArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    [menuDaysArray addObject:[UIAction actionWithTitle:@"All"
+                                             image:nil
+                                        identifier:@"0"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self daysAction:0];
+   }]];
+   
+    [menuDaysArray addObject:[UIAction actionWithTitle:@"30"
+                                             image:nil
+                                        identifier:@"1"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self daysAction:1];
+    }]];
+    [menuDaysArray addObject:[UIAction actionWithTitle:@"60"
+                                             image:nil
+                                        identifier:@"2"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self daysAction:2];
+    }]];
+    [menuDaysArray addObject:[UIAction actionWithTitle:@"90"
+                                             image:nil
+                                        identifier:@"3"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self daysAction:3];
+    }]];
+    [menuDaysArray addObject:[UIAction actionWithTitle:@"365"
+                                             image:nil
+                                        identifier:@"4"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self daysAction:4];
+    }]];
+
+    UIMenu *daysMenu = [UIMenu menuWithTitle:@"Show last x days"  children:menuDaysArray];
+
+    NSMutableArray  *menuArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    [menuArray addObject:averageMenu];
+    [menuArray addObject:daysMenu];
+
+    self.filterButton.menu = [UIMenu menuWithChildren:menuArray];
+    self.filterButton.showsMenuAsPrimaryAction = YES;
+}
+
 #pragma mark - Filter
 
-- (IBAction)showFilter:(id)sender
+
+- (IBAction)averageAction:(int)selected
 {
-    [self closeFilter];
-    
-    float filterWidth =  400.0;
-    float filterHeight = 250;
-
-    float labelWidth = 200;
-    float labelHeight = 35;
-    int rand = 10;
-    
-    float y = rand;
-    float x = rand;
-
-  //  if(filterView == nil)
+    switch(selected)
     {
-        filterView = [[UIView alloc]initWithFrame:CGRectMake( [[UIScreen mainScreen] bounds].size.width,
-                                                           self.chartView.frame.origin.y + 50,
-                                                           filterWidth,
-                                                           filterHeight)];
-        filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-
-        filterView.layer.borderWidth = 1;
-        [self.view addSubview:filterView];
-
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelWidth, labelHeight)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.text = @"Average:";
-        [filterView addSubview:label];
-        
-        int ratingAverage = 0;
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingAverage"] != nil)
-        {
-            ratingAverage = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingAverage"]intValue];
-        }
-        else
-        {
-            ratingAverage = 2;
-            [[NSUserDefaults standardUserDefaults] setInteger:ratingAverage forKey:@"ratingAverage"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        
-        NSArray *itemArray = [NSArray arrayWithObjects:  @"No", @"7", @"30", @"90", @"365",nil];
-        UISegmentedControl *averageControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-        averageControl.frame = CGRectMake(rand + labelWidth + rand, 10, 170, labelHeight);
-        [averageControl addTarget:self action:@selector(averageAction:) forControlEvents: UIControlEventValueChanged];
-        averageControl.selectedSegmentIndex = ratingAverage;
-        [filterView addSubview:averageControl];
-
-        x = rand;
-        y += 50;
-
-        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, labelWidth, labelHeight)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.text = @"Data: show last x days";
-        [filterView addSubview:label];
-        
-        int ratingData = 0;
-        if([[NSUserDefaults standardUserDefaults] objectForKey:@"ratingData"] != nil)
-        {
-            ratingData = [[[NSUserDefaults standardUserDefaults] valueForKey:@"ratingData"]intValue];
-        }
-        else
-        {
-            ratingData = 2;
-            [[NSUserDefaults standardUserDefaults] setInteger:ratingData forKey:@"ratingData"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-
-        itemArray = [NSArray arrayWithObjects: @"All", @"30", @"60", @"90", @"365",nil];
-        UISegmentedControl *dataControl = [[UISegmentedControl alloc] initWithItems:itemArray];
-        dataControl.frame = CGRectMake(rand + labelWidth + rand, y, 170, labelHeight);
-        [dataControl addTarget:self action:@selector(dataAction:) forControlEvents: UIControlEventValueChanged];
-        dataControl.selectedSegmentIndex = ratingData;
-        [filterView addSubview:dataControl];
-
-        x = rand;
-        y += 50;
-
-        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, filterWidth - rand - rand, labelHeight)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.adjustsFontSizeToFitWidth = YES;
-        [label setFont:[UIFont boldSystemFontOfSize: 25.0]];
-        label.numberOfLines = 0;
-        label.minimumScaleFactor = 0.1;
-
-        Ratings *dictBest =  [ratingCD bestRating];
-        Ratings *dictWorst =  [ratingCD worstRating];
-
-        NSDateFormatter *format = [[NSDateFormatter alloc] init];
-        [format setDateFormat:@"yyyy-MM-dd"];
-        
-        NSDate *dateDB = [format dateFromString:dictBest.dateRating];
-        [format setLocale:[NSLocale currentLocale]];
-        [format setDateFormat:@"dd. MMMM yyyy"];
-
-        label.text = [NSString stringWithFormat: @"Best Rating %5.1f - %@",dictBest.rating,[format stringFromDate:dateDB]];
-        [filterView addSubview:label];
-        
-        y += 50;
-        label = [[UILabel alloc] initWithFrame:CGRectMake(rand, y, filterWidth - rand - rand, labelHeight)];
-        [label setTextAlignment:NSTextAlignmentCenter];
-        label.adjustsFontSizeToFitWidth = YES;
-        [label setFont:[UIFont boldSystemFontOfSize: 25.0]];
-        label.numberOfLines = 0;
-        label.minimumScaleFactor = 0.1;
-
-        [format setDateFormat:@"yyyy-MM-dd"];
-        dateDB = [format dateFromString:dictWorst.dateRating];
-        [format setLocale:[NSLocale currentLocale]];
-        [format setDateFormat:@"dd. MMMM yyyy"];
-        label.text = [NSString stringWithFormat: @"Worst Rating %5.1f - %@",dictWorst.rating,[format stringFromDate:dateDB]];
-        [filterView addSubview:label];
-
-        y += 50;
-        DGButton *closeButton = [[DGButton alloc]initWithFrame:CGRectMake((filterWidth - 100) / 2, y, 100, 35)];
-        [closeButton addTarget:self action:@selector(closeFilter) forControlEvents:UIControlEventTouchUpInside];
-        [closeButton setTitle:@"Close" forState:UIControlStateNormal];
-        [filterView addSubview:closeButton];
-        
+        case 0:
+            self.average = 0;
+            break;
+        case 1:
+            self.average = 7;
+            break;
+        case 2:
+            self.average = 30;
+            break;
+        case 3:
+            self.average = 90;
+            break;
+        case 4:
+            self.average = 365;
+            break;
     }
-    filterView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-
-
-    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
-    float edge = 5.0;
-
-    [self->filterView setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self->filterView.topAnchor constraintEqualToAnchor:self.chartView.topAnchor constant:50].active = YES;
-    [self->filterView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
-    [self->filterView.heightAnchor constraintEqualToConstant:filterHeight].active = YES;
-    [self->filterView.widthAnchor constraintEqualToConstant:filterWidth].active = YES;
-
-    [self->filterView setNeedsUpdateConstraints];
-    [self->filterView layoutIfNeeded];
-
-    return;
-}
-
-
--(void)closeFilter
-{
-    [filterView removeFromSuperview];
-
-}
-
-- (IBAction)averageAction:(UISegmentedControl *)segment
-{
-    [self closeFilter];
     
-    if(segment.selectedSegmentIndex == 0)
-        self.average = 0;
-    if(segment.selectedSegmentIndex == 1)
-        self.average = 7;
-    if(segment.selectedSegmentIndex == 2)
-        self.average = 30;
-    if(segment.selectedSegmentIndex == 3)
-        self.average = 90;
-    if(segment.selectedSegmentIndex == 4)
-        self.average = 365;
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingAverage"];
+    [[NSUserDefaults standardUserDefaults] setInteger:selected forKey:@"ratingAverage"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     [self makeAverageArray];
     [self initGraph];
 
 }
-- (IBAction)dataAction:(UISegmentedControl *)segment
+
+- (IBAction)daysAction:(int)selected
 {
-    [self closeFilter];
+    switch(selected)
+    {
+        case 0:
+            self.dataRange = 0;
+            break;
+        case 1:
+            self.dataRange = 30;
+            break;
+        case 2:
+            self.dataRange = 60;
+            break;
+        case 3:
+            self.dataRange = 90;
+            break;
+        case 4:
+            self.dataRange = 365;
+            break;
+    }
     
-    if(segment.selectedSegmentIndex == 0)
-        self.dataRange = 0;
-    if(segment.selectedSegmentIndex == 1)
-        self.dataRange = 30;
-    if(segment.selectedSegmentIndex == 2)
-        self.dataRange = 60;
-    if(segment.selectedSegmentIndex == 3)
-        self.dataRange = 90;
-    if(segment.selectedSegmentIndex == 4)
-        self.dataRange = 365;
-    
-    [[NSUserDefaults standardUserDefaults] setInteger:segment.selectedSegmentIndex forKey:@"ratingData"];
+    [[NSUserDefaults standardUserDefaults] setInteger:selected forKey:@"ratingData"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     self.ratingArray = [self filterDataArray];
@@ -599,10 +669,6 @@
 
 }
 
--(void)showData
-{
-    
-}
 #pragma mark - Charts
 
 -(void)initGraph

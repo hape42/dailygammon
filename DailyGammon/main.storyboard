@@ -534,9 +534,6 @@ Did we make you curious?</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="slider"/>
-                                <connections>
-                                    <action selector="showFilter:" destination="OV7-UT-Ozl" eventType="touchUpInside" id="pWQ-w0-sI2"/>
-                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="iCloudOFF.png" translatesAutoresizingMaskIntoConstraints="NO" id="mvc-Hi-31n">
                                 <rect key="frame" x="264" y="8" width="30" height="30"/>
