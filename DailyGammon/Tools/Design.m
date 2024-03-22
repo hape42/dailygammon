@@ -377,6 +377,28 @@
     return imgName;
 }
 
+- (UIButton *)designRefreshButton:(UIButton *)refreshButton withText:(NSString *)text
+{
+    refreshButton.layer.cornerRadius = 14.0f;
+    refreshButton.layer.masksToBounds = YES;
+
+    // das image kann dann nach Abschuß der Tests Datumsabhängig gesetzt werden 1.4. 1.7. 1.9. 1.12.  oder wie auch immer
+    UIImage *backgroundImage = [UIImage imageNamed:@"refreshSpring"];
+    [refreshButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+
+    // Setze den Text für den Normalzustand
+    [refreshButton setTitle:text forState:UIControlStateNormal];
+
+    // Setze die Schriftfarbe für den Text
+    [refreshButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal]; // Setze die gewünschte Schriftfarbe ein
+
+    // Setze die Schriftgröße für den Text
+    refreshButton.titleLabel.font = [UIFont systemFontOfSize:16]; // Setze die gewünschte Schriftgröße ein
+
+
+    return refreshButton;
+}
+
 - (UIButton *)designMoreButton:(UIButton *)moreButton
 {
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
@@ -384,7 +406,11 @@
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
     UIImage *image = [UIImage systemImageNamed:@"book.pages" withConfiguration:total];
 
+    NSOperatingSystemVersion iOSVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+    if (iOSVersion.majorVersion < 17)
+        image = [UIImage systemImageNamed:@"menucard" withConfiguration:total];
     [moreButton setImage:image forState:UIControlStateNormal];
+
     return moreButton;
 }
 

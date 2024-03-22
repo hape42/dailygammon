@@ -33,6 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
 
+- (UIButton *)designRefreshButton:(UIButton *)refreshButton withText:(NSString *)text;
+
 - (UIButton *)designMoreButton:(UIButton *)moreButton;
 - (UIColor *)getTintColorSchema;
 - (UIButton *)designKeyBoardDownButton:(UIButton *)button;
