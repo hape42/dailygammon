@@ -697,7 +697,7 @@
     x += diceSize + gap;
     NSString* moveText = [moveDict objectForKey:@"Text"];
     DGButton *move = [[DGButton alloc] initWithFrame:CGRectMake(x, y ,moveView.frame.size.width - x ,moveView.frame.size.height-10)];
-    [move setTitle:[moveDict objectForKey:@"Text"] forState: UIControlStateNormal];
+    [move setTitle:[[moveDict objectForKey:@"Text"] stringByReplacingOccurrencesOfString:@"\n" withString:@""] forState: UIControlStateNormal];
     [move addTarget:self action:@selector(moveAction:) forControlEvents:UIControlEventTouchUpInside];
     [move.layer setValue:[moveDict objectForKey:@"href"] forKey:@"href"];
     if(moveText.length < 2)
