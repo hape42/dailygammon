@@ -431,6 +431,10 @@
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
     UIImage *image = [UIImage systemImageNamed:@"doc.badge.clock" withConfiguration:total];
 
+    NSOperatingSystemVersion iOSVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+    if (iOSVersion.majorVersion < 17)
+        image = [UIImage systemImageNamed:@"doc.text" withConfiguration:total];
+
     [button setImage:image forState:UIControlStateNormal];
     return button;
 }
@@ -446,6 +450,10 @@
     else
         image = [UIImage systemImageNamed:@"eyeglasses" withConfiguration:total];
 
+    NSOperatingSystemVersion iOSVersion = [[NSProcessInfo processInfo] operatingSystemVersion];
+    if (iOSVersion.majorVersion < 17)
+        image = [UIImage systemImageNamed:@"eyeglasses" withConfiguration:total];
+
     [button setImage:image forState:UIControlStateNormal];
     return button;
 }
@@ -454,7 +462,7 @@
     UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
     UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:30];
     UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
-    UIImage *image = [UIImage systemImageNamed:@"bubble.left.and.text.bubble.right" withConfiguration:total];
+    UIImage *image = [UIImage systemImageNamed:@"quote.bubble" withConfiguration:total];
 
     [button setImage:image forState:UIControlStateNormal];
     return button;
