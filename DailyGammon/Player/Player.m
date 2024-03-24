@@ -22,6 +22,7 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 #import "SetupVC.h"
+#import "PlayerDetail.h"
 
 @interface Player ()
 
@@ -365,7 +366,21 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self notYetImplemented];
+    NSArray *row = self.playerArray[indexPath.row];
+    NSDictionary *userDict = row[3];
+    
+    PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.userID = [[userDict objectForKey:@"href"] lastPathComponent];
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    
+    UICollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
+
+    popController.sourceView = cell;
+    popController.sourceRect = cell.bounds;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
+
 }
 
 /*

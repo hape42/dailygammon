@@ -32,6 +32,7 @@
 
 #import "Review.h"
 #import "NoBoard.h"
+#import "PlayerDetail.h"
 
 @interface PlayMatch ()
 
@@ -712,7 +713,7 @@
         case CHAT:
         {
 #pragma mark - Chat
-            
+            XLog(@"Chat");
             if(chatView)
             {
                 [tools removeAllSubviewsRecursively:chatView];
@@ -1097,10 +1098,15 @@
 
 - (void)opponent:(UIButton*)sender
 {    
-    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
-    vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
-
-    [self.navigationController pushViewController:vc animated:NO];
+    PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.userID = (NSString *)[sender.layer valueForKey:@"userID"];
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    
+    popController.sourceView = sender;
+    popController.sourceRect = sender.bounds;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
 
 }
 

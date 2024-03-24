@@ -1013,7 +1013,7 @@
                                                                           opponentName.frame.size.width * .8,
                                                                           opponentName.frame.size.height * .8)] ;
     [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
-    [buttonOpponent.layer setValue:opponentArray[0] forKey:@"name"];
+    [buttonOpponent.layer setValue:[boardDict objectForKey:@"opponentID"] forKey:@"userID"];
     [opponentView addSubview:buttonOpponent];
 
     

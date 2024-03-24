@@ -66,6 +66,7 @@
 		E0AEFC52220578BB00CFFB6C /* button_blau.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC50220578BA00CFFB6C /* button_blau.png */; };
 		E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */; };
 		E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0514D21F4FDA100D91857 /* DbConnect.m */; };
+		E0BC24632BAEBF3300B554B2 /* PlayerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
 		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
 		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
@@ -299,6 +300,8 @@
 		E0B0514D21F4FDA100D91857 /* DbConnect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DbConnect.m; sourceTree = "<group>"; };
 		E0B0514E21F4FDA200D91857 /* DbConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DbConnect.h; sourceTree = "<group>"; };
 		E0B0515021F4FECE00D91857 /* rating.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = rating.sqlite; sourceTree = "<group>"; };
+		E0BC24612BAEBF3300B554B2 /* PlayerDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerDetail.h; sourceTree = "<group>"; };
+		E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerDetail.m; sourceTree = "<group>"; };
 		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
 		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
 		E0BDCC3621BE6AE300E8AF25 /* About.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
@@ -462,6 +465,8 @@
 				E00654D622A6784000194435 /* Player.m */,
 				E060AC9A22A8E2A700D60C39 /* InviteDetail.h */,
 				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
+				E0BC24612BAEBF3300B554B2 /* PlayerDetail.h */,
+				E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -987,6 +992,7 @@
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,
 				E0EE051729D7237C003DEDE8 /* NoBoard.m in Sources */,
+				E0BC24632BAEBF3300B554B2 /* PlayerDetail.m in Sources */,
 				E0FA69342964463200D88C26 /* DGButton.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,

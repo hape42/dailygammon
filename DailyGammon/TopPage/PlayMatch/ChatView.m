@@ -384,21 +384,6 @@
    [navigationController presentViewController:alert animated:YES completion:nil];
 }
 
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-//{
-//    [self viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//
-//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed during the animation
-//        
-//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed after the animation is completed
-//     }];
-//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-//}
-
 #pragma mark - textView delegates
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
