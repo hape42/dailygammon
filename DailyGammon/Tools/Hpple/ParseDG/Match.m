@@ -234,7 +234,9 @@
         [messageDict setObject:attributesArray forKey:@"attributes"];
 
         [boardDict setObject:messageDict forKey:@"messageDict"];
-        
+        noBoard = TRUE;
+
+
    //     return boardDict;
     }
     if ([htmlString rangeOfString:@"Your message has been sent"].location != NSNotFound)
@@ -266,7 +268,11 @@
     }
 // hier könnte ein return boardDict kommen, wenn noBoard == True 🤔
     if(noBoard)
+    {
+        [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+
         return boardDict;
+    }
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat: @"//table[%d]/tr[1]/td",tableToAnalyze]];
     NSMutableArray *elementArray = [[NSMutableArray alloc]init];

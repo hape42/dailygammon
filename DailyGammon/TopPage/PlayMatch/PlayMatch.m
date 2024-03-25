@@ -198,12 +198,7 @@
     if(readMatch || (self.boardDict == nil))
     {
         self.boardDict = [match readMatch:app.matchLink reviewMatch:isReview];
-      //  XLog(@" gelesen");
     }
-//    else
-//        XLog(@"nicht gelesen %d",readMatch);
-//    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
-
     if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
     {
         NoBoard *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"NoBoard"];
