@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 
-@interface InviteDetail : UIViewController <MFMailComposeViewControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
+@interface InviteDetail : UIViewController < UITextFieldDelegate, NSURLSessionDelegate, NSURLSessionDataDelegate>
 
 @property (strong, readwrite, retain, atomic)    NSString *playerName;
 @property (strong, readwrite, retain, atomic)    NSString *playerNummer;

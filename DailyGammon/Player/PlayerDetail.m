@@ -444,16 +444,10 @@
 
 - (IBAction)inviteAction:(id)sender 
 {
+    InviteDetail *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
+    controller.playerName = self.playerName.text;
+    controller.playerNummer = userID;
 
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        
-        InviteDetail *controller = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
-        
-        controller.playerName = self.playerName.text;
-        controller.playerNummer = userID;
-
-        
-   
     controller.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:controller animated:NO completion:nil];
     

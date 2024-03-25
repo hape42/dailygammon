@@ -19,41 +19,37 @@
 
 @interface InviteDetail ()
 
-@property (nonatomic, strong) UIPickerView *picker;
-@property (readwrite, retain, nonatomic) UIView *pickerSammelView;
-@property (assign, atomic) CGRect pickerViewFrameSave;
+
+@property (weak, nonatomic) IBOutlet UILabel *inviteText;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *variant;
+
+@property (weak, nonatomic) IBOutlet UILabel *matchLengthLabel;
+@property (weak, nonatomic) IBOutlet DGButton *matchLengthButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *timeControlLabel;
+@property (weak, nonatomic) IBOutlet DGButton *timeControlButton;
+
+@property (weak, nonatomic) IBOutlet UILabel *privatMatchLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *privateMatch;
+
+@property (weak, nonatomic) IBOutlet UILabel *commentLabel;
+@property (weak, nonatomic) IBOutlet UITextField *comment;
+
+@property (weak, nonatomic) IBOutlet UILabel *namedLabel;
+@property (weak, nonatomic) IBOutlet UITextField *named;
+
+@property (weak, nonatomic) IBOutlet DGButton *inviteButton;
+@property (weak, nonatomic) IBOutlet DGButton *cancelButton;
+
+@property (assign, atomic) BOOL isMessageText;
+
+@property (assign, atomic) BOOL loginOk;
 
 @property (readwrite, retain, nonatomic) NSArray *matchlength;
 @property (readwrite, retain, nonatomic) NSArray *timeControl;
 
-@property (assign, atomic) BOOL isMatchLength;
-@property (assign, atomic) BOOL isTimeControl;
 @property (assign, atomic) int timeControlSelected;
 @property (assign, atomic) int matchLengthSelected;
-
-@property (weak, nonatomic) IBOutlet UISegmentedControl *variant;
-@property (weak, nonatomic) IBOutlet DGButton *matchLengthButton;
-@property (weak, nonatomic) IBOutlet DGButton *timeControlButton;
-@property (weak, nonatomic) IBOutlet DGButton *inviteButton;
-@property (weak, nonatomic) IBOutlet DGButton *cancelButton;
-@property (weak, nonatomic) IBOutlet UITextField *comment;
-@property (weak, nonatomic) IBOutlet UITextField *named;
-@property (weak, nonatomic) IBOutlet UISwitch *privateMatch;
-
-@property (weak, nonatomic) IBOutlet DGButton *sendMessage;
-@property (weak, nonatomic) IBOutlet DGButton *ignorePlayer;
-
-@property (weak, nonatomic) IBOutlet UIView *messageView;
-@property (weak, nonatomic) IBOutlet UILabel *inviteText;
-@property (weak, nonatomic) IBOutlet UILabel *messageTextTitle;
-@property (weak, nonatomic) IBOutlet UITextField *messageText;
-
-@property (assign, atomic) BOOL isMessageText;
-@property (weak, nonatomic) IBOutlet UIButton *moreButton;
-@property (weak, nonatomic) IBOutlet UIView *inviteView;
-
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
-@property (assign, atomic) BOOL loginOk;
 
 @end
 
@@ -65,26 +61,42 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
+
+    [self layoutObjects];
+
     self.matchlength = @[
-                         @{@"name": @"1", @"key": @"1"},
-                         @{@"name": @"3", @"key": @"3"},
-                         @{@"name": @"5", @"key": @"5"},
-                         @{@"name": @"7", @"key": @"7"},
-                         @{@"name": @"9", @"key": @"9"},
-                         @{@"name": @"11", @"key": @"11"},
-                         @{@"name": @"13", @"key": @"13"},
-                         @{@"name": @"15", @"key": @"15"},
-                         @{@"name": @"17", @"key": @"17"},
-                         @{@"name": @"19", @"key": @"19"},
-                         @{@"name": @"21", @"key": @"21"},
-                         @{@"name": @"23", @"key": @"23"},
-                         @{@"name": @"25", @"key": @"25"},
-                         @{@"name": @"Cubeless Money", @"key": @"-1"},
-                         @{@"name": @"Money", @"key": @"-2"}
-                         ];
-  
+        @{@"name": @"1", @"key": @"1"},
+        @{@"name": @"3", @"key": @"3"},
+        @{@"name": @"5", @"key": @"5"},
+        @{@"name": @"7", @"key": @"7"},
+        @{@"name": @"9", @"key": @"9"},
+        @{@"name": @"11", @"key": @"11"},
+        @{@"name": @"13", @"key": @"13"},
+        @{@"name": @"15", @"key": @"15"},
+        @{@"name": @"17", @"key": @"17"},
+        @{@"name": @"19", @"key": @"19"},
+        @{@"name": @"21", @"key": @"21"},
+        @{@"name": @"23", @"key": @"23"},
+        @{@"name": @"25", @"key": @"25"},
+        @{@"name": @"Cubeless Money", @"key": @"-1"},
+        @{@"name": @"Money", @"key": @"-2"}
+    ];
+    NSMutableArray  *menuLengthArray = [[NSMutableArray alloc] initWithCapacity:3];
+    int i = 0;
+    for(NSDictionary *dict in self.matchlength)
+    {
+        [menuLengthArray addObject:[UIAction actionWithTitle:[dict objectForKey:@"name"]
+                                                 image:nil
+                                            identifier:[NSString stringWithFormat:@"%d",i++]
+                                               handler:^(__kindof UIAction* _Nonnull action) {
+            [self.matchLengthButton setTitle:[dict objectForKey:@"name"] forState: UIControlStateNormal];
+            self.matchLengthSelected = [[dict objectForKey:@"key"]intValue];
+        }]];
+    }
+    
+    self.matchLengthButton.menu = [UIMenu menuWithChildren:menuLengthArray];
+    self.matchLengthButton.showsMenuAsPrimaryAction = YES;
+
     self.timeControl = [NSArray arrayWithObjects:@"Never",
                         @"Twice a Day (100/+2/15)",
                         @"Once a Day (200/+4/24)",
@@ -95,55 +107,37 @@
                         @"Once a Month (0/+0/750)",
                         nil];
     
+    NSMutableArray  *menuTimeArray = [[NSMutableArray alloc] initWithCapacity:3];
+    i = 0;
+    for(NSString *text in self.timeControl)
+    {
+        [menuTimeArray addObject:[UIAction actionWithTitle:text
+                                                 image:nil
+                                            identifier:[NSString stringWithFormat:@"%d",i]
+                                               handler:^(__kindof UIAction* _Nonnull action) {
+            [self.timeControlButton setTitle:text forState: UIControlStateNormal];
+            self.timeControlSelected = i;
+        }]];
+        i++;
+    }
+    
+    self.timeControlButton.menu = [UIMenu menuWithChildren:menuTimeArray];
+    self.timeControlButton.showsMenuAsPrimaryAction = YES;
+
     design = [[Design alloc] init];
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-    self.inviteView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-
-    self.isMatchLength = TRUE;
-    self.isTimeControl = FALSE;
-    
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(999, 999, 300, 400)];
-    [self.view addSubview:self.pickerSammelView];
-    self.pickerViewFrameSave = self.pickerSammelView.frame;
-
-    self.picker.delegate = self;
-    self.picker.dataSource = self;
-
+        
     self.comment.delegate = self;
     self.named.delegate = self;
-    self.messageText.delegate = self;
-
-    self.messageView.layer.cornerRadius = 14.0f;
-    self.messageView.layer.borderWidth = 1.0f;
-
+    
     self.inviteText.text = [NSString stringWithFormat:@"Invite %@ to a game of", playerName];
     self.inviteText.adjustsFontSizeToFitWidth = YES;
     self.inviteText.numberOfLines = 0;
     self.inviteText.minimumScaleFactor = 0.5;
     self.inviteText.textColor = [design schemaColor];
-
-    self.messageTextTitle.text = [NSString stringWithFormat:@"Quick message to %@", playerName];
-    self.messageTextTitle.adjustsFontSizeToFitWidth = YES;
-    self.messageTextTitle.numberOfLines = 0;
-    self.messageTextTitle.minimumScaleFactor = 0.5;
-
-    [self.ignorePlayer setTitle:[NSString stringWithFormat:@"Ignore %@", playerName] forState:UIControlStateNormal];
-
-    CGRect frame = CGRectMake(self.privateMatch.frame.origin.x,
-                               self.privateMatch.frame.origin.y + 4, 50, 35);
-    self.privateMatch.frame = frame;
-
+        
     self.privateMatch = [design makeNiceSwitch:self.privateMatch];
-    self.messageText.tag = 42;
-    
-    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
-    {
-        int maxBreite = [UIScreen mainScreen].bounds.size.width;
-        frame = self.inviteView.frame;
-        frame.origin.x = (maxBreite - self.inviteView.frame.size.width)/2;
-        self.inviteView.frame = frame;
-    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -155,210 +149,119 @@
     
 }
 
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+#pragma mark - layoutObjects
+-(void)layoutObjects
 {
-    if(self.isTimeControl)
-        return self.timeControl.count;
-    if(self.isMatchLength)
-        return self.matchlength.count;
-
-    return 0;
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow: (NSInteger)row inComponent:(NSInteger)component
-{
-    if(self.isTimeControl)
-    {
-        [self.timeControlButton setTitle:self.timeControl[row] forState:UIControlStateNormal];
-        self.timeControlSelected = (int)row;
-    }
-    if(self.isMatchLength)
-    {
-        NSDictionary *dict = self.matchlength[row];
-
-        [self.matchLengthButton setTitle:[dict objectForKey:@"name"] forState:UIControlStateNormal];
-        self.matchLengthSelected = [[dict objectForKey:@"key"]intValue];
-    }
-}
-
--(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
-{
-
-    NSString *title;
-    UILabel *lblRow = [[UILabel alloc] init] ;
-    lblRow.layer.backgroundColor = [[UIColor lightGrayColor] CGColor];
-    [lblRow setTextAlignment:NSTextAlignmentCenter];
-    lblRow.frame = CGRectMake(25, 0.0f, self.picker.frame.size.width - 50, 44.0f);
-
-    if(self.isTimeControl)
-        title = self.timeControl[row];
-    if(self.isMatchLength)
-    {
-        NSDictionary *dict = self.matchlength[row];
-        title = [dict objectForKey:@"name"];
-    }
-
-    [lblRow setTextColor: [UIColor darkTextColor]];
-
-    [lblRow setText:title];
-    lblRow.adjustsFontSizeToFitWidth = YES;
-    lblRow.numberOfLines = 0;
-    lblRow.minimumScaleFactor = 0.5;
-
-    // Clear the background color to avoid problems with the display.
-    [lblRow setBackgroundColor:[UIColor clearColor]];
-
-    return lblRow;
-
-}
-
-
-- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
-{
-    return 40;
-}
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-- (IBAction)matchLengthAction:(id)sender
-{
-    if(self.pickerSammelView.frame.origin.x != 999) //damit es nicht mehrfach aufgerufen wird
-        return;
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 10.0;
+    float gap  = 10.0;
+    float labelWidth = 150;
+    float labelHeight = 35;
     
-    self.isMatchLength = TRUE;
-    self.isTimeControl = FALSE;
+#pragma mark inviteText autoLayout
+    [self.inviteText setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.inviteText.bottomAnchor constraintEqualToAnchor:self.variant.topAnchor constant:-edge].active = YES;
+    [self.inviteText.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.inviteText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.inviteText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    
+#pragma mark variant autoLayout
+    [self.variant setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.variant.bottomAnchor constraintEqualToAnchor:self.matchLengthLabel.topAnchor constant:-gap].active = YES;
+    [self.variant.widthAnchor constraintEqualToConstant:250].active = YES;
+    [self.variant.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
 
-    int maxBreite = self.view.bounds.size.width;
+#pragma mark matchLength autoLayout
+    [self.matchLengthLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.matchLengthLabel.bottomAnchor constraintEqualToAnchor:self.timeControlLabel.topAnchor constant:-gap].active = YES;
+    [self.matchLengthLabel.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.matchLengthLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.matchLengthLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-    float breite = 300;
-    float hoehe = 300;
+    [self.matchLengthButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    float x = 0,y = 0;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        x = (maxBreite - breite)/2;
-        y = self.matchLengthButton.frame.origin.y + 40;
-    }
-    else
-    {
-        x = 10;
-        y = 50;
-        hoehe = 250;
-        breite = 250;
-    }
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(-500,-500,breite,hoehe)];
+    [self.matchLengthButton.topAnchor constraintEqualToAnchor:self.matchLengthLabel.topAnchor constant:0].active = YES;
+    [self.matchLengthButton.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.matchLengthButton.widthAnchor constraintGreaterThanOrEqualToConstant:80].active = YES;
+    [self.matchLengthButton.leftAnchor constraintEqualToAnchor:self.matchLengthLabel.rightAnchor constant:gap].active = YES;
 
-    self.pickerSammelView.backgroundColor = [UIColor whiteColor];
-    self.pickerSammelView.layer.borderWidth = 1.0f;
-    self.pickerSammelView.layer.cornerRadius = 14.0f;
+#pragma mark timeControl autoLayout
+    [self.timeControlLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.timeControlLabel.bottomAnchor constraintEqualToAnchor:self.privatMatchLabel.topAnchor constant:-gap].active = YES;
+    [self.timeControlLabel.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.timeControlLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.timeControlLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-    self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
-    self.picker.delegate = self;
-    self.picker.dataSource = self;
-    [self.picker selectRow:2 inComponent:0 animated:YES]; //preSelect Match length 5
+    [self.timeControlButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    DGButton *button = [[DGButton alloc] initWithFrame:CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0)];
-    [button addTarget:self
-               action:@selector(closePickerView)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Done" forState:UIControlStateNormal];
-    design = [[Design alloc] init];
-    
-    [self.pickerSammelView addSubview:button];
-    
-    UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(10.0, 40.0, self.picker.frame.size.width - 20, 30.0)];
-    text.text = @"Select match length";
-    [text setTextAlignment:NSTextAlignmentCenter];
-    [self.pickerSammelView addSubview:text];
+    [self.timeControlButton.topAnchor constraintEqualToAnchor:self.timeControlLabel.topAnchor constant:0].active = YES;
+    [self.timeControlButton.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.timeControlButton.widthAnchor constraintGreaterThanOrEqualToConstant:80].active = YES;
+    [self.timeControlButton.leftAnchor constraintEqualToAnchor:self.timeControlLabel.rightAnchor constant:gap].active = YES;
 
+#pragma mark privateMatch autoLayout
+    [self.privatMatchLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.pickerSammelView addSubview:self.picker];
-    [self.view addSubview:self.pickerSammelView];
-    
-    [UIView animateWithDuration:1.0
-                     animations:^{
-        self.pickerSammelView.frame = CGRectMake(x,y,breite,hoehe);
-    }];
+    [self.privatMatchLabel.bottomAnchor constraintEqualToAnchor:self.commentLabel.topAnchor constant:-gap].active = YES;
+    [self.privatMatchLabel.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.privatMatchLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.privatMatchLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-    [self.picker reloadAllComponents];
+    [self.privateMatch setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.privateMatch.topAnchor constraintEqualToAnchor:self.privatMatchLabel.topAnchor constant:0].active = YES;
+    [self.privateMatch.leftAnchor constraintEqualToAnchor:self.privatMatchLabel.rightAnchor constant:gap].active = YES;
 
-}
+#pragma mark comment autoLayout
+    [self.commentLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.commentLabel.bottomAnchor constraintEqualToAnchor:self.namedLabel.topAnchor constant:-gap].active = YES;
+    [self.commentLabel.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.commentLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.commentLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-- (IBAction)timeControlAction:(id)sender
-{
-    if(self.pickerSammelView.frame.origin.x != 999) //damit es nicht mehrfach aufgerufen wird
-        return;
+    [self.comment setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.comment.topAnchor constraintEqualToAnchor:self.commentLabel.topAnchor constant:0].active = YES;
+    [self.comment.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.comment.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.comment.leftAnchor constraintEqualToAnchor:self.commentLabel.rightAnchor constant:gap].active = YES;
 
-    self.isMatchLength = FALSE;
-    self.isTimeControl = TRUE;
+#pragma mark named autoLayout
+    [self.namedLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.namedLabel.bottomAnchor constraintEqualToAnchor:self.inviteButton.topAnchor constant:-gap].active = YES;
+    [self.namedLabel.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.namedLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
+    [self.namedLabel.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-    int maxBreite = self.view.bounds.size.width;
+    [self.named setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    float breite = 400;
-    float hoehe = 250;
-    
-    float x = 0,y = 0;
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-    {
-        x = (maxBreite - breite)/2;
-        y = self.timeControlButton.frame.origin.y + 40;
-    }
-    else
-    {
-        x = 10;
-        y = 50;
-        hoehe = 250;
-        breite = 250;
-    }
-    self.pickerSammelView = [[UIView alloc] initWithFrame:CGRectMake(-500,-500,breite,hoehe)];
+    [self.named.topAnchor constraintEqualToAnchor:self.namedLabel.topAnchor constant:0].active = YES;
+    [self.named.heightAnchor constraintEqualToConstant:labelHeight].active = YES;
+    [self.named.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.named.leftAnchor constraintEqualToAnchor:self.timeControlLabel.rightAnchor constant:gap].active = YES;
 
-    self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
+#pragma mark inviteButton autoLayout
+    [self.inviteButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    self.pickerSammelView.backgroundColor = [UIColor whiteColor];
-    self.pickerSammelView.layer.borderWidth = 1.0f;
-    self.pickerSammelView.layer.cornerRadius = 14.0f;
-    
-    self.picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 50, breite, hoehe-50)];
-    self.picker.delegate = self;
-    self.picker.dataSource = self;
-    [self.picker selectRow:self.timeControlSelected inComponent:0 animated:YES];
-    
-    DGButton *button = [[DGButton alloc] initWithFrame:CGRectMake(10.0, 5.0, self.picker.frame.size.width - 20, 30.0)];
-    [button addTarget:self
-               action:@selector(closePickerView)
-     forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Done" forState:UIControlStateNormal];
-    design = [[Design alloc] init];
-    
-    [self.pickerSammelView addSubview:button];
-    
-    UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(10.0, 40.0, self.picker.frame.size.width - 20, 30.0)];
-    text.text = @"Select time control";
-    [text setTextAlignment:NSTextAlignmentCenter];
+    [self.inviteButton.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-edge].active = YES;
+    [self.inviteButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.inviteButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.inviteButton.widthAnchor  constraintEqualToConstant:80].active = YES;
 
-    [self.pickerSammelView addSubview:text];
+#pragma mark cancelButton autoLayout
+    [self.cancelButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.pickerSammelView addSubview:self.picker];
-    [self.view addSubview:self.pickerSammelView];
-    
-    [UIView animateWithDuration:1.0
-                     animations:^{
-        self.pickerSammelView.frame = CGRectMake(x,y,breite,hoehe);
-    }];
-    
-    [self.picker reloadAllComponents];
+    [self.cancelButton.topAnchor constraintEqualToAnchor:self.inviteButton.topAnchor constant:0].active = YES;
+    [self.cancelButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.cancelButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.cancelButton.widthAnchor  constraintEqualToConstant:80].active = YES;
 
-}
-
--(void)closePickerView
-{
-    [UIView animateWithDuration:1.0
-                     animations:^{
-        self.pickerSammelView.frame = CGRectMake(999, 999, 400, 400);
-    }];
 }
 
 - (IBAction)inviteAction:(id)sender
@@ -388,9 +291,9 @@
 {
     __block NSString *strComment = @"";
     NSString * encodedString = [self.comment.text stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]];
-
+ //   NSString * encodedString = self.comment.text;
     [encodedString enumerateSubstringsInRange:NSMakeRange(0,
-                                                          self.comment.text.length)
+                                                          encodedString.length)
                                       options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
      {
          
@@ -478,9 +381,6 @@
 
     if(textField.tag == 42)
         self.isMessageText = TRUE;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-
-    [self closePickerView];
     
     return YES;
 }
@@ -503,7 +403,6 @@ shouldChangeTextInRange:(NSRange)range
 }
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     [self.comment endEditing:YES];
     [self.named endEditing:YES];
@@ -511,29 +410,10 @@ shouldChangeTextInRange:(NSRange)range
     return YES;
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-        CGRect frame = self.inviteView.frame;
-        frame.origin.y = -100;
-        self.inviteView.frame = frame;
-        XLog(@"keyboardDidShow %f",self.view.frame.origin.y );
-}
-
--(void)keyboardDidHide:(NSNotification *)notification
-{
-        CGRect frame = self.inviteView.frame;
-        frame.origin.y = 0;
-        self.inviteView.frame = frame;
-        XLog(@"keyboardDidHide %f",self.view.frame.origin.y );
-        self.isMessageText = FALSE;
-}
 
 - (IBAction)cancelAction:(id)sender
 {
-    if([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad)
-        [self dismissViewControllerAnimated:YES completion:nil];
-    else
-        [self.navigationController popViewControllerAnimated:TRUE];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
