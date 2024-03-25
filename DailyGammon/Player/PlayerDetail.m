@@ -16,6 +16,7 @@
 #import <SafariServices/SafariServices.h>
 #import "AppDelegate.h"
 #import "InviteDetail.h"
+#import "QuickMessage.h"
 #import "Design.h"
 
 @interface PlayerDetail ()
@@ -464,7 +465,20 @@
 #pragma mark - Quick message
 - (IBAction)messageAction:(id)sender
 {
-    [self notYetImplemented];
+    QuickMessage *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"QuickMessage"];
+    controller.playerName = self.playerName.text;
+    controller.playerNummer = userID;
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 
 -(void)notYetImplemented

@@ -7,10 +7,6 @@
 //
 
 #import "InviteDetail.h"
-#import "RatingVC.h"
-#import "TopPageCV.h"
-#import "DbConnect.h"
-#import "Player.h"
 #import "AppDelegate.h"
 #import "Design.h"
 #import <SafariServices/SafariServices.h>
@@ -40,8 +36,6 @@
 
 @property (weak, nonatomic) IBOutlet DGButton *inviteButton;
 @property (weak, nonatomic) IBOutlet DGButton *cancelButton;
-
-@property (assign, atomic) BOOL isMessageText;
 
 @property (assign, atomic) BOOL loginOk;
 
@@ -378,9 +372,6 @@
 #pragma mark - textField
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-
-    if(textField.tag == 42)
-        self.isMessageText = TRUE;
     
     return YES;
 }
@@ -391,13 +382,13 @@
     return YES;
 }
 
-- (BOOL)textView:(UITextView *)textView
+- (BOOL)textField:(UITextField *)textField
 shouldChangeTextInRange:(NSRange)range
  replacementText:(NSString *)text
 {
     if ([text isEqualToString:@"\n"])
     {
-        [textView resignFirstResponder];
+        [textField resignFirstResponder];
     }
     return YES;
 }

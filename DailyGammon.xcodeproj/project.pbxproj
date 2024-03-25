@@ -67,6 +67,7 @@
 		E0B0514B21F4FCE500D91857 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B0514A21F4FCE500D91857 /* libsqlite3.0.tbd */; };
 		E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0514D21F4FDA100D91857 /* DbConnect.m */; };
 		E0BC24632BAEBF3300B554B2 /* PlayerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */; };
+		E0BC24682BB1884500B554B2 /* QuickMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC24672BB1884500B554B2 /* QuickMessage.m */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
 		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
 		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
@@ -302,6 +303,8 @@
 		E0B0515021F4FECE00D91857 /* rating.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = rating.sqlite; sourceTree = "<group>"; };
 		E0BC24612BAEBF3300B554B2 /* PlayerDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerDetail.h; sourceTree = "<group>"; };
 		E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerDetail.m; sourceTree = "<group>"; };
+		E0BC24662BB1884500B554B2 /* QuickMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickMessage.h; sourceTree = "<group>"; };
+		E0BC24672BB1884500B554B2 /* QuickMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickMessage.m; sourceTree = "<group>"; };
 		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
 		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
 		E0BDCC3621BE6AE300E8AF25 /* About.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
@@ -463,10 +466,12 @@
 			children = (
 				E00654D522A6784000194435 /* Player.h */,
 				E00654D622A6784000194435 /* Player.m */,
-				E060AC9A22A8E2A700D60C39 /* InviteDetail.h */,
-				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
 				E0BC24612BAEBF3300B554B2 /* PlayerDetail.h */,
 				E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */,
+				E060AC9A22A8E2A700D60C39 /* InviteDetail.h */,
+				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
+				E0BC24662BB1884500B554B2 /* QuickMessage.h */,
+				E0BC24672BB1884500B554B2 /* QuickMessage.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -967,6 +972,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0BC24682BB1884500B554B2 /* QuickMessage.m in Sources */,
 				E002F1A229A0F9740028098C /* Review.m in Sources */,
 				E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */,
 				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
