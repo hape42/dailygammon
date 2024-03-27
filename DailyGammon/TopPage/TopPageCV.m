@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet UILabel *header;
-@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+@property (weak, nonatomic) IBOutlet DGButton *refreshButton;
 @property (weak, nonatomic) IBOutlet DGButton *sortButton;
 @property (weak, nonatomic) IBOutlet UILabel *sortLabel;
 
@@ -113,7 +113,7 @@
 
     [self reDrawHeader];
     refreshButtonPressed = NO;
-    self.refreshButton = [design designRefreshButton:self.refreshButton withText:@"refresh"];
+  //  self.refreshButton = [design designRefreshButton:self.refreshButton withText:@"refresh"];
 }
 -(void) reDrawHeader
 {

@@ -36,7 +36,8 @@
 
 @interface PlayMatch ()
 
-@property (weak, nonatomic) IBOutlet UILabel *matchName;
+@property (weak, nonatomic) IBOutlet DGLabel *matchName;
+@property (weak, nonatomic) IBOutlet DGLabel *matchInfo;
 
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 
@@ -67,6 +68,15 @@
 @property (readwrite, retain, nonatomic) DGButton *topPageButton;
 
 @property (assign, atomic) int matchCount;
+
+@property (nonatomic, strong) NSLayoutConstraint *matchNameRightAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *matchNameLeftAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *matchNameCenterXAnchor;
+
+@property (nonatomic, strong) NSLayoutConstraint *matchInfoLeftAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *matchInfoRightAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *matchInfoTopAnchor;
+@property (nonatomic, strong) NSLayoutConstraint *matchInfoCenterXAnchor;
 
 @end
 
@@ -249,12 +259,30 @@
     if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
     {
         self.matchName.text = @"";
+        self.matchInfo.text = @"";
+
     }
     else
     {
-        self.matchName.text = [NSString stringWithFormat:@"%@, \t %@",
-                           [self.boardDict objectForKey:@"matchName"],
-                           [self.boardDict objectForKey:@"matchLaengeText"]] ;
+        NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
+        NSString *opponentScore = @"";
+        if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
+            opponentScore  = opponentArray[5];
+        else
+            opponentScore  = opponentArray[3];
+        
+        NSMutableArray *playerArray   = [self.boardDict objectForKey:@"player"];
+        NSString *playerScore = @"";
+        if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
+            playerScore  = playerArray[5];
+        else
+            playerScore  = playerArray[3];
+
+        self.matchName.text = [self.boardDict objectForKey:@"matchName"] ;
+        self.matchInfo.text = [NSString stringWithFormat:@"%@ %@ %@:%@",
+                           [self.boardDict objectForKey:@"matchLaengeText"],@" ",
+                               playerScore, opponentScore] ;
+
     }
     self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
@@ -265,7 +293,6 @@
 
 -(void)drawPlayingAreas
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
@@ -1429,6 +1456,7 @@
 
 -(void)layoutObjects
 {
+
     UIView *superview = self.view;
     UILayoutGuide *safe = superview.safeAreaLayoutGuide;
 
@@ -1440,7 +1468,7 @@
     [self.moreButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.moreButton.heightAnchor constraintEqualToConstant:40].active = YES;
     [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
-    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-1].active = YES;
 
 #pragma mark matchCountLabel autoLayout
     [self.matchCountLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -1448,15 +1476,59 @@
     [self.matchCountLabel.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.matchCountLabel.heightAnchor constraintEqualToConstant:40].active = YES;
     [self.matchCountLabel.widthAnchor constraintEqualToConstant:40].active = YES;
-    [self.matchCountLabel.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+    [self.matchCountLabel.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-2].active = YES;
+
+#pragma mark matchInfo autoLayout
+    [self.matchInfo setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.matchInfo.heightAnchor constraintEqualToConstant:40].active = YES;
 
 #pragma mark matchName autoLayout
     [self.matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.matchName.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.matchName.heightAnchor constraintEqualToConstant:40].active = YES;
-    [self.matchName.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-edge].active = YES;
-    [self.matchName.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+ 
+    [self.matchName.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:20].active = YES;
+
+    if(safe.layoutFrame.size.width > safe.layoutFrame.size.height )
+    {
+        [self.view removeConstraint:self.matchNameRightAnchor];
+        self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchInfo.leftAnchor constant:-edge];
+        self.matchNameRightAnchor.active = YES;
+        
+        [self.view removeConstraint:self.matchInfoTopAnchor];
+        self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge];
+        self.matchInfoTopAnchor.active = YES;
+        
+        [self.view removeConstraint:self.matchInfoLeftAnchor];
+        self.matchInfoLeftAnchor = [self.matchInfo.leftAnchor constraintEqualToAnchor:self.matchName.rightAnchor constant:edge];
+        self.matchInfoLeftAnchor.active = YES;
+        
+        [self.view removeConstraint:self.matchInfoRightAnchor];
+        self.matchInfoRightAnchor = [self.matchInfo.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-edge];
+        self.matchInfoRightAnchor.active = YES;
+        [self.view removeConstraint:self.matchInfoCenterXAnchor];
+
+    }
+    else
+    {
+        [self.view removeConstraint:self.matchNameRightAnchor];
+        self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-edge];
+        self.matchNameRightAnchor.active = YES;
+
+        [self.view removeConstraint:self.matchInfoTopAnchor];
+        self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:self.matchName.bottomAnchor constant:edge];
+        self.matchInfoTopAnchor.active = YES;
+
+        [self.view removeConstraint:self.matchInfoLeftAnchor];
+        [self.view removeConstraint:self.matchInfoRightAnchor];
+        
+        [self.view removeConstraint:self.matchInfoCenterXAnchor];
+        self.matchInfoCenterXAnchor = [self.matchInfo.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0];
+        self.matchInfoCenterXAnchor.active = YES;
+    }
+    [self.view layoutIfNeeded];
 
 }
 
@@ -1469,7 +1541,7 @@
     if([design isX] && (superViewWidth > superViewheight) ) //Notch
         notch = 50;
     float x = edge;
-    float y = 40 + gap ;
+    float y = 50 ;
     float maxHeight = superViewheight - y - edge;
     float maxWidth  = superViewWidth - edge - edge;
 
@@ -1519,7 +1591,7 @@
     }
     else // views among each other
     {
-        y = self.matchName.frame.origin.y + self.matchName.frame.size.height + 50;
+        y = 150;
         maxHeight = maxHeight - notch;
         zoomFactor = maxWidth / boardWidth;
 
@@ -1542,15 +1614,61 @@
 
     if (![self.navigationController.topViewController isKindOfClass:PlayMatch.class])
         return;
+    
+    UIView *superview = self.view;
+    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+
+    float edge = 5.0;
+
    // XLog(@"navStack 1: %@", self.navigationController.viewControllers);
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+//        if(safe.layoutFrame.size.width > safe.layoutFrame.size.height )
+//        {
+//            [self.view removeConstraint:self.matchInfoLeftAnchor];
+//            self.matchInfoLeftAnchor = [self.matchInfo.leftAnchor constraintEqualToAnchor:self.matchName.rightAnchor constant:edge];
+//            self.matchInfoLeftAnchor.active = YES;
+//            
+//            [self.view removeConstraint:self.matchInfoRightAnchor];
+//            self.matchInfoRightAnchor = [self.matchInfo.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-9];
+//            self.matchInfoRightAnchor.active = YES;
+//            [self.view removeConstraint:self.matchInfoCenterXAnchor];
+//
+//            [self.view removeConstraint:self.matchNameRightAnchor];
+//            self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchInfo.leftAnchor constant:-8];
+//            self.matchNameRightAnchor.active = YES;
+//            
+//            [self.view removeConstraint:self.matchInfoTopAnchor];
+//            self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge];
+//            self.matchInfoTopAnchor.active = YES;
+//            
+//        }
+//        else
+//        {
+//            [self.view removeConstraint:self.matchNameRightAnchor];
+//            self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-10];
+//            self.matchNameRightAnchor.active = YES;
+//
+//            [self.view removeConstraint:self.matchInfoTopAnchor];
+//            self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:self.matchName.bottomAnchor constant:edge];
+//            self.matchInfoTopAnchor.active = YES;
+//
+//            [self.view removeConstraint:self.matchInfoLeftAnchor];
+//            [self.view removeConstraint:self.matchInfoRightAnchor];
+//            
+//            [self.view removeConstraint:self.matchInfoCenterXAnchor];
+//            self.matchInfoCenterXAnchor = [self.matchInfo.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0];
+//            self.matchInfoCenterXAnchor.active = YES;
+//        }
+        [self layoutObjects];
          // Code to be executed during the animation
         [self->chatView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch:NO];
+//    [self.view layoutIfNeeded];
 
+        
 
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {

@@ -23,7 +23,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
-	<string>588</string>
+	<string>594</string>
 	<key>DGBuildDate</key>
 	<string>25. November 2022 09:06:14</string>
 	<key>DGbuildNumber</key>
