@@ -762,6 +762,7 @@
     float x = boardView.frame.origin.x + boardView.frame.size.width + 5;
     float y = boardView.frame.origin.y ;
     float labelWidth = actionViewWidth;
+    float edge = 5;
     if(isPortrait)
     {
         labelWidth = boardView.frame.size.width / 2;
@@ -780,33 +781,24 @@
                                                                              0,
                                                                              opponentView.frame.size.width,
                                                                              nameLabelHeight)];
-    DGLabel *opponentRating      = [[DGLabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *opponentRating      = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                              nameLabelHeight,
                                                                              opponentView.frame.size.width * .4,
                                                                              detailLabelHeight)];
-    DGLabel *opponentPips        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
-                                                                             nameLabelHeight+detailLabelHeight,
-                                                                             opponentView.frame.size.width * .4,
-                                                                             detailLabelHeight)];
-    DGLabel *opponentScore       = [[DGLabel alloc] initWithFrame:CGRectMake(0,
-                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
-                                                                             opponentView.frame.size.width * .2,
-                                                                             detailLabelHeight)];
-    DGLabel *opponentScoreValue  = [[DGLabel alloc] initWithFrame:CGRectMake(opponentScore.frame.size.width,
-                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
-                                                                             opponentView.frame.size.width * .2,
-                                                                             detailLabelHeight)];
-
+    UITextField *opponentPips    = [[UITextField alloc] initWithFrame:CGRectMake(edge,
+                                                                             nameLabelHeight + detailLabelHeight,
+                                                                             opponentView.frame.size.width -edge - edge,
+                                                                             detailLabelHeight + detailLabelHeight)];
     DGLabel *opponentActive      = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
                                                                              nameLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    DGLabel *opponentWon         = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
+    DGLabel *opponentWon         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                              nameLabelHeight + detailLabelHeight,
-                                                                             opponentView.frame.size.width * .6,
+                                                                             opponentView.frame.size.width * .4,
                                                                              detailLabelHeight)];
     DGLabel *opponentLost        = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
-                                                                             nameLabelHeight + detailLabelHeight  + detailLabelHeight,
+                                                                             nameLabelHeight + detailLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
     
@@ -814,9 +806,11 @@
     
     [opponentView addSubview:opponentRating];
     [opponentView addSubview:opponentPips];
-    [opponentView addSubview:opponentScore];
-    [opponentView addSubview:opponentScoreValue];
-    
+    opponentPips.textAlignment = NSTextAlignmentRight;
+    [opponentPips setFont:[UIFont boldSystemFontOfSize: 20]];
+    opponentPips.backgroundColor = [UIColor clearColor];
+    opponentPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
+
     [opponentView addSubview:opponentActive];
     [opponentView addSubview:opponentWon];
     [opponentView addSubview:opponentLost];
@@ -837,33 +831,25 @@
                                                                            0,
                                                                            playerView.frame.size.width,
                                                                            nameLabelHeight)];
-    DGLabel *playerRating      = [[DGLabel alloc] initWithFrame:CGRectMake(0,
+    DGLabel *playerRating      = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                            nameLabelHeight,
                                                                            playerView.frame.size.width * .4,
                                                                            detailLabelHeight)];
-    DGLabel *playerPips        = [[DGLabel alloc] initWithFrame:CGRectMake(0,
-                                                                             nameLabelHeight+detailLabelHeight,
-                                                                           playerView.frame.size.width * .4,
-                                                                             detailLabelHeight)];
-    DGLabel *playerScore       = [[DGLabel alloc] initWithFrame:CGRectMake(0,
-                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
-                                                                           playerView.frame.size.width * .2,
-                                                                             detailLabelHeight)];
-    DGLabel *playerScoreValue  = [[DGLabel alloc] initWithFrame:CGRectMake(playerScore.frame.size.width,
-                                                                             nameLabelHeight+detailLabelHeight+detailLabelHeight,
-                                                                           playerView.frame.size.width * .2,
-                                                                             detailLabelHeight)];
+    UITextField *playerPips    = [[UITextField alloc] initWithFrame:CGRectMake(edge,
+                                                                             nameLabelHeight + detailLabelHeight,
+                                                                           playerView.frame.size.width - edge -edge,
+                                                                             detailLabelHeight + detailLabelHeight)];
 
     DGLabel *playerActive      = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
                                                                              nameLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    DGLabel *playerWon         = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
+    DGLabel *playerWon         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                              nameLabelHeight + detailLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
     DGLabel *playerLost        = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
-                                                                             nameLabelHeight + detailLabelHeight  + detailLabelHeight,
+                                                                             nameLabelHeight + detailLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
 
@@ -871,9 +857,11 @@
     
     [playerView addSubview:playerRating];
     [playerView addSubview:playerPips];
-    [playerView addSubview:playerScore];
-    [playerView addSubview:playerScoreValue];
-    
+    playerPips.textAlignment = NSTextAlignmentRight;
+    [playerPips setFont:[UIFont boldSystemFontOfSize: 20]];
+    playerPips.backgroundColor = [UIColor clearColor];
+    playerPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
+
     [playerView addSubview:playerActive];
     [playerView addSubview:playerWon];
     [playerView addSubview:playerLost];
@@ -1028,16 +1016,12 @@
     opponentPips.text    = opponentArray[2];
     if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
-        opponentScoreValue.text   = opponentArray[5];
         opponentPips.text    = opponentArray[2];
     }
     else
     {
-        opponentScoreValue.text   = opponentArray[3];
         opponentPips.text    = @"";
     }
-    [opponentScoreValue setFont:[UIFont boldSystemFontOfSize: opponentScoreValue.font.pointSize]];
-    opponentScore.text   = @"Score:";
     
     NSMutableArray *playerArray = [boardDict objectForKey:@"player"];
     
@@ -1065,16 +1049,12 @@
     if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
     {
         playerPips.text    = playerArray[2];
-        playerScoreValue.text   = playerArray[5];
     }
     else
     {
-        playerScoreValue.text   = playerArray[3];
         playerPips.text    = @"";
     }
-    [playerScoreValue setFont:[UIFont boldSystemFontOfSize: opponentScoreValue.font.pointSize]];
-    playerScore.text   = @"Score:";
-
+    
     actionView.tag = ACTION_VIEW;
     opponentView.tag = ACTION_VIEW;
     playerView.tag = ACTION_VIEW;
