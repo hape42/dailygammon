@@ -238,7 +238,7 @@ didCompleteWithError:(NSError *)error
 -(void)readTopPage
 {
     [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
-    XLog(@"readTopPage");
+//    XLog(@"readTopPage");
     DGRequest *request = [[DGRequest alloc] initWithString:@"http://dailygammon.com/bg/top" completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
         if (success)
@@ -348,7 +348,7 @@ didCompleteWithError:(NSError *)error
         self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
 
     }
-    XLog(@"updateCollectionView");
+ //   XLog(@"updateCollectionView");
     [rating updateRating];
  
     [self.collectionView reloadData];

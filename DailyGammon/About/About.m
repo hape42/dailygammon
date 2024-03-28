@@ -202,7 +202,7 @@ didCompleteWithError:(NSError *)error
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
-    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
+//    XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
     if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
     {
         LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];

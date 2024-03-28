@@ -515,6 +515,7 @@
 		E09C008821B13D010056D2A2 /* SupportingFiles */ = {
 			isa = PBXGroup;
 			children = (
+				E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */,
 				E0F958A621AD5B54003DAC01 /* Bilder */,
 				E0F9589421AD168B003DAC01 /* LaunchScreen.storyboard */,
 				E0F9589721AD168B003DAC01 /* Info.plist */,
@@ -745,7 +746,6 @@
 				E0F9589F21AD185C003DAC01 /* Tools */,
 				E0F9588921AD1688003DAC01 /* AppDelegate.h */,
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
-				E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */,
 				E0F9588C21AD1688003DAC01 /* LoginVC.h */,
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
 				E0F9589821AD168B003DAC01 /* main.m */,

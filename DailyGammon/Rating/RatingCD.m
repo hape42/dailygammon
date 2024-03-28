@@ -104,7 +104,7 @@
     NSError *executeFetchError = nil;
     if ([context countForFetchRequest:request error:&executeFetchError])
     {
-        XLog(@"Existiert: %@ %@", date, userID);
+//        XLog(@"Existiert: %@ %@", date, userID);
         return TRUE;
     }
     else

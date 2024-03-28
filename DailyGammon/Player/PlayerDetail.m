@@ -435,10 +435,10 @@
 
 - (BOOL)isValidURL:(NSString *)urlString 
 {
-    NSString *urlRegex = @"(http(s)?://)?([\\w-]+\\.)+[\\w-]+(/[\\w- ./?%&=]*)?";
-    
-    NSPredicate *urlTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", urlRegex];
-    return [urlTest evaluateWithObject:urlString];
+    if ([urlString hasPrefix:@"http"])
+        return YES;
+    else
+        return NO;
 }
 
 #pragma mark - Invite
