@@ -669,6 +669,7 @@
     elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
     elementArray = [[NSMutableArray alloc]init];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+    NSMutableArray *buttonArray = [[NSMutableArray alloc]init];
 
     for(TFHppleElement *element in elements)
     {
@@ -679,10 +680,16 @@
             NSDictionary *dict = [child attributes];
             if([dict objectForKey:@"value"])
                 [finishedMatchDict setObject:[dict objectForKey:@"value"] forKey:@"NextButton"];
+            for (TFHppleElement *childs in [child children])
+            {
+                NSDictionary *dict = [childs attributes];
+                if([dict objectForKey:@"value"])
+                   [buttonArray addObject:dict];
+            }
         }
-
-        XLog(@"%@",[element content]);
     }
+    [finishedMatchDict setObject:buttonArray forKey:@"buttonArray"];
+
     [finishedMatchDict setObject:elementArray forKey:@"chat"];
     [finishedMatchDict setObject:attributesArray forKey:@"attributes"];
     return finishedMatchDict;

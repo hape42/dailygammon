@@ -1488,7 +1488,6 @@
 
     [self.matchName.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.matchName.heightAnchor constraintEqualToConstant:40].active = YES;
- 
     [self.matchName.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:20].active = YES;
 
     if(safe.layoutFrame.size.width > safe.layoutFrame.size.height )

@@ -530,21 +530,24 @@
     [buttonNext.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
     [buttonNext.widthAnchor constraintEqualToConstant:80].active = YES;
 
-    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
-    [buttonToTop setTitle:@"ToTop" forState: UIControlStateNormal];
-    [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
-    [buttonToTop.layer setValue:href forKey:@"href"];
-    [buttonToTop.layer setValue:finishedMatchChat.text forKey:@"chat"];
+    NSMutableArray *buttonArray = [finishedMatchDict objectForKey:@"buttonArray"];
+    if(buttonArray.count == 2)
+    {
+        DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+        [buttonToTop setTitle:@"ToTop" forState: UIControlStateNormal];
+        [buttonToTop addTarget:self action:@selector(actionToTopFinishedMatch:) forControlEvents:UIControlEventTouchUpInside];
+        [buttonToTop.layer setValue:href forKey:@"href"];
+        [buttonToTop.layer setValue:finishedMatchChat.text forKey:@"chat"];
+        
+        [self.infoView addSubview:buttonToTop];
     
-    [self.infoView addSubview:buttonToTop];
-
-    [buttonToTop setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [buttonToTop.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
-    [buttonToTop.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
-    [buttonToTop.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap ].active = YES;
-    [buttonToTop.widthAnchor constraintEqualToConstant:80].active = YES;
-
+        [buttonToTop setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+        [buttonToTop.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
+        [buttonToTop.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [buttonToTop.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap ].active = YES;
+        [buttonToTop.widthAnchor constraintEqualToConstant:80].active = YES;
+    }
     if(withChat)
     {
         UIButton *keyboardButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, buttonHight)];
@@ -945,8 +948,8 @@
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
     NSString *chatString = [tools cleanChatString:finishedMatchChat.text];
-    if(chatString)
-        chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
+//    if(chatString)
+//        chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
 
     NSString *matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1&chat=%@", href, chatString];
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
