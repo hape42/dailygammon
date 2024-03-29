@@ -793,13 +793,9 @@
                                                                              nameLabelHeight,
                                                                              opponentView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    DGLabel *opponentWon         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
+    DGLabel *opponentHistory         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                              nameLabelHeight + detailLabelHeight,
-                                                                             opponentView.frame.size.width * .4,
-                                                                             detailLabelHeight)];
-    DGLabel *opponentLost        = [[DGLabel alloc] initWithFrame:CGRectMake(opponentRating.frame.size.width,
-                                                                             nameLabelHeight + detailLabelHeight,
-                                                                             opponentView.frame.size.width * .6,
+                                                                             opponentView.frame.size.width -edge - edge,
                                                                              detailLabelHeight)];
     
     [opponentView addSubview:opponentName];
@@ -812,8 +808,7 @@
     opponentPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
 
     [opponentView addSubview:opponentActive];
-    [opponentView addSubview:opponentWon];
-    [opponentView addSubview:opponentLost];
+    [opponentView addSubview:opponentHistory];
 
     float playerX = x;
     float playerY = boardView.frame.origin.y + boardView.frame.size.height - (nameLabelHeight + ( 3 * detailLabelHeight));
@@ -844,13 +839,9 @@
                                                                              nameLabelHeight,
                                                                            playerView.frame.size.width * .6,
                                                                              detailLabelHeight)];
-    DGLabel *playerWon         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
+    DGLabel *playerHistory         = [[DGLabel alloc] initWithFrame:CGRectMake(edge,
                                                                              nameLabelHeight + detailLabelHeight,
-                                                                           playerView.frame.size.width * .6,
-                                                                             detailLabelHeight)];
-    DGLabel *playerLost        = [[DGLabel alloc] initWithFrame:CGRectMake(playerRating.frame.size.width,
-                                                                             nameLabelHeight + detailLabelHeight,
-                                                                           playerView.frame.size.width * .6,
+                                                                           playerView.frame.size.width - edge -edge,
                                                                              detailLabelHeight)];
 
     [playerView addSubview:playerName];
@@ -863,8 +854,7 @@
     playerPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
 
     [playerView addSubview:playerActive];
-    [playerView addSubview:playerWon];
-    [playerView addSubview:playerLost];
+    [playerView addSubview:playerHistory];
 
     float actionViewHeight = boardView.frame.size.height - nameLabelHeight - ( 3 * detailLabelHeight) - nameLabelHeight - ( 3 * detailLabelHeight);
     y = opponentView.frame.origin.y + opponentView.frame.size.height;
@@ -902,12 +892,10 @@
     if(showWinLoss)
     {
         playerActive.text = playerActiveText;
-        playerWon.text    = playerWonText;
-        playerLost.text   = playerLostText;
-        
+        playerHistory.text = [NSString stringWithFormat:@"History: %@ %@", playerWonText, playerLostText];
+
         opponentActive.text = opponentActiveText;
-        opponentWon.text    = opponentWonText;
-        opponentLost.text   = opponentLostText;
+        opponentHistory.text = [NSString stringWithFormat:@"History: %@ %@", opponentWonText, opponentLostText];
     }
 
 #pragma mark - opponent / player
@@ -955,13 +943,14 @@
                                                if(![playerWonText isEqualToString:[ratingDict objectForKey:@"wonPlayer"]])
                                                {
                                                    playerWonText       = [ratingDict objectForKey:@"wonPlayer"];
-                                                   playerWon.text = [ratingDict objectForKey:@"wonPlayer"];
+                                                   playerHistory.text = [NSString stringWithFormat:@"History: %@ ", playerWonText];
+
                                                }
                                                
                                                if(![playerLostText isEqualToString:[ratingDict objectForKey:@"lostPlayer"]])
                                                {
                                                    playerLostText       = [ratingDict objectForKey:@"lostPlayer"];
-                                                   playerLost.text = [ratingDict objectForKey:@"lostPlayer"];
+                                                   playerHistory.text = [NSString stringWithFormat:@"%@ %@",playerHistory.text, playerLostText];
                                                }
                                                
                                                if(![opponentActiveText isEqualToString:[ratingDict objectForKey:@"activeOpponent"]])
@@ -973,13 +962,13 @@
                                                if(![opponentWonText isEqualToString:[ratingDict objectForKey:@"wonOpponent"]])
                                                {
                                                    opponentWonText       = [ratingDict objectForKey:@"wonOpponent"];
-                                                   opponentWon.text = [ratingDict objectForKey:@"wonOpponent"];
+                                                   opponentHistory.text = [NSString stringWithFormat:@"History: %@ ", opponentWonText];
                                                }
                                                
                                                if(![opponentLostText isEqualToString:[ratingDict objectForKey:@"lostOpponent"]])
                                                {
                                                    opponentLostText       = [ratingDict objectForKey:@"lostOpponent"];
-                                                   opponentLost.text = [ratingDict objectForKey:@"lostOpponent"];
+                                                   opponentHistory.text = [NSString stringWithFormat:@"%@ %@",opponentHistory.text, opponentLostText];
                                                }
                                            }
                                        });
@@ -987,7 +976,7 @@
                     });
 
     }
-    
+
     opponentView.backgroundColor =  [UIColor colorNamed:@"ColorViewBackground"];
     playerView.backgroundColor   =  [UIColor colorNamed:@"ColorViewBackground"];
  
