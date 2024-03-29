@@ -23,6 +23,7 @@
 #import "Constants.h"
 #import "SetupVC.h"
 #import "PlayerDetail.h"
+#import "DGRequest.h"
 
 @interface Player ()
 
@@ -53,6 +54,7 @@
 @synthesize design, tools;
 
 @synthesize name;
+@synthesize waitView;
 
 @synthesize chooseArray;
 
@@ -130,6 +132,27 @@
     self.header.textColor = [design getTintColorSchema];
     self.moreButton = [design designMoreButton:self.moreButton];
     
+}
+
+#pragma mark - WaitView
+
+- (void)startActivityIndicator:(NSString *)text
+{
+    if(!waitView)
+    {
+        waitView = [[WaitView alloc]initWithText:text];
+    }
+    else
+    {
+        waitView.messageText = text;
+    }
+    [waitView showInView:self.view];
+
+}
+
+- (void)stopActivityIndicator
+{
+    [waitView dismiss];
 }
 
 #pragma mark - autoLayout
@@ -253,6 +276,7 @@
     self.chooseButton.showsMenuAsPrimaryAction = YES;
 
     [self.collectionView reloadData];
+    [self stopActivityIndicator];
 
 }
 
@@ -366,6 +390,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.searchBar resignFirstResponder];
+
     NSArray *row = self.playerArray[indexPath.row];
     NSDictionary *userDict = row[3];
     
@@ -383,169 +409,7 @@
 
 }
 
-/*
-#pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
-{
-    return 1;
-}
 
-- (NSInteger)tableView:(UITableView *)theTableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.playerArray.count;
-}
-
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
-
-    return;
-}
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
-    for (UIView *subview in [cell.contentView subviews])
-    {
-        if ([subview isKindOfClass:[UILabel class]])
-        {
-            [subview removeFromSuperview];
-        }
-    }
-        
-    NSArray *row = self.playerArray[indexPath.row];
-    NSMutableDictionary *dict = row[3];
-
-    DGButton *messageButton = [[DGButton alloc] initWithFrame:CGRectMake(tableView.frame.size.width - 100, 5, 100 , 35)];
-    [messageButton setTitle:@"Message" forState: UIControlStateNormal];
-    messageButton.tag = indexPath.row;
-    [messageButton addTarget:self action:@selector(messageAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    DGButton *inviteButton = [[DGButton alloc] initWithFrame:CGRectMake(messageButton.frame.origin.x - 110, 5, 100 , 35)];
-    [inviteButton setTitle:@"Invite" forState: UIControlStateNormal];
-    inviteButton.tag = indexPath.row;
-    [inviteButton addTarget:self action:@selector(inviteAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    float restWidth = tableView.frame.size.width - 220;
-    
-    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5,
-                                                                     5,
-                                                                     restWidth * PLAYER_WIDTH ,
-                                                                     30)];
-    playerLabel.textAlignment = NSTextAlignmentLeft;
-    playerLabel.text = [dict objectForKey:@"Text"];
-    playerLabel.adjustsFontSizeToFitWidth = YES;
-    playerLabel.numberOfLines = 0;
-    playerLabel.minimumScaleFactor = 0.5;
-
-    UILabel *ratingLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + playerLabel.frame.size.width,
-                                                                     5,
-                                                                     restWidth * RATING_WIDTH ,
-                                                                     30)];
-    ratingLabel.textAlignment = NSTextAlignmentLeft;
-    dict = row[4];
-    ratingLabel.text = [dict objectForKey:@"Text"];
-    ratingLabel.adjustsFontSizeToFitWidth = YES;
-    ratingLabel.numberOfLines = 0;
-    ratingLabel.minimumScaleFactor = 0.5;
-
-    UILabel *experienceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + ratingLabel.frame.origin.x + ratingLabel.frame.size.width,
-                                                                         5,
-                                                                         restWidth * EXPERIENCE_WIDTH ,
-                                                                         30)];
-    experienceLabel.textAlignment = NSTextAlignmentRight;
-    dict = row[6];
-    experienceLabel.text = [dict objectForKey:@"Text"];
-    experienceLabel.text = [experienceLabel.text stringByReplacingOccurrencesOfString:@"[\r\n]"
-                                                         withString:@""
-                                                            options:NSRegularExpressionSearch
-                                                              range:NSMakeRange(0, experienceLabel.text.length)];
-
-    experienceLabel.adjustsFontSizeToFitWidth = YES;
-    experienceLabel.numberOfLines = 0;
-    experienceLabel.minimumScaleFactor = 0.5;
-
-    [cell.contentView addSubview:playerLabel];
-    [cell.contentView addSubview:ratingLabel];
-    [cell.contentView addSubview:experienceLabel];
-    [cell.contentView addSubview:inviteButton];
-    [cell.contentView addSubview:messageButton];
-
-    return cell;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(tableView.frame.origin.x,0,tableView.frame.size.width,30)];
-    headerView.backgroundColor = [UIColor lightGrayColor];
-    
-    float restWidth = tableView.frame.size.width - 220;
-
-    UILabel *playerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5,
-                                                                     0,
-                                                                     restWidth * PLAYER_WIDTH ,
-                                                                     30)];
-    playerLabel.textAlignment = NSTextAlignmentLeft;
-    playerLabel.text = @"Player";
-    playerLabel.textColor = [UIColor whiteColor];
-    playerLabel.adjustsFontSizeToFitWidth = YES;
-    playerLabel.numberOfLines = 0;
-    playerLabel.minimumScaleFactor = 0.5;
-
-    UILabel *ratingLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + playerLabel.frame.size.width,
-                                                                     0,
-                                                                     restWidth * RATING_WIDTH ,
-                                                                     30)];
-    ratingLabel.textAlignment = NSTextAlignmentLeft;
-    ratingLabel.text = @"Rating";
-    ratingLabel.textColor = [UIColor whiteColor];
-    ratingLabel.adjustsFontSizeToFitWidth = YES;
-    ratingLabel.numberOfLines = 0;
-    ratingLabel.minimumScaleFactor = 0.5;
-    UILabel *experienceLabel = [[UILabel alloc] initWithFrame:CGRectMake(5 + ratingLabel.frame.origin.x + ratingLabel.frame.size.width,
-                                                                     0,
-                                                                     restWidth * EXPERIENCE_WIDTH ,
-                                                                     30)];
-    experienceLabel.textAlignment = NSTextAlignmentRight;
-    experienceLabel.text = @"Experience";
-    experienceLabel.textColor = [UIColor whiteColor];
-    experienceLabel.adjustsFontSizeToFitWidth = YES;
-    experienceLabel.numberOfLines = 0;
-    experienceLabel.minimumScaleFactor = 0.5;
-
-    [headerView addSubview:playerLabel];
-    [headerView addSubview:ratingLabel];
-    [headerView addSubview:experienceLabel];
-    
-    return headerView;
-    
-}
-
-- (void)updateTableView
-{
-    
-    [self.tableView reloadData];
-    
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSArray *row = self.playerArray[indexPath.row];
-    NSMutableDictionary *dict = row[3];
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    InviteDetail *vc = [app.activeStoryBoard instantiateViewControllerWithIdentifier:@"InviteDetailVC"];
-    vc.playerName = [dict objectForKey:@"Text"];
-    vc.playerNummer = [[dict objectForKey:@"href"] lastPathComponent];
-    [self.navigationController pushViewController:vc animated:NO];
-}
-*/
 
 #pragma mark - Search Implementation
 
@@ -590,14 +454,25 @@
 -(void)readPlayerArray:(NSString*)searchLink
 {
     
-    NSURL *urlTopPage = [NSURL URLWithString:searchLink];
-    NSData *topPageHtmlData = [NSData dataWithContentsOfURL:urlTopPage];
-    
-    NSString *htmlString = [NSString stringWithUTF8String:[topPageHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:topPageHtmlData encoding: NSISOLatin1StringEncoding];
+    NSURL *url = [NSURL URLWithString:searchLink];
+    [self startActivityIndicator: @"Getting Player data from www.dailygammon.com"];
+    DGRequest *request = [[DGRequest alloc] initWithURL:url completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [ self analyzeHTML:result];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+}
+
+-(void)analyzeHTML:(NSString *)htmlString
+{
     self.playerArray = [[NSMutableArray alloc]init];
-    
     
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
     
@@ -608,13 +483,13 @@
     NSArray *rown  = [xpathParser searchWithXPathQuery:queryString];
     for(int row = 2; row <= rown.count; row ++)
     {
-        NSMutableArray *topPageRow = [[NSMutableArray alloc]init];
+        NSMutableArray *playerRow = [[NSMutableArray alloc]init];
         
         NSString * searchString = [NSString stringWithFormat:@"//table[2]/tr[%d]/td",row];
         NSArray *elementRow  = [xpathParser searchWithXPathQuery:searchString];
         for(TFHppleElement *element in elementRow)
         {
-            NSMutableDictionary *topPageRowColumn = [[NSMutableDictionary alloc]init];
+            NSMutableDictionary *playerRowColumn = [[NSMutableDictionary alloc]init];
             
             for (TFHppleElement *child in element.children)
             {
@@ -622,22 +497,20 @@
                 
                 if ([child.tagName isEqualToString:@"a"])
                 {
-                    // NSDictionary *href = [child attributes];
-                    [topPageRowColumn setValue:[child content] forKey:@"Text"];
-                    [topPageRowColumn setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
+                    [playerRowColumn setValue:[child content] forKey:@"Text"];
+                    [playerRowColumn setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
                     
                     //                    XLog(@"gefunden %@", [child attributes]);
                 }
                 else
                 {
-                    [topPageRowColumn setValue:[element content] forKey:@"Text"];
+                    [playerRowColumn setValue:[element content] forKey:@"Text"];
                 }
             }
-            [topPageRow addObject:topPageRowColumn];
+            [playerRow addObject:playerRowColumn];
         }
-        //        XLog(@"%@", topPageRow);
         
-        [self.playerArray addObject:topPageRow];
+        [self.playerArray addObject:playerRow];
     }
     [self updateCollectionView];
     

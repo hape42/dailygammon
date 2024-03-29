@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import "WaitView.h"
 
 @class Design;
 @class Tools;
@@ -22,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic)    NSString *name;
 
 @property (strong, readwrite, retain, atomic) NSMutableArray *chooseArray;
+
+@property (strong, nonatomic, readwrite) WaitView *waitView;
 
 @end
 
