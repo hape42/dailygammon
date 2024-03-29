@@ -10,6 +10,7 @@
 #import "DGButton.h"
 #import "Design.h"
 #import "Tools.h"
+#import "DGRequest.h"
 
 @interface QuickMessage ()
 
@@ -43,6 +44,8 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
         
+    [self.textView becomeFirstResponder];
+
 }
 
 #pragma mark - layoutObjects
@@ -153,34 +156,37 @@
     
     NSString *escapedString = [tools cleanChatString:self.textView.text];
 
-    NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",playerNummer,escapedString]];
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",playerNummer,escapedString] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [self.textView resignFirstResponder];
 
-    NSError *error = nil;
-    [NSData dataWithContentsOfURL:urlSendQuickMessage options:NSDataReadingUncached error:&error];
-    XLog(@"Error: %@", error);
+            UIAlertController * alert = [UIAlertController
+                                         alertControllerWithTitle:@"Quick message"
+                                         message:[NSString stringWithFormat:@"Your message has been sent to %@",self->playerName]
+                                         preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction* okButton = [UIAlertAction
+                                       actionWithTitle:@"OK"
+                                       style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action)
+                                       {
+                [self dismissViewControllerAnimated:YES completion:nil];
 
-    if(!error)
-    {
-        [self.textView resignFirstResponder];
+                                       }];
+            
+            [alert addAction:okButton];
+            
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
 
-        UIAlertController * alert = [UIAlertController
-                                     alertControllerWithTitle:@"Quick message"
-                                     message:[NSString stringWithFormat:@"Your message has been sent to %@",playerName]
-                                     preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction* okButton = [UIAlertAction
-                                   actionWithTitle:@"OK"
-                                   style:UIAlertActionStyleDefault
-                                   handler:^(UIAlertAction * action)
-                                   {
-            [self dismissViewControllerAnimated:YES completion:nil];
-
-                                   }];
-        
-        [alert addAction:okButton];
-        
-        [self presentViewController:alert animated:YES completion:nil];
-    }
 }
 
 -(IBAction)actionCancelSend:(id)sender

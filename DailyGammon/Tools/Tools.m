@@ -282,6 +282,7 @@ typedef void(^connection)(BOOL);
          
      }];
     
+    return chatString;
     // Remove Emoji in NSString https://gist.github.com/siqin/4201667 löscht aber nur genau 1 Emoji
     //Anticro commented on 1 Jul 2020 •
     //'Measuring length of a string' at the Apple docs https://developer.apple.com/documentation/swift/string brought me to another solution, without the need for knowledge about the unicode pages. I just want letters to to remain in the string and skip all that is an icon:
@@ -300,7 +301,18 @@ typedef void(^connection)(BOOL);
         }
     }
 
-    str = [result.copy stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+ //   str = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+
+    // dadurch wird ein Emoji im Format &#128514; in 😂 gewandelt. die Webseite liefert &#128514; wenn 😂 eingegeben wird
+    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
+
+    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
+
+    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:data
+                                                                             options:options
+                                                                  documentAttributes:nil
+                                                                               error:nil];
+    str = [attributedString string];
 
     return str;
 }
