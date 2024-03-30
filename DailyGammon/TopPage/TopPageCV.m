@@ -22,6 +22,7 @@
 #import "TFHpple.h"
 #import "Tournament.h"
 #import "PlayMatch.h"
+#import "Constants.h"
 
 @interface TopPageCV ()
 
@@ -122,33 +123,48 @@
     self.moreButton = [design designMoreButton:self.moreButton];
     self.sortLabel.textColor = [schemaDict objectForKey:@"TintColor"];
     
-    switch([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue])
+    NSString *buttonTitle = @"unknown";
+    switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
-        case 1:
-            [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
+        case SORT_GRACE_THEN_POOL:
+            buttonTitle = @"Grace then Pool ↓";
             break;
-        case 2:
-            [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
+        case SORT_POOL:
+            buttonTitle = @"Pool ↓";
            break;
-        case 3:
-            [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
+        case SORT_GRACE_PLUS_POOL:
+            buttonTitle = @"Grace + Pool ↓";
             break;
-        case 4:
-            [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
+        case SORT_RECENT_OPPONENT_MOVE:
+            buttonTitle = @"Recent Opponent Move ↓";
            break;
-        case 5:
-            [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
+        case SORT_ROUND_DOWN:
+            buttonTitle = @"Round ↓";
             break;
-        case 6:
-            [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
+        case SORT_ROUND_UP:
+            buttonTitle = @"Round ↑";
             break;
-        case 7:
-            [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
+        case SORT_EVENT_DOWN:
+            buttonTitle = @"Event ↓";
             break;
-        case 8:
-            [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
+        case SORT_EVENT_UP:
+            buttonTitle = @"Round ↑";
+            break;
+        case SORT_LENGTH_DOWN:
+            buttonTitle = @"Length ↓";
+            break;
+        case SORT_LENGTH_UP:
+            buttonTitle = @"Length ↑";
+            break;
+        case SORT_OPPONENT_NAME_DOWN:
+            buttonTitle = @"Opponent Name ↓";
+            break;
+        case SORT_OPPONENT_NAME_UP:
+            buttonTitle = @"Opponent Name ↑";
             break;
     }
+    [self.sortButton setTitle:buttonTitle forState: UIControlStateNormal];
+
     [self updateCollectionView];
 
 }
@@ -329,9 +345,6 @@ didCompleteWithError:(NSError *)error
     }
     if(self.topPageArray.count > 0)
     {
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:sortButton]intValue] > 4)
-            [self sortUpdate];
-
         [self updateCollectionView];
     }
     [self stopActivityIndicator];
@@ -349,6 +362,7 @@ didCompleteWithError:(NSError *)error
 
     }
  //   XLog(@"updateCollectionView");
+    [self sortUpdate];
     [rating updateRating];
  
     [self.collectionView reloadData];
@@ -358,70 +372,121 @@ didCompleteWithError:(NSError *)error
 #pragma mark - sort
 -(void)sortUpdate
 {
+    int orderTyp = [[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue];
+    UIImage *orderImage = nil;
+    
     NSMutableArray  *menuArray = [[NSMutableArray alloc] initWithCapacity:3];
 
+    if(orderTyp == SORT_GRACE_THEN_POOL)
+        orderImage = [design designSystemImage:@"arrow.down.square"];
     [menuArray addObject:[UIAction actionWithTitle:@"Grace then Pool"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"0"
                                            handler:^(__kindof UIAction* _Nonnull action) {
-        [self matchOrdering:0];
-        [self.sortButton setTitle:@"Grace then Pool" forState: UIControlStateNormal];
+        [self matchOrdering:SORT_GRACE_THEN_POOL];
+        [self reDrawHeader];
+
    }]];
-   
+    
+    orderImage = nil;
+    if(orderTyp == SORT_POOL)
+        orderImage = [design designSystemImage:@"arrow.down.square"];
     [menuArray addObject:[UIAction actionWithTitle:@"Pool"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"1"
                                            handler:^(__kindof UIAction* _Nonnull action) {
-        [self matchOrdering:1];
-        [self.sortButton setTitle:@"Pool" forState: UIControlStateNormal];
+        [self matchOrdering:SORT_POOL];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_GRACE_PLUS_POOL)
+        orderImage = [design designSystemImage:@"arrow.down.square"];
     [menuArray addObject:[UIAction actionWithTitle:@"Grace + Pool"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"2"
                                            handler:^(__kindof UIAction* _Nonnull action) {
-        [self matchOrdering:2];
-        [self.sortButton setTitle:@"Grace + Pool" forState: UIControlStateNormal];
+        [self matchOrdering:SORT_GRACE_PLUS_POOL];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_RECENT_OPPONENT_MOVE)
+        orderImage = [design designSystemImage:@"arrow.down.square"];
     [menuArray addObject:[UIAction actionWithTitle:@"Recent Opponent Move"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"3"
                                            handler:^(__kindof UIAction* _Nonnull action) {
-        [self matchOrdering:3];
-        [self.sortButton setTitle:@"Recent Opponent Move" forState: UIControlStateNormal];
+        [self matchOrdering:SORT_RECENT_OPPONENT_MOVE];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_EVENT_DOWN)
+    {
+        orderImage = [design designSystemImage:@"arrow.down.square"];
+    }
+    if(orderTyp == SORT_EVENT_UP)
+    {
+        orderImage = [design designSystemImage:@"arrow.up.square"];
+    }
     [menuArray addObject:[UIAction actionWithTitle:@"Event"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"4"
                                            handler:^(__kindof UIAction* _Nonnull action) {
         [self sortEvent];
-        [self.sortButton setTitle:@"Event" forState: UIControlStateNormal];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_ROUND_DOWN)
+    {
+        orderImage = [design designSystemImage:@"arrow.down.square"];
+    }
+    if(orderTyp == SORT_ROUND_UP)
+    {
+        orderImage = [design designSystemImage:@"arrow.up.square"];
+    }
     [menuArray addObject:[UIAction actionWithTitle:@"Round"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"5"
                                            handler:^(__kindof UIAction* _Nonnull action) {
         [self sortRound];
-        [self.sortButton setTitle:@"Round" forState: UIControlStateNormal];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_LENGTH_DOWN)
+    {
+        orderImage = [design designSystemImage:@"arrow.down.square"];
+    }
+    if(orderTyp == SORT_LENGTH_UP)
+    {
+        orderImage = [design designSystemImage:@"arrow.up.square"];
+    }
     [menuArray addObject:[UIAction actionWithTitle:@"Length"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"6"
                                            handler:^(__kindof UIAction* _Nonnull action) {
         [self sortLength];
-        [self.sortButton setTitle:@"Length" forState: UIControlStateNormal];
+        [self reDrawHeader];
     }]];
 
+    orderImage = nil;
+    if(orderTyp == SORT_OPPONENT_NAME_DOWN)
+    {
+        orderImage = [design designSystemImage:@"arrow.down.square"];
+    }
+    if(orderTyp == SORT_OPPONENT_NAME_UP)
+    {
+        orderImage = [design designSystemImage:@"arrow.up.square"];
+    }
     [menuArray addObject:[UIAction actionWithTitle:@"Opponent Name"
-                                             image:nil
+                                             image:orderImage
                                         identifier:@"7"
                                            handler:^(__kindof UIAction* _Nonnull action) {
         [self sortOpponent];
-        [self.sortButton setTitle:@"Opponent Name" forState: UIControlStateNormal];
+        [self reDrawHeader];
     }]];
 
     self.sortButton.menu = [UIMenu menuWithChildren:menuArray];
@@ -479,7 +544,7 @@ didCompleteWithError:(NSError *)error
         NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
 
         NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_EVENT_DOWN)
         {
             if( result == NSOrderedAscending)
                 return NSOrderedDescending;
@@ -492,10 +557,10 @@ didCompleteWithError:(NSError *)error
         return NSOrderedSame;
     }];
 
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 6)
-        [[NSUserDefaults standardUserDefaults] setInteger:6 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_EVENT_DOWN)
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_EVENT_DOWN forKey:@"orderTyp"];
     else
-        [[NSUserDefaults standardUserDefaults] setInteger:61 forKey:@"orderTyp"];
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_EVENT_UP forKey:@"orderTyp"];
 
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -513,7 +578,7 @@ didCompleteWithError:(NSError *)error
         int erstes = [[firstObject objectForKey:@"Text"]intValue];
         int zweites = [[secondObject objectForKey:@"Text"]intValue];
         
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 5)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == SORT_LENGTH_DOWN)
         {
             if(erstes < zweites)
                 return NSOrderedAscending;
@@ -522,7 +587,7 @@ didCompleteWithError:(NSError *)error
             if(erstes == zweites)
                 return NSOrderedSame;
         }
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_LENGTH_DOWN)
         {
             if(erstes > zweites)
                 return NSOrderedAscending;
@@ -533,10 +598,10 @@ didCompleteWithError:(NSError *)error
         }
        return NSOrderedSame;
     }];
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 5)
-        [[NSUserDefaults standardUserDefaults] setInteger:5 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_LENGTH_DOWN)
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_LENGTH_DOWN forKey:@"orderTyp"];
     else
-        [[NSUserDefaults standardUserDefaults] setInteger:51 forKey:@"orderTyp"];
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_LENGTH_UP forKey:@"orderTyp"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
 
@@ -572,7 +637,7 @@ didCompleteWithError:(NSError *)error
             hinten = [Array objectAtIndex:1];
             zweites = [vorne floatValue] / [hinten floatValue];
         }
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_ROUND_DOWN)
         {
             if(erstes > zweites)
                 return NSOrderedAscending;
@@ -581,7 +646,7 @@ didCompleteWithError:(NSError *)error
             if(erstes == zweites)
                 return NSOrderedSame;
         }
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == 4)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] == SORT_ROUND_DOWN)
         {
             if(erstes < zweites)
                 return NSOrderedAscending;
@@ -592,10 +657,10 @@ didCompleteWithError:(NSError *)error
         }
         return NSOrderedSame;
     }];
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 4)
-        [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_ROUND_DOWN)
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_ROUND_DOWN forKey:@"orderTyp"];
     else
-        [[NSUserDefaults standardUserDefaults] setInteger:41 forKey:@"orderTyp"];
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_ROUND_UP forKey:@"orderTyp"];
 
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -613,7 +678,7 @@ didCompleteWithError:(NSError *)error
         NSString *zweites = [[secondObject objectForKey:@"Text"]lastPathComponent];
         
         NSComparisonResult result = [erstes compare:zweites options:NSCaseInsensitiveSearch];
-        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
+        if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_OPPONENT_NAME_DOWN)
         {
             if( result == NSOrderedAscending)
                 return NSOrderedDescending;
@@ -626,10 +691,10 @@ didCompleteWithError:(NSError *)error
         return NSOrderedSame;
     }];
     
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != 7)
-        [[NSUserDefaults standardUserDefaults] setInteger:7 forKey:@"orderTyp"];
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] != SORT_OPPONENT_NAME_DOWN)
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_OPPONENT_NAME_DOWN forKey:@"orderTyp"];
     else
-        [[NSUserDefaults standardUserDefaults] setInteger:71 forKey:@"orderTyp"];
+        [[NSUserDefaults standardUserDefaults] setInteger:SORT_OPPONENT_NAME_UP forKey:@"orderTyp"];
     
     [[NSUserDefaults standardUserDefaults] synchronize];
     

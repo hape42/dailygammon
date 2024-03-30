@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DGLabel.h"
+#import "DGButton.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -34,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIAlertController *) makeBackgroundColor:(UIAlertController*)alert;
 
 - (UIButton *)designRefreshButton:(UIButton *)refreshButton withText:(NSString *)text;
+- (DGButton *)designButton:(DGButton *)button imageName:(NSString *)imageName title:(NSString *)title;
 
 - (UIButton *)designMoreButton:(UIButton *)moreButton;
 - (UIColor *)getTintColorSchema;

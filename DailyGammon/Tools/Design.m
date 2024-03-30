@@ -483,6 +483,30 @@
     return  [UIImage systemImageNamed:imageName withConfiguration:total];
     
 }
+
+- (DGButton *)designButton:(DGButton *)button imageName:(NSString *)imageName title:(NSString *)title
+{
+    [button setTitle:@"" forState: UIControlStateNormal];
+    UIImage *image = [self designSystemImage:imageName ];
+    float spaceForImage = 50;
+    float edge = 10;
+    float gap = 20;
+    float x = ((spaceForImage - image.size.width) / 2) + edge;
+    float y = ((button.frame.size.height - image.size.height) / 2);
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, image.size.width, image.size.height)];
+    imageView.image = image;
+    [button addSubview:imageView];
+    x = edge + spaceForImage + gap;
+    y = 0;
+    DGLabel *titleLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, button.frame.size.width - x - edge, button.frame.size.height)];
+    titleLabel.text = title;
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.textColor = [self getTintColorSchema];
+    
+    [button addSubview:titleLabel];
+    
+    return button;
+}
 - (BOOL)isX
 {
 // https://www.ios-resolution.com
