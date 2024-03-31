@@ -794,7 +794,10 @@
         [ratingData addObject:[[ChartDataEntry alloc] initWithX:timeIntervall y:[[dict objectForKey: @"rating"]floatValue]]];
     }
     LineChartDataSet *ratingSet = nil;
-    ratingSet = [[LineChartDataSet alloc] initWithEntries:ratingData label:@"Rating"];
+    NSString *ratinglabel = [NSString stringWithFormat:@"Rating %d days",self.dataRange];
+    if(self.dataRange == 0)
+        ratinglabel = @"Rating all days";
+    ratingSet = [[LineChartDataSet alloc] initWithEntries:ratingData label:ratinglabel];
     ratingSet.axisDependency = AxisDependencyLeft;
     [ratingSet setColor:[design schemaColor]];
     ratingSet.lineWidth = 2.0;
