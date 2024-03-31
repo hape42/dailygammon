@@ -80,12 +80,12 @@
     wonMatches = MAX(0, wonMatches);
     lostMatches = MAX(0, lostMatches);
     NSString *wlaOpponent = [NSString stringWithFormat:@" w=%d l=%d a=%ld ", wonMatches,lostMatches, active.count-1]; // Überschrift abziehen
-    NSString *activeOpponent = [NSString stringWithFormat:@"Active matches %ld ", active.count-1]; // Überschrift abziehen
+    NSString *activeOpponent = [NSString stringWithFormat:@"Active %ld ", active.count-1]; // Überschrift abziehen
     NSString *wonOpponent = [NSString stringWithFormat:@"won %d", wonMatches];
     NSString *lostOpponent = [NSString stringWithFormat:@"lost %d",lostMatches];
     
     NSString *wlaPlayer = [NSString stringWithFormat:@" w=%d l=%d a=%ld ", lostMatches, wonMatches, active.count-1]; // Überschrift abziehen
-    NSString *activePlayer = [NSString stringWithFormat:@"Active matches %ld ", active.count-1]; // Überschrift abziehen
+    NSString *activePlayer = [NSString stringWithFormat:@"Active %ld ", active.count-1]; // Überschrift abziehen
     NSString *wonPlayer = [NSString stringWithFormat:@"won %d", lostMatches];
     NSString *lostPlayer = [NSString stringWithFormat:@"lost %d", wonMatches];
 

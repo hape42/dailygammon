@@ -1167,7 +1167,7 @@
     // build matchLink from it
     // delete first element from the array
     
-    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > 3)
+    if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > SORT_RECENT_OPPONENT_MOVE)
     {
         NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
         //    XLog(@"%@",urlMatch);

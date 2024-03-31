@@ -801,6 +801,10 @@
     [opponentView addSubview:opponentName];
     
     [opponentView addSubview:opponentRating];
+    [opponentRating setFont:[UIFont systemFontOfSize: 15]];
+    [opponentActive setFont:[UIFont systemFontOfSize: 15]];
+    [opponentHistory setFont:[UIFont systemFontOfSize: 15]];
+
     [opponentView addSubview:opponentPips];
     opponentPips.textAlignment = NSTextAlignmentRight;
     [opponentPips setFont:[UIFont boldSystemFontOfSize: 20]];
@@ -989,7 +993,20 @@
                                                                           (opponentName.frame.size.height * .2) / 2,
                                                                           opponentName.frame.size.width * .8,
                                                                           opponentName.frame.size.height * .8)] ;
-    [buttonOpponent setTitle:opponentArray[0] forState: UIControlStateNormal];
+    NSString *opponentNameString = opponentArray[0];
+    UIFont *font = buttonOpponent.titleLabel.font;
+    CGSize textSize = [opponentNameString sizeWithAttributes:@{NSFontAttributeName: font}];
+
+    if(textSize.width > buttonOpponent.frame.size.width)
+    {
+        float factor =  buttonOpponent.frame.size.width / textSize.width ;
+        
+        opponentNameString = [NSString stringWithFormat:@"%@ ...",[opponentNameString substringToIndex:(opponentNameString.length * factor) - 4]];
+    }
+    buttonOpponent.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+
+    [buttonOpponent setTitle:opponentNameString forState: UIControlStateNormal];
+
     [buttonOpponent.layer setValue:[boardDict objectForKey:@"opponentID"] forKey:@"userID"];
     [opponentView addSubview:buttonOpponent];
 

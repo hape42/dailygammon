@@ -37,5 +37,17 @@
     self.numberOfLines = 1;
     self.adjustsFontSizeToFitWidth = YES;
     self.minimumScaleFactor = 0.1;
+    
+    self.minimumContentSizeCategory = UIContentSizeCategorySmall;
+    self.maximumContentSizeCategory = UIContentSizeCategorySmall;
+
+}
+
+- (void)drawTextInRect:(CGRect)DGLabelRect
+{
+    float topInset = 0, leftInset = 5, bottomInset = 0, rightInset = 5;
+    
+    UIEdgeInsets DGLabelInsets = {topInset,leftInset,bottomInset,rightInset};
+    [super drawTextInRect:UIEdgeInsetsInsetRect(DGLabelRect, DGLabelInsets)];
 }
 @end
