@@ -47,6 +47,8 @@
 {
     [super viewDidLoad];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCollectionView) name:@"updateGameLoungeCollectionView" object:nil];
+
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
@@ -142,15 +144,12 @@
 
                     for (TFHppleElement *child in element.children)
                     {
-        //                XLog(@"Child %@", child);
-
                         if ([child.tagName isEqualToString:@"a"])
                         {
                            // NSDictionary *href = [child attributes];
                             [topPageZeileSpalte setValue:[child content] forKey:@"Text"];
                             [topPageZeileSpalte setValue:[[child attributes] objectForKey:@"href"]forKey:@"href"];
 
-        //                    XLog(@"gefunden %@", [child attributes]);
                         }
                         else
                         {
@@ -161,9 +160,8 @@
                     [topPageZeile addObject:topPageZeileSpalte];
 
                 }
-        //        XLog(@"%@", topPageZeile);
                 NSMutableDictionary *event = topPageZeile[0];
-                [event setObject:[self->tools readPlayers:[event objectForKey:@"href"]] forKey:@"player"];
+                [self->tools readPlayers:[event objectForKey:@"href"] inDict:event];
 
                 [self.gameLoungeArray addObject:topPageZeile];
                 if(topPageZeile.count == 9)
@@ -171,7 +169,6 @@
                     NSMutableDictionary *note = topPageZeile[8];
                    [self->tools readNote:[event objectForKey:@"href"] inDict:note];
                 }
-                [self.collectionView reloadData];
 
                 [self stopActivityIndicator];
                 [self readActiveTournaments];
@@ -184,6 +181,8 @@
                 
     }];
     request = nil;
+    [self.collectionView reloadData];
+
 }
 
 -(void)readActiveTournaments
@@ -418,7 +417,7 @@
     {
         cell.backgroundColor = [UIColor colorNamed:@"ColorCV"];
 
-        XLog(@"no Button");
+        // no Button
     }
 
     cell.layer.cornerRadius = 14.0f;
@@ -437,6 +436,15 @@
     return YES;
 }
 
+- (void)updateCollectionView
+{
+    [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
+
+ 
+    [self.collectionView reloadData];
+
+    [self stopActivityIndicator];
+}
 
 
 -(void)signUp:(UIButton*)sender

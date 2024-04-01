@@ -85,7 +85,7 @@
 
 //        NSDictionary *encodingOptions = @{
 //            NSStringEncodingDetectionAllowLossyKey : @(NO),
-//            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding), @(NSUTF8StringEncoding)],
+//            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding), @(NSUTF8StringEncoding), @(NSWindowsCP1250StringEncoding)],
 //            NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(NO)
 //        };
         NSDictionary *encodingOptions = @{

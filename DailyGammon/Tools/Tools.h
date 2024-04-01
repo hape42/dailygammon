@@ -19,7 +19,7 @@
 - (void)noInternet: (UIViewController *)vc;
 
 -(void)matchCount;
-- (NSString *)readPlayers:(NSString *)event;
+- (void)readPlayers:(NSString *)event inDict:(NSMutableDictionary *)eventDict;
 - (void)readNote:(NSString *)event inDict:(NSMutableDictionary *)note;
 
 - (NSString *)cleanChatString:(NSString *)chatString;

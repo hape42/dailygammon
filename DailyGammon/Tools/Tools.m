@@ -183,7 +183,6 @@ typedef void(^connection)(BOOL);
 
     NSData *eventHtmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
     NSString *htmlString = [NSString stringWithUTF8String:[eventHtmlData bytes]];
-    XLog(@"%@",htmlString);
 
     htmlString = [[NSString alloc]
                   initWithData:eventHtmlData encoding: NSISOLatin1StringEncoding];
@@ -201,7 +200,6 @@ typedef void(^connection)(BOOL);
         {
             searchRange.location = foundRange.location+foundRange.length;
 
-            XLog(@"<hr>%d", (int)foundRange.location);
             hrArray[i++] = [NSNumber numberWithInt:(int)foundRange.location];
         }
         else
@@ -210,7 +208,7 @@ typedef void(^connection)(BOOL);
             break;
         }
     }
-    // <hr><B>NOTE:</B> überspringen
+    // <hr><B>NOTE:</B> jump over
         int position = [hrArray[0]intValue] + 4 + 4 + 5 + 5;
         note = [htmlString substringWithRange:NSMakeRange(position, [hrArray[1]intValue] - position)];
         note = [note stringByReplacingOccurrencesOfString:@"<br>"
@@ -219,16 +217,29 @@ typedef void(^connection)(BOOL);
     
 }
 
-- (NSString *)readPlayers:(NSString *)event
+- (void)readPlayers:(NSString *)event inDict:(NSMutableDictionary *)eventDict
 {
+        
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event] completionHandler:^(BOOL success, NSError *error, NSString *result)
+    {
+        if (success)
+        {
+            [self analyzePlayerHTML:result inDict:eventDict];
+        }
+        else
+        {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+    
+}
+- (void)analyzePlayerHTML:(NSString *)result inDict:(NSMutableDictionary *)eventDict
+{
+
     NSString *players = @"64/10";
-    NSURL *urlEvent = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event]];
-    NSData *eventHtmlData = [NSData dataWithContentsOfURL:urlEvent];
-    
-    NSString *htmlString = [NSString stringWithUTF8String:[eventHtmlData bytes]];
-    htmlString = [[NSString alloc]
-                  initWithData:eventHtmlData encoding: NSISOLatin1StringEncoding];
-    
+    NSString *htmlString = result;
+
     NSMutableArray *playersArray = [[NSMutableArray alloc]initWithCapacity:2];
     
     NSRange searchRange = NSMakeRange(0,htmlString.length);
@@ -278,10 +289,14 @@ typedef void(^connection)(BOOL);
     {
         players = [NSString stringWithFormat:@"%d/%d",[playersArray[0]intValue], [playersArray[3]intValue] ];
     }
-   else
+    else
         players = @"?";
-    return players;
-    }
+    
+    [eventDict setObject:players forKey:@"player"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateGameLoungeCollectionView" object:self];
+
+    return ;
+}
 
 - (NSString *)cleanChatString:(NSString *)chatString
 {
