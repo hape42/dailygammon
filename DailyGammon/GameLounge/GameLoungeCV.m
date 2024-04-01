@@ -48,6 +48,7 @@
     [super viewDidLoad];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCollectionView) name:@"updateGameLoungeCollectionView" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateCollectionView) name:changeSchemaNotification object:nil];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
@@ -288,6 +289,8 @@
         }
     }
 
+    UIColor *tintColor =  [design getTintColorSchema];
+    
     NSArray *row = self.gameLoungeArray[indexPath.row];
     float edge = 5;
     float gap = 5;
@@ -310,7 +313,9 @@
     DGLabel *variantLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, 20)];
     variantLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *variant = row[1];
-    variantLabel.text = [NSString stringWithFormat: @"Variant: %@",[variant objectForKey:@"Text"]];
+    variantLabel.attributedText = [self formatLabel:variantLabel 
+                                    withDescription:@"Variant:"
+                                         andDetails:[variant objectForKey:@"Text"]];
     [cell.contentView addSubview:variantLabel];
 
 #pragma mark 2. Line length & rounds
@@ -319,7 +324,9 @@
     DGLabel *lengthLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,20)];
     lengthLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *length = row[2];
-    lengthLabel.text = [NSString stringWithFormat: @"Length: %@",[length objectForKey:@"Text"]];
+    lengthLabel.attributedText = [self formatLabel:lengthLabel 
+                                   withDescription:@"Length:"
+                                        andDetails:[length objectForKey:@"Text"]];
     [cell.contentView addSubview:lengthLabel];
 
     x += lengthLabel.frame.size.width;
@@ -327,7 +334,9 @@
     DGLabel *roundsLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,20)];
     roundsLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *rounds = row[3];
-    roundsLabel.text = [NSString stringWithFormat: @"Rounds: %@",[rounds objectForKey:@"Text"]];
+    roundsLabel.attributedText = [self formatLabel:roundsLabel 
+                                   withDescription:@"Rounds:"
+                                        andDetails:[rounds objectForKey:@"Text"]];
     [cell.contentView addSubview:roundsLabel];
 
 #pragma mark 3. Line time & grace
@@ -338,7 +347,10 @@
     timeLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *time = row[4];
     NSDictionary *timePlus = row[5];
-    timeLabel.text = [NSString stringWithFormat:@"Time: %@ %@",[time objectForKey:@"Text"], [timePlus objectForKey:@"Text"]];
+    timeLabel.attributedText = [self formatLabel:timeLabel
+                                 withDescription:@"Time:"
+                                      andDetails:[NSString stringWithFormat:@"%@ %@",[time objectForKey:@"Text"], [timePlus objectForKey:@"Text"]]];
+
     [cell.contentView addSubview:timeLabel];
 
     x += timeLabel.frame.size.width;
@@ -346,7 +358,9 @@
     DGLabel *graceLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,20)];
     graceLabel.textAlignment = NSTextAlignmentLeft;
     NSDictionary *grace = row[6];
-    graceLabel.text = [NSString stringWithFormat:@"Grace: %@",[grace objectForKey:@"Text"]];
+    graceLabel.attributedText = [self formatLabel:graceLabel
+                                   withDescription:@"Grace:"
+                                        andDetails:[grace objectForKey:@"Text"]];
     [cell.contentView addSubview:graceLabel];
 
 #pragma mark 4. Line max. Player & signed up Players
@@ -357,14 +371,19 @@
 
     DGLabel *playerLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,firstRowWidth,20)];
     playerLabel.textAlignment = NSTextAlignmentLeft;
-    playerLabel.text = [NSString stringWithFormat:@"max. Player: %@",player[0]];
+    playerLabel.attributedText = [self formatLabel:playerLabel
+                                   withDescription:@"max. Player:"
+                                        andDetails:player[0]];
     [cell.contentView addSubview:playerLabel];
 
     x += playerLabel.frame.size.width;
     
     DGLabel *signedUpLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,secondRowWidth,20)];
     signedUpLabel.textAlignment = NSTextAlignmentLeft;
-    signedUpLabel.text = [NSString stringWithFormat:@"signed up: %@",player[1]];
+    signedUpLabel.attributedText = [self formatLabel:signedUpLabel
+                                     withDescription:@"signed up:"
+                                          andDetails:player[1]];
+
     [cell.contentView addSubview:signedUpLabel];
 
 #pragma mark 5. Line Buttons
@@ -425,11 +444,22 @@
 
     return cell;
 
-
-
 }
+-(NSMutableAttributedString *)formatLabel:(DGLabel *)label withDescription:(NSString *) description andDetails:(NSString *)details
+{
+    UIColor *tintColor =  [design getTintColorSchema];
 
-
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@ %@",description, details]];
+    long textLength = description.length;
+    NSRange range = NSMakeRange(textLength, attributedString.length - textLength);
+    NSDictionary *boldAttributes = @{NSFontAttributeName: [UIFont boldSystemFontOfSize: label.font.pointSize]};
+    NSDictionary *colorAttributes = @{NSForegroundColorAttributeName: tintColor};
+    NSMutableDictionary *combinedAttributes = [NSMutableDictionary dictionaryWithDictionary:boldAttributes];
+    [combinedAttributes addEntriesFromDictionary:colorAttributes];
+    [attributedString setAttributes:combinedAttributes range:range];
+    
+    return attributedString;
+}
 #pragma mark - CollectionView delegate
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath 
 {
@@ -440,7 +470,9 @@
 {
     [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
 
- 
+    self.header.textColor = [design getTintColorSchema];
+    self.moreButton = [design designMoreButton:self.moreButton];
+
     [self.collectionView reloadData];
 
     [self stopActivityIndicator];
