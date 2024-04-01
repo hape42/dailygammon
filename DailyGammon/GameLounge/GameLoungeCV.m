@@ -90,29 +90,10 @@
     self.navigationItem.hidesBackButton = YES;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-
-    NSString *userName = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
-    NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
-
-    self.loginOk = FALSE;
-    
-    //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
-    NSString *post = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
-    NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-    [request setHTTPBody:postData];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-    
-    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
-    [task resume];
-
     [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
     
+    [self readGameLounge];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -125,65 +106,6 @@
     self.moreButton = [design designMoreButton:self.moreButton];
 
 }
-
-#pragma mark - NSURLSessionDataDelegate
-- (void)URLSession:(NSURLSession *)session
-          dataTask:(NSURLSessionDataTask *)dataTask
-didReceiveResponse:(NSURLResponse *)response
- completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler
-{
-    self.datenData = [[NSMutableData alloc] init];
-    completionHandler(NSURLSessionResponseAllow);
-}
-
-- (void)URLSession:(NSURLSession *)session
-          dataTask:(NSURLSessionDataTask *)dataTask
-    didReceiveData:(NSData *)data
-{
-    if(self.loginOk)
-    {
-        [self.datenData appendData:data];
-    }
-    else
-    {
-        self.loginOk = YES;
-    }
-}
-
-- (void)URLSession:(NSURLSession *)session
-              task:(NSURLSessionTask *)task
-didCompleteWithError:(NSError *)error
-{
-    if (error)
-    {
-        XLog(@"Connection didFailWithError %@", error.localizedDescription);
-        return;
-    }
-
-    for (NSHTTPCookie *cookie in [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies])
-    {
-        if([[cookie name] isEqualToString:@"USERID"])
-            [[NSUserDefaults standardUserDefaults] setValue:[cookie value] forKey:@"USERID"];
-
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        if([[cookie value] isEqualToString:@"N/A"])
-        {
-            LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
-            [self.navigationController pushViewController:vc animated:NO];
-        }
-    }
-  //  XLog(@"cookie %ld",[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count);
-    if([[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies].count < 1)
-    {
-        LoginVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"LoginVC"];
-        [self.navigationController pushViewController:vc animated:NO];
-    }
-    else
-    {
-        [self readGameLounge];
-    }
-}
-
 
 #pragma mark - Hpple
 
@@ -247,7 +169,7 @@ didCompleteWithError:(NSError *)error
                 if(topPageZeile.count == 9)
                 {
                     NSMutableDictionary *note = topPageZeile[8];
-                    [note setObject:[self->tools readNote:[event objectForKey:@"href"]] forKey:@"note"];
+                   [self->tools readNote:[event objectForKey:@"href"] inDict:note];
                 }
                 [self.collectionView reloadData];
 
@@ -263,6 +185,7 @@ didCompleteWithError:(NSError *)error
     }];
     request = nil;
 }
+
 -(void)readActiveTournaments
 {
     [self startActivityIndicator:@"Getting active tournaments from www.dailygammon.com"];

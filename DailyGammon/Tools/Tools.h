@@ -20,7 +20,7 @@
 
 -(void)matchCount;
 - (NSString *)readPlayers:(NSString *)event;
-- (NSString *)readNote:(NSString *)event;
+- (void)readNote:(NSString *)event inDict:(NSMutableDictionary *)note;
 
 - (NSString *)cleanChatString:(NSString *)chatString;
 

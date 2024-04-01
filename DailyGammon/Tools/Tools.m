@@ -160,16 +160,34 @@ typedef void(^connection)(BOOL);
     request = nil;
     }
 
-- (NSString *)readNote:(NSString *)event
+- (void)readNote:(NSString *)event inDict:(NSMutableDictionary *)note
+{
+        
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event] completionHandler:^(BOOL success, NSError *error, NSString *result)
+    {
+        if (success)
+        {
+            [self analyzeNoteHTML:result inDict:note];
+        }
+        else
+        {
+            NSLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+    
+}
+- (void)analyzeNoteHTML:(NSString *)result inDict:(NSMutableDictionary *)noteDict
 {
     NSString *note = @"Note";
-    
-    NSURL *urlEvent = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", event]];
-    NSData *eventHtmlData = [NSData dataWithContentsOfURL:urlEvent];
-    
+
+    NSData *eventHtmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
     NSString *htmlString = [NSString stringWithUTF8String:[eventHtmlData bytes]];
+    XLog(@"%@",htmlString);
+
     htmlString = [[NSString alloc]
                   initWithData:eventHtmlData encoding: NSISOLatin1StringEncoding];
+    htmlString = result;
     NSRange searchRange = NSMakeRange(0,htmlString.length);
     NSRange foundRange;
     int i = 0;
@@ -183,7 +201,7 @@ typedef void(^connection)(BOOL);
         {
             searchRange.location = foundRange.location+foundRange.length;
 
-          //  XLog(@"<hr>%d", (int)foundRange.location);
+            XLog(@"<hr>%d", (int)foundRange.location);
             hrArray[i++] = [NSNumber numberWithInt:(int)foundRange.location];
         }
         else
@@ -193,12 +211,14 @@ typedef void(^connection)(BOOL);
         }
     }
     // <hr><B>NOTE:</B> überspringen
-    int position = [hrArray[0]intValue] + 4 + 4 + 5 + 5;
-    note = [htmlString substringWithRange:NSMakeRange(position, [hrArray[1]intValue] - position)];
-    note = [note stringByReplacingOccurrencesOfString:@"<br>"
-                                         withString:@"\n"];
-    return note;
+        int position = [hrArray[0]intValue] + 4 + 4 + 5 + 5;
+        note = [htmlString substringWithRange:NSMakeRange(position, [hrArray[1]intValue] - position)];
+        note = [note stringByReplacingOccurrencesOfString:@"<br>"
+                                               withString:@"\n"];
+    [noteDict setObject:note forKey:@"note"];
+    
 }
+
 - (NSString *)readPlayers:(NSString *)event
 {
     NSString *players = @"64/10";
