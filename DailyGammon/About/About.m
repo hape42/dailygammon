@@ -21,6 +21,7 @@
 #import <SafariServices/SafariServices.h>
 #import "DGButton.h"
 #import "PlayerLists.h"
+#import "Ratings+CoreDataProperties.h"
 
 @interface About ()<NSURLSessionDataDelegate>
 
@@ -82,6 +83,7 @@
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
     self.moreButton.showsMenuAsPrimaryAction = YES;
 
+    [self makeCSV];
 }
 #define DATE [NSString stringWithUTF8String:__DATE__]
 #define TIME [NSString stringWithUTF8String:__TIME__]
@@ -372,8 +374,8 @@ didCompleteWithError:(NSError *)error
     NSData *myData = [NSData dataWithContentsOfFile:dbPath];
     
     [emailController addAttachmentData:myData mimeType:@"image/sqlite" fileName:@"rating.sqlite"];
-//    myData = [NSData dataWithContentsOfFile:plistPath];
-//    [emailController addAttachmentData:myData mimeType:@"image/plist" fileName:@"userdefaults.plist"];
+    myData = [NSData dataWithContentsOfFile:[documentsDirectory stringByAppendingPathComponent:@"ratings.csv"]];
+    [emailController addAttachmentData:myData mimeType:@"image/plist" fileName:@"rating.csv"];
 
     [self presentViewController:emailController animated:YES completion:NULL];
 }
@@ -472,6 +474,46 @@ didCompleteWithError:(NSError *)error
     [self.infoText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.infoText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
 
+}
+
+-(void)makeCSV
+{
+        
+   // NSMutableString *csvString = [@"Match, Event,Length,Opponent,Url,PR Player,PR opponent\n" mutableCopy];
+
+    NSMutableString *csvString = [@"" mutableCopy];
+
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateRating" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
+
+    // Fetch the records and handle an error
+    NSError *error;
+    
+    NSMutableArray * csvArray = [[context executeFetchRequest:request error:&error] mutableCopy];
+
+    for(Ratings *rating in csvArray)
+    {
+        [csvString appendFormat:@"%@,%5.2f,%@\n",
+         rating.dateRating,
+         rating.rating,
+        rating.user];
+    }
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSURL *url = [[NSURL fileURLWithPath:documentsDirectory] URLByAppendingPathComponent:@"ratings.csv"];
+    BOOL success = [csvString writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&error];
+    if (!success) {
+        NSLog(@"oh no! - %@",error.localizedDescription);
+    }
 }
 
 @end
