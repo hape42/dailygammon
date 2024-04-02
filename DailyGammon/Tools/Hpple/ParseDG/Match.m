@@ -8,6 +8,8 @@
 
 #import "Match.h"
 #import "TFHpple.h"
+#import "DGRequest.h"
+#import "AppDelegate.h"
 
 @interface Match ()
 
@@ -17,39 +19,43 @@
 
 @synthesize noBoard;
 
--(NSMutableDictionary *) readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview
+
+-(void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview inBoardDict:(NSMutableDictionary *)boardDict inActionDict:actionDict
 {
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
+
+    DGRequest *request = [[DGRequest alloc] initWithURL:urlMatch completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [ self analyzeHTML:result reviewMatch:isReview inBoardDict:boardDict inActionDict:actionDict];
+        }
+        else
+        {
+            XLog(@"Error: %@ %@", error.localizedDescription, urlMatch);
+        }
+    }];
+    request = nil;
+}
+-(void)analyzeHTML:(NSString *)htmlString reviewMatch:(BOOL)isReview inBoardDict:(NSMutableDictionary *)boardDict inActionDict:(NSMutableDictionary *)actionDict
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     noBoard = FALSE;
     int tableToAnalyze = 1;
     if(isReview)
         tableToAnalyze = 2;
-    NSMutableDictionary *boardDict = [[NSMutableDictionary alloc]init];
     
 #pragma mark - matchName
-    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-//    XLog(@"%@",urlMatch);
-    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-    NSError *error = nil;
-//    NSStringEncoding encoding = 0;
-//    NSString *matchString = [[NSString alloc] initWithContentsOfURL:urlMatch
-//                                                       usedEncoding:&encoding
-//                                                              error:&error];
-    if(error)
-        XLog(@"error %@ %@",error ,urlMatch);
+    NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
     
-//    NSData *data = [NSData dataWithContentsOfURL:urlMatch];
-    
-    // wie bekomme ich nur sauber die Sonderzeichen gelesen???
-//    NSString *htmlString = [NSString stringWithUTF8String:[data bytes]];
-    NSString *htmlString = [[NSString alloc]
-              initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
-    
+    NSData *matchHtmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
+
     if ([htmlString rangeOfString:@"<TD ALIGN=CENTER>13</TD>"].location == NSNotFound)
     {
         noBoard = TRUE;
         [boardDict setObject:htmlString forKey:@"htmlString"];
         [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
- //       return boardDict;
     }
     if ([htmlString rangeOfString:@"Next Game>&gt"].location != NSNotFound)
     {
@@ -68,30 +74,19 @@
         XLog(@"4 Next Game>> %@", urlMatch);
         htmlString = [self skipNext:htmlString];
     }
-//    if ([htmlString rangeOfString:@"<u>Score</u>"].location != NSNotFound)
-//    {
-//        XLog(@" <u>Score</u>> %@", urlMatch);
-//        htmlString = [self skipNext:htmlString];
-//    }
     if ([htmlString rangeOfString:@"Welcome to DailyGammon"].location != NSNotFound)
     {
-        XLog(@"Welcome to DailyGammon %@", urlMatch);
         [boardDict setObject:@"TopPage" forKey:@"TopPage"];
-//        return boardDict;
     }
     if ([htmlString rangeOfString:@"invites you to play"].location != NSNotFound)
     {
-        XLog(@"invites you to play %@", urlMatch);
         [boardDict setObject:@"Invite" forKey:@"Invite"];
         [boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
-//        return boardDict;
     }
-//    htmlString = @"DailyGammon Backups";
     if ([htmlString rangeOfString:@"DailyGammon Backups"].location != NSNotFound)
     {
-        XLog(@"invites you to play %@", urlMatch);
+        noBoard = TRUE;
         [boardDict setObject:@"Backups" forKey:@"Backups"];
- //       return boardDict;
     }
 
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
@@ -152,17 +147,17 @@
         [boardDict setObject:errorText forKey:@"error"];
         noBoard = TRUE;
 
-  //      return boardDict;
     }
-//
+
 #pragma mark - There has been an internal error.
     if ([htmlString rangeOfString:@"There has been an internal error. "].location != NSNotFound)
     {
         errorText = @"The http request you submitted was in error.";
         [boardDict setObject:@"There has been an internal error. " forKey:@"internal error"];
         noBoard = TRUE;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
-        return boardDict;
+        return ;
     }
 
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
@@ -179,8 +174,6 @@
     [boardDict setObject:chat forKey:@"chat"];
     
 #pragma mark -     You have received the following telegram message:
-//    [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
-//    [boardDict setObject:@"!DailyGammon is pleased to announce that the Three Pointer #3317 tournament has begun.  Good luck!" forKey:@"chat"];
     if ([htmlString rangeOfString:@"telegram"].location != NSNotFound)
     {
         [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
@@ -189,7 +182,6 @@
         {
             [boardDict setObject:[element content] forKey:@"chat"];
         }
-//        return boardDict;
     }
     
 #pragma mark - You have received the following quick message from
@@ -235,14 +227,13 @@
 
         [boardDict setObject:messageDict forKey:@"messageDict"];
         noBoard = TRUE;
-
-
-   //     return boardDict;
     }
     if ([htmlString rangeOfString:@"Your message has been sent"].location != NSNotFound)
     {
         [boardDict setObject:@"sent" forKey:@"messageSent"];
-        return boardDict;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
+
+        return ;
     }
 #pragma mark - unexpected Move
     NSString *unexpectedMove = @"";
@@ -255,8 +246,6 @@
     {
         [boardDict setObject:@"noMatches" forKey:@"noMatches"];
         noBoard = TRUE;
-
- //       return boardDict;
     }
 
     // prüfen ob jetzt tatsächlich ein Board abgearbeitet wird, oder ob noch etwas unvorhergesehenes passiert
@@ -266,12 +255,12 @@
  //       [boardDict setObject:htmlString forKey:@"unknown"];
  //       return boardDict;
     }
-// hier könnte ein return boardDict kommen, wenn noBoard == True 🤔
     if(noBoard)
     {
         [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
-        return boardDict;
+        return ;
     }
 #pragma mark - obere Nummern Reihe
     NSArray *elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat: @"//table[%d]/tr[1]/td",tableToAnalyze]];
@@ -450,8 +439,9 @@
             [elementArray addObject:[element text]];
     }
     [boardDict setObject:elementArray forKey:@"nummernUnten"];
-    
-    return boardDict;
+    [self readActionForm:[boardDict objectForKey:@"htmlData"] withChat:(NSString *)[boardDict objectForKey:@"chat"] inActionDict:actionDict];
+
+    return ;
 }
 - (NSString *)skipNext:(NSString *)htmlString
 {
@@ -477,18 +467,9 @@
 
     return htmlStringNeu;
 }
--(NSMutableDictionary *) readActionForm:(NSData *)htmlData withChat:(NSString *)chat
+-(void) readActionForm:(NSData *)htmlData withChat:(NSString *)chat inActionDict:(NSMutableDictionary *)actionDict
 {
-    NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
-  //  NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
-    
-//    NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
-    
-    // vv nur zum testen um zu sehen, warum es immer wieder unbekannte action gibt
-//    NSString *htmlString = [[NSString alloc] initWithData:matchHtmlData encoding: NSISOLatin1StringEncoding];
-//    [actionDict setObject:htmlString forKey:@"htmlString"];
-    // ^^
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
     [actionDict setObject:elements forKey:@"elements"];
@@ -498,7 +479,7 @@
         if([[element raw] rangeOfString:@"textarea"].location != NSNotFound)
         {
             //NSArray *pre  = [xpathParser searchWithXPathQuery:@"//pre"];
-            actionDict = [self analyzeChat:element withChat:chat];
+            [self analyzeChat:element withChat:chat inActionDict:actionDict];
         }
         else
         {
@@ -569,14 +550,14 @@
     }
     [actionDict setObject:elements forKey:@"a"];
     [actionDict setObject:reviewArray forKey:@"review"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
-    return actionDict;
+    return ;
 
 }
 
-- (NSMutableDictionary *) analyzeChat:(TFHppleElement *)element withChat:(NSString *)chat
+- (void) analyzeChat:(TFHppleElement *)element withChat:(NSString *)chat inActionDict:(NSMutableDictionary *)actionDict
 {
-    NSMutableDictionary *actionDict = [[NSMutableDictionary alloc]init];
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
 
     NSDictionary *elementDict = [element attributes];
@@ -600,7 +581,7 @@
     else
         [actionDict setObject:chat forKey:@"content"];
 
-    return actionDict;
+    return ;
 }
 
 - (NSMutableDictionary*) analyzeFinishedMatch: (TFHpple *)xpathParser

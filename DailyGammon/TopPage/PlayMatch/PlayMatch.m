@@ -127,6 +127,7 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(drawPlayingAreas) name:changeSchemaNotification object:nil];
     [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(analyzeMatch) name:@"analyzeMatch" object:nil];
 
     [self.view addSubview:self.matchName];
     
@@ -180,10 +181,21 @@
 -(void)showMatch:(BOOL)readMatch
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    self.boardDict  = [[NSMutableDictionary alloc]init];
+    self.actionDict = [[NSMutableDictionary alloc]init];
+
+    if(readMatch || (self.boardDict == nil))
+    {
+        [match readMatch:app.matchLink reviewMatch:isReview inBoardDict:self.boardDict inActionDict:self.actionDict];
+    }
+
+}
+-(void)analyzeMatch
+{
 
     [tools matchCount];
 
-    [chatView dismiss];
+   // [chatView dismiss];
 
     UIView *removeView;
     while((removeView = [self.view viewWithTag:FINISHED_MATCH_VIEW]) != nil)
@@ -205,10 +217,6 @@
     self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
-    if(readMatch || (self.boardDict == nil))
-    {
-        self.boardDict = [match readMatch:app.matchLink reviewMatch:isReview];
-    }
     if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
     {
         NoBoard *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"NoBoard"];
@@ -284,7 +292,7 @@
                                playerScore, opponentScore] ;
 
     }
-    self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
+ //   self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
     [self drawPlayingAreas];
@@ -735,7 +743,7 @@
         case CHAT:
         {
 #pragma mark - Chat
-            XLog(@"Chat");
+           // XLog(@"Chat");
             if(chatView)
             {
                 [tools removeAllSubviewsRecursively:chatView];

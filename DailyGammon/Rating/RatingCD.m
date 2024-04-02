@@ -186,6 +186,10 @@
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
     [predicates addObject:predicate];
+    
+    predicate = [NSPredicate predicateWithFormat:@"rating > 0"];
+    [predicates addObject:predicate];
+
     NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
 
     [fetchRequest setPredicate:compoundPredicate];
@@ -212,8 +216,20 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Ratings" inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entity];
+    NSMutableArray *predicates = [NSMutableArray array];
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"user = [c] %@",userID];
-    [request setPredicate:predicate];
+    [predicates addObject:predicate];
+
+    predicate = [NSPredicate predicateWithFormat:@"rating > 0"];
+    [predicates addObject:predicate];
+
+    NSPredicate *compoundPredicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+   // request.predicate =  compoundPredicate;
+
+    [request setPredicate:compoundPredicate];
+
+ //   [request setPredicate:predicate];
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"dateRating" ascending:YES];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     [request setSortDescriptors:sortDescriptors];
