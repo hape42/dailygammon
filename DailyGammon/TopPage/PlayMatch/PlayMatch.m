@@ -58,8 +58,6 @@
 
 @property (readwrite, retain, nonatomic) NSMutableArray *moveArray;
 
-@property (weak, nonatomic) UIPopoverController *presentingPopoverController;
-
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
 @property (assign, atomic) unsigned long memory_start;
@@ -77,6 +75,8 @@
 @property (nonatomic, strong) NSLayoutConstraint *matchInfoRightAnchor;
 @property (nonatomic, strong) NSLayoutConstraint *matchInfoTopAnchor;
 @property (nonatomic, strong) NSLayoutConstraint *matchInfoCenterXAnchor;
+
+@property (nonatomic, strong) NSDate *lastTapDate;
 
 @end
 
@@ -105,16 +105,32 @@
 {
     [super viewDidLoad];
     
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(chatTopButton:)
-                                                 name:chatViewTopButtonNotification
-                                               object:nil];
+    [nc addObserver:self
+           selector:@selector(chatTopButton:)
+               name:chatViewTopButtonNotification
+             object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(chatNextButton:)
-                                                 name:chatViewNextButtonNotification
-                                               object:nil];
+    [nc addObserver:self
+           selector:@selector(chatNextButton:)
+               name:chatViewNextButtonNotification
+             object:nil];
+
+    [nc addObserver:self 
+           selector:@selector(drawPlayingAreas)
+               name:changeSchemaNotification
+             object:nil];
+    
+    [nc addObserver:self 
+           selector:@selector(showMatchCount)
+               name:matchCountChangedNotification
+             object:nil];
+    
+    [nc addObserver:self 
+           selector:@selector(analyzeMatch)
+               name:@"analyzeMatch"
+             object:nil];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
@@ -123,11 +139,6 @@
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
     matchTools = [[MatchTools alloc] init];
-
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(drawPlayingAreas) name:changeSchemaNotification object:nil];
-    [nc addObserver:self selector:@selector(showMatchCount) name:matchCountChangedNotification object:nil];
-    [nc addObserver:self selector:@selector(analyzeMatch) name:@"analyzeMatch" object:nil];
 
     [self.view addSubview:self.matchName];
     
@@ -144,6 +155,8 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
     self.moreButton.showsMenuAsPrimaryAction = YES;
+
+    self.lastTapDate = [NSDate date];
 
 }
 
@@ -292,7 +305,6 @@
                                playerScore, opponentScore] ;
 
     }
- //   self.actionDict = [match readActionForm:[self.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[self.boardDict objectForKey:@"chat"]];
     self.moveArray = [[NSMutableArray alloc]init];
     
     [self drawPlayingAreas];
@@ -1304,6 +1316,16 @@
 }
 - (void)cellTouched:(UIGestureRecognizer *)gesture
 {
+
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     CGPoint tapLocation = [gesture locationInView:self.view];
@@ -1331,10 +1353,6 @@
     if (error)
     {
         XLog(@"Fehler MFMailComposeViewController: %@", error);
-    }
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    {
-        [self.presentingPopoverController dismissPopoverAnimated:YES];
     }
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
@@ -1543,7 +1561,6 @@
 {
  //   XLog(@"");
     float edge = 20;
-    float gap = 10;
     int notch = 0;
     if([design isX] && (superViewWidth > superViewheight) ) //Notch
         notch = 50;
@@ -1622,69 +1639,21 @@
     if (![self.navigationController.topViewController isKindOfClass:PlayMatch.class])
         return;
     
-    UIView *superview = self.view;
-    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
-
-    float edge = 5.0;
-
-   // XLog(@"navStack 1: %@", self.navigationController.viewControllers);
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
-//        if(safe.layoutFrame.size.width > safe.layoutFrame.size.height )
-//        {
-//            [self.view removeConstraint:self.matchInfoLeftAnchor];
-//            self.matchInfoLeftAnchor = [self.matchInfo.leftAnchor constraintEqualToAnchor:self.matchName.rightAnchor constant:edge];
-//            self.matchInfoLeftAnchor.active = YES;
-//            
-//            [self.view removeConstraint:self.matchInfoRightAnchor];
-//            self.matchInfoRightAnchor = [self.matchInfo.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-9];
-//            self.matchInfoRightAnchor.active = YES;
-//            [self.view removeConstraint:self.matchInfoCenterXAnchor];
-//
-//            [self.view removeConstraint:self.matchNameRightAnchor];
-//            self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchInfo.leftAnchor constant:-8];
-//            self.matchNameRightAnchor.active = YES;
-//            
-//            [self.view removeConstraint:self.matchInfoTopAnchor];
-//            self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge];
-//            self.matchInfoTopAnchor.active = YES;
-//            
-//        }
-//        else
-//        {
-//            [self.view removeConstraint:self.matchNameRightAnchor];
-//            self.matchNameRightAnchor = [self.matchName.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-10];
-//            self.matchNameRightAnchor.active = YES;
-//
-//            [self.view removeConstraint:self.matchInfoTopAnchor];
-//            self.matchInfoTopAnchor = [self.matchInfo.topAnchor constraintEqualToAnchor:self.matchName.bottomAnchor constant:edge];
-//            self.matchInfoTopAnchor.active = YES;
-//
-//            [self.view removeConstraint:self.matchInfoLeftAnchor];
-//            [self.view removeConstraint:self.matchInfoRightAnchor];
-//            
-//            [self.view removeConstraint:self.matchInfoCenterXAnchor];
-//            self.matchInfoCenterXAnchor = [self.matchInfo.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0];
-//            self.matchInfoCenterXAnchor.active = YES;
-//        }
         [self layoutObjects];
          // Code to be executed during the animation
         [self->chatView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
         [self showMatch:NO];
-//    [self.view layoutIfNeeded];
 
         
 
      } completion:^(id<UIViewControllerTransitionCoordinatorContext> context) 
      {
          // Code to be executed after the animation is completed
-           // XLog(@"navStack 2: %@", self.navigationController.viewControllers);
      }];
-//    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
-//
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
     
 }
 

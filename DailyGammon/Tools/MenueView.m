@@ -261,8 +261,6 @@
 -(void) playerVC
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
-
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     

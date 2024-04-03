@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21513" systemVersion="21G651" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22522" systemVersion="23D60" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
     <entity name="Phrases" representedClassName="Phrases" syncable="YES" codeGenerationType="class">
         <attribute name="longText" optional="YES" attributeType="String"/>
+        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="quantityUsed" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shortText" optional="YES" attributeType="String"/>
     </entity>
     <entity name="Ratings" representedClassName="Ratings" syncable="YES" codeGenerationType="class">

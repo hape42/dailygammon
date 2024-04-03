@@ -289,7 +289,6 @@
         }
     }
 
-    UIColor *tintColor =  [design getTintColorSchema];
     
     NSArray *row = self.gameLoungeArray[indexPath.row];
     float edge = 5;

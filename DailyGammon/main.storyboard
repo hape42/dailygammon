@@ -1014,7 +1014,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0oJ-jZ-j2r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3616" y="-1724"/>
+            <point key="canvasLocation" x="3590" y="-2085"/>
         </scene>
         <!--Board SchemeVC-->
         <scene sceneID="y1X-f5-l4S">
@@ -1111,7 +1111,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mM0-Ya-Abo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3382" y="-1607"/>
+            <point key="canvasLocation" x="3366" y="-1968"/>
         </scene>
         <!--Review-->
         <scene sceneID="M2M-YX-kGy">
