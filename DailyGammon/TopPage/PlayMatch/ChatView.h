@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Tools;
 @class DGButton;
 
-@interface ChatView : UIView<UITextViewDelegate>
+@interface ChatView : UIView<UITextViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *boardDict;
 @property (strong, readwrite, retain, atomic) NSMutableDictionary *actionDict;

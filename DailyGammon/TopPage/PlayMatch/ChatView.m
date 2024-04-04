@@ -135,7 +135,7 @@
 #pragma mark phrasesButton
     UIButton *phrasesButton = [[UIButton alloc] init];
     phrasesButton = [design designChatPhrasesButton:phrasesButton];
-    [phrasesButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
+    [phrasesButton addTarget:self action:@selector(textModul:) forControlEvents:UIControlEventTouchUpInside];
     phrasesButton.tag = 2;
     [self addSubview:phrasesButton];
 
@@ -403,4 +403,20 @@
     app.chatBuffer = playerChat.text;
 }
 
+-(void)textModul:(id)sender
+{
+ 
+    UIViewController *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [presentingVC presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
 @end

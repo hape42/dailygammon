@@ -68,6 +68,7 @@
 		E0B0514F21F4FDA200D91857 /* DbConnect.m in Sources */ = {isa = PBXBuildFile; fileRef = E0B0514D21F4FDA100D91857 /* DbConnect.m */; };
 		E0BC24632BAEBF3300B554B2 /* PlayerDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */; };
 		E0BC24682BB1884500B554B2 /* QuickMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC24672BB1884500B554B2 /* QuickMessage.m */; };
+		E0BC246D2BBD939700B554B2 /* TextModul.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BC246C2BBD939700B554B2 /* TextModul.m */; };
 		E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3221BD140300E8AF25 /* BlueWhite.png */; };
 		E0BDCC3521BD142B00E8AF25 /* GrayRed.png in Resources */ = {isa = PBXBuildFile; fileRef = E0BDCC3421BD142B00E8AF25 /* GrayRed.png */; };
 		E0BDCC3821BE6AE300E8AF25 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = E0BDCC3721BE6AE300E8AF25 /* About.m */; };
@@ -305,6 +306,8 @@
 		E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerDetail.m; sourceTree = "<group>"; };
 		E0BC24662BB1884500B554B2 /* QuickMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QuickMessage.h; sourceTree = "<group>"; };
 		E0BC24672BB1884500B554B2 /* QuickMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QuickMessage.m; sourceTree = "<group>"; };
+		E0BC246B2BBD939700B554B2 /* TextModul.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextModul.h; sourceTree = "<group>"; };
+		E0BC246C2BBD939700B554B2 /* TextModul.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextModul.m; sourceTree = "<group>"; };
 		E0BDCC3221BD140300E8AF25 /* BlueWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlueWhite.png; sourceTree = "<group>"; };
 		E0BDCC3421BD142B00E8AF25 /* GrayRed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrayRed.png; sourceTree = "<group>"; };
 		E0BDCC3621BE6AE300E8AF25 /* About.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
@@ -659,6 +662,15 @@
 			path = DB;
 			sourceTree = "<group>";
 		};
+		E0BC246A2BBD935700B554B2 /* TextModuls */ = {
+			isa = PBXGroup;
+			children = (
+				E0BC246B2BBD939700B554B2 /* TextModul.h */,
+				E0BC246C2BBD939700B554B2 /* TextModul.m */,
+			);
+			path = TextModuls;
+			sourceTree = "<group>";
+		};
 		E0BDCC3121BD13D700E8AF25 /* Boards */ = {
 			isa = PBXGroup;
 			children = (
@@ -734,6 +746,7 @@
 				E05840232A4E9675005C032C /* Charts.xcodeproj */,
 				E07F021722EED0870065546C /* Rating */,
 				E0763D3122D7658700EDA562 /* TopPage */,
+				E0BC246A2BBD935700B554B2 /* TextModuls */,
 				E083BAE822B3A2E50035A71E /* Player */,
 				E0F5597829914B0600EB5DBE /* Tournament */,
 				E09871E1293366760043DC8A /* GameLounge */,
@@ -1000,6 +1013,7 @@
 				E0EE051729D7237C003DEDE8 /* NoBoard.m in Sources */,
 				E0BC24632BAEBF3300B554B2 /* PlayerDetail.m in Sources */,
 				E0FA69342964463200D88C26 /* DGButton.m in Sources */,
+				E0BC246D2BBD939700B554B2 /* TextModul.m in Sources */,
 				E0BDCC3E21BEA8F900E8AF25 /* Preferences.m in Sources */,
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
 				E0F80DC42B58113900678743 /* GameLoungeCV.m in Sources */,
