@@ -849,10 +849,14 @@
                                                                              nameLabelHeight + detailLabelHeight,
                                                                            playerView.frame.size.width - edge -edge,
                                                                              detailLabelHeight)];
-
+ 
     [playerView addSubview:playerName];
     
     [playerView addSubview:playerRating];
+    [playerRating  setFont:[UIFont systemFontOfSize: 15]];
+    [playerActive  setFont:[UIFont systemFontOfSize: 15]];
+    [playerHistory setFont:[UIFont systemFontOfSize: 15]];
+
     [playerView addSubview:playerPips];
     playerPips.textAlignment = NSTextAlignmentRight;
     [playerPips setFont:[UIFont boldSystemFontOfSize: 20]];
