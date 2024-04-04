@@ -193,18 +193,29 @@
 }
 -(void)showMatch:(BOOL)readMatch
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    self.boardDict  = [[NSMutableDictionary alloc]init];
-    self.actionDict = [[NSMutableDictionary alloc]init];
 
     if(readMatch || (self.boardDict == nil))
     {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        self.boardDict  = [[NSMutableDictionary alloc]init];
+        self.actionDict = [[NSMutableDictionary alloc]init];
+
         [match readMatch:app.matchLink reviewMatch:isReview inBoardDict:self.boardDict inActionDict:self.actionDict];
     }
-
+    else
+    {
+        [self analyzeMatch];
+    }
 }
 -(void)analyzeMatch
 {
+    
+    if((self.actionDict == nil) || (self.boardDict == nil))
+    {
+        XLog(@"");
+        [self errorAction:5];
+        return;
+    }
 
     [tools matchCount];
 
@@ -1361,6 +1372,8 @@
 
 -(void)errorAction:(int)typ
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"oops"
                                  message:@"something unexpected happend! Better go to TopPage"
@@ -1372,7 +1385,7 @@
                   range:NSMakeRange(0, [title length])];
     [alert setValue:title forKey:@"attributedTitle"];
 
-    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"-%d-\n\nSomething unexpected happend!  \n\n Please send an Email to support.\n\n\nOr just go to the TopPage.", typ]];
+    NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"-%d-\n\nSomething unexpected happend!  \n%@\n Please send an Email to support.\n\n\nOr just go to the TopPage.", typ, app.matchLink]];
     [message addAttribute:NSFontAttributeName
                     value:[UIFont systemFontOfSize:20.0]
                     range:NSMakeRange(0, [message length])];
@@ -1386,6 +1399,13 @@
                                     TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
 
                                     [self.navigationController pushViewController:vc animated:NO];
+                                }];
+    UIAlertAction* goButton = [UIAlertAction
+                                actionWithTitle:@"Try to go ahead"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    [self showMatch:YES];
                                 }];
 
     UIAlertAction* mailButton = [UIAlertAction
@@ -1423,6 +1443,9 @@
 
                                      text = [NSString stringWithFormat:@"<br> <br>my Name on DailyGammon <b>%@</b><br><br>",[[NSUserDefaults standardUserDefaults] valueForKey:@"user"]];
                                      emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
+
+                                    text = [NSString stringWithFormat:@"URL <b>%@</b><br> ", app.matchLink];
+                                    emailText = [NSString stringWithFormat:@"%@%@", emailText, text];
 
 
                                      MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
@@ -1466,7 +1489,8 @@
                                  }];
 
     [alert addAction:yesButton];
-    [alert addAction:mailButton];
+    [alert addAction:goButton];
+   [alert addAction:mailButton];
 
     [self presentViewController:alert animated:YES completion:nil];
 
@@ -1641,8 +1665,9 @@
     
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
      {
+        // Code to be executed during the animation
+
         [self layoutObjects];
-         // Code to be executed during the animation
         [self->chatView dismiss];
 
         [self drawViewsInSuperView:size.width andWith:size.height];
