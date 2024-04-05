@@ -185,6 +185,8 @@
 {
     [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    app.chatBuffer = @"";
 }
 
 - (void) showMatchCount
@@ -882,6 +884,14 @@
 #pragma mark - actions
 - (void)actionSubmitMove
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -891,6 +901,14 @@
 }
 - (void)actionSubmitForcedMove
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     //NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     //NSMutableDictionary *dict = attributesArray[0];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -901,6 +919,14 @@
 
 - (void)actionGreedy
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -911,6 +937,14 @@
 
 - (void)actionUnDoMove
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [self.actionDict objectForKey:@"UndoMove"];
@@ -919,6 +953,14 @@
 
 - (void)actionSwap
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [self.actionDict objectForKey:@"SwapDice"];
@@ -927,19 +969,51 @@
 
 - (void)actionVerifyDouble:(id)sender
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     self.verifiedDouble = [(UISwitch *)sender isOn];
 }
 - (void)actionVerifyAccept:(id)sender
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     self.verifiedTake = [(UISwitch *)sender isOn];
 }
 - (void)actionVerifyDecline:(id)sender
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     self.verifiedPass = [(UISwitch *)sender isOn];
 }
 
 - (void)actionRoll
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
@@ -947,6 +1021,14 @@
 }
 - (void)actionDouble
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -986,6 +1068,14 @@
 }
 - (void)actionBeaver
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
@@ -993,6 +1083,14 @@
 }
 - (void)actionTakeBeaver
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
@@ -1001,6 +1099,14 @@
 
 - (void)actionTake
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1051,6 +1157,14 @@
 }
 - (void)actionPass
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
@@ -1102,6 +1216,14 @@
 
 - (void)actionNext
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
@@ -1109,6 +1231,14 @@
 }
 - (void)actionNext__
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
@@ -1117,6 +1247,14 @@
 
 - (void)actionSkipGame
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [chatView dismiss];
@@ -1126,6 +1264,14 @@
 
 - (void)actionReview:(UIButton*)button
 {
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = (NSString *)[button.layer valueForKey:@"href"];
@@ -1134,6 +1280,14 @@
 
 - (void)actionAllMoves:(UIButton*)button
 {    
+    if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
+    {
+        // User retyped too fast, ignore the tap
+        XLog(@"User retyped too fast: %3.1f" , [[NSDate date] timeIntervalSinceDate:self.lastTapDate] );
+        return;
+    }
+    self.lastTapDate = [NSDate date];
+
     Review *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"Review"];
     vc.reviewURL = [NSURL URLWithString: [NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]];
 
@@ -1551,8 +1705,8 @@
         self.matchInfoTopAnchor.active = YES;
         
         [self.view removeConstraint:self.matchInfoLeftAnchor];
-        self.matchInfoLeftAnchor = [self.matchInfo.leftAnchor constraintEqualToAnchor:self.matchName.rightAnchor constant:edge];
-        self.matchInfoLeftAnchor.active = YES;
+//        self.matchInfoLeftAnchor = [self.matchInfo.leftAnchor constraintEqualToAnchor:self.matchName.rightAnchor constant:edge];
+//        self.matchInfoLeftAnchor.active = YES;
         
         [self.view removeConstraint:self.matchInfoRightAnchor];
         self.matchInfoRightAnchor = [self.matchInfo.rightAnchor constraintEqualToAnchor:self.matchCountLabel.leftAnchor constant:-edge];
