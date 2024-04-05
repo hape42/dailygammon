@@ -13,7 +13,7 @@
 
 #import "AppDelegate.h"
 #import "Constants.h"
-
+#import "TextModul.h"
 
 @implementation ChatView
 
@@ -37,6 +37,14 @@
         self.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
         self.layer.cornerRadius = 14.0f;
         self.layer.masksToBounds = YES;
+        
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+        [nc addObserver:self
+               selector:@selector(textViewDidChange:)
+                   name:@"textViewTextHasChanged"
+                 object:nil];
+
     }
     return self;
 }
@@ -406,9 +414,11 @@
 -(void)textModul:(id)sender
 {
  
-    UIViewController *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
+    TextModul *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
     
     controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.textView = playerChat;
+    controller.isSetup = NO;
     [presentingVC presentViewController:controller animated:NO completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];

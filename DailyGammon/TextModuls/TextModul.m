@@ -10,6 +10,10 @@
 #import "DGLabel.h"
 #import "DGButton.h"
 #import "Design.h"
+#import "TextModulEdit.h"
+
+#import "AppDelegate.h"
+#import "Phrases+CoreDataProperties.h"
 
 @interface TextModul ()
 
@@ -25,7 +29,10 @@
 @synthesize design;
 @synthesize textModulArray;
 
-- (void)viewDidLoad 
+@synthesize textView;
+@synthesize isSetup;
+
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     
@@ -33,37 +40,15 @@
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
-    textModulArray = [[NSMutableArray alloc] initWithObjects:
-                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithInt:1], @"number",
-                              [NSNumber numberWithInt:5], @"quantityUsed",
-                              [NSNumber numberWithFloat:50], @"cellHeight",
-                              @"Hi & GL", @"shortText",
-                              @"Hi & Good luck", @"longText",
-                              nil],
-                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithInt:2], @"number",
-                              [NSNumber numberWithInt:3], @"quantityUsed",
-                              [NSNumber numberWithFloat:50], @"cellHeight",
-                              @"congrats", @"shortText",
-                              @"Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win Congrats to your win YES!!!", @"longText",
-                              nil],
-                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithInt:3], @"number",
-                              [NSNumber numberWithInt:9], @"quantityUsed",
-                              [NSNumber numberWithFloat:50], @"cellHeight",
-                              @"TY GM", @"shortText",
-                              @"Thank youu. Was a good match", @"longText",
-                              nil],
-                             nil];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
 
+    
     self.tableView.layer.borderWidth = 1;
     self.tableView.layer.cornerRadius = 14.0f;
     self.tableView.layer.borderColor = [design getTintColorSchema].CGColor;
-
+    self.tableView.sectionHeaderTopPadding = 0;
     [self layoutObjects];
 }
 - (void)viewDidAppear:(BOOL)animated
@@ -73,9 +58,81 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
     
+    [self readArray];
     [self.tableView reloadData];
 }
+-(void) readArray
+{
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
 
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Phrases" inManagedObjectContext:context];
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:entity];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"quantityUsed" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
+
+    NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
+
+    if(arrayDB.count == 0)
+    {
+        NSMutableArray *templateArray = [[NSMutableArray alloc] initWithObjects:
+                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:1], @"number",
+                                  [NSNumber numberWithInt:0], @"quantityUsed",
+                                  @"Hi & GL", @"shortText",
+                                  @"Hi & Good luck", @"longText",
+                                  nil],
+                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:2], @"number",
+                                  [NSNumber numberWithInt:0], @"quantityUsed",
+                                  @"congrats", @"shortText",
+                                  @"Congratulations to you. Good luck in the tournament.", @"longText",
+                                  nil],
+                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:3], @"number",
+                                  [NSNumber numberWithInt:0], @"quantityUsed",
+                                  @"TY GM", @"shortText",
+                                  @"Thank you. That was a good and exciting match.", @"longText",
+                                  nil],
+                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:4], @"number",
+                                  [NSNumber numberWithInt:0], @"quantityUsed",
+                                  @"42", @"shortText",
+                                  @"The Answer to the Great Question... Of Life, the Universe and Everything... Is... Forty-two,' said Deep Thought, with infinite majesty and calm.", @"longText",
+                                  nil],
+                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithInt:5], @"number",
+                                  [NSNumber numberWithInt:0], @"quantityUsed",
+                                  @"So long", @"shortText",
+                                  @"So long, and thanks for all the fish.", @"longText",
+                                  nil],
+                                nil];
+
+        for(NSMutableDictionary *dict in templateArray)
+        {
+            Phrases *phrasesEntity = (Phrases *)[NSEntityDescription insertNewObjectForEntityForName:@"Phrases" inManagedObjectContext:context];
+
+            phrasesEntity.number = [[dict objectForKey:@"number"]intValue];
+            phrasesEntity.quantityUsed = [[dict objectForKey:@"quantityUsed"]intValue];
+            phrasesEntity.shortText = [dict objectForKey:@"shortText"];
+            phrasesEntity.longText = [dict objectForKey:@"longText"];
+
+            NSError *error;
+            if (![context save:&error])
+            {
+                // Something's gone seriously wrong
+                XLog(@"Error saving Phrases %@", [error localizedDescription]);
+            }
+        }
+        [self readArray];
+    }
+    else
+    {
+        textModulArray = arrayDB;
+    }
+}
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
 {
@@ -88,43 +145,53 @@
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    NSMutableDictionary *dict = self.textModulArray[indexPath.row];
+    Phrases *dict = textModulArray[indexPath.row];
 
-     // Hier kannst du die Schriftgröße und andere Attribute für den Text festlegen
-     UIFont *font = [UIFont systemFontOfSize:15.0]; // Zum Beispiel
-
-     // Hier wird die Breite der Zelle festgelegt, z.B. die Breite der TableView
+     UIFont *font = [UIFont systemFontOfSize:15.0];
      CGFloat cellWidth = tableView.frame.size.width - 100;
-
-     // Hier wird die maximale Höhe für die Zelle festgelegt, falls der Text sehr lang ist
      CGFloat maxHeight = 200;
+     CGSize textSize = [dict.longText boundingRectWithSize:CGSizeMake(cellWidth, maxHeight)
+                                                   options:NSStringDrawingUsesLineFragmentOrigin
+                                                attributes:@{NSFontAttributeName: font}
+                                                   context:nil].size;
 
-     // Hier wird die Größe des Textes unter Berücksichtigung der Schriftgröße, Breite und Höhe berechnet
-     CGSize textSize = [[dict objectForKey:@"longText"] boundingRectWithSize:CGSizeMake(cellWidth, maxHeight)
-                                          options:NSStringDrawingUsesLineFragmentOrigin
-                                       attributes:@{NSFontAttributeName: font}
-                                          context:nil].size;
+    int labelHeight = 25;
 
-     // Hier wird die Höhe der Zelle festgelegt, unter Berücksichtigung des Textes und eventueller zusätzlicher Abstände
-    int labelHeight = 30;
+    CGFloat cellHeight = textSize.height + labelHeight + 5;
+    return cellHeight;
+}
 
-    CGFloat cellHeight = textSize.height + labelHeight + 20;/* zusätzlicherAbstand */; // Hier kannst du zusätzliche Abstände hinzufügen, wenn nötig
-    XLog(@" cellHeight%3.1f",cellHeight);
-    [dict setValue:[NSNumber numberWithFloat:cellHeight] forKey:@"cellHeight"];
-     return cellHeight;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 50.0;
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
+    view.backgroundColor = [UIColor colorNamed:@"ColorTableViewHeader"];
 
     DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
-   [label setText:@"used"];
-   [view addSubview:label];
+    [label setText:@"Used"];
+    label.layer.borderWidth = 1;
+    label.textColor = [UIColor whiteColor];
+    [view addSubview:label];
+    
     label = [[DGLabel alloc] initWithFrame:CGRectMake(50, 0, tableView.frame.size.width-50, 25)];
-   [label setText:@"Text"];
-   [view addSubview:label];
-   return view;
+    [label setText:@"Short Text"];
+    label.layer.borderWidth = 1;
+    label.textColor = [UIColor whiteColor];
+
+    [view addSubview:label];
+
+    label = [[DGLabel alloc] initWithFrame:CGRectMake(0, 25, tableView.frame.size.width, 25)];
+    [label setText:@"Long Text"];
+    label.textColor = [design getTintColorSchema] ;
+    label.layer.borderWidth = 1;
+    [view addSubview:label];
+
+    return view;
 }
+ 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    static NSString *CellIdentifier = @"cell";
@@ -147,35 +214,36 @@
         }
     }
     cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];;
-    if (indexPath.row % 2)
-        cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
-    else
-        cell.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientCenter"];
+//    if (indexPath.row % 2)
+//        cell.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
+//    else
+//        cell.backgroundColor = [UIColor colorNamed:@"ColorButtonGradientCenter"];
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-    NSDictionary *dict = self.textModulArray[indexPath.row];
+    Phrases *dict = textModulArray[indexPath.row];
 
     int x = 0;
     int labelHeight = 25;
     
     UILabel *used = [[UILabel alloc] initWithFrame:CGRectMake(x, 0 ,50,labelHeight)];
     used.textAlignment = NSTextAlignmentCenter;
-    used.text = [NSString stringWithFormat:@"%d",[[dict objectForKey:@"quantityUsed"]intValue]];
+    used.text = [NSString stringWithFormat:@"%d",dict.quantityUsed];
+  //  used.layer.borderWidth = 1;
     [cell.contentView addSubview:used];
 
     x += 50;
     
-    DGLabel *nameLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,tableView.frame.size.width-50,labelHeight)];
+    DGLabel *nameLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, 0 ,tableView.frame.size.width-50 ,labelHeight)];
     nameLabel.textAlignment = NSTextAlignmentLeft;
-    nameLabel.text = [NSString stringWithFormat:@"%@ %3.1f", [dict objectForKey:@"shortText"], [[dict objectForKey:@"cellHeight"]floatValue] ];
-  //  nameLabel.textColor = [design getTintColorSchema] ;
+    nameLabel.text = [NSString stringWithFormat:@"%@", dict.shortText];
+  //  nameLabel.layer.borderWidth = 1;
     [cell.contentView addSubview:nameLabel];
     
     x = 0;
-    DGLabel *longtext = [[DGLabel alloc] initWithFrame:CGRectMake(x, labelHeight ,tableView.frame.size.width,cell.contentView.frame.size.height-labelHeight)];
+    DGLabel *longtext = [[DGLabel alloc] initWithFrame:CGRectMake(x, labelHeight ,tableView.frame.size.width - 50,cell.contentView.frame.size.height-labelHeight)];
     longtext.textAlignment = NSTextAlignmentLeft;
-    longtext.text = [NSString stringWithFormat:@"%@", [dict objectForKey:@"longText"]];
+    longtext.text = [NSString stringWithFormat:@"%@", dict.longText];
     longtext.textColor = [design getTintColorSchema] ;
     longtext.numberOfLines = 0;
     longtext.adjustsFontSizeToFitWidth = YES;
@@ -188,12 +256,104 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *dict = self.textModulArray[indexPath.row];
+    Phrases *dict = textModulArray[indexPath.row];
+    if(isSetup)
+    {
+        // edit
+    }
+    else
+    {
+        NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Phrases" inManagedObjectContext:context];
+        NSError *error;
+
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"number = %d",dict.number];
+        [fetchRequest setPredicate:predicate];
+        [fetchRequest setFetchLimit:1];
+        [fetchRequest setEntity:entity];
+        NSArray *arrResult = [context executeFetchRequest:fetchRequest error:&error];
+        Phrases *phrase = arrResult[0];
+        phrase.quantityUsed         = dict.quantityUsed + 1;
+        
+        if (![context save:&error])
+        {
+            // Something's gone seriously wrong
+            XLog(@"Error updating Phrases %@", [error localizedDescription]);
+        }
+
+        textView.text = [textView.text stringByAppendingString:dict.longText];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"textViewTextHasChanged" object:self];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
-- (IBAction)editAction:(id)sender {
+- (IBAction)editAction:(id)sender 
+{
+    if(self.tableView.isEditing == true)
+    {
+        self.tableView.editing = false;
+        [self.editButton setTitle:@"Edit" forState:UIControlStateNormal];
+    }
+    else
+    {
+        self.tableView.editing = true;
+        [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
+    }
 }
-- (IBAction)addAction:(id)sender {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     return YES;
+ }
+ 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        Phrases *dict = textModulArray[indexPath.row];
+        NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Phrases" inManagedObjectContext:context];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"number = %d",dict.number];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setPredicate:predicate];
+
+        NSError *error;
+        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
+
+        for (NSManagedObject *managedObject in items)
+        {
+            [context deleteObject:managedObject];
+        }
+        if (![context save:&error])
+        {
+            // Something's gone seriously wrong
+            XLog(@"Error deleting Phrases %@", [error localizedDescription]);
+        }
+
+        [self readArray];
+        [self.tableView reloadData];
+    }
+}
+
+
+- (IBAction)addAction:(id)sender 
+{
+    TextModulEdit *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModulEdit"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+
 }
 
 - (IBAction)doneAction:(id)sender

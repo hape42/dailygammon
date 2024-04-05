@@ -1136,7 +1136,6 @@ Did we make you curious?</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="Edit"/>
                                 <connections>
-                                    <action selector="doneAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="UlB-7L-6KR"/>
                                     <action selector="editAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="jkV-u7-M8V"/>
                                 </connections>
                             </button>
@@ -1167,8 +1166,6 @@ Did we make you curious?</string>
                                 <state key="normal" title="New"/>
                                 <connections>
                                     <action selector="addAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="gw4-M5-RjK"/>
-                                    <action selector="doneAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="dGB-uW-XQV"/>
-                                    <action selector="editAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="wsi-nL-X7h"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1188,6 +1185,89 @@ Did we make you curious?</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lRE-7X-9cv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4715.6661786237182" y="-2261.1328125"/>
+        </scene>
+        <!--Text Modul Edit-->
+        <scene sceneID="nak-GX-yAR">
+            <objects>
+                <viewController storyboardIdentifier="TextModulEdit" id="yiE-7g-ac8" customClass="TextModulEdit" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UUQ-q4-8je">
+                        <rect key="frame" x="0.0" y="0.0" width="400" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="New Text Modul" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sbH-DB-yq6">
+                                <rect key="frame" x="116" y="24" width="123" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Short text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uw-ID-t8U">
+                                <rect key="frame" x="20" y="87" width="75" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4UG-aO-v19">
+                                <rect key="frame" x="116" y="75" width="240" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="ColorTableViewCell"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Long text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0o-0J-Ryv">
+                                <rect key="frame" x="20" y="162" width="71" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ltV-9w-o3O">
+                                <rect key="frame" x="116" y="150" width="240" height="179"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="ColorTableViewCell"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="83r-if-mSg" customClass="DGButton">
+                                <rect key="frame" x="20" y="345" width="83" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Save"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rcn-Xe-kcl">
+                                <rect key="frame" x="326" y="351" width="25" height="23"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="keyboard.chevron.compact.down" catalog="system"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xwU-cm-Mx5" customClass="DGButton">
+                                <rect key="frame" x="206" y="345" width="83" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Cancel"/>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="BtG-05-nkU"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="400"/>
+                    <size key="freeformSize" width="400" height="400"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="xwU-cm-Mx5" id="k5l-bt-DJq"/>
+                        <outlet property="header" destination="sbH-DB-yq6" id="hrK-BL-Ath"/>
+                        <outlet property="keyboardButton" destination="Rcn-Xe-kcl" id="xNf-4C-cVZ"/>
+                        <outlet property="longText" destination="ltV-9w-o3O" id="SX4-PC-oGW"/>
+                        <outlet property="longTextLabel" destination="J0o-0J-Ryv" id="0I0-o5-njW"/>
+                        <outlet property="saveButton" destination="83r-if-mSg" id="OxU-t3-bS7"/>
+                        <outlet property="shortText" destination="4UG-aO-v19" id="hax-wB-hJ0"/>
+                        <outlet property="shortTextLabel" destination="1uw-ID-t8U" id="mCC-xP-7jt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mww-Il-iWY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4715.6661786237182" y="-1851.5624999999998"/>
         </scene>
         <!--Review-->
         <scene sceneID="M2M-YX-kGy">
@@ -1698,6 +1778,7 @@ Did we make you curious?</string>
         <image name="book.pages" catalog="system" width="107" height="128"/>
         <image name="clipboard" catalog="system" width="98" height="128"/>
         <image name="iCloudOFF.png" width="35" height="35"/>
+        <image name="keyboard.chevron.compact.down" catalog="system" width="128" height="100"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>
         <namedColor name="ColorSignedUpCenter">

@@ -27,8 +27,41 @@
 - (instancetype)initWithString:(NSString *)urlString completionHandler:(DGRequestCompletionHandler)completionHandler
 {
     // Convenience initializer, working with a URL string
+//https://stackoverflow.com/questions/38436428/encoding-nsurl-in-iso-8859-1
+    NSCharacterSet *allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.~="];
 
-    return [self initWithURL:[NSURL URLWithString:urlString] completionHandler:completionHandler];
+    NSString *requestString = urlString;
+    NSString *queryString = @"";
+    
+    NSRange posRange = [urlString rangeOfString:@"?"];
+    if (posRange.location != NSNotFound)
+    {
+        requestString = [urlString substringToIndex:posRange.location + 1];
+        queryString = [urlString substringFromIndex:posRange.location + 1];
+        
+        NSData *data = [queryString dataUsingEncoding:NSISOLatin1StringEncoding];
+        if (data)
+        {
+            NSMutableString *result = [@"" mutableCopy];
+            const char *bytes = [data bytes];
+            for (NSUInteger i = 0; i < [data length]; i++)
+            {
+                unsigned char ch = (unsigned char)bytes[i];
+                if (ch >= 0x80 || ![allowedCharacterSet characterIsMember:ch])
+                {
+                    [result appendFormat:@"%%%02X", ch];
+                }
+                else
+                {
+                    [result appendFormat:@"%c", ch];
+                }
+            }
+            queryString = [result copy];
+        }
+    }
+    
+    NSURL *url = [NSURL URLWithString:[requestString stringByAppendingString:queryString]];
+    return [self initWithURL:url completionHandler:completionHandler];
 }
 
 - (instancetype)initWithURL:(NSURL *)url completionHandler:(DGRequestCompletionHandler)completionHandler
@@ -90,8 +123,8 @@
 //        };
         NSDictionary *encodingOptions = @{
             NSStringEncodingDetectionAllowLossyKey : @(NO),
-            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSUTF8StringEncoding)],
-            NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(NO)
+            NSStringEncodingDetectionSuggestedEncodingsKey : @[ @(NSISOLatin1StringEncoding)],
+            NSStringEncodingDetectionUseOnlySuggestedEncodingsKey : @(YES)
         };
 
         NSString *responseString;
@@ -100,7 +133,7 @@
         // Let Foundation determin the stringEncoding, indicating if it was a lossy conversion, refer to "NSString.h" & <https://developer.apple.com/documentation/foundation/nsstringencoding>
 
         NSStringEncoding stringEncoding = [NSString stringEncodingForData:self.responseData encodingOptions:encodingOptions convertedString:&responseString usedLossyConversion:&usedLossyConverted];
- //       NSLog(@"... Ended sucessfully, result converted to string (length: %lu, encoding: %lu, wasLossyConverted: %i)", self.responseData.length, stringEncoding, usedLossyConverted);
+//        NSLog(@"... Ended sucessfully, result converted to string (length: %lu, encoding: %lu, wasLossyConverted: %i)", self.responseData.length, stringEncoding, usedLossyConverted);
         if (self.completionHandler)
             self.completionHandler(TRUE, nil, responseString);
         

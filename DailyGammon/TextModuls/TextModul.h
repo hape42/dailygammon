@@ -12,11 +12,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TextModul : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface TextModul : UIViewController <UITableViewDataSource, UITableViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 
 @property (readwrite, retain, nonatomic) NSMutableArray *textModulArray;
+@property (strong, readwrite, retain, atomic) UITextView *textView;
+@property (readwrite, assign, atomic) BOOL isSetup;
+
 
 @end
 

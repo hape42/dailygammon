@@ -42,6 +42,7 @@
 		E0777D62294E24DB00712C76 /* BoardElements.m in Sources */ = {isa = PBXBuildFile; fileRef = E0777D61294E24DB00712C76 /* BoardElements.m */; };
 		E0777D64294F2B7000712C76 /* metall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E0777D63294F2B7000712C76 /* metall.jpg */; };
 		E07CFA0D21F60BF000A5148F /* rating.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = E0B0515021F4FECE00D91857 /* rating.sqlite */; };
+		E081B51D2BBFC7300075CF1C /* TextModulEdit.m in Sources */ = {isa = PBXBuildFile; fileRef = E081B51C2BBFC7300075CF1C /* TextModulEdit.m */; };
 		E091B515280156D3000501E8 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E091B514280156D3000501E8 /* Settings.bundle */; };
 		E096F5C12A57E89C000C37AB /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E05840292A4E9675005C032C /* Charts.framework */; };
 		E096F5C22A57E89C000C37AB /* Charts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E05840292A4E9675005C032C /* Charts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -191,6 +192,8 @@
 		E0777D60294E24DB00712C76 /* BoardElements.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BoardElements.h; sourceTree = "<group>"; };
 		E0777D61294E24DB00712C76 /* BoardElements.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BoardElements.m; sourceTree = "<group>"; };
 		E0777D63294F2B7000712C76 /* metall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = metall.jpg; sourceTree = "<group>"; };
+		E081B51B2BBFC7300075CF1C /* TextModulEdit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextModulEdit.h; sourceTree = "<group>"; };
+		E081B51C2BBFC7300075CF1C /* TextModulEdit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextModulEdit.m; sourceTree = "<group>"; };
 		E091B514280156D3000501E8 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		E09871E329372B980043DC8A /* GitHub-Mark-32px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GitHub-Mark-32px.png"; sourceTree = "<group>"; };
 		E09871E629448DA90043DC8A /* ConstantsMatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ConstantsMatch.h; sourceTree = "<group>"; };
@@ -667,6 +670,8 @@
 			children = (
 				E0BC246B2BBD939700B554B2 /* TextModul.h */,
 				E0BC246C2BBD939700B554B2 /* TextModul.m */,
+				E081B51B2BBFC7300075CF1C /* TextModulEdit.h */,
+				E081B51C2BBFC7300075CF1C /* TextModulEdit.m */,
 			);
 			path = TextModuls;
 			sourceTree = "<group>";
@@ -842,8 +847,8 @@
 				E0F9588221AD1688003DAC01 /* Sources */,
 				E0F9588321AD1688003DAC01 /* Frameworks */,
 				E0F9588421AD1688003DAC01 /* Resources */,
-				E0BDCC3B21BE77C000E8AF25 /* ShellScript */,
 				E096F5C32A57E89D000C37AB /* Embed Frameworks */,
+				E0BDCC3B21BE77C000E8AF25 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -991,6 +996,7 @@
 				E0BDCC4121C185A300E8AF25 /* Rating.m in Sources */,
 				E05325012271D42A0080D504 /* Tools.m in Sources */,
 				E09C009121B2FADB0056D2A2 /* TFHppleElement.m in Sources */,
+				E081B51D2BBFC7300075CF1C /* TextModulEdit.m in Sources */,
 				E0F9588E21AD1688003DAC01 /* LoginVC.m in Sources */,
 				E09871EA294870E60043DC8A /* MatchTools.m in Sources */,
 				E09C009321B2FADB0056D2A2 /* XPathQuery.m in Sources */,
