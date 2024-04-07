@@ -836,7 +836,7 @@ didCompleteWithError:(NSError *)error
     DGLabel *eventLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x, y ,maxWidth,buttonHeight)];
     eventLabel.textAlignment = NSTextAlignmentCenter;
     [eventLabel setFont:[UIFont boldSystemFontOfSize: eventLabel.font.pointSize]];
-
+    eventLabel.numberOfLines = 0;
     eventLabel.text = [event objectForKey:@"Text"];
     eventLabel.adjustsFontSizeToFitWidth = YES;
 
@@ -917,9 +917,20 @@ didCompleteWithError:(NSError *)error
     
     DGLabel *opponentLabel = [[DGLabel alloc] initWithFrame:CGRectMake(x,y,maxWidth, labelHeight*2)];
     opponentLabel.textAlignment = NSTextAlignmentCenter;
-    [opponentLabel setFont:[UIFont boldSystemFontOfSize: 25.0]];
+    [opponentLabel setFont:[UIFont boldSystemFontOfSize: 20.0]];
     NSDictionary *opponent = row[6];
     opponentLabel.text = [opponent objectForKey:@"Text"];
+    NSString *opponentNameString = [opponent objectForKey:@"Text"];
+    UIFont *font = opponentLabel.font;
+    CGSize textSize = [opponentNameString sizeWithAttributes:@{NSFontAttributeName: font}];
+    if(textSize.width > (opponentLabel.frame.size.width ))
+    {
+        float factor =  opponentLabel.frame.size.width / textSize.width ;
+        opponentNameString = [NSString stringWithFormat:@"%@ ...",[opponentNameString substringToIndex:(opponentNameString.length * factor) ]];
+    }
+    opponentLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    opponentLabel.text = opponentNameString;
+
     [cell.contentView addSubview:opponentLabel];
 
     return cell;
