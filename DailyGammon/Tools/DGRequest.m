@@ -28,7 +28,7 @@
 {
     // Convenience initializer, working with a URL string
 //https://stackoverflow.com/questions/38436428/encoding-nsurl-in-iso-8859-1
-    NSCharacterSet *allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.~="];
+    NSCharacterSet *allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.~=&"];
 
     NSString *requestString = urlString;
     NSString *queryString = @"";

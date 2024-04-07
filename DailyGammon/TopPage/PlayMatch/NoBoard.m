@@ -233,7 +233,13 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     app.matchLink = matchLink;
-    [self.navigationController popToViewController:presentingVC animated:NO];
+//    [self.navigationController popToViewController:presentingVC animated:NO];
+    
+    PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    vc.topPageArray = [[NSMutableArray alloc]init];
+    [self.navigationController pushViewController:vc animated:NO];
+    
+    [self dismissViewControllerAnimated:YES completion:Nil];
 
     return;
 }
