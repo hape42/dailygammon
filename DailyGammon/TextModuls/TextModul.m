@@ -40,6 +40,12 @@
     
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self
+           selector:@selector(updateTableView)
+               name:@"textModulHasChanged"
+             object:nil];
 
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -133,6 +139,13 @@
         textModulArray = arrayDB;
     }
 }
+
+-(void)updateTableView
+{
+    [self readArray];
+    [self.tableView reloadData];
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)theTableView
 {
@@ -167,26 +180,27 @@
 }
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    CGFloat borderWidth = 1.0 / [UIScreen mainScreen].scale;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 50)];
-    view.backgroundColor = [UIColor colorNamed:@"ColorTableViewHeader"];
+    view.backgroundColor = [UIColor colorNamed:@"ColorTableViewCell"];
 
     DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
     [label setText:@"Used"];
-    label.layer.borderWidth = 1;
-    label.textColor = [UIColor whiteColor];
+    label.layer.borderWidth = borderWidth;
+ //   label.textColor = [UIColor whiteColor];
     [view addSubview:label];
     
     label = [[DGLabel alloc] initWithFrame:CGRectMake(50, 0, tableView.frame.size.width-50, 25)];
     [label setText:@"Short Text"];
-    label.layer.borderWidth = 1;
-    label.textColor = [UIColor whiteColor];
+    label.layer.borderWidth = borderWidth;
+//    label.textColor = [UIColor whiteColor];
 
     [view addSubview:label];
 
     label = [[DGLabel alloc] initWithFrame:CGRectMake(0, 25, tableView.frame.size.width, 25)];
     [label setText:@"Long Text"];
     label.textColor = [design getTintColorSchema] ;
-    label.layer.borderWidth = 1;
+    label.layer.borderWidth = borderWidth;
     [view addSubview:label];
 
     return view;
@@ -257,9 +271,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Phrases *dict = textModulArray[indexPath.row];
-    if(isSetup)
+    if(isSetup || (self.tableView.isEditing == true))
     {
         // edit
+        TextModulEdit *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModulEdit"];
+        
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        controller.phraseEdit = textModulArray[indexPath.row];
+        [self presentViewController:controller animated:NO completion:nil];
+        
+        UIPopoverPresentationController *popController = [controller popoverPresentationController];
+        popController.permittedArrowDirections = UIPopoverArrowDirectionRight;
+        popController.delegate = self;
+        
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+
+        popController.sourceView = cell;
+        popController.sourceRect = cell.bounds;
+
     }
     else
     {

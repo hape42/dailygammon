@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class Tools;
 
-@interface NoBoard : UIViewController <MFMailComposeViewControllerDelegate, UITextViewDelegate>
+@interface NoBoard : UIViewController <MFMailComposeViewControllerDelegate, UITextViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Preferences *preferences;

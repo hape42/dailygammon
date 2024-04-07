@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class Tools;
 
-@interface QuickMessage : UIViewController
+@interface QuickMessage : UIViewController <UITextViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic)    NSString *playerName;
 @property (strong, readwrite, retain, atomic)    NSString *playerNummer;

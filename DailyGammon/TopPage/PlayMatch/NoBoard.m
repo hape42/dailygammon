@@ -42,6 +42,7 @@
 #import "Constants.h"
 #import "DGRequest.h"
 #import "DGLabel.h"
+#import "TextModul.h"
 
 @interface NoBoard ()
 
@@ -631,6 +632,25 @@
 
     [self.navigationController pushViewController:vc animated:NO];
 
+}
+
+-(void)textModul:(id)sender
+{
+ 
+    TextModul *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.textView = finishedMatchChat;
+    controller.isSetup = NO;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 
 #pragma mark - There has been an internal error.

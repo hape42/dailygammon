@@ -11,6 +11,7 @@
 #import "Design.h"
 #import "Tools.h"
 #import "DGRequest.h"
+#import "TextModul.h"
 
 @interface QuickMessage ()
 
@@ -120,7 +121,7 @@
 #pragma mark phrasesButton
     UIButton *phrasesButton = [[UIButton alloc] init];
     phrasesButton = [design designChatPhrasesButton:phrasesButton];
-    [phrasesButton addTarget:self action:@selector(notYetImplemented) forControlEvents:UIControlEventTouchUpInside];
+    [phrasesButton addTarget:self action:@selector(textModul:) forControlEvents:UIControlEventTouchUpInside];
     phrasesButton.tag = 2;
     [self.view addSubview:phrasesButton];
 
@@ -236,6 +237,24 @@
 }
 -(void)textViewDidChange:(UITextView *)textView
 {
+}
+-(void)textModul:(id)sender
+{
+ 
+    TextModul *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.textView = self.textView;
+    controller.isSetup = NO;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
 }
 
 @end

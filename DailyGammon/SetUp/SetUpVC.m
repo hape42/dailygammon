@@ -18,6 +18,7 @@
 #import "DGLabel.h"
 #import "PlayerLists.h"
 #import "Constants.h"
+#import "TextModul.h"
 
 @interface SetUpVC ()
 
@@ -25,6 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet DGButton *boardSchemeButton;
 @property (weak, nonatomic) IBOutlet DGButton *preferencesButton;
+@property (weak, nonatomic) IBOutlet DGButton *textModulButton;
 
 @property (weak, nonatomic) IBOutlet UISwitch *showRatingsOutlet;
 @property (weak, nonatomic) IBOutlet DGLabel *showRatingsLabel;
@@ -185,6 +187,14 @@
     [self.iCloudLabel.leftAnchor   constraintEqualToAnchor:self.iCloudConnected.rightAnchor    constant:gap].active = YES;
     [self.iCloudLabel.heightAnchor   constraintEqualToConstant:35].active = YES;
 
+#pragma mark textModulButton  autoLayout
+    [self.textModulButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.textModulButton.topAnchor    constraintEqualToAnchor:self.iCloudLabel.bottomAnchor constant:gap*2].active = YES;
+    [self.textModulButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor               constant:gap].active = YES;
+    [self.textModulButton.heightAnchor constraintEqualToConstant:40].active  = YES;
+    [self.textModulButton.widthAnchor  constraintEqualToConstant:120].active = YES;
+
 }
 
 
@@ -300,6 +310,23 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"buttonDesign" object:self];
     
+}
+- (IBAction)textModul:(id)sender 
+{
+    TextModul *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    controller.isSetup = YES;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+
 }
 
 

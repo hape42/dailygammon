@@ -818,6 +818,14 @@ Did we make you curious?</string>
                                     <action selector="buttonDesignAction:" destination="2Rf-Go-08u" eventType="valueChanged" id="Wkj-tq-Bke"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hep-Jd-8j6" customClass="DGButton">
+                                <rect key="frame" x="60" y="253" width="200" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Text Modules"/>
+                                <connections>
+                                    <action selector="textModul:" destination="2Rf-Go-08u" eventType="touchUpInside" id="E3h-ML-V8P"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="OdQ-Rh-NwZ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -837,6 +845,7 @@ Did we make you curious?</string>
                         <outlet property="showRatingsOutlet" destination="B5Q-LF-Dwt" id="Ivn-hw-iBZ"/>
                         <outlet property="showWinLossLabel" destination="5KL-L2-hDi" id="Yv6-o5-XFF"/>
                         <outlet property="showWinLossOutlet" destination="UTo-1m-rMW" id="10e-Hw-NbF"/>
+                        <outlet property="textModulButton" destination="hep-Jd-8j6" id="74z-1M-D6D"/>
                         <outlet property="useIcloudLabel" destination="Cem-uN-8qs" id="iwu-86-jpI"/>
                     </connections>
                 </viewController>
@@ -1139,7 +1148,7 @@ Did we make you curious?</string>
                                     <action selector="editAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="jkV-u7-M8V"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GJO-lz-ZJs">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="GJO-lz-ZJs">
                                 <rect key="frame" x="20" y="67" width="360" height="694"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" name="ColorTableView"/>
@@ -1202,14 +1211,14 @@ Did we make you curious?</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Short text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1uw-ID-t8U">
-                                <rect key="frame" x="20" y="87" width="75" height="21"/>
+                                <rect key="frame" x="20" y="130" width="75" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4UG-aO-v19">
-                                <rect key="frame" x="116" y="75" width="240" height="47"/>
+                                <rect key="frame" x="116" y="118" width="240" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" name="ColorTableViewCell"/>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -1217,14 +1226,14 @@ Did we make you curious?</string>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Long text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J0o-0J-Ryv">
-                                <rect key="frame" x="20" y="162" width="71" height="21"/>
+                                <rect key="frame" x="20" y="215" width="71" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ltV-9w-o3O">
-                                <rect key="frame" x="116" y="150" width="240" height="179"/>
+                                <rect key="frame" x="116" y="190" width="240" height="139"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" name="ColorTableViewCell"/>
                                 <color key="textColor" systemColor="labelColor"/>
@@ -1236,6 +1245,9 @@ Did we make you curious?</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="saveAction:" destination="yiE-7g-ac8" eventType="touchUpInside" id="S7i-aE-HGa"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rcn-Xe-kcl">
                                 <rect key="frame" x="326" y="351" width="25" height="23"/>
@@ -1247,7 +1259,25 @@ Did we make you curious?</string>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="21"/>
                                 <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelAction:" destination="yiE-7g-ac8" eventType="touchUpInside" id="zPv-hM-lMK"/>
+                                </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Used" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dih-PI-Yj1">
+                                <rect key="frame" x="21" y="76" width="40" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="E12-n1-IUL">
+                                <rect key="frame" x="116" y="63" width="44" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="ColorTableViewCell"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardType="numberPad"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BtG-05-nkU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1263,6 +1293,8 @@ Did we make you curious?</string>
                         <outlet property="saveButton" destination="83r-if-mSg" id="OxU-t3-bS7"/>
                         <outlet property="shortText" destination="4UG-aO-v19" id="hax-wB-hJ0"/>
                         <outlet property="shortTextLabel" destination="1uw-ID-t8U" id="mCC-xP-7jt"/>
+                        <outlet property="used" destination="E12-n1-IUL" id="LbD-HL-s29"/>
+                        <outlet property="usedLabel" destination="Dih-PI-Yj1" id="5Ki-y9-Vpi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mww-Il-iWY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
