@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIImage *)getBarForSchema:(int)schema name:(NSString *)img;
 - (UIImage *)getOffForSchema:(int)schema name:(NSString *)img;
 - (UIImage *)getCubeForSchema:(int)schema name:(NSString *)img;
+- (UIImage *)imageRotate: (UIImage *)image byDegrees:(CGFloat)degrees;
 
 @end
 

@@ -290,6 +290,31 @@
     [boardView addSubview:barView];
     [boardView addSubview:cubeView];
 
+    NSString *imgName = [NSString stringWithFormat:@"%d/tray_light",schema] ;
+    UIImage *trayImage = [UIImage imageNamed:imgName];
+
+    if(trayImage != nil)
+    {
+        UIImageView *trayImageView =  [[UIImageView alloc] initWithImage:trayImage];
+        trayImageView.frame = CGRectMake(0, 0, offInsideTopView.frame.size.width, offInsideTopView.frame.size.height) ;
+        [offInsideTopView addSubview:trayImageView];
+        
+        trayImageView =  [[UIImageView alloc] initWithImage:trayImage];
+        trayImageView.frame = CGRectMake(0, 0, offInsideBottomView.frame.size.width, offInsideBottomView.frame.size.height) ;
+        [offInsideBottomView addSubview:trayImageView];
+
+//        trayImage = [boardElements imageRotate:trayImage byDegrees:180];
+
+        trayImageView =  [[UIImageView alloc] initWithImage:trayImage];
+        trayImageView.frame = CGRectMake(0, 0, cubeInsideTopView.frame.size.width, cubeInsideTopView.frame.size.height) ;
+        [cubeInsideTopView addSubview:trayImageView];
+
+        trayImageView =  [[UIImageView alloc] initWithImage:trayImage];
+        trayImageView.frame = CGRectMake(0, 0, cubeInsideBottomView.frame.size.width, cubeInsideBottomView.frame.size.height) ;
+        [cubeInsideBottomView addSubview:trayImageView];
+
+    }
+
     
 #pragma mark - upper graphics
     x = 0;
