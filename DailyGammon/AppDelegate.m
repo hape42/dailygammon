@@ -44,6 +44,8 @@
 @synthesize chatBuffer;
 
 @synthesize matchLink;
+@synthesize playMatchAktiv;
+@synthesize actionDict, boardDict;
 
 //- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 //{
@@ -216,7 +218,7 @@
     // Override point for customization after application launch.
     
     chatBuffer = @"";
-    
+    playMatchAktiv = NO;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     activeStoryBoard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];

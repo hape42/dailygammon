@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Match : UIViewController
 
-- (void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview inBoardDict:(NSMutableDictionary *)boardDict inActionDict:(NSMutableDictionary *)actionDict;
+- (void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview ;
 
 @property (readwrite, assign, atomic) BOOL noBoard;
 

@@ -43,8 +43,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *matchCountLabel;
 
-@property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
-@property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
+//@property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
+//@property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
 @property (assign, atomic) int boardSchema;
 @property (readwrite, retain, nonatomic) UIColor *boardColor;
 @property (readwrite, retain, nonatomic) UIColor *randColor;
@@ -170,6 +170,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [self layoutObjects];
     
@@ -178,7 +179,7 @@
     self.moreButton                = [design designMoreButton:self.moreButton];
 
     [self drawViewsInSuperView:self.view.frame.size.width andWith:self.view.frame.size.height];
-
+    app.playMatchAktiv = YES;
     [self showMatch:YES];
 }
 - (void)viewWillDisappear:(BOOL)animated
@@ -195,14 +196,16 @@
 }
 -(void)showMatch:(BOOL)readMatch
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    if(readMatch || (self.boardDict == nil))
+    XLog(@"app.playMatchAktiv %d matchLink %@", app.playMatchAktiv, app.matchLink);
+    
+    if(readMatch || (app.boardDict == nil))
     {
-        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-        self.boardDict  = [[NSMutableDictionary alloc]init];
-        self.actionDict = [[NSMutableDictionary alloc]init];
+        app.boardDict  = [[NSMutableDictionary alloc]init];
+        app.actionDict = [[NSMutableDictionary alloc]init];
 
-        [match readMatch:app.matchLink reviewMatch:isReview inBoardDict:self.boardDict inActionDict:self.actionDict];
+        [match readMatch:app.matchLink reviewMatch:isReview ];
     }
     else
     {
@@ -211,11 +214,35 @@
 }
 -(void)analyzeMatch
 {
-    
-    if((self.actionDict == nil) || (self.boardDict == nil))
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    if((app.actionDict == nil) || (app.boardDict == nil))
     {
+
         XLog(@"");
         [self errorAction:5];
+        return;
+    }
+    if ([app.actionDict count] == 0)
+    {
+        
+        self.matchName.text = [NSString stringWithFormat:@"if ([app.actionDict count] == 0) %@ ", app.matchLink];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        [self.navigationController pushViewController:vc animated:NO];
+
+//        app.matchLink = @"/bg/nextgame";
+//    //    [self errorAction:0];
+//        [self showMatch:YES];
+        return;
+    }
+    if ([app.boardDict count] == 0)
+    {
+        self.matchName.text = [NSString stringWithFormat:@"if ([app.boardDict count] == 0) %@ ", app.matchLink];
+        TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
+        [self.navigationController pushViewController:vc animated:NO];
+//       app.matchLink = @"/bg/nextgame";
+//    //    [self errorAction:0];
+//        [self showMatch:YES];
         return;
     }
 
@@ -243,16 +270,16 @@
     self.barMittelstreifenColor = [schemaDict objectForKey:@"barMittelstreifenColor"];
     self.nummerColor            = [schemaDict objectForKey:@"nummerColor"];
 
-    if([[self.boardDict objectForKey:@"NoBoard"] length] != 0)
+    if([[app.boardDict objectForKey:@"NoBoard"] length] != 0)
     {
         NoBoard *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"NoBoard"];
-        vc.boardDict = self.boardDict;
+        vc.boardDict = app.boardDict;
         vc.presentingVC = self;
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
 
-    if ([[self.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
+    if ([[app.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Double Repeat"
@@ -274,23 +301,23 @@
 
         return;
     }
-    if([[self.boardDict objectForKey:@"TopPage"] length] != 0)
+    if([[app.boardDict objectForKey:@"TopPage"] length] != 0)
     {
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
-    if([[self.boardDict objectForKey:@"unknown"] length] != 0)
+    if([[app.boardDict objectForKey:@"unknown"] length] != 0)
         [self errorAction:1];
 
-    if([[self.boardDict objectForKey:@"noMatches"] length] != 0)
-    {        
+    if([[app.boardDict objectForKey:@"noMatches"] length] != 0)
+    {
         TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TopPageCV"];
         [self.navigationController pushViewController:vc animated:NO];
         return;
     }
 
-    if(![self.boardDict objectForKey:@"matchName"] || ![self.boardDict objectForKey:@"matchLaengeText"])
+    if(![app.boardDict objectForKey:@"matchName"] || ![app.boardDict objectForKey:@"matchLaengeText"])
     {
         self.matchName.text = @"";
         self.matchInfo.text = @"";
@@ -298,23 +325,23 @@
     }
     else
     {
-        NSMutableArray *opponentArray = [self.boardDict objectForKey:@"opponent"];
+        NSMutableArray *opponentArray = [app.boardDict objectForKey:@"opponent"];
         NSString *opponentScore = @"";
         if([opponentArray[2] rangeOfString:@"pip"].location != NSNotFound)
             opponentScore  = opponentArray[5];
         else
             opponentScore  = opponentArray[3];
         
-        NSMutableArray *playerArray   = [self.boardDict objectForKey:@"player"];
+        NSMutableArray *playerArray   = [app.boardDict objectForKey:@"player"];
         NSString *playerScore = @"";
         if([playerArray[2] rangeOfString:@"pip"].location != NSNotFound)
             playerScore  = playerArray[5];
         else
             playerScore  = playerArray[3];
 
-        self.matchName.text = [self.boardDict objectForKey:@"matchName"] ;
+        self.matchName.text = [app.boardDict objectForKey:@"matchName"] ;
         self.matchInfo.text = [NSString stringWithFormat:@"%@ %@ %@:%@",
-                           [self.boardDict objectForKey:@"matchLaengeText"],@" ",
+                           [app.boardDict objectForKey:@"matchLaengeText"],@" ",
                                playerScore, opponentScore] ;
 
     }
@@ -327,10 +354,17 @@
 -(void)drawPlayingAreas
 {
 
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
 
-    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:self.boardDict boardView:boardView zoom:zoomFactor];
+    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:app.boardDict boardView:boardView zoom:zoomFactor];
+#warning könnte aich noch boarddict problematisch sein
+    if(returnDict.count == 0)
+    {
+        return;
+    }
     boardView = [returnDict objectForKey:@"boardView"];
 
     CGRect frame = CGRectZero;
@@ -359,7 +393,7 @@
    // return;
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
 
-    returnDict = [matchTools drawActionView:self.boardDict bordView:boardView actionViewWidth:actionViewWidth isPortrait:isPortrait maxHeight:safe.layoutFrame.size.height];
+    returnDict = [matchTools drawActionView:app.boardDict bordView:boardView actionViewWidth:actionViewWidth isPortrait:isPortrait maxHeight:safe.layoutFrame.size.height];
     UIView *actionView = [returnDict objectForKey:@"actionView"];
     UIView *playerView = [returnDict objectForKey:@"playerView"];
     UIView *opponentView = [returnDict objectForKey:@"opponentView"];
@@ -415,7 +449,7 @@
     
     float thirdY = (upperThird.frame.size.height / 2) - (buttonHeight / 2); // center button
 
-    switch([matchTools analyzeAction:self.actionDict isChat:[self isChat] isReview:isReview])
+    switch([matchTools analyzeAction:app.actionDict isChat:[self isChat] isReview:isReview])
     {
         case NEXT:
         {
@@ -439,9 +473,8 @@
         case NEXTGAME:
         {
             // seltsamer -0- Something unexpected happend!
-            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-            app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1", [app.actionDict objectForKey:@"action"]];
             NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
             //    XLog(@"%@",urlMatch);
             NSData *matchHtmlData = [NSData dataWithContentsOfURL:urlMatch];
@@ -476,7 +509,7 @@
             [buttonDouble addTarget:self action:@selector(actionDouble) forControlEvents:UIControlEventTouchUpInside];
             [middleThird addSubview:buttonDouble];
             
-            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
             if(attributesArray.count == 3) // verify double
             {
                 buttonDouble.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
@@ -518,7 +551,7 @@
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [middleThird addSubview:buttonPass];
             
-            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
@@ -597,7 +630,7 @@
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [lowerThird addSubview:buttonPass];
             
-            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
@@ -673,7 +706,7 @@
             [buttonPass addTarget:self action:@selector(actionPass) forControlEvents:UIControlEventTouchUpInside];
             [middleThird addSubview:buttonPass];
             
-            NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+            NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
             if(attributesArray.count > 2)
             {
                 buttonAccept.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
@@ -781,8 +814,8 @@
             }
             chatView = [[ChatView alloc]init];
             chatView.navigationController = self.navigationController;
-            chatView.boardDict = self.boardDict;
-            chatView.actionDict = self.actionDict;
+            chatView.boardDict = app.boardDict;
+            chatView.actionDict = app.actionDict;
             chatView.boardView = boardView;
             chatView.presentingVC = self;
             //XLog(@"%@",self);
@@ -806,7 +839,7 @@
             reviewButtonHeight  = MIN(30,((actionView.layer.frame.size.height-skipHeight) / 2)/4);
             gap  = MIN(20,((actionView.layer.frame.size.height-skipHeight) / 2)/5);
 
-            NSMutableArray *reviewArray = [self.actionDict objectForKey:@"review"];
+            NSMutableArray *reviewArray = [app.actionDict objectForKey:@"review"];
             float width = 150;
             float x = (actionView.frame.size.width/2) - (width / 2);
             float y = gap;
@@ -837,19 +870,22 @@
             
         default:
         {
-            XLog(@"Hier sollte das Programm nie hin kommen %@",self.actionDict);
-            [self errorAction:0];
-            break;
+            XLog(@"Hier sollte das Programm nie hin kommen %@ %@", app.matchLink,app.actionDict);
+            self.matchName.text = [NSString stringWithFormat:@"Hier sollte das Programm nie hin kommen %@ ", app.matchLink];
+            app.matchLink = @"/bg/nextgame";
+        //    [self errorAction:0];
+            [self showMatch:YES];
+            return;
         }
     }
     
-    if([[self.actionDict objectForKey:@"Message"] length] != 0)
+    if([[app.actionDict objectForKey:@"Message"] length] != 0)
     {
         DGLabel *messageText = [[DGLabel alloc] initWithFrame:CGRectMake(10,
                                                                          actionView.frame.size.height - 40 - 10 - 40,
                                                                          actionView.frame.size.width - 20,
                                                                          35)];
-        messageText.text = [self.actionDict objectForKey:@"Message"];
+        messageText.text = [app.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.textColor   = [UIColor colorNamed:@"ColorSwitch"];
         
@@ -868,7 +904,7 @@
         DGButton *buttonAllMoves = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, actionView.frame.size.height - 45, 150, 35)];
         [buttonAllMoves setTitle:@"List of Moves" forState: UIControlStateNormal];
         [buttonAllMoves addTarget:self action:@selector(actionAllMoves:) forControlEvents:UIControlEventTouchUpInside];
-        [buttonAllMoves.layer setValue: [self.actionDict objectForKey:@"List of Moves"] forKey:@"href"];
+        [buttonAllMoves.layer setValue: [app.actionDict objectForKey:@"List of Moves"] forKey:@"href"];
         [actionView addSubview:buttonAllMoves];
 
     }
@@ -879,11 +915,14 @@
         [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
         [actionView addSubview:buttonSkipGame];
     }
+
 }
 
 #pragma mark - actions
 - (void)actionSubmitMove
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
     {
         // User retyped too fast, ignore the tap
@@ -892,11 +931,10 @@
     }
     self.lastTapDate = [NSDate date];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Move&move=%@", [app.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch:YES];
 }
 - (void)actionSubmitForcedMove
@@ -913,12 +951,14 @@
     //NSMutableDictionary *dict = attributesArray[0];
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [self.actionDict objectForKey:@"action"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Forced%%20Move", [app.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 
 - (void)actionGreedy
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     if (self.lastTapDate && [[NSDate date] timeIntervalSinceDate:self.lastTapDate] < 0.4)
     {
         // User retyped too fast, ignore the tap
@@ -927,11 +967,10 @@
     }
     self.lastTapDate = [NSDate date];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [self.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Submit%%20Greedy%%20Bearoff&move=%@", [app.actionDict objectForKey:@"action"], [dict objectForKey:@"value"]];
     [self showMatch:YES];
 }
 
@@ -947,7 +986,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [self.actionDict objectForKey:@"UndoMove"];
+    app.matchLink = [app.actionDict objectForKey:@"UndoMove"];
     [self showMatch:YES];
 }
 
@@ -963,7 +1002,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [self.actionDict objectForKey:@"SwapDice"];
+    app.matchLink = [app.actionDict objectForKey:@"SwapDice"];
     [self showMatch:YES];
 }
 
@@ -1016,7 +1055,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [self.actionDict objectForKey:@"action"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Roll%%20Dice", [app.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionDouble
@@ -1031,12 +1070,12 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 3)
     {
         if(self.verifiedDouble)
         {
-            app.matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Double&verify=Double", [app.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -1062,7 +1101,7 @@
     }
     else
     {
-        app.matchLink = [NSString stringWithFormat:@"%@?submit=Double", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Double", [app.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
@@ -1078,7 +1117,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [self.actionDict objectForKey:@"action"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Beaver!", [app.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionTakeBeaver
@@ -1093,7 +1132,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [self.actionDict objectForKey:@"action"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept%%20Beaver", [app.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 
@@ -1109,7 +1148,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     BOOL verify = FALSE;
     if(attributesArray.count > 2)
     {
@@ -1128,7 +1167,7 @@
     {
         if(self.verifiedTake)
         {
-            app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept&verify=Accept", [app.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -1151,7 +1190,7 @@
     }
     else
     {
-        app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Accept", [app.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
@@ -1167,7 +1206,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     BOOL verify = FALSE;
     if(attributesArray.count > 2)
     {
@@ -1186,7 +1225,7 @@
     {
         if(self.verifiedPass)
         {
-            app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [self.actionDict objectForKey:@"action"]];
+            app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline&verify=Decline", [app.actionDict objectForKey:@"action"]];
             [self showMatch:YES];
         }
         else
@@ -1209,7 +1248,7 @@
     }
     else
     {
-        app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [self.actionDict objectForKey:@"action"]];
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Decline", [app.actionDict objectForKey:@"action"]];
         [self showMatch:YES];
     }
 }
@@ -1226,7 +1265,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"action"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [app.actionDict objectForKey:@"action"]];
     [self showMatch:YES];
 }
 - (void)actionNext__
@@ -1241,7 +1280,7 @@
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [self.actionDict objectForKey:@"Next Game>>"]];
+    app.matchLink = [NSString stringWithFormat:@"%@?submit=Next", [app.actionDict objectForKey:@"Next Game>>"]];
     [self showMatch:YES];
 }
 
@@ -1258,7 +1297,7 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     [chatView dismiss];
-    app.matchLink = [self.actionDict objectForKey:@"SkipGame"];
+    app.matchLink = [app.actionDict objectForKey:@"SkipGame"];
     [self showMatch:YES];
 }
 
@@ -1327,7 +1366,7 @@
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
     
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
     {
@@ -1343,7 +1382,7 @@
     NSString *chatString = [tools cleanChatString:chat];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
-                 [self.actionDict objectForKey:@"action"],
+                 [app.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
     
@@ -1378,7 +1417,7 @@
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
 
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
     {
@@ -1393,7 +1432,7 @@
     NSString *chatString = [tools cleanChatString:chat];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
-                 [self.actionDict objectForKey:@"action"],
+                 [app.actionDict objectForKey:@"action"],
                  checkbox,
                  chatString];
 
@@ -1404,6 +1443,8 @@
 #pragma mark - analyzeAction
 - (int) analyzeAction
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     self.verifiedDouble = FALSE;
     self.verifiedTake   = FALSE;
     self.verifiedPass   = FALSE;
@@ -1413,7 +1454,7 @@
 
     if(isReview)
         return REVIEW;
-    NSMutableArray *attributesArray = [self.actionDict objectForKey:@"attributes"];
+    NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     if(attributesArray.count == 1)
     {
         NSMutableDictionary *dict = attributesArray[0];
@@ -1448,28 +1489,30 @@
             return GREEDY;
    }
     
-    if([[self.actionDict objectForKey:@"SwapDice"] length] != 0)
+    if([[app.actionDict objectForKey:@"SwapDice"] length] != 0)
         return SWAP_DICE;
-    if([[self.actionDict objectForKey:@"UndoMove"] length] != 0)
+    if([[app.actionDict objectForKey:@"UndoMove"] length] != 0)
         return UNDO_MOVE;
-    if([[self.actionDict objectForKey:@"Next Game>>"] length] != 0)
+    if([[app.actionDict objectForKey:@"Next Game>>"] length] != 0)
         return NEXT__;
 
     if(attributesArray == nil)
     {
-        if([[self.actionDict objectForKey:@"Message"] length] != 0)
+        if([[app.actionDict objectForKey:@"Message"] length] != 0)
             return ONLY_MESSAGE;
     }
-    XLog(@"unknown action %@", self.actionDict);
+    XLog(@"unknown action %@", app.actionDict);
     return 0;
 }
 -(BOOL)isChat
 {
-    NSString *chatString = [self.boardDict objectForKey:@"chat"];
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    NSString *chatString = [app.boardDict objectForKey:@"chat"];
     if(chatString.length > 0)
         return TRUE;
 
-    NSString *contentString = [self.actionDict objectForKey:@"content"];
+    NSString *contentString = [app.actionDict objectForKey:@"content"];
     if(contentString.length > 0)
     {
         if([contentString rangeOfString:@"You may chat with"].location != NSNotFound)
@@ -1619,7 +1662,7 @@
                                              case 0:
                                              {
                                                  dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"actionDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.actionDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                                                 [[NSString stringWithFormat:@"%@",app.actionDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                                  [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"actionDict.txt"];
                                                  break;
@@ -1628,7 +1671,7 @@
                                              case 2:
                                              {
                                                  dictPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"boardDict.txt"];
-                                                 [[NSString stringWithFormat:@"%@",self.boardDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
+                                                 [[NSString stringWithFormat:@"%@",app.boardDict] writeToFile:dictPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
                                                  NSData *myData = [NSData dataWithContentsOfFile:dictPath];
                                                  [emailController addAttachmentData:myData mimeType:@"text/plain" fileName:@"boardDict.txt"];
                                                  break;

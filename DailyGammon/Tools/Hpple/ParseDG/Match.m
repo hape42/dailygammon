@@ -20,7 +20,7 @@
 @synthesize noBoard;
 
 
--(void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview inBoardDict:(NSMutableDictionary *)boardDict inActionDict:actionDict
+-(void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview 
 {
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
 
@@ -28,7 +28,7 @@
                           {
         if (success)
         {
-            [ self analyzeHTML:result reviewMatch:isReview inBoardDict:boardDict inActionDict:actionDict];
+            [ self analyzeHTML:result reviewMatch:isReview ];
         }
         else
         {
@@ -37,7 +37,7 @@
     }];
     request = nil;
 }
--(void)analyzeHTML:(NSString *)htmlString reviewMatch:(BOOL)isReview inBoardDict:(NSMutableDictionary *)boardDict inActionDict:(NSMutableDictionary *)actionDict
+-(void)analyzeHTML:(NSString *)htmlString reviewMatch:(BOOL)isReview
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
@@ -54,8 +54,8 @@
     if ([htmlString rangeOfString:@"<TD ALIGN=CENTER>13</TD>"].location == NSNotFound)
     {
         noBoard = TRUE;
-        [boardDict setObject:htmlString forKey:@"htmlString"];
-        [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+        [app.boardDict setObject:htmlString forKey:@"htmlString"];
+        [app.boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
     }
     if ([htmlString rangeOfString:@"Next Game>&gt"].location != NSNotFound)
     {
@@ -76,17 +76,17 @@
     }
     if ([htmlString rangeOfString:@"Welcome to DailyGammon"].location != NSNotFound)
     {
-        [boardDict setObject:@"TopPage" forKey:@"TopPage"];
+        [app.boardDict setObject:@"TopPage" forKey:@"TopPage"];
     }
     if ([htmlString rangeOfString:@"invites you to play"].location != NSNotFound)
     {
-        [boardDict setObject:@"Invite" forKey:@"Invite"];
-        [boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
+        [app.boardDict setObject:@"Invite" forKey:@"Invite"];
+        [app.boardDict setObject:[self analyzeInvite:htmlString] forKey:@"inviteDict"];
     }
     if ([htmlString rangeOfString:@"DailyGammon Backups"].location != NSNotFound)
     {
         noBoard = TRUE;
-        [boardDict setObject:@"Backups" forKey:@"Backups"];
+        [app.boardDict setObject:@"Backups" forKey:@"Backups"];
     }
 
     NSData *htmlData = [htmlString dataUsingEncoding:NSUnicodeStringEncoding];
@@ -95,8 +95,8 @@
     
     xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData ] ;
 
-    [boardDict setObject:htmlData forKey:@"htmlData"];
-    [boardDict setObject:htmlString forKey:@"htmlString"];
+    [app.boardDict setObject:htmlData forKey:@"htmlData"];
+    [app.boardDict setObject:htmlString forKey:@"htmlString"];
 
     NSArray *caption  = [xpathParser searchWithXPathQuery:@"//table/caption"];
     if(!isReview) // Ends at review match "last move" with exit to Toppage. Cause is not yet clear, but this is how to prevent it
@@ -110,7 +110,7 @@
                     NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
                     
                     finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
-                    [boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
+                    [app.boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
                     
                  //   return boardDict;
                 }
@@ -144,7 +144,7 @@
     if ([htmlString rangeOfString:@"The http request you submitted was in error."].location != NSNotFound)
     {
         errorText = @"The http request you submitted was in error.";
-        [boardDict setObject:errorText forKey:@"error"];
+        [app.boardDict setObject:errorText forKey:@"error"];
         noBoard = TRUE;
 
     }
@@ -153,7 +153,7 @@
     if ([htmlString rangeOfString:@"There has been an internal error. "].location != NSNotFound)
     {
         errorText = @"The http request you submitted was in error.";
-        [boardDict setObject:@"There has been an internal error. " forKey:@"internal error"];
+        [app.boardDict setObject:@"There has been an internal error. " forKey:@"internal error"];
         noBoard = TRUE;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
@@ -170,17 +170,17 @@
             [matchName appendString:@" "];
        }
     }
-    [boardDict setObject:matchName forKey:@"matchName"];
-    [boardDict setObject:chat forKey:@"chat"];
+    [app.boardDict setObject:matchName forKey:@"matchName"];
+    [app.boardDict setObject:chat forKey:@"chat"];
     
 #pragma mark -     You have received the following telegram message:
     if ([htmlString rangeOfString:@"telegram"].location != NSNotFound)
     {
-        [boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
+        [app.boardDict setObject:@"You have received the following telegram message:" forKey:@"message"];
         NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//pre"];
         for(TFHppleElement *element in matchHeader)
         {
-            [boardDict setObject:[element content] forKey:@"chat"];
+            [app.boardDict setObject:[element content] forKey:@"chat"];
         }
     }
     
@@ -191,12 +191,12 @@
         NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
         for(TFHppleElement *element in matchHeader)
         {
-            [boardDict setObject:[element content] forKey:@"quickMessage"];
+            [app.boardDict setObject:[element content] forKey:@"quickMessage"];
         }
         matchHeader  = [xpathParser searchWithXPathQuery:@"//pre"];
         for(TFHppleElement *element in matchHeader)
         {
-            [boardDict setObject:[element content] forKey:@"chat"];
+            [app.boardDict setObject:[element content] forKey:@"chat"];
         }
 
         NSMutableDictionary *messageDict = [[NSMutableDictionary alloc]init];
@@ -225,12 +225,12 @@
         [messageDict setObject:elementArray forKey:@"chat"];
         [messageDict setObject:attributesArray forKey:@"attributes"];
 
-        [boardDict setObject:messageDict forKey:@"messageDict"];
+        [app.boardDict setObject:messageDict forKey:@"messageDict"];
         noBoard = TRUE;
     }
     if ([htmlString rangeOfString:@"Your message has been sent"].location != NSNotFound)
     {
-        [boardDict setObject:@"sent" forKey:@"messageSent"];
+        [app.boardDict setObject:@"sent" forKey:@"messageSent"];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
         return ;
@@ -239,12 +239,12 @@
     NSString *unexpectedMove = @"";
     if ([htmlString rangeOfString:@"unexpected"].location != NSNotFound)
         unexpectedMove = @"Your opponent made an unexpected move, and the game has been rolled back to that point.";
-    [boardDict setObject:unexpectedMove forKey:@"unexpectedMove"];
+    [app.boardDict setObject:unexpectedMove forKey:@"unexpectedMove"];
 
 #pragma mark - There are no matches where you can move.
     if ([htmlString rangeOfString:@"There are no matches where you can move."].location != NSNotFound)
     {
-        [boardDict setObject:@"noMatches" forKey:@"noMatches"];
+        [app.boardDict setObject:@"noMatches" forKey:@"noMatches"];
         noBoard = TRUE;
     }
 
@@ -257,7 +257,7 @@
     }
     if(noBoard)
     {
-        [boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+        [app.boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
         return ;
@@ -270,7 +270,7 @@
     {
         [elementArray addObject:[element text]];
     }
-    [boardDict setObject:elementArray forKey:@"nummernOben"];
+    [app.boardDict setObject:elementArray forKey:@"nummernOben"];
     
 #pragma mark - obere Grafik Reihe
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[2]/td",tableToAnalyze]];
@@ -304,7 +304,7 @@
         
         [elementArray addObject:dict];
     }
-    [boardDict setObject:elementArray forKey:@"grafikOben"];
+    [app.boardDict setObject:elementArray forKey:@"grafikOben"];
     
 #pragma mark - opponent
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[2]/td[17]",tableToAnalyze]];
@@ -312,7 +312,7 @@
     NSString *opponentID = @"";
     for(TFHppleElement *element in elements)
     {
-        [boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"opponentColor"];
+        [app.boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"opponentColor"];
 
         for (TFHppleElement *child in element.children)
         {
@@ -321,8 +321,8 @@
                 opponentID = [[[child attributes] objectForKey:@"href"]lastPathComponent];
         }
     }
-    [boardDict setObject:elementArray forKey:@"opponent"];
-    [boardDict setObject:opponentID forKey:@"opponentID"];
+    [app.boardDict setObject:elementArray forKey:@"opponent"];
+    [app.boardDict setObject:opponentID forKey:@"opponentID"];
 
 #pragma mark - obere Reihe moveIndicator
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[3]/td",tableToAnalyze]];
@@ -340,7 +340,7 @@
         }
         [elementArray addObject:image];
     }
-    [boardDict setObject:elementArray forKey:@"moveIndicatorOben"];
+    [app.boardDict setObject:elementArray forKey:@"moveIndicatorOben"];
     
 #pragma mark - Würfel Reihe
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[4]/td",tableToAnalyze]];
@@ -349,7 +349,7 @@
     for(TFHppleElement *element in elements)
     {
         matchLaengeText = [element  content]; // im letzten TD steht "3 Point Match"
-        [boardDict setObject:matchLaengeText forKey:@"matchLaengeText"];
+        [app.boardDict setObject:matchLaengeText forKey:@"matchLaengeText"];
 
         NSString *image = @"";
         for (TFHppleElement *child in element.children)
@@ -361,7 +361,7 @@
         }
         [elementArray addObject:image];
     }
-    [boardDict setObject:elementArray forKey:@"dice"];
+    [app.boardDict setObject:elementArray forKey:@"dice"];
     
 #pragma mark - untere Reihe moveIndicator
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[5]/td",tableToAnalyze]];
@@ -379,7 +379,7 @@
         }
         [elementArray addObject:image];
     }
-    [boardDict setObject:elementArray forKey:@"moveIndicatorUnten"];
+    [app.boardDict setObject:elementArray forKey:@"moveIndicatorUnten"];
     
 #pragma mark - untere Grafik Reihe
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[6]/td",tableToAnalyze]];
@@ -412,7 +412,7 @@
         
         [elementArray addObject:dict];
     }
-    [boardDict setObject:elementArray forKey:@"grafikUnten"];
+    [app.boardDict setObject:elementArray forKey:@"grafikUnten"];
     
 #pragma mark - player
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[6]/td[17]",tableToAnalyze]];
@@ -420,14 +420,14 @@
     
     for(TFHppleElement *element in elements)
     {
-        [boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"playerColor"];
+        [app.boardDict setObject:[[element attributes] objectForKey:@"bgcolor"] forKey:@"playerColor"];
 
         for (TFHppleElement *child in element.children)
         {
             [elementArray addObject:[child content]];
         }
     }
-    [boardDict setObject:elementArray forKey:@"player"];
+    [app.boardDict setObject:elementArray forKey:@"player"];
     
 #pragma mark - untere Nummern Reihe
     elements  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr[7]/td",tableToAnalyze]];
@@ -438,8 +438,8 @@
         if([element text] != nil)
             [elementArray addObject:[element text]];
     }
-    [boardDict setObject:elementArray forKey:@"nummernUnten"];
-    [self readActionForm:[boardDict objectForKey:@"htmlData"] withChat:(NSString *)[boardDict objectForKey:@"chat"] inActionDict:actionDict];
+    [app.boardDict setObject:elementArray forKey:@"nummernUnten"];
+    [self readActionForm:[app.boardDict objectForKey:@"htmlData"] withChat:(NSString *)[app.boardDict objectForKey:@"chat"] ];
 
     return ;
 }
@@ -467,39 +467,41 @@
 
     return htmlStringNeu;
 }
--(void) readActionForm:(NSData *)htmlData withChat:(NSString *)chat inActionDict:(NSMutableDictionary *)actionDict
+-(void) readActionForm:(NSData *)htmlData withChat:(NSString *)chat
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
     TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
-    [actionDict setObject:elements forKey:@"elements"];
+    [app.actionDict setObject:elements forKey:@"elements"];
 
     for(TFHppleElement *element in elements)
     {
         if([[element raw] rangeOfString:@"textarea"].location != NSNotFound)
         {
             //NSArray *pre  = [xpathParser searchWithXPathQuery:@"//pre"];
-            [self analyzeChat:element withChat:chat inActionDict:actionDict];
+            [self analyzeChat:element withChat:chat];
         }
         else
         {
             NSDictionary *elementDict = [element attributes];
-            [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
+            [app.actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
             for (TFHppleElement *child in [element children])
             {
                 NSDictionary *dict = [child attributes];
                 if([dict objectForKey:@"value"])
                     [attributesArray addObject:dict];
             }
-            [actionDict setObject:attributesArray forKey:@"attributes"];
-            [actionDict setObject:[element content] forKey:@"content"];
+            [app.actionDict setObject:attributesArray forKey:@"attributes"];
+            [app.actionDict setObject:[element content] forKey:@"content"];
         }
     }
 
     elements  = [xpathParser searchWithXPathQuery:@"//h4"];
     for(TFHppleElement *element in elements)
     {
-        [actionDict setObject:[element content] forKey:@"Message"];
+        [app.actionDict setObject:[element content] forKey:@"Message"];
     }
 
     elements  = [xpathParser searchWithXPathQuery:@"//a"];
@@ -512,19 +514,19 @@
     {
         if([[element content] isEqualToString:@"Skip Game"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"SkipGame"];
+            [app.actionDict setObject:[element objectForKey:@"href"] forKey:@"SkipGame"];
         }
         if([[element content] isEqualToString:@"Swap Dice"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"SwapDice"];
+            [app.actionDict setObject:[element objectForKey:@"href"] forKey:@"SwapDice"];
         }
         if([[element content] isEqualToString:@"Undo Move"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
+            [app.actionDict setObject:[element objectForKey:@"href"] forKey:@"UndoMove"];
         }
         if([[element content] isEqualToString:@"Next Game>&gt"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"Next Game>>"];
+            [app.actionDict setObject:[element objectForKey:@"href"] forKey:@"Next Game>>"];
         }
 #pragma mark - Review Match
         if([[element content] isEqualToString:@"First"])
@@ -545,23 +547,25 @@
         }
         if([[element content] isEqualToString:@"List of Moves"])
         {
-            [actionDict setObject:[element objectForKey:@"href"] forKey:@"List of Moves"];
+            [app.actionDict setObject:[element objectForKey:@"href"] forKey:@"List of Moves"];
         }
     }
-    [actionDict setObject:elements forKey:@"a"];
-    [actionDict setObject:reviewArray forKey:@"review"];
+    [app.actionDict setObject:elements forKey:@"a"];
+    [app.actionDict setObject:reviewArray forKey:@"review"];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
     return ;
 
 }
 
-- (void) analyzeChat:(TFHppleElement *)element withChat:(NSString *)chat inActionDict:(NSMutableDictionary *)actionDict
+- (void) analyzeChat:(TFHppleElement *)element withChat:(NSString *)chat
 {
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
 
     NSDictionary *elementDict = [element attributes];
-    [actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
+    [app.actionDict setValue:[elementDict objectForKey:@"action"] forKey:@"action"];
     for (TFHppleElement *child in [element children])
     {
         NSDictionary *dict = [child attributes];
@@ -571,15 +575,15 @@
         {
             [childArray addObject:[childChild attributes]];
         }
-        [actionDict setObject:childArray forKey:@"childArray"];
+        [app.actionDict setObject:childArray forKey:@"childArray"];
         if(dict.count >0)
             [attributesArray addObject:dict];
     }
-    [actionDict setObject:attributesArray forKey:@"attributes"];
+    [app.actionDict setObject:attributesArray forKey:@"attributes"];
     if([element content] != nil)
-        [actionDict setObject:[element content] forKey:@"content"];
+        [app.actionDict setObject:[element content] forKey:@"content"];
     else
-        [actionDict setObject:chat forKey:@"content"];
+        [app.actionDict setObject:chat forKey:@"content"];
 
     return ;
 }

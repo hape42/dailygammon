@@ -36,6 +36,9 @@
 - (UIMenu *)mainMenu:(UINavigationController *)navigationController button:(UIButton *)menuButton;
 
 @property (strong, readwrite, retain, atomic) NSString *matchLink;
+@property (readwrite, assign, atomic) BOOL playMatchAktiv;;
+@property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
+@property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
 
 @end
 
