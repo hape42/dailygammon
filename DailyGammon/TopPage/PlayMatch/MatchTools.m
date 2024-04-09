@@ -233,7 +233,6 @@
                                                                         0,
                                                                         checkerWidth,
                                                                         pointsHeight)];
-#warning Texturen statt Farben im Rahmenbereich des Brettes
 
     offInsideTopView.backgroundColor = boardColor;
     offInsideTopView.layer.borderWidth = 1;

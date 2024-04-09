@@ -258,6 +258,8 @@
     if(noBoard)
     {
         [app.boardDict setObject:@"NoBoard" forKey:@"NoBoard"];
+        [app.actionDict setObject:@"NoBoard" forKey:@"NoBoard"];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
 
         return ;
