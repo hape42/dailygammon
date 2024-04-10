@@ -33,7 +33,7 @@
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
-#import "Player.h"
+#import "PlayerVC.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "About.h"
@@ -633,7 +633,7 @@
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
 
-    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    PlayerVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
 
     [self.navigationController pushViewController:vc animated:NO];

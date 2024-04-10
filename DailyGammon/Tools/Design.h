@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIButton *)designChatPhrasesButton:(UIButton *)button;
 
 - (UIImage *)designSystemImage:(NSString *)imageName;
+- (UIButton *)designSystemImageButton:(NSString *)imageName button:(UIButton *)button;
 
 - (BOOL)isX;
 

@@ -23,7 +23,7 @@
 #import "LoginVC.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
-#import "Player.h"
+#import "PlayerVC.h"
 #import "About.h"
 #import "PlayerLists.h"
 #import "Constants.h"

@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 
-@interface PlayerDetail : UIViewController<MFMailComposeViewControllerDelegate>
+@interface PlayerDetail : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
 

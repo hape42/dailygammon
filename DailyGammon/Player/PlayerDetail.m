@@ -18,6 +18,7 @@
 #import "InviteDetail.h"
 #import "QuickMessage.h"
 #import "Design.h"
+#import "PlayerNote.h"
 
 @interface PlayerDetail ()
 
@@ -232,7 +233,21 @@
     [historyButton.topAnchor constraintEqualToAnchor:self.commentLabel.bottomAnchor constant:edge].active = YES;
     [historyButton.heightAnchor constraintEqualToConstant:35].active = YES;
     [historyButton.widthAnchor constraintEqualToConstant:35].active = YES;
-    [historyButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [historyButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:-40].active = YES;
+
+#pragma mark infoButton
+    UIButton *infoButton = [[UIButton alloc] init];
+    infoButton = [design designSystemImageButton:@"info.circle" button:infoButton];
+    [infoButton addTarget:self action:@selector(playerNote:) forControlEvents:UIControlEventTouchUpInside];
+    infoButton.tag = 1;
+    [self.view addSubview:infoButton];
+
+    [infoButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [infoButton.topAnchor constraintEqualToAnchor:self.commentLabel.bottomAnchor constant:edge].active = YES;
+    [infoButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [infoButton.widthAnchor constraintEqualToConstant:35].active = YES;
+    [infoButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:+40].active = YES;
 
 }
 - (IBAction)doneAction:(id)sender
@@ -468,6 +483,25 @@
     QuickMessage *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"QuickMessage"];
     controller.playerName = self.playerName.text;
     controller.playerNummer = userID;
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
+
+#pragma mark - Player Note
+- (IBAction)playerNote:(id)sender
+{
+    PlayerNote *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerNote"];
+    controller.playerName = self.playerName.text;
+    controller.playerID = userID;
 
     controller.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:controller animated:NO completion:nil];

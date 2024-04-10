@@ -15,7 +15,7 @@
 #import "LoginVC.h"
 #import "DbConnect.h"
 #import "AppDelegate.h"
-#import "Player.h"
+#import "PlayerVC.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "RatingTools.h"

@@ -19,7 +19,7 @@
 #import "DGRequest.h"
 #import "LoginVC.h"
 #import "PlayMatch.h"
-#import "Player.h"
+#import "PlayerVC.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
@@ -1230,7 +1230,7 @@ didCompleteWithError:(NSError *)error
 
 - (IBAction)opponentAction:(UIButton*)button
 {
-    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    PlayerVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     vc.name   = (NSString *)[button.layer valueForKey:@"name"];
 
     [self.navigationController pushViewController:vc animated:NO];

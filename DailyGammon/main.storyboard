@@ -1352,10 +1352,10 @@ Did we make you curious?</string>
             </objects>
             <point key="canvasLocation" x="2890.6295754026351" y="-848.4375"/>
         </scene>
-        <!--Player-->
+        <!--PlayerVC-->
         <scene sceneID="YZL-8R-sra">
             <objects>
-                <viewController storyboardIdentifier="PlayerVC" id="QvS-W2-5mE" customClass="Player" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlayerVC" id="QvS-W2-5mE" customClass="PlayerVC" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="KJS-xU-3Y8"/>
                         <viewControllerLayoutGuide type="bottom" id="pbT-1I-uuF"/>
@@ -1803,6 +1803,64 @@ Did we make you curious?</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKn-Vc-5JW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4022" y="-984"/>
+        </scene>
+        <!--Player Note-->
+        <scene sceneID="HNF-wi-EjG">
+            <objects>
+                <viewController storyboardIdentifier="PlayerNote" id="rtp-JY-W59" customClass="PlayerNote" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Ux-bX-POd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Note to save information like language , country or whatever for a player." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nos-gE-RZW">
+                                <rect key="frame" x="27" y="24" width="547" height="60"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b7e-sU-12v" customClass="DGButton">
+                                <rect key="frame" x="36" y="348" width="223" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Save"/>
+                                <connections>
+                                    <action selector="actionSave:" destination="rtp-JY-W59" eventType="touchUpInside" id="6yZ-yt-wMl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wpx-tr-erR" customClass="DGButton">
+                                <rect key="frame" x="340" y="328" width="223" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="actionCancelSend:" destination="rtp-JY-W59" eventType="touchUpInside" id="Ptr-g0-az0"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="D4e-3m-11T">
+                                <rect key="frame" x="180" y="166" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="20a-Ij-aWO"/>
+                        <color key="backgroundColor" name="ColorViewBackground"/>
+                    </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="400" height="400"/>
+                    <size key="freeformSize" width="600" height="400"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="Wpx-tr-erR" id="fuA-fJ-m13"/>
+                        <outlet property="header" destination="Nos-gE-RZW" id="NE5-bm-Dnx"/>
+                        <outlet property="saveButton" destination="b7e-sU-12v" id="cb0-uL-Q8q"/>
+                        <outlet property="textView" destination="D4e-3m-11T" id="54D-Qa-31b"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BPL-7s-7eM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4022" y="-703"/>
         </scene>
     </scenes>
     <resources>

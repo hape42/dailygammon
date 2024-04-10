@@ -19,7 +19,7 @@
 #import <mach/mach.h>
 #import <mach/mach_host.h>
 #import <SafariServices/SafariServices.h>
-#import "Player.h"
+#import "PlayerVC.h"
 #import "Tools.h"
 #import "LoginVC.h"
 #import "DGButton.h"

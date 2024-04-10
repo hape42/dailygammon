@@ -484,6 +484,18 @@
     
 }
 
+- (UIButton *)designSystemImageButton:(NSString *)imageName button:(UIButton *)button
+{
+    UIImageSymbolConfiguration *configurationColor = [UIImageSymbolConfiguration configurationWithPaletteColors:@[[UIColor blackColor], [self getTintColorSchema]]];
+    UIImageSymbolConfiguration *configurationSize = [UIImageSymbolConfiguration configurationWithPointSize:20];
+    UIImageSymbolConfiguration *total = [configurationColor configurationByApplyingConfiguration:configurationSize];
+    UIImage *image = [UIImage systemImageNamed:imageName withConfiguration:total];
+
+    [button setImage:image forState:UIControlStateNormal];
+    return button;
+
+}
+
 - (DGButton *)designButton:(DGButton *)button imageName:(NSString *)imageName title:(NSString *)title
 {
     [button setTitle:@"" forState: UIControlStateNormal];

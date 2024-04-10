@@ -11,11 +11,12 @@
 		E002F1A229A0F9740028098C /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = E002F1A129A0F9740028098C /* Review.m */; };
 		E0048BD02B810C0B00AE8433 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0048BCF2B810C0B00AE8433 /* main.storyboard */; };
 		E005D52B2B7CED4400B4E29A /* ChatView.m in Sources */ = {isa = PBXBuildFile; fileRef = E005D52A2B7CED4400B4E29A /* ChatView.m */; };
-		E00654D722A6784000194435 /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* Player.m */; };
+		E00654D722A6784000194435 /* PlayerVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E00654D622A6784000194435 /* PlayerVC.m */; };
 		E00A3D832700CB7D008B526B /* NoInternet.m in Sources */ = {isa = PBXBuildFile; fileRef = E00A3D822700CB7D008B526B /* NoInternet.m */; };
 		E00EB16921C633580088501C /* Match.m in Sources */ = {isa = PBXBuildFile; fileRef = E00EB16821C633580088501C /* Match.m */; };
 		E01955832BA727B100ADF6D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */; };
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
+		E0264ADC2BC55C5800A6C9D4 /* PlayerNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */; };
 		E02C7BC729C4461E003B6357 /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = E02C7BC629C4461E003B6357 /* WaitView.m */; };
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
@@ -145,14 +146,16 @@
 		E0048BCF2B810C0B00AE8433 /* main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
 		E005D5272B7CECFB00B4E29A /* ChatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatView.h; sourceTree = "<group>"; };
 		E005D52A2B7CED4400B4E29A /* ChatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatView.m; sourceTree = "<group>"; };
-		E00654D522A6784000194435 /* Player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
-		E00654D622A6784000194435 /* Player.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
+		E00654D522A6784000194435 /* PlayerVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayerVC.h; sourceTree = "<group>"; };
+		E00654D622A6784000194435 /* PlayerVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayerVC.m; sourceTree = "<group>"; };
 		E00A3D812700CB7D008B526B /* NoInternet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoInternet.h; sourceTree = "<group>"; };
 		E00A3D822700CB7D008B526B /* NoInternet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NoInternet.m; sourceTree = "<group>"; };
 		E00EB16721C633580088501C /* Match.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Match.h; sourceTree = "<group>"; };
 		E00EB16821C633580088501C /* Match.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Match.m; sourceTree = "<group>"; };
 		E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
+		E0264AD82BC55C4000A6C9D4 /* PlayerNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerNote.h; sourceTree = "<group>"; };
+		E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerNote.m; sourceTree = "<group>"; };
 		E02C7BC529C4461E003B6357 /* WaitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitView.h; sourceTree = "<group>"; };
 		E02C7BC629C4461E003B6357 /* WaitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitView.m; sourceTree = "<group>"; };
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
@@ -470,10 +473,12 @@
 		E083BAE822B3A2E50035A71E /* Player */ = {
 			isa = PBXGroup;
 			children = (
-				E00654D522A6784000194435 /* Player.h */,
-				E00654D622A6784000194435 /* Player.m */,
+				E00654D522A6784000194435 /* PlayerVC.h */,
+				E00654D622A6784000194435 /* PlayerVC.m */,
 				E0BC24612BAEBF3300B554B2 /* PlayerDetail.h */,
 				E0BC24622BAEBF3300B554B2 /* PlayerDetail.m */,
+				E0264AD82BC55C4000A6C9D4 /* PlayerNote.h */,
+				E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */,
 				E060AC9A22A8E2A700D60C39 /* InviteDetail.h */,
 				E060AC9B22A8E2A700D60C39 /* InviteDetail.m */,
 				E0BC24662BB1884500B554B2 /* QuickMessage.h */,
@@ -1024,12 +1029,13 @@
 				E09C007421B042020056D2A2 /* PlayMatch.m in Sources */,
 				E0F80DC42B58113900678743 /* GameLoungeCV.m in Sources */,
 				E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */,
-				E00654D722A6784000194435 /* Player.m in Sources */,
+				E00654D722A6784000194435 /* PlayerVC.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
 				E0FD837D2B6BF4F3003B6DBF /* ReadTopPage.m in Sources */,
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
 				E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */,
+				E0264ADC2BC55C5800A6C9D4 /* PlayerNote.m in Sources */,
 				E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
 				E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */,

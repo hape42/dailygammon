@@ -6,7 +6,7 @@
 //  Copyright © 2019 Peter Schneider. All rights reserved.
 //
 
-#import "Player.h"
+#import "PlayerVC.h"
 #import "AppDelegate.h"
 #import "Design.h"
 #import "TFHpple.h"
@@ -25,7 +25,7 @@
 #import "PlayerDetail.h"
 #import "DGRequest.h"
 
-@interface Player ()
+@interface PlayerVC ()
 
 @property (readwrite, retain, nonatomic) NSMutableArray *playerArray;
 
@@ -49,7 +49,7 @@
 
 @end
 
-@implementation Player
+@implementation PlayerVC
 
 @synthesize design, tools;
 

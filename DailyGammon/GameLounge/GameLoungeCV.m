@@ -16,7 +16,7 @@
 #import "AppDelegate.h"
 #import "DbConnect.h"
 #import "RatingVC.h"
-#import "Player.h"
+#import "PlayerVC.h"
 #import "Tools.h"
 #import <SafariServices/SafariServices.h>
 #import "About.h"

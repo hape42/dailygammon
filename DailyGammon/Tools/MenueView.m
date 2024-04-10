@@ -18,7 +18,7 @@
 #import "SetupVC.h"
 #import "About.h"
 #import <SafariServices/SafariServices.h>
-#import "Player.h"
+#import "PlayerVC.h"
 #import "GameLoungeCV.h"
 #import "PlayerLists.h"
 #import "Constants.h"
@@ -262,7 +262,7 @@
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
     
-    Player *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
+    PlayerVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
     
     [self.navigationController pushViewController:vc animated:NO];
 }

@@ -14,7 +14,7 @@
 
 #import "AppDelegate.h"
 #import "Phrases+CoreDataProperties.h"
-
+ 
 @interface TextModul ()
 
 @property (weak, nonatomic) IBOutlet DGButton *doneButton;
