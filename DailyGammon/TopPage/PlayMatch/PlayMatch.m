@@ -158,6 +158,8 @@
 
     self.lastTapDate = [NSDate date];
 
+    self.matchName.text = @"";
+    self.matchInfo.text = @"";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -888,7 +890,8 @@
         messageText.text = [app.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.textColor   = [UIColor colorNamed:@"ColorSwitch"];
-        
+        messageText.numberOfLines = 0;
+
         [actionView addSubview: messageText];
 
     }

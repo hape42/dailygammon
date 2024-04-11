@@ -535,7 +535,7 @@
     [buttonNext.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
     [buttonNext.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
     [buttonNext.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
-    [buttonNext.widthAnchor constraintEqualToConstant:80].active = YES;
+    [buttonNext.widthAnchor constraintEqualToConstant:70].active = YES;
 
     NSMutableArray *buttonArray = [finishedMatchDict objectForKey:@"buttonArray"];
     if(buttonArray.count == 2)
@@ -553,7 +553,7 @@
         [buttonToTop.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
         [buttonToTop.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
         [buttonToTop.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap ].active = YES;
-        [buttonToTop.widthAnchor constraintEqualToConstant:80].active = YES;
+        [buttonToTop.widthAnchor constraintEqualToConstant:70].active = YES;
     }
     if(withChat)
     {
@@ -568,6 +568,35 @@
         [keyboardButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
         [keyboardButton.widthAnchor constraintEqualToConstant:40].active = YES;
         [keyboardButton.rightAnchor constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+        
+#pragma mark historyButton
+        UIButton *historyButton = [[UIButton alloc] init];
+        historyButton = [design designChatHistoryButton:historyButton];
+        [historyButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
+        historyButton.tag = 1;
+        [self.infoView addSubview:historyButton];
+
+        [historyButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [historyButton.topAnchor constraintEqualToAnchor:keyboardButton.topAnchor constant:0].active = YES;
+        [historyButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [historyButton.widthAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [historyButton.rightAnchor constraintEqualToAnchor:keyboardButton.leftAnchor constant:-gap].active = YES;
+
+#pragma mark phrasesButton
+        UIButton *phrasesButton = [[UIButton alloc] init];
+        phrasesButton = [design designChatPhrasesButton:phrasesButton];
+        [phrasesButton addTarget:self action:@selector(textModul:) forControlEvents:UIControlEventTouchUpInside];
+        phrasesButton.tag = 2;
+        [self.infoView addSubview:phrasesButton];
+
+        [phrasesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [phrasesButton.topAnchor constraintEqualToAnchor:historyButton.topAnchor constant:0].active = YES;
+        [phrasesButton.rightAnchor constraintEqualToAnchor:historyButton.leftAnchor constant:-gap].active = YES;
+        [phrasesButton.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [phrasesButton.widthAnchor constraintEqualToConstant:buttonHight].active = YES;
+
     }
     
 #pragma mark finishedMatchChat & opponentChat
@@ -628,6 +657,48 @@
 
     return;
 }
+-(void)notYetImplemented:(id)sender
+{
+    NSString *title = @"not yet implemented";
+    NSString *message = @"---";
+    UIButton *button = (UIButton *)sender;
+
+    switch(button.tag)
+    {
+        case 1:
+            message = @"hier kann ich eine Chat History mit diesem User einsehen. Das wird auch von dem hauptmenüpunkt Player aus möglich sein \n\n derr jeweilige Text wird mit einem zeitstempel und einer info der Quelle ( match (mit link) oder shortmessage versehen.\n\nSuchen kopieren und löschen werden möglich sein";
+            break;
+        case 2:
+            message = @"hier wird mal aus textbausteinen wie zum Beispiel \"Hi from germany. good luck\" oder \"Good match, congratulation\" auswählen können.\n\n Textbausteine anlegen, ändern löschen und verschieben in der Liste wird auch möglich sein";
+            break;
+        default:
+            message = @"unknown Button";
+            break;
+            
+    }
+    UIAlertController * alert = [UIAlertController
+                                  alertControllerWithTitle: title
+                                  message:message
+                                  preferredStyle:UIAlertControllerStyleAlert];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:[UIFont systemFontOfSize:20.0]
+                             range:NSMakeRange(0, title.length)];
+    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor]  range:NSMakeRange(0, title.length)];
+    [alert setValue:attributedString forKey:@"attributedTitle"];
+
+
+    alert.view.tintColor = [UIColor blackColor];
+    UIAlertAction* okButton = [UIAlertAction
+                                actionWithTitle:@"OK"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    return;
+                                }];
+    [alert addAction:okButton];
+   [self presentViewController:alert animated:YES completion:nil];
+}
 
 - (void)player:(UIButton*)sender
 {
@@ -642,7 +713,6 @@
 
 -(void)textModul:(id)sender
 {
- 
     TextModul *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"TextModul"];
     
     controller.modalPresentationStyle = UIModalPresentationPopover;
