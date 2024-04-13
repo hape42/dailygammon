@@ -17,6 +17,7 @@
 		E01955832BA727B100ADF6D0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */; };
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
 		E0264ADC2BC55C5800A6C9D4 /* PlayerNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */; };
+		E0264ADF2BC7DC2500A6C9D4 /* ProfileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */; };
 		E02C7BC729C4461E003B6357 /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = E02C7BC629C4461E003B6357 /* WaitView.m */; };
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
@@ -156,6 +157,8 @@
 		E01E9DE122761964000399EA /* button_grau.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_grau.png; sourceTree = "<group>"; };
 		E0264AD82BC55C4000A6C9D4 /* PlayerNote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerNote.h; sourceTree = "<group>"; };
 		E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerNote.m; sourceTree = "<group>"; };
+		E0264ADD2BC7DC2500A6C9D4 /* ProfileVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileVC.h; sourceTree = "<group>"; };
+		E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileVC.m; sourceTree = "<group>"; };
 		E02C7BC529C4461E003B6357 /* WaitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitView.h; sourceTree = "<group>"; };
 		E02C7BC629C4461E003B6357 /* WaitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitView.m; sourceTree = "<group>"; };
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
@@ -439,6 +442,8 @@
 				E06E1C5621B7B468003B310F /* BoardSchemeVC.m */,
 				E0454ECE22104C9300F10E5A /* PreferencesVC.h */,
 				E0454ECF22104C9300F10E5A /* PreferencesVC.m */,
+				E0264ADD2BC7DC2500A6C9D4 /* ProfileVC.h */,
+				E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */,
 			);
 			path = SetUp;
 			sourceTree = "<group>";
@@ -1008,6 +1013,7 @@
 				E0454ED022104C9300F10E5A /* PreferencesVC.m in Sources */,
 				E0AC594922270F5600367EE9 /* RatingVC.m in Sources */,
 				E0F958A221AD1884003DAC01 /* Design.m in Sources */,
+				E0264ADF2BC7DC2500A6C9D4 /* ProfileVC.m in Sources */,
 				E0355393298E775C002C820C /* PlayerLists.m in Sources */,
 				E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */,
 				E002F19E29A0F08C0028098C /* DGRequest.m in Sources */,

@@ -19,6 +19,7 @@
 #import "PlayerLists.h"
 #import "Constants.h"
 #import "TextModul.h"
+#import "ProfileVC.h"
 
 @interface SetUpVC ()
 
@@ -27,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet DGButton *boardSchemeButton;
 @property (weak, nonatomic) IBOutlet DGButton *preferencesButton;
 @property (weak, nonatomic) IBOutlet DGButton *textModulButton;
+@property (weak, nonatomic) IBOutlet DGButton *profileButton;
 
 @property (weak, nonatomic) IBOutlet UISwitch *showRatingsOutlet;
 @property (weak, nonatomic) IBOutlet DGLabel *showRatingsLabel;
@@ -126,7 +128,22 @@
     [self.preferencesButton.heightAnchor  constraintEqualToConstant:40].active = YES;
     [self.preferencesButton.widthAnchor   constraintEqualToConstant:200].active = YES;
 
+#pragma mark textModulButton  autoLayout
+    [self.textModulButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
+    [self.textModulButton.topAnchor    constraintEqualToAnchor:self.preferencesButton.bottomAnchor constant:gap].active = YES;
+    [self.textModulButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor               constant:gap].active = YES;
+    [self.textModulButton.heightAnchor constraintEqualToConstant:40].active  = YES;
+    [self.textModulButton.widthAnchor  constraintEqualToConstant:120].active = YES;
+
+#pragma mark profile Button autoLayout
+    [self.profileButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.profileButton.centerYAnchor constraintEqualToAnchor:self.textModulButton.centerYAnchor constant:0].active = YES;
+    [self.profileButton.rightAnchor   constraintEqualToAnchor:safe.rightAnchor    constant:-gap].active = YES;
+    [self.profileButton.heightAnchor  constraintEqualToConstant:40].active = YES;
+    [self.profileButton.widthAnchor   constraintEqualToConstant:200].active = YES;
+
 #pragma mark buttonDesign autoLayout
     [self.buttonDesignOutlet setTranslatesAutoresizingMaskIntoConstraints:NO];
     
@@ -143,7 +160,7 @@
 #pragma mark showRatings autoLayout
     [self.showRatingsOutlet setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [self.showRatingsOutlet.topAnchor   constraintEqualToAnchor:self.boardSchemeButton.bottomAnchor constant:gap*4].active = YES;
+    [self.showRatingsOutlet.topAnchor   constraintEqualToAnchor:self.textModulButton.bottomAnchor constant:gap*4].active = YES;
     [self.showRatingsOutlet.leftAnchor  constraintEqualToAnchor:safe.leftAnchor                     constant:edge].active = YES;
 
     [self.showRatingsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -187,13 +204,6 @@
     [self.iCloudLabel.leftAnchor   constraintEqualToAnchor:self.iCloudConnected.rightAnchor    constant:gap].active = YES;
     [self.iCloudLabel.heightAnchor   constraintEqualToConstant:35].active = YES;
 
-#pragma mark textModulButton  autoLayout
-    [self.textModulButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    [self.textModulButton.topAnchor    constraintEqualToAnchor:self.iCloudLabel.bottomAnchor constant:gap*2].active = YES;
-    [self.textModulButton.leftAnchor   constraintEqualToAnchor:safe.leftAnchor               constant:gap].active = YES;
-    [self.textModulButton.heightAnchor constraintEqualToConstant:40].active  = YES;
-    [self.textModulButton.widthAnchor  constraintEqualToConstant:120].active = YES;
 
 }
 
@@ -304,6 +314,23 @@
     popController.sourceRect = button.bounds;
 
 }
+- (IBAction)profileAction:(id)sender 
+{
+    ProfileVC *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ProfileVC"];
+    
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionRight;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+
+}
+
 - (IBAction)buttonDesignAction:(id)sender
 {
     [[NSUserDefaults standardUserDefaults] setInteger:((UISegmentedControl*)sender).selectedSegmentIndex  forKey:@"buttonDesign"];

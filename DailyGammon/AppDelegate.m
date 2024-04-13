@@ -33,6 +33,7 @@
 #import "PlayerVC.h"
 #import "GameLoungeCV.h"
 #import "PlayerLists.h"
+#import "ProfileVC.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -47,14 +48,20 @@
 @synthesize playMatchAktiv;
 @synthesize actionDict, boardDict;
 
-//- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-//{
-//    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskLandscape;
-//
-//    UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
-// //   XLog(@"CurrentVC: %@", currentViewController);
-//
-//    if (currentViewController.class == GameLoungeCV.class) orientationMask = UIInterfaceOrientationMaskAll;
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+    UIInterfaceOrientationMask orientationMask = UIInterfaceOrientationMaskAll;
+
+    UIViewController *currentViewController = [self topViewControllerWithRootViewController:self.window.rootViewController];
+ //   XLog(@"CurrentVC: %@", currentViewController);
+
+    if (currentViewController.class == ProfileVC.class)
+    {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            orientationMask = UIInterfaceOrientationMaskPortrait;
+        }
+    }
 //    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == TopPageCV.class)    orientationMask = UIInterfaceOrientationMaskAll;
@@ -65,9 +72,9 @@
 //    if (currentViewController.class == SetUpVC.class)      orientationMask = UIInterfaceOrientationMaskAll;
 //
 //    if (currentViewController.view.tag == ALERT_VIEW_TAG) orientationMask = UIInterfaceOrientationMaskAll; //
-//    
-//    return orientationMask;
-//}
+    
+    return orientationMask;
+}
 
 - (UIViewController *)topViewControllerWithRootViewController:(UIViewController *)rootViewController
 {
