@@ -20,6 +20,7 @@
 #import "LoginVC.h"
 #import "PlayMatch.h"
 #import "PlayerVC.h"
+#import "PlayerDetail.h"
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
@@ -869,6 +870,8 @@ didCompleteWithError:(NSError *)error
             opponentButton.tag = indexPath.row;
             [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
             [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
+            [opponentButton.layer setValue:[[opponent objectForKey:@"href"] lastPathComponent] forKey:@"userID"];
+
             [cell.contentView addSubview:opponentButton];
 
 #pragma mark 5. Line Review
@@ -1006,6 +1009,7 @@ didCompleteWithError:(NSError *)error
             opponentButton.tag = indexPath.row;
             [opponentButton addTarget:self action:@selector(opponentAction:) forControlEvents:UIControlEventTouchUpInside];
             [opponentButton.layer setValue:[opponent objectForKey:@"Text"] forKey:@"name"];
+            [opponentButton.layer setValue:[[opponent objectForKey:@"href"] lastPathComponent] forKey:@"userID"];
             [cell.contentView addSubview:opponentButton];
 
 #pragma mark 4. Line Review
@@ -1228,12 +1232,17 @@ didCompleteWithError:(NSError *)error
 
 }
 
-- (IBAction)opponentAction:(UIButton*)button
+- (IBAction)opponentAction:(UIButton*)sender
 {
-    PlayerVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
-    vc.name   = (NSString *)[button.layer valueForKey:@"name"];
-
-    [self.navigationController pushViewController:vc animated:NO];
+    PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.userID = (NSString *)[sender.layer valueForKey:@"userID"];
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    
+    popController.sourceView = sender;
+    popController.sourceRect = sender.bounds;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
 
 }
 
