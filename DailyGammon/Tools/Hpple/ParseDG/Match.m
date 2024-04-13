@@ -24,8 +24,8 @@
 {
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
 
-    DGRequest *request = [[DGRequest alloc] initWithURL:urlMatch completionHandler:^(BOOL success, NSError *error, NSString *result)
-                          {
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink] completionHandler:^(BOOL success, NSError *error, NSString *result)
+    {
         if (success)
         {
             [ self analyzeHTML:result reviewMatch:isReview ];
@@ -35,6 +35,7 @@
             XLog(@"Error: %@ %@", error.localizedDescription, urlMatch);
         }
     }];
+
     request = nil;
 }
 -(void)analyzeHTML:(NSString *)htmlString reviewMatch:(BOOL)isReview

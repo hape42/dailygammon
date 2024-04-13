@@ -28,7 +28,7 @@
 {
     // Convenience initializer, working with a URL string
 //https://stackoverflow.com/questions/38436428/encoding-nsurl-in-iso-8859-1
-    NSCharacterSet *allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.~=&"];
+    NSCharacterSet *allowedCharacterSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-.~=&%"];
 
     NSString *requestString = urlString;
     NSString *queryString = @"";
@@ -61,12 +61,14 @@
     }
     
     NSURL *url = [NSURL URLWithString:[requestString stringByAppendingString:queryString]];
+//    XLog(@"%@ %@",urlString,url);
     return [self initWithURL:url completionHandler:completionHandler];
 }
 
 - (instancetype)initWithURL:(NSURL *)url completionHandler:(DGRequestCompletionHandler)completionHandler
 {
     // Designated initializer; remember the completionHandler, to be called once the reponse has been finished
+ //   XLog(@"%@",url);
 
     if (self = [super init])
     {
