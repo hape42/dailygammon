@@ -114,14 +114,15 @@
     [self startActivityIndicator: @"Getting TopPage data from www.dailygammon.com"];
 
     [self layoutObjects];
+    [self drawSortButton];
 
     [self readTopPage];
 
     refreshButtonPressed = NO;
 }
--(void) reDrawHeader
+
+-(void)drawSortButton
 {
-    
     NSString *buttonTitle = @"unknown";
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
     {
@@ -164,6 +165,10 @@
     }
     [self.sortButton setTitle:buttonTitle forState: UIControlStateNormal];
 
+}
+-(void) reDrawHeader
+{
+    [self drawSortButton];
     [self updateCollectionView];
 
 }
@@ -344,6 +349,26 @@ didCompleteWithError:(NSError *)error
     }
     if(self.topPageArray.count > 0)
     {
+        switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
+        {
+            case SORT_ROUND_DOWN:
+            case SORT_ROUND_UP:
+                [self sortRound];
+                break;
+            case SORT_EVENT_DOWN:
+            case SORT_EVENT_UP:
+                [self sortEvent];
+                break;
+            case SORT_LENGTH_DOWN:
+            case SORT_LENGTH_UP:
+                [self sortLength];
+                break;
+            case SORT_OPPONENT_NAME_DOWN:
+            case SORT_OPPONENT_NAME_UP:
+                [self sortOpponent];
+                break;
+        }
+
         [self updateCollectionView];
     }
     [self stopActivityIndicator];
@@ -352,14 +377,13 @@ didCompleteWithError:(NSError *)error
 
 - (void)updateCollectionView
 {
-
     [self sortUpdate];
     [rating updateRating];
  
     [self.collectionView reloadData];
     self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
                         ,(int)self.topPageArray.count];
-
+    [self drawSortButton];
     [self stopActivityIndicator];
 }
 #pragma mark - sort
@@ -484,6 +508,9 @@ didCompleteWithError:(NSError *)error
 
     self.sortButton.menu = [UIMenu menuWithChildren:menuArray];
     self.sortButton.showsMenuAsPrimaryAction = YES;
+    
+    [self drawSortButton];
+
     [self.collectionView reloadData];
 }
 
