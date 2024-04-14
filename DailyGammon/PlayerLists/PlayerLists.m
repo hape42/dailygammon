@@ -24,13 +24,9 @@
 
 @interface PlayerLists ()<NSURLSessionDataDelegate>
 
-@property (weak, nonatomic) IBOutlet DGButton *activeMatchesButton;
-@property (weak, nonatomic) IBOutlet DGButton *activeTournamentsButton;
-@property (weak, nonatomic) IBOutlet DGButton *finishedMatchesButton;
-@property (weak, nonatomic) IBOutlet DGButton *tournamentWinsButton;
+@property (weak, nonatomic) IBOutlet DGButton *chooseButton;
 @property (weak, nonatomic) IBOutlet UILabel *header;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
-@property (weak, nonatomic) IBOutlet UINavigationItem *navigationBar;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
@@ -41,17 +37,6 @@
 
 @property (readwrite, retain, nonatomic) NSString *matchString;
 
-@property (readwrite, retain, nonatomic) NSArray       *landscapeConstraints;
-@property (readwrite, retain, nonatomic) NSArray       *portraitConstraints;
-
-@property (nonatomic, strong) NSLayoutConstraint *activeMatchesButtonLeftAnchor;
-@property (nonatomic, strong) NSLayoutConstraint *activeTournamentsButtonLeftAnchor;
-@property (nonatomic, strong) NSLayoutConstraint *finishedMatchesButtonLeftAnchor;
-@property (nonatomic, strong) NSLayoutConstraint *finishedMatchesButtonTopAnchor;
-@property (nonatomic, strong) NSLayoutConstraint *tournamentWinsButtonTopAnchor;
-@property (nonatomic, strong) NSLayoutConstraint *tournamentWinsButtonLeftAnchor;
-
-
 @end
 
 @implementation PlayerLists
@@ -59,8 +44,6 @@
 @synthesize design, tools;
 @synthesize listTyp;
 @synthesize waitView;
-
-#define BUTTON_WIDTH 180
 
 - (void)viewDidLoad
 {
@@ -81,6 +64,39 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
     self.moreButton.showsMenuAsPrimaryAction = YES;
+
+    NSMutableArray  *menuArray = [[NSMutableArray alloc] initWithCapacity:3];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"active matches"
+                                             image:nil
+                                        identifier:@"1"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self activeMatches:nil];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"active tournaments"
+                                             image:nil
+                                        identifier:@"2"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self activeTournaments:nil];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"finished matches"
+                                             image:nil
+                                        identifier:@"3"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self finishedMatches:nil];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"tournament wins"
+                                             image:nil
+                                        identifier:@"4"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [self tournamentWins:nil];
+    }]];
+
+    self.chooseButton.menu = [UIMenu menuWithChildren:menuArray];
+    self.chooseButton.showsMenuAsPrimaryAction = YES;
 
 }
 
@@ -191,175 +207,25 @@
     [self.header.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
     [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
 
-#pragma mark buttons autoLayout
+#pragma mark chooseButton autoLayout
+    [self.chooseButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    float gap = 10;
-    
-    if(safe.layoutFrame.size.width < 500 )
-        gap = (safe.layoutFrame.size.width - (2 * BUTTON_WIDTH)) / 3;
-    else
-        gap = (safe.layoutFrame.size.width - (4 * BUTTON_WIDTH)) / 5;
+    [self.chooseButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:20].active = YES;
+    [self.chooseButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.chooseButton.heightAnchor constraintEqualToConstant:35].active = YES;
 
-    [self.activeMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.activeMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
-    [self.activeMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.activeMatchesButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
-    
-    self.activeMatchesButtonLeftAnchor = [self.activeMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
-    self.activeMatchesButtonLeftAnchor.active = YES;
-
-    [self.activeTournamentsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.activeTournamentsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge].active = YES;
-    [self.activeTournamentsButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.activeTournamentsButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
-    
-    self.activeTournamentsButtonLeftAnchor = [self.activeTournamentsButton.leftAnchor constraintEqualToAnchor:self.activeMatchesButton.rightAnchor constant:gap];
-    self.activeTournamentsButtonLeftAnchor.active = YES;
-
-    [self.finishedMatchesButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.finishedMatchesButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.finishedMatchesButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
-    
-    self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
-    self.finishedMatchesButtonLeftAnchor.active = YES;
-    self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-    self.finishedMatchesButtonTopAnchor.active = YES;
-
-    [self.tournamentWinsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.tournamentWinsButton.heightAnchor constraintEqualToConstant:35].active = YES;
-    [self.tournamentWinsButton.widthAnchor constraintEqualToConstant:BUTTON_WIDTH].active = YES;
-
-    self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
-    self.tournamentWinsButtonLeftAnchor.active = YES;
-    self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-    self.tournamentWinsButtonTopAnchor.active = YES;
-
-
-    if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
-    {
-        [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
-        self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
-        self.finishedMatchesButtonLeftAnchor.active = YES;
-
-        [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
-        self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
-        self.finishedMatchesButtonTopAnchor.active = YES;
-
-        [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
-        self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
-        self.tournamentWinsButtonTopAnchor.active = YES;
-
-        [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
-        self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
-        self.tournamentWinsButtonLeftAnchor.active = YES;
-    }
-    else
-    {
-        [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
-        self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
-        self.finishedMatchesButtonLeftAnchor.active = YES;
-
-        [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
-        self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-        self.finishedMatchesButtonTopAnchor.active = YES;
-
-        [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
-        self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-        self.tournamentWinsButtonTopAnchor.active = YES;
-
-        [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
-        self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
-        self.tournamentWinsButtonLeftAnchor.active = YES;
-    }
-
-    
 #pragma mark collectionView autoLayout
     [self.collectionView setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.collectionView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
     [self.collectionView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-    [self.collectionView.topAnchor constraintEqualToAnchor:self.tournamentWinsButton.bottomAnchor constant:20].active = YES;
+    [self.collectionView.topAnchor constraintEqualToAnchor:self.chooseButton.bottomAnchor constant:20].active = YES;
     [self.collectionView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+
+    [self.view setNeedsUpdateConstraints];
 
     [self.view layoutIfNeeded];
 
-}
-
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    if (![self.navigationController.topViewController isKindOfClass:PlayerLists.class])
-        return;
-   // XLog(@"navStack 1: %@", self.navigationController.viewControllers);
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed during the animation
-        UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
-
-        float gap = 10;
-        float edge = 5.0;
-
-        if(safe.layoutFrame.size.width < 500 )
-            gap = (safe.layoutFrame.size.width - (2 * BUTTON_WIDTH)) / 3;
-        else
-            gap = (safe.layoutFrame.size.width - (4 * BUTTON_WIDTH)) / 5;
-
-        self.activeMatchesButtonLeftAnchor.constant = gap;
-        self.activeTournamentsButtonLeftAnchor.constant = gap;
-
-        if(safe.layoutFrame.size.width < ((BUTTON_WIDTH * 4) + (gap * 5)) )
-        {
-            [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
-            self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:gap];
-            self.finishedMatchesButtonLeftAnchor.active = YES;
-
-            [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
-            self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
-            self.finishedMatchesButtonTopAnchor.active = YES;
-
-            [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
-            self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.activeTournamentsButton.bottomAnchor constant:edge];
-            self.tournamentWinsButtonTopAnchor.active = YES;
-
-            [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
-            self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
-            self.tournamentWinsButtonLeftAnchor.active = YES;
-        }
-        else
-        {
-            [self.view removeConstraint:self.finishedMatchesButtonLeftAnchor];
-            self.finishedMatchesButtonLeftAnchor = [self.finishedMatchesButton.leftAnchor constraintEqualToAnchor:self.activeTournamentsButton.rightAnchor constant:gap];
-            self.finishedMatchesButtonLeftAnchor.active = YES;
-
-            [self.view removeConstraint:self.finishedMatchesButtonTopAnchor];
-            self.finishedMatchesButtonTopAnchor = [self.finishedMatchesButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-            self.finishedMatchesButtonTopAnchor.active = YES;
-
-            [self.view removeConstraint:self.tournamentWinsButtonTopAnchor];
-            self.tournamentWinsButtonTopAnchor = [self.tournamentWinsButton.topAnchor constraintEqualToAnchor:self.header.bottomAnchor constant:edge];
-            self.tournamentWinsButtonTopAnchor.active = YES;
-
-            [self.view removeConstraint:self.tournamentWinsButtonLeftAnchor];
-            self.tournamentWinsButtonLeftAnchor = [self.tournamentWinsButton.leftAnchor constraintEqualToAnchor:self.finishedMatchesButton.rightAnchor constant:gap];
-            self.tournamentWinsButtonLeftAnchor.active = YES;
-        }
-       [self.view layoutIfNeeded];
-
-     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-     {
-         // Code to be executed after the animation is completed
-           // XLog(@"navStack 2: %@", self.navigationController.viewControllers);
-     }];
-//    XLog(@"%@",[self.boardDict objectForKey:@"matchName"]);
-//
-    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-    [self updateCollectionView];
 }
 
 #pragma mark - NSURLSessionDataDelegate
@@ -1100,7 +966,6 @@ didCompleteWithError:(NSError *)error
             break;
    }
     self.header.text = headerText;
-    self.navigationBar.title = headerText;
     [self.collectionView reloadData];
 
     [self stopActivityIndicator];

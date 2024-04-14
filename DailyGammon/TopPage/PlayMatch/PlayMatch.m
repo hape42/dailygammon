@@ -200,7 +200,7 @@
 {
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
-    XLog(@"app.playMatchAktiv %d matchLink %@", app.playMatchAktiv, app.matchLink);
+ //   XLog(@"app.playMatchAktiv %d matchLink %@", app.playMatchAktiv, app.matchLink);
     
     if(readMatch || (app.boardDict == nil))
     {

@@ -624,38 +624,6 @@ Did we make you curious?</string>
                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                 <state key="normal" image="menue.png"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ily-lg-mNF" customClass="DGButton">
-                                <rect key="frame" x="20" y="109" width="400" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="active matches"/>
-                                <connections>
-                                    <action selector="activeMatches:" destination="uYK-ri-mtR" eventType="touchUpInside" id="J9b-fe-Ik6"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7U-0L-Xl9" customClass="DGButton">
-                                <rect key="frame" x="210" y="109" width="400" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="active tournaments"/>
-                                <connections>
-                                    <action selector="activeTournaments:" destination="uYK-ri-mtR" eventType="touchUpInside" id="3dz-hN-Yee"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7MD-A4-KZQ" customClass="DGButton">
-                                <rect key="frame" x="400" y="109" width="400" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="finished matches"/>
-                                <connections>
-                                    <action selector="finishedMatches:" destination="uYK-ri-mtR" eventType="touchUpInside" id="uPZ-4o-81i"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kti-fg-fga" customClass="DGButton">
-                                <rect key="frame" x="596" y="109" width="400" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="tournament wins"/>
-                                <connections>
-                                    <action selector="tournamentWins:" destination="uYK-ri-mtR" eventType="touchUpInside" id="LBu-gH-kye"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="active tournaments" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R25-2j-a9m">
                                 <rect key="frame" x="20" y="28" width="591" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -663,6 +631,11 @@ Did we make you curious?</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8D-aC-SHg" customClass="DGButton">
+                                <rect key="frame" x="25" y="91" width="158" height="35"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Choose your list"/>
+                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nvy-km-IiB">
                                 <rect key="frame" x="25" y="178" width="1316" height="790"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -684,8 +657,8 @@ Did we make you curious?</string>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
-                                    <outlet property="dataSource" destination="fCj-kU-dF3" id="oaI-pv-33j"/>
-                                    <outlet property="delegate" destination="fCj-kU-dF3" id="KkS-Y5-IXs"/>
+                                    <outlet property="dataSource" destination="uYK-ri-mtR" id="Fru-bN-6Jn"/>
+                                    <outlet property="delegate" destination="uYK-ri-mtR" id="rv2-ac-bcI"/>
                                 </connections>
                             </collectionView>
                         </subviews>
@@ -695,13 +668,10 @@ Did we make you curious?</string>
                     </view>
                     <navigationItem key="navigationItem" id="SDx-G2-Stv"/>
                     <connections>
-                        <outlet property="activeMatchesButton" destination="ily-lg-mNF" id="ikz-dx-Bio"/>
-                        <outlet property="activeTournamentsButton" destination="Q7U-0L-Xl9" id="bA4-6n-FlN"/>
+                        <outlet property="chooseButton" destination="z8D-aC-SHg" id="bed-HC-IlM"/>
                         <outlet property="collectionView" destination="nvy-km-IiB" id="d8u-M0-gdP"/>
-                        <outlet property="finishedMatchesButton" destination="7MD-A4-KZQ" id="grK-YU-idJ"/>
                         <outlet property="header" destination="R25-2j-a9m" id="iKh-Mu-2RI"/>
                         <outlet property="moreButton" destination="smq-ue-vOd" id="ymw-qb-6Yc"/>
-                        <outlet property="tournamentWinsButton" destination="Kti-fg-fga" id="Vo4-u4-OWZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t08-wO-age" sceneMemberID="firstResponder"/>
