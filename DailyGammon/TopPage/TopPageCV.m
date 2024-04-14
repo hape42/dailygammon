@@ -63,6 +63,11 @@
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
+    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
+    self.header.textColor = [schemaDict objectForKey:@"TintColor"];
+    self.moreButton = [design designMoreButton:self.moreButton];
+    self.sortLabel.textColor = [schemaDict objectForKey:@"TintColor"];
+
     timeRefresh = 60;
 
     self.collectionView.delegate = self;
@@ -110,18 +115,12 @@
 
     [self layoutObjects];
 
-    [ self readTopPage];
+    [self readTopPage];
 
-    [self reDrawHeader];
     refreshButtonPressed = NO;
-  //  self.refreshButton = [design designRefreshButton:self.refreshButton withText:@"refresh"];
 }
 -(void) reDrawHeader
 {
-    NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    self.header.textColor = [schemaDict objectForKey:@"TintColor"];
-    self.moreButton = [design designMoreButton:self.moreButton];
-    self.sortLabel.textColor = [schemaDict objectForKey:@"TintColor"];
     
     NSString *buttonTitle = @"unknown";
     switch([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue])
@@ -354,18 +353,12 @@ didCompleteWithError:(NSError *)error
 - (void)updateCollectionView
 {
 
-    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
-                        ,(int)self.topPageArray.count];
-    if(self.topPageArray.count == 0)
-    {
-        self.header.text = [NSString stringWithFormat:@"There are no matches where you can move."];
-
-    }
- //   XLog(@"updateCollectionView");
     [self sortUpdate];
     [rating updateRating];
  
     [self.collectionView reloadData];
+    self.header.text = [NSString stringWithFormat:@"%d Matches where you can move:"
+                        ,(int)self.topPageArray.count];
 
     [self stopActivityIndicator];
 }

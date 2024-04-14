@@ -209,7 +209,7 @@
                                 <rect key="frame" x="386" y="34" width="890" height="60"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <attributedString key="attributedText">
-                                    <fragment content="57 Matches where you can move">
+                                    <fragment content="Getting  TopPage Data from www.dailygammon.com ">
                                         <attributes>
                                             <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                             <font key="NSFont" metaFont="system" size="26"/>
@@ -631,11 +631,6 @@ Did we make you curious?</string>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8D-aC-SHg" customClass="DGButton">
-                                <rect key="frame" x="25" y="91" width="158" height="35"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Choose your list"/>
-                            </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nvy-km-IiB">
                                 <rect key="frame" x="25" y="178" width="1316" height="790"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -661,6 +656,11 @@ Did we make you curious?</string>
                                     <outlet property="delegate" destination="uYK-ri-mtR" id="rv2-ac-bcI"/>
                                 </connections>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z8D-aC-SHg" customClass="DGButton">
+                                <rect key="frame" x="25" y="91" width="158" height="35"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Choose your list"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="mgT-3K-JzG"/>
                         <color key="backgroundColor" name="ColorSignedUpCenter"/>
