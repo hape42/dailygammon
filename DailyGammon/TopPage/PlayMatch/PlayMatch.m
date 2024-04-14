@@ -1396,6 +1396,31 @@
     
     if([[[NSUserDefaults standardUserDefaults] valueForKey:@"orderTyp"]intValue] > SORT_RECENT_OPPONENT_MOVE)
     {
+        
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        NSString *chat = notification.userInfo[@"playerChat"] ;
+        BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
+
+        NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
+        NSString *checkbox = @"";
+        for(NSMutableDictionary *dict in attributesArray)
+        {
+            if([[dict objectForKey:@"type"] isEqualToString:@"checkbox"])
+            {
+                if(quote)
+                    checkbox = @"&quote=on";
+                else
+                    checkbox = @"&quote=off";
+            }
+        }
+        NSString *chatString = [tools cleanChatString:chat];
+
+        app.matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
+                     [app.actionDict objectForKey:@"action"],
+                     checkbox,
+                     chatString];
+
         NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
         //    XLog(@"%@",urlMatch);
         NSError *error = nil;
