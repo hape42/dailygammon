@@ -43,6 +43,7 @@
 #import "DGRequest.h"
 #import "DGLabel.h"
 #import "TextModul.h"
+#import "PlayerDetail.h"
 
 @interface NoBoard ()
 
@@ -449,10 +450,12 @@
 #pragma mark buttonPlayer1 player1Score buttonPlayer2 player2Score
 
     NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
-
+    NSArray *playerIDArray = [finishedMatchDict objectForKey:@"href"];
+    
     self.buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [self.buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
     [self.buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
+    [self.buttonPlayer1.layer setValue:[playerIDArray[0] lastPathComponent] forKey:@"userID"];
     [self.buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
     [self.infoView addSubview:self.buttonPlayer1];
 
@@ -464,6 +467,7 @@
     self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
     [self.buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
     [self.buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
+    [self.buttonPlayer2.layer setValue:[playerIDArray[1] lastPathComponent] forKey:@"userID"];
     [self.buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
     [self.infoView addSubview:self.buttonPlayer2];
 
@@ -702,12 +706,15 @@
 
 - (void)player:(UIButton*)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
-
-    PlayerVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerVC"];
-    vc.name   = (NSString *)[sender.layer valueForKey:@"name"];
-
-    [self.navigationController pushViewController:vc animated:NO];
+    PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.userID = (NSString *)[sender.layer valueForKey:@"userID"];
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    
+    popController.sourceView = sender;
+    popController.sourceRect = sender.bounds;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
 
 }
 
