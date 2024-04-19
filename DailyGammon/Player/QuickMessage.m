@@ -69,9 +69,7 @@
     UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
     float edge = 10.0;
     float gap  = 10.0;
-    float labelWidth = 150;
     float labelHeight = 35;
-    float buttonWidth = 80.0;
     float buttonHight = 35;
 
 #pragma mark header autoLayout

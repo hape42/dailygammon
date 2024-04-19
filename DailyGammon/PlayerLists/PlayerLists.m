@@ -132,25 +132,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
 
-    NSString *userName     = [[NSUserDefaults standardUserDefaults] stringForKey:@"user"];
-    NSString *userPassword = [[NSUserDefaults standardUserDefaults] stringForKey:@"password"];
-
     self.loginOk = YES;
-
-//    //    https://stackoverflow.com/questions/15749486/sending-an-http-post-request-on-ios
-//    NSString *post               = [NSString stringWithFormat:@"login=%@&password=%@",userName,userPassword];
-//    NSData *postData             = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-//    NSString *postLength         = [NSString stringWithFormat:@"%lu",(unsigned long)[postData length]];
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    [request setURL:[NSURL URLWithString:@"http://dailygammon.com/bg/login"]];
-//    [request setHTTPMethod:@"POST"];
-//    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-//    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-//    [request setHTTPBody:postData];
-//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:self delegateQueue:[NSOperationQueue mainQueue]];
-//    
-//    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
-//    [task resume];
 
 }
 

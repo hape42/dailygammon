@@ -14,6 +14,7 @@
 #import "DGButton.h"
 #import "DGLabel.h"
 #import "CellConnector.h"
+#import "PlayerDetail.h"
 
 @interface Tournament ()
 
@@ -173,7 +174,10 @@
         NSMutableArray *zeile = [[NSMutableArray alloc]initWithCapacity:rounds.count];
         for(int j = 0; j < rounds.count; j++)
         {
-            [zeile addObject:@"-"];
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+            [dict setValue:@"-" forKey:@"name"];
+            [zeile addObject:dict];
+
         }
         [drawArray addObject:zeile];
     }
@@ -186,8 +190,11 @@
             NSString *name =  [[spalte objectForKey:@"Text"] stringByReplacingOccurrencesOfString:@"<" withString:@""];
             name =  [name stringByReplacingOccurrencesOfString:@">" withString:@""];
 
-            drawArray[z][s] = name;
-#warning hier muss der string  "drawArray[z][s] = name" durch ein dict ersetzt werden. dict muss name & href beinhalten. Überall wo drawarray benutzt wird, muss von string auf dict geändert werden.
+            NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+            [dict setValue:name forKey:@"name"];
+            [dict setValue:[spalte objectForKey:@"href"] forKey:@"userID"];
+
+            drawArray[z][s] = dict;
             s++;
         }
         z++;
@@ -240,17 +247,16 @@
 
         for(int j = 0; j < drawArray.count; j++)
         {
-            NSString *arrayText = drawArray[j][i];
+            NSMutableDictionary *dict = drawArray[j][i];
+            NSString *arrayText = [dict objectForKey:@"name"];
             if(![@"-" isEqualToString:arrayText])
             {
-                labeltext = drawArray[j][i];
+                labeltext = [dict objectForKey:@"name"];
             }
+            labeltext = [labeltext stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+
             if(position == step)
             {
-#warning DGLabel muss durch DGButton ersetzt werden. Aber nur, wenn im namen auch ein Inhalt ist. Der button braucht dann noch href um an die playerInfo zu kommen
-#warning     [button.layer setValue:[event objectForKey:@"href"] forKey:@"href"];
-#warning target für den Button ist quasi identisch wie bei PlayMatch Zeile 314 & Zeile 1052
-
                 DGLabel *namelabel = [[DGLabel alloc]initWithFrame:CGRectMake(x , y ,labelWidth, labelHeight)];
                 namelabel.layer.cornerRadius = 14.0f;
                 namelabel.layer.masksToBounds = YES;
@@ -273,7 +279,16 @@
                     yFound = y;
                 }
 
-                [scrollView addSubview:namelabel];
+                if([dict objectForKey:@"userID"] != nil)
+                {
+                    DGButton *nameButton = [[DGButton alloc]initWithFrame:CGRectMake(x , y ,labelWidth, labelHeight)];
+                    [nameButton setTitle:labeltext forState: UIControlStateNormal];
+                    [nameButton.layer setValue:[[dict objectForKey:@"userID"] lastPathComponent] forKey:@"userID"];
+                    [nameButton addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+                    [scrollView addSubview:nameButton];
+                }
+                else
+                    [scrollView addSubview:namelabel];
                   
                 position = 1;
                 y += (((labelHeight+gap) )  * step)  ;
@@ -325,6 +340,18 @@
 
 }
 
+- (void)player:(UIButton*)sender
+{
+    PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+    vc.modalPresentationStyle = UIModalPresentationPopover;
+    vc.userID = (NSString *)[sender.layer valueForKey:@"userID"];
+    UIPopoverPresentationController *popController = [vc popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    
+    popController.sourceView = sender;
+    popController.sourceRect = sender.bounds;
+    [self.navigationController presentViewController:vc animated:NO completion:nil];
 
+}
 
 @end
