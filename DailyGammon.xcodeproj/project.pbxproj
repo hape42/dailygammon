@@ -18,6 +18,7 @@
 		E01E9DE222761964000399EA /* button_grau.png in Resources */ = {isa = PBXBuildFile; fileRef = E01E9DE122761964000399EA /* button_grau.png */; };
 		E0264ADC2BC55C5800A6C9D4 /* PlayerNote.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */; };
 		E0264ADF2BC7DC2500A6C9D4 /* ProfileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */; };
+		E0264AE22BCD0E8500A6C9D4 /* TextTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264AE12BCD0E8500A6C9D4 /* TextTools.m */; };
 		E02C7BC729C4461E003B6357 /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = E02C7BC629C4461E003B6357 /* WaitView.m */; };
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
@@ -159,6 +160,8 @@
 		E0264ADB2BC55C5800A6C9D4 /* PlayerNote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerNote.m; sourceTree = "<group>"; };
 		E0264ADD2BC7DC2500A6C9D4 /* ProfileVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileVC.h; sourceTree = "<group>"; };
 		E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileVC.m; sourceTree = "<group>"; };
+		E0264AE02BCD0E8500A6C9D4 /* TextTools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TextTools.h; sourceTree = "<group>"; };
+		E0264AE12BCD0E8500A6C9D4 /* TextTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextTools.m; sourceTree = "<group>"; };
 		E02C7BC529C4461E003B6357 /* WaitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitView.h; sourceTree = "<group>"; };
 		E02C7BC629C4461E003B6357 /* WaitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitView.m; sourceTree = "<group>"; };
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
@@ -807,6 +810,8 @@
 				E0FB9E4229AA35B900E668B9 /* Constants.m */,
 				E00A3D812700CB7D008B526B /* NoInternet.h */,
 				E00A3D822700CB7D008B526B /* NoInternet.m */,
+				E0264AE02BCD0E8500A6C9D4 /* TextTools.h */,
+				E0264AE12BCD0E8500A6C9D4 /* TextTools.m */,
 				E05324FF2271D40C0080D504 /* Tools.h */,
 				E05325002271D42A0080D504 /* Tools.m */,
 			);
@@ -1024,6 +1029,7 @@
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0FD83802B6BFE10003B6DBF /* SortView.m in Sources */,
+				E0264AE22BCD0E8500A6C9D4 /* TextTools.m in Sources */,
 				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,

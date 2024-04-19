@@ -10,6 +10,8 @@
 #import "TFHpple.h"
 #import "DGRequest.h"
 #import "AppDelegate.h"
+#import "Tools.h"
+#import "TextTools.h"
 
 @interface Match ()
 
@@ -18,7 +20,7 @@
 @implementation Match
 
 @synthesize noBoard;
-
+@synthesize tools, textTools;
 
 -(void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview 
 {
@@ -40,6 +42,9 @@
 }
 -(void)analyzeHTML:(NSString *)htmlString reviewMatch:(BOOL)isReview
 {
+    tools = [[Tools alloc] init];
+    textTools = [[TextTools alloc] init];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     noBoard = FALSE;
@@ -138,6 +143,7 @@
             chat = [chat stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
 
         }
+        chat = [textTools cleanChatString:chat];
     }
 
 #pragma mark - The http request you submitted was in error.

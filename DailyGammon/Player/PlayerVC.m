@@ -24,6 +24,7 @@
 #import "SetupVC.h"
 #import "PlayerDetail.h"
 #import "DGRequest.h"
+#import "TextTools.h"
 
 @interface PlayerVC ()
 
@@ -51,7 +52,7 @@
 
 @implementation PlayerVC
 
-@synthesize design, tools;
+@synthesize design, tools, textTools;
 
 @synthesize name;
 @synthesize waitView;
@@ -66,6 +67,7 @@
 
     design = [[Design alloc] init];
     tools = [[Tools alloc] init];
+    textTools = [[TextTools alloc] init];
 
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
@@ -421,7 +423,7 @@
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    searchText = [tools cleanChatString:searchText];
+    searchText = [textTools cleanChatString:searchText];
 
     NSString *searchLink = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist?like=%@&type=name",
                             searchText];
@@ -647,8 +649,7 @@
     
     NSMutableDictionary *dict = row[3];
     
-    NSString *escapedString = [tools cleanChatString:self.message.text];
-
+    NSString *escapedString = [textTools cleanChatString:self.message.text];
     NSURL *urlSendQuickMessage = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",[[dict objectForKey:@"href"] lastPathComponent],escapedString]];
 
     NSError *error = nil;

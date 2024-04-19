@@ -12,6 +12,7 @@
 
 @class Design;
 @class Tools;
+@class TextTools;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) Tools *tools;
+@property (strong, readwrite, retain, atomic) TextTools *textTools;
 
 @property (strong, readwrite, retain, atomic)    NSString *name;
 

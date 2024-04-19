@@ -7,10 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+@class Tools;
+@class TextTools;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Match : UIViewController
+
+@property (strong, readwrite, retain, atomic) Tools *tools;
+@property (strong, readwrite, retain, atomic) TextTools *textTools;
 
 - (void)readMatch:(NSString *)matchLink reviewMatch:(BOOL)isReview ;
 

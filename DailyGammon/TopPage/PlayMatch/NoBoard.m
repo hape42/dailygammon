@@ -44,6 +44,7 @@
 #import "DGLabel.h"
 #import "TextModul.h"
 #import "PlayerDetail.h"
+#import "TextTools.h"
 
 @interface NoBoard ()
 
@@ -65,7 +66,7 @@
 
 @synthesize boardDict;
 
-@synthesize design, preferences, rating, tools;
+@synthesize design, preferences, rating, tools, textTools;
 @synthesize waitView;
 
 @synthesize finishedMatchChat, finishedmatchChatViewFrame, isFinishedMatch;
@@ -82,6 +83,7 @@
     preferences = [[Preferences alloc] init];
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
+    textTools = [[TextTools alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
@@ -1025,7 +1027,7 @@
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     if([chatArray[0] containsString:@"chat"])
     {
-        NSString *chatString = [tools cleanChatString:finishedMatchChat.text];
+        NSString *chatString = [textTools cleanChatString:finishedMatchChat.text];
 
         if(chatString)
             chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
@@ -1050,9 +1052,7 @@
     [finishedMatchChat endEditing:YES];
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
-    NSString *chatString = [tools cleanChatString:finishedMatchChat.text];
-//    if(chatString)
-//        chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
+    NSString *chatString = [textTools cleanChatString:finishedMatchChat.text];
 
     NSString *matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1&chat=%@", href, chatString];
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
@@ -1087,7 +1087,8 @@
     NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
     NSMutableDictionary *dict = attributesArray[0];
 
-    NSString *chatString = [tools cleanChatString:quickmessageChat.text];
+    NSString *chatString = [textTools cleanChatString:quickmessageChat.text];
+
     NSString *matchLink = @"";
 
     matchLink = [NSString stringWithFormat:@"%@?submit=Send%%20Reply&text=%@",

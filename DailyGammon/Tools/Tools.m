@@ -298,58 +298,6 @@ typedef void(^connection)(BOOL);
     return ;
 }
 
-- (NSString *)cleanChatString:(NSString *)chatString
-{
-    // Gänsefüßchen entfernen, könnte zu Problemen als parameter für die URL führen
-    __block NSString *str = @"";
-    [chatString enumerateSubstringsInRange:NSMakeRange(0, chatString.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString * _Nullable substring, NSRange substringRange, NSRange enclosingRange, BOOL * _Nonnull stop)
-     {
-         
-       //  NSLog(@"substring: %@ substringRange: %@, enclosingRange %@", substring, NSStringFromRange(substringRange), NSStringFromRange(enclosingRange));
-         if([substring isEqualToString:@"‘"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
-         else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
-         else
-             str = [NSString stringWithFormat:@"%@%@",str, substring];
-         
-     }];
-    
-    //return chatString;
-    // Remove Emoji in NSString https://gist.github.com/siqin/4201667 löscht aber nur genau 1 Emoji
-    //Anticro commented on 1 Jul 2020 •
-    //'Measuring length of a string' at the Apple docs https://developer.apple.com/documentation/swift/string brought me to another solution, without the need for knowledge about the unicode pages. I just want letters to to remain in the string and skip all that is an icon:
-    // löscht alle
-    NSMutableString* const result = [NSMutableString stringWithCapacity:0];
-    NSUInteger const len = str.length;
-    NSString* subStr;
-    for (NSUInteger index = 0; index < len; index++) {
-        subStr = [str substringWithRange:NSMakeRange(index, 1)];
-        const char* utf8Rep = subStr.UTF8String;  // will return NULL for icons that consist of 2 chars
-        if (utf8Rep != NULL) {
-            unsigned long const length = strlen(utf8Rep);
-            if (length <= 2) {
-                [result appendString:subStr];
-            }
-        }
-    }
-
-
-    // dadurch wird ein Emoji im Format &#128514; in 😂 gewandelt. die Webseite liefert &#128514; wenn 😂 eingegeben wird
-//    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
-//
-//    NSDictionary *options = @{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType};
-//
-//    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:data
-//                                                                             options:options
-//                                                                  documentAttributes:nil
-//                                                                               error:nil];
-//    str = [attributedString string];
-
-    return str;
-}
 
 - (void)removeAllSubviewsRecursively:(UIView *)view 
 {

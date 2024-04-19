@@ -23,6 +23,7 @@
 #import "Tools.h"
 #import "LoginVC.h"
 #import "DGButton.h"
+#import "TextTools.h"
 
 #import "ConstantsMatch.h"
 #import "MatchTools.h"
@@ -43,8 +44,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *matchCountLabel;
 
-//@property (readwrite, retain, nonatomic) NSMutableDictionary *boardDict;
-//@property (readwrite, retain, nonatomic) NSMutableDictionary *actionDict;
 @property (assign, atomic) int boardSchema;
 @property (readwrite, retain, nonatomic) UIColor *boardColor;
 @property (readwrite, retain, nonatomic) UIColor *randColor;
@@ -82,7 +81,7 @@
 
 @implementation PlayMatch
 
-@synthesize design, match, rating, tools;
+@synthesize design, match, rating, tools, textTools;
 //@synthesize matchLink, isReview;
 @synthesize isReview;
 @synthesize ratingDict;
@@ -139,6 +138,7 @@
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
     matchTools = [[MatchTools alloc] init];
+    textTools = [[TextTools alloc] init];
 
     [self.view addSubview:self.matchName];
     
@@ -1382,8 +1382,7 @@
        }
     }
 
-    NSString *chatString = [tools cleanChatString:chat];
-
+    NSString *chatString = [textTools cleanChatString:chat];
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Next%%20Game&commit=1%@&chat=%@",
                  [app.actionDict objectForKey:@"action"],
                  checkbox,
@@ -1414,7 +1413,7 @@
                     checkbox = @"&quote=off";
             }
         }
-        NSString *chatString = [tools cleanChatString:chat];
+        NSString *chatString = [textTools cleanChatString:chat];
 
         app.matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                      [app.actionDict objectForKey:@"action"],
@@ -1457,7 +1456,7 @@
                 checkbox = @"&quote=off";
         }
     }
-    NSString *chatString = [tools cleanChatString:chat];
+    NSString *chatString = [textTools cleanChatString:chat];
 
     app.matchLink = [NSString stringWithFormat:@"%@?submit=Top%%20Page&commit=1%@&chat=%@",
                  [app.actionDict objectForKey:@"action"],

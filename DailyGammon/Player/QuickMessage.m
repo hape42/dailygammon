@@ -9,7 +9,7 @@
 #import "QuickMessage.h"
 #import "DGButton.h"
 #import "Design.h"
-#import "Tools.h"
+#import "TextTools.h"
 #import "DGRequest.h"
 #import "TextModul.h"
 
@@ -24,15 +24,15 @@
 
 @implementation QuickMessage
 
-@synthesize design, tools;
+@synthesize design, textTools;
 @synthesize playerNummer, playerName;
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
     
-    design = [[Design alloc] init];
-    tools = [[Tools alloc] init];
+    design    = [[Design alloc] init];
+    textTools = [[TextTools alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
@@ -154,8 +154,7 @@
 
 -(IBAction)actionSend:(id)sender
 {
-    
-    NSString *escapedString = [tools cleanChatString:self.textView.text];
+    NSString *escapedString = [textTools cleanChatString:self.textView.text];
 
     DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",playerNummer,escapedString] completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
