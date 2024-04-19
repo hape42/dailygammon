@@ -41,7 +41,7 @@
 
 @implementation AppDelegate
 
-@synthesize design,tools, preferences, ratingCD,activeStoryBoard;
+@synthesize design,tools, preferences, ratingCD;
 @synthesize chatBuffer;
 
 @synthesize matchLink;
@@ -228,12 +228,8 @@
     playMatchAktiv = NO;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    activeStoryBoard = [UIStoryboard storyboardWithName:@"iPad" bundle:nil];
 
-    if([UIDevice currentDevice].userInterfaceIdiom != UIUserInterfaceIdiomPad)
-        activeStoryBoard = [UIStoryboard storyboardWithName:@"iPhone" bundle:nil];
-
-    UIViewController *rootController = [activeStoryBoard instantiateInitialViewController];
+    UIViewController *rootController = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateInitialViewController];
     self.window.rootViewController = rootController;
     [self.window makeKeyAndVisible];
 

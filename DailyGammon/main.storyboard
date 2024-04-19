@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="TVc-uT-BOb">
     <device id="ipad12_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1982,6 +1982,48 @@ Did we make you curious?</string>
             </objects>
             <point key="canvasLocation" x="3590" y="-1746"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="3YX-v9-a6z">
+            <objects>
+                <navigationController id="TVc-uT-BOb" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="LOM-nB-1Wn">
+                        <rect key="frame" x="0.0" y="24" width="1366" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Q6h-QS-dor" kind="relationship" relationship="rootViewController" id="191-JJ-WXC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C3c-Ya-TMD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1160" y="-2213"/>
+        </scene>
+        <!--No Internet-->
+        <scene sceneID="GcW-no-SHn">
+            <objects>
+                <viewController storyboardIdentifier="NoInternet" id="Q6h-QS-dor" customClass="NoInternet" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nfx-Gc-Ag1"/>
+                        <viewControllerLayoutGuide type="bottom" id="KUj-aU-GKQ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="V07-1g-6cx">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="startscreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="vXc-dT-qPZ">
+                                <rect key="frame" x="105" y="36" width="1160" height="608"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6lR-a1-24w"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="LOr-8x-GcG"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pR1-Tg-VGa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1160" y="-1477"/>
+        </scene>
     </scenes>
     <resources>
         <image name="GitHub-Mark-32px.png" width="32" height="32"/>
@@ -1991,6 +2033,7 @@ Did we make you curious?</string>
         <image name="keyboard.chevron.compact.down" catalog="system" width="128" height="100"/>
         <image name="menue.png" width="20" height="20"/>
         <image name="slider" width="44" height="44"/>
+        <image name="startscreen.png" width="1024" height="300"/>
         <namedColor name="ColorSignedUpCenter">
             <color red="0.77999997138977051" green="0.97600001096725464" blue="0.0040000001899898052" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -61,8 +61,6 @@
 		E0AC594922270F5600367EE9 /* RatingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AC594822270F5500367EE9 /* RatingVC.m */; };
 		E0AC594B22270FA900367EE9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AC594A22270FA800367EE9 /* CoreGraphics.framework */; };
 		E0AC594D22270FB200367EE9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0AC594C22270FB100367EE9 /* QuartzCore.framework */; };
-		E0AC59B022283C9000367EE9 /* iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0AC59AC22283C8E00367EE9 /* iPad.storyboard */; };
-		E0AC59B122283C9000367EE9 /* iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E0AC59AE22283C8F00367EE9 /* iPhone.storyboard */; };
 		E0AEFC4921FE0CC500CFFB6C /* startscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC4821FE0CC400CFFB6C /* startscreen.png */; };
 		E0AEFC4E220420D300CFFB6C /* button_rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC4D220420D200CFFB6C /* button_rot.png */; };
 		E0AEFC51220578BB00CFFB6C /* button_gruen.png in Resources */ = {isa = PBXBuildFile; fileRef = E0AEFC4F220578B900CFFB6C /* button_gruen.png */; };
@@ -299,8 +297,6 @@
 		E0AC599C2227110000367EE9 /* CPTXYPlotSpace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTXYPlotSpace.h; sourceTree = "<group>"; };
 		E0AC599D2227110000367EE9 /* CPTBorderedLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CPTBorderedLayer.h; sourceTree = "<group>"; };
 		E0AC599E2227110000367EE9 /* libCorePlot-CocoaTouch.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libCorePlot-CocoaTouch.a"; sourceTree = "<group>"; };
-		E0AC59AD22283C8E00367EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPad.storyboard; sourceTree = "<group>"; };
-		E0AC59AF22283C8F00367EE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/iPhone.storyboard; sourceTree = "<group>"; };
 		E0AEFC4821FE0CC400CFFB6C /* startscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = startscreen.png; sourceTree = "<group>"; };
 		E0AEFC4D220420D200CFFB6C /* button_rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_rot.png; sourceTree = "<group>"; };
 		E0AEFC4F220578B900CFFB6C /* button_gruen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_gruen.png; sourceTree = "<group>"; };
@@ -701,7 +697,6 @@
 		E0F1E3FA2229054700494918 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
-				E0AC59AE22283C8F00367EE9 /* iPhone.storyboard */,
 			);
 			path = iPhone;
 			sourceTree = "<group>";
@@ -709,7 +704,6 @@
 		E0F1E3FB2229066300494918 /* iPad */ = {
 			isa = PBXGroup;
 			children = (
-				E0AC59AC22283C8E00367EE9 /* iPad.storyboard */,
 			);
 			path = iPad;
 			sourceTree = "<group>";
@@ -946,12 +940,10 @@
 				E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */,
 				E0763D2A22D62DE300EDA562 /* pfeil_down_kreis.png in Resources */,
 				E0763D3422DB0E9600EDA562 /* 01-refresh@2x.png in Resources */,
-				E0AC59B022283C9000367EE9 /* iPad.storyboard in Resources */,
 				E0763D2C22D62DE300EDA562 /* pfeil_down.png in Resources */,
 				E01E9DE222761964000399EA /* button_grau.png in Resources */,
 				E0AEFC52220578BB00CFFB6C /* button_blau.png in Resources */,
 				E091B515280156D3000501E8 /* Settings.bundle in Resources */,
-				E0AC59B122283C9000367EE9 /* iPhone.storyboard in Resources */,
 				E0C1D82421E7CCEA00494A82 /* pfeil_blau.png in Resources */,
 				E0763D2922D62DE300EDA562 /* pfeil_up_kreis.png in Resources */,
 				E0A92D4A273F8BB800008477 /* iCloudOFF.png in Resources */,
@@ -1045,22 +1037,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		E0AC59AC22283C8E00367EE9 /* iPad.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E0AC59AD22283C8E00367EE9 /* Base */,
-			);
-			name = iPad.storyboard;
-			sourceTree = "<group>";
-		};
-		E0AC59AE22283C8F00367EE9 /* iPhone.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E0AC59AF22283C8F00367EE9 /* Base */,
-			);
-			name = iPhone.storyboard;
-			sourceTree = "<group>";
-		};
 		E0F9589421AD168B003DAC01 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
