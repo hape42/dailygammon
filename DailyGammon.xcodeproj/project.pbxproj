@@ -29,7 +29,6 @@
 		E05325012271D42A0080D504 /* Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = E05325002271D42A0080D504 /* Tools.m */; };
 		E058400E2A4C0FD3005C032C /* RatingCD.m in Sources */ = {isa = PBXBuildFile; fileRef = E058400D2A4C0FD3005C032C /* RatingCD.m */; };
 		E058402E2A4EA394005C032C /* DateValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = E058402C2A4EA394005C032C /* DateValueFormatter.m */; };
-		E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */ = {isa = PBXBuildFile; fileRef = E05FB7492B3EAEFB004EC59F /* MenueView.m */; };
 		E060AC9C22A8E2A700D60C39 /* InviteDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = E060AC9B22A8E2A700D60C39 /* InviteDetail.m */; };
 		E06E1C5321B717B9003B310F /* SetUpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5221B717B9003B310F /* SetUpVC.m */; };
 		E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E06E1C5621B7B468003B310F /* BoardSchemeVC.m */; };
@@ -105,8 +104,6 @@
 		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
 		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
 		E0FD83532B6A340E003B6DBF /* TopPageCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD83522B6A340E003B6DBF /* TopPageCV.m */; };
-		E0FD837D2B6BF4F3003B6DBF /* ReadTopPage.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */; };
-		E0FD83802B6BFE10003B6DBF /* SortView.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD837F2B6BFE10003B6DBF /* SortView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,8 +178,6 @@
 		E05840232A4E9675005C032C /* Charts.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Charts.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E058402C2A4EA394005C032C /* DateValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DateValueFormatter.m; sourceTree = "<group>"; };
 		E058402D2A4EA394005C032C /* DateValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateValueFormatter.h; sourceTree = "<group>"; };
-		E05FB7482B3EAEFB004EC59F /* MenueView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenueView.h; sourceTree = "<group>"; };
-		E05FB7492B3EAEFB004EC59F /* MenueView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenueView.m; sourceTree = "<group>"; };
 		E060AC9A22A8E2A700D60C39 /* InviteDetail.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InviteDetail.h; sourceTree = "<group>"; };
 		E060AC9B22A8E2A700D60C39 /* InviteDetail.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InviteDetail.m; sourceTree = "<group>"; };
 		E06E1C5121B717B8003B310F /* SetUpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetUpVC.h; sourceTree = "<group>"; };
@@ -370,10 +365,6 @@
 		E0FB9E4229AA35B900E668B9 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		E0FD83512B6A340E003B6DBF /* TopPageCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPageCV.h; sourceTree = "<group>"; };
 		E0FD83522B6A340E003B6DBF /* TopPageCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageCV.m; sourceTree = "<group>"; };
-		E0FD837B2B6BF4F3003B6DBF /* ReadTopPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReadTopPage.h; sourceTree = "<group>"; };
-		E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReadTopPage.m; sourceTree = "<group>"; };
-		E0FD837E2B6BFDD9003B6DBF /* SortView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortView.h; sourceTree = "<group>"; };
-		E0FD837F2B6BFE10003B6DBF /* SortView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -454,12 +445,8 @@
 		E0763D3122D7658700EDA562 /* TopPage */ = {
 			isa = PBXGroup;
 			children = (
-				E0FD837B2B6BF4F3003B6DBF /* ReadTopPage.h */,
-				E0FD837C2B6BF4F3003B6DBF /* ReadTopPage.m */,
 				E0FD83512B6A340E003B6DBF /* TopPageCV.h */,
 				E0FD83522B6A340E003B6DBF /* TopPageCV.m */,
-				E0FD837E2B6BFDD9003B6DBF /* SortView.h */,
-				E0FD837F2B6BFE10003B6DBF /* SortView.m */,
 				E09871E729448DB40043DC8A /* PlayMatch */,
 			);
 			path = TopPage;
@@ -798,8 +785,6 @@
 				E002F19D29A0F08C0028098C /* DGRequest.m */,
 				E02C7BC529C4461E003B6357 /* WaitView.h */,
 				E02C7BC629C4461E003B6357 /* WaitView.m */,
-				E05FB7482B3EAEFB004EC59F /* MenueView.h */,
-				E05FB7492B3EAEFB004EC59F /* MenueView.m */,
 				E0AC594E222710FF00367EE9 /* CorePlot */,
 				E0EC9559221A9CAB00E31CA0 /* Encode */,
 				E0B0514C21F4FD3800D91857 /* DB */,
@@ -1028,7 +1013,6 @@
 				E0F5597B29914B8B00EB5DBE /* Tournament.m in Sources */,
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
-				E0FD83802B6BFE10003B6DBF /* SortView.m in Sources */,
 				E0264AE22BCD0E8500A6C9D4 /* TextTools.m in Sources */,
 				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
@@ -1044,9 +1028,7 @@
 				E00654D722A6784000194435 /* PlayerVC.m in Sources */,
 				E06E1C5721B7B468003B310F /* BoardSchemeVC.m in Sources */,
 				E0777D62294E24DB00712C76 /* BoardElements.m in Sources */,
-				E0FD837D2B6BF4F3003B6DBF /* ReadTopPage.m in Sources */,
 				E0F5597E2994E4CC00EB5DBE /* CellConnector.m in Sources */,
-				E05FB74A2B3EAEFB004EC59F /* MenueView.m in Sources */,
 				E0264ADC2BC55C5800A6C9D4 /* PlayerNote.m in Sources */,
 				E09EC1292A4ABAD600B5543F /* DailyGammon.xcdatamodeld in Sources */,
 				E0F9588B21AD1688003DAC01 /* AppDelegate.m in Sources */,
