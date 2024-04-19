@@ -262,6 +262,15 @@
                 namelabel.layer.masksToBounds = YES;
                 namelabel.layer.borderWidth = 1;
                 namelabel.textAlignment = NSTextAlignmentCenter;
+                
+                UIFont *font = namelabel.font;
+                CGSize textSize = [labeltext sizeWithAttributes:@{NSFontAttributeName: font}];
+                if(textSize.width > (namelabel.frame.size.width ))
+                {
+                    float factor =  namelabel.frame.size.width / textSize.width ;
+                    labeltext = [NSString stringWithFormat:@"%@ ...",[labeltext substringToIndex:(labeltext.length * factor) ]];
+                }
+                namelabel.lineBreakMode = NSLineBreakByTruncatingTail;
                 namelabel.text = labeltext;
                 if([labeltext caseInsensitiveCompare:userName] == NSOrderedSame)
                 {
@@ -282,6 +291,18 @@
                 if([dict objectForKey:@"userID"] != nil)
                 {
                     DGButton *nameButton = [[DGButton alloc]initWithFrame:CGRectMake(x , y ,labelWidth, labelHeight)];
+                    
+                    UIFont *font = nameButton.titleLabel.font;
+                    CGSize textSize = [labeltext sizeWithAttributes:@{NSFontAttributeName: font}];
+
+                    if(textSize.width > nameButton.frame.size.width)
+                    {
+                        float factor =  nameButton.frame.size.width / textSize.width ;
+                        
+                        labeltext = [NSString stringWithFormat:@"%@ ...",[labeltext substringToIndex:(labeltext.length * factor) - 4]];
+                    }
+                    nameButton.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+
                     [nameButton setTitle:labeltext forState: UIControlStateNormal];
                     [nameButton.layer setValue:[[dict objectForKey:@"userID"] lastPathComponent] forKey:@"userID"];
                     [nameButton addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
