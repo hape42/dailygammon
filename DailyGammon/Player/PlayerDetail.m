@@ -19,6 +19,7 @@
 #import "QuickMessage.h"
 #import "Design.h"
 #import "PlayerNote.h"
+#import "ChatHistory.h"
 
 @interface PlayerDetail ()
 
@@ -224,7 +225,7 @@
 #pragma mark historyButton
     UIButton *historyButton = [[UIButton alloc] init];
     historyButton = [design designChatHistoryButton:historyButton];
-    [historyButton addTarget:self action:@selector(notYetImplemented) forControlEvents:UIControlEventTouchUpInside];
+    [historyButton addTarget:self action:@selector(chatHistory:) forControlEvents:UIControlEventTouchUpInside];
     historyButton.tag = 1;
     [self.view addSubview:historyButton];
 
@@ -482,7 +483,7 @@
 {
     QuickMessage *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"QuickMessage"];
     controller.playerName = self.playerName.text;
-    controller.playerNummer = userID;
+    controller.playerNumber = userID;
 
     controller.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:controller animated:NO completion:nil];
@@ -500,6 +501,25 @@
 - (IBAction)playerNote:(id)sender
 {
     PlayerNote *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerNote"];
+    controller.playerName = self.playerName.text;
+    controller.playerID = userID;
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
+
+#pragma mark - Chat History
+- (IBAction)chatHistory:(id)sender
+{
+    ChatHistory *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatHistory"];
     controller.playerName = self.playerName.text;
     controller.playerID = userID;
 

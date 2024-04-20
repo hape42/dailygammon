@@ -12,14 +12,16 @@
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
 @class TextTools;
+@class ChatHistory;
 
 @interface QuickMessage : UIViewController <UITextViewDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic)    NSString *playerName;
-@property (strong, readwrite, retain, atomic)    NSString *playerNummer;
+@property (strong, readwrite, retain, atomic)    NSString *playerNumber;
 
 @property (strong, readwrite, retain, atomic) Design *design;
 @property (strong, readwrite, retain, atomic) TextTools *textTools;
+@property (strong, readwrite, retain, atomic) ChatHistory *chatHistory;
 
 @end
 

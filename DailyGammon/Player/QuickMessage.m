@@ -12,6 +12,8 @@
 #import "TextTools.h"
 #import "DGRequest.h"
 #import "TextModul.h"
+#import "ChatHistory.h"
+#import "Constants.h"
 
 @interface QuickMessage ()
 
@@ -24,15 +26,16 @@
 
 @implementation QuickMessage
 
-@synthesize design, textTools;
-@synthesize playerNummer, playerName;
+@synthesize design, textTools, chatHistory;
+@synthesize playerNumber, playerName;
 
 - (void)viewDidLoad 
 {
     [super viewDidLoad];
     
-    design    = [[Design alloc] init];
-    textTools = [[TextTools alloc] init];
+    design      = [[Design alloc] init];
+    textTools   = [[TextTools alloc] init];
+    chatHistory = [[ChatHistory alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
 
@@ -105,7 +108,7 @@
 #pragma mark historyButton
     UIButton *historyButton = [[UIButton alloc] init];
     historyButton = [design designChatHistoryButton:historyButton];
-    [historyButton addTarget:self action:@selector(notYetImplemented) forControlEvents:UIControlEventTouchUpInside];
+    [historyButton addTarget:self action:@selector(chatHistory:) forControlEvents:UIControlEventTouchUpInside];
     historyButton.tag = 1;
     [self.view addSubview:historyButton];
 
@@ -154,7 +157,7 @@
 {
     NSString *escapedString = [textTools cleanChatString:self.textView.text];
 
-    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",playerNummer,escapedString] completionHandler:^(BOOL success, NSError *error, NSString *result)
+    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/sendmsg/%@?text=%@",playerNumber,escapedString] completionHandler:^(BOOL success, NSError *error, NSString *result)
                           {
         if (success)
         {
@@ -170,6 +173,12 @@
                                        style:UIAlertActionStyleDefault
                                        handler:^(UIAlertAction * action)
                                        {
+                [self->chatHistory saveChat:escapedString
+                                 opponentID:self->playerNumber
+                                    autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                                        typ:CHATHISTORY_QUICKMESSAGE
+                                matchNumber:0
+                                  matchName:@""];
                 [self dismissViewControllerAnimated:YES completion:nil];
 
                                        }];
@@ -192,34 +201,6 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)notYetImplemented
-{
-    NSString *title = @"not yet implemented";
-    NSString *message = @"comming soon";
-       
-    UIAlertController * alert = [UIAlertController
-                                  alertControllerWithTitle: title
-                                  message:message
-                                  preferredStyle:UIAlertControllerStyleAlert];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
-    [attributedString addAttribute:NSFontAttributeName
-                             value:[UIFont systemFontOfSize:20.0]
-                             range:NSMakeRange(0, title.length)];
-    [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor]  range:NSMakeRange(0, title.length)];
-    [alert setValue:attributedString forKey:@"attributedTitle"];
-
-
-    alert.view.tintColor = [UIColor blackColor];
-    UIAlertAction* okButton = [UIAlertAction
-                                actionWithTitle:@"OK"
-                                style:UIAlertActionStyleDefault
-                                handler:^(UIAlertAction * action)
-                                {
-                                    return;
-                                }];
-    [alert addAction:okButton];
-   [self presentViewController:alert animated:YES completion:nil];
-}
 #pragma mark - textView delegates
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textField
 {
@@ -247,6 +228,24 @@
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
     popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
+
+- (IBAction)chatHistory:(id)sender
+{
+    ChatHistory *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatHistory"];
+    controller.playerName = playerName;
+    controller.playerID = playerNumber;
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
     popController.delegate = self;
     
     UIButton *button = (UIButton *)sender;

@@ -29,3 +29,7 @@ extern NSString * const sortButton;
 #define SORT_LENGTH_UP 71
 #define SORT_OPPONENT_NAME_DOWN 8
 #define SORT_OPPONENT_NAME_UP 81
+
+#define CHATHISTORY_QUICKMESSAGE 1
+#define CHATHISTORY_MATCH 2
+
