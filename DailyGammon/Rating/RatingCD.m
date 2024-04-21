@@ -129,6 +129,11 @@
     request.predicate =  compoundPredicate;
 
     [request setPredicate:compoundPredicate];
+    
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"rating" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    [request setSortDescriptors:sortDescriptors];
+
     [request setFetchLimit:1];
 
     NSError *error;

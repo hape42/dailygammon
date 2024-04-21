@@ -37,10 +37,6 @@
 @property (weak, nonatomic) IBOutlet DGButton *chooseButton;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property (readwrite, retain, nonatomic) UIView *messageView;
-@property (readwrite, retain, nonatomic) UITextView *message;
-@property (assign, atomic) CGRect messageFrameSave;
-@property (assign, atomic) BOOL isMessageView;
 
 @property (readwrite, retain, nonatomic) NSMutableData *datenData;
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
@@ -79,26 +75,11 @@
     self.collectionView.backgroundColor = [UIColor colorNamed:@"ColorTableView"];;
     self.searchBar.backgroundColor = [UIColor colorNamed:@"ColorTableView"];;
 
-    self.isMessageView = FALSE;
-    int maxWidth = [UIScreen mainScreen].bounds.size.width;
-    int maxHeight  = [UIScreen mainScreen].bounds.size.height;
-    float width = maxWidth * 0.6;
-    float hight = maxHeight-20;
-    self.messageView = [[UIView alloc] initWithFrame:CGRectMake((maxWidth - width)/2,
-                                                                (maxHeight - hight)/2,
-                                                                width,
-                                                                hight)];
-    self.messageFrameSave = self.messageView.frame;
-    self.messageView.layer.cornerRadius = 14.0f;
-    self.messageView.layer.borderWidth = 1.0f;
-
     NSString *searchLinkUnquoted = [NSString stringWithFormat:@"http://dailygammon.com/bg/plist"];
     NSString *searchLink = [searchLinkUnquoted stringByReplacingOccurrencesOfString:@" " withString:@"+"];
     
     [self readPlayerArray:searchLink];
  
-//    [self searchBar:self.suche textDidChange:name];
-
     [self.collectionView reloadData];
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -113,17 +94,6 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
         
-    UIToolbar* keyboardToolbar = [[UIToolbar alloc] init];
-    [keyboardToolbar sizeToFit];
-    UIBarButtonItem *flexBarButton = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                      target:nil action:nil];
-    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc]
-                                      initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                      target:self action:@selector(messageDoneButtonPressed)];
-    keyboardToolbar.items = @[flexBarButton, doneBarButton];
-    self.message.inputAccessoryView = keyboardToolbar;
-
 }
 - (void)viewDidAppear:(BOOL)animated
 {
