@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class Tools;
 @class TextTools;
+@class ChatHistory;
 
 @interface NoBoard : UIViewController <MFMailComposeViewControllerDelegate, UITextViewDelegate, UIPopoverPresentationControllerDelegate>
 
@@ -25,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) TextTools *textTools;
+@property (strong, readwrite, retain, atomic) ChatHistory *chatHistory;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
 

@@ -45,6 +45,7 @@
 #import "TextModul.h"
 #import "PlayerDetail.h"
 #import "TextTools.h"
+#import "ChatHistory.h"
 
 @interface NoBoard ()
 
@@ -66,7 +67,7 @@
 
 @synthesize boardDict;
 
-@synthesize design, preferences, rating, tools, textTools;
+@synthesize design, preferences, rating, tools, textTools, chatHistory;
 @synthesize waitView;
 
 @synthesize finishedMatchChat, finishedmatchChatViewFrame, isFinishedMatch;
@@ -84,6 +85,7 @@
     rating = [[Rating alloc] init];
     tools = [[Tools alloc] init];
     textTools = [[TextTools alloc] init];
+    chatHistory = [[ChatHistory alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
@@ -854,6 +856,18 @@
 
 -(void) quickMessage
 {
+ //   XLog(@"%@",self.boardDict);
+    NSMutableDictionary *actionDict = [self.boardDict objectForKey:@"messageDict"];
+    NSMutableArray *attributesArray = [actionDict objectForKey:@"attributes"];
+    NSMutableDictionary *dict = attributesArray[0];
+
+    [chatHistory saveChat:[self.boardDict objectForKey:@"chat"]
+                     opponentID:[[dict objectForKey:@"action"] lastPathComponent]
+                        autorID:[[dict objectForKey:@"action"] lastPathComponent]
+                            typ:CHATHISTORY_QUICKMESSAGE
+                    matchNumber:0
+                      matchName:@""];
+
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:[self.boardDict objectForKey:@"quickMessage"]
                                  message:[self.boardDict objectForKey:@"chat"]
@@ -1088,6 +1102,13 @@
     NSMutableDictionary *dict = attributesArray[0];
 
     NSString *chatString = [textTools cleanChatString:quickmessageChat.text];
+
+    [chatHistory saveChat:chatString
+                     opponentID:[[dict objectForKey:@"action"] lastPathComponent]
+                        autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                            typ:CHATHISTORY_QUICKMESSAGE
+                    matchNumber:0
+                      matchName:@""];
 
     NSString *matchLink = @"";
 
