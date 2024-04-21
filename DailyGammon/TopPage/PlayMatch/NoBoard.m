@@ -580,7 +580,7 @@
 #pragma mark historyButton
         UIButton *historyButton = [[UIButton alloc] init];
         historyButton = [design designChatHistoryButton:historyButton];
-        [historyButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
+        [historyButton addTarget:self action:@selector(chatHistory:) forControlEvents:UIControlEventTouchUpInside];
         historyButton.tag = 1;
         [self.infoView addSubview:historyButton];
 
@@ -639,6 +639,17 @@
     if ([opponentMessage hasPrefix:@"\n"]) 
     {
         opponentMessage = [opponentMessage substringFromIndex:1];
+    }
+    if(![opponentMessage isEqualToString: @""])
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [chatHistory saveChat:opponentMessage
+                   opponentID:[app.boardDict objectForKey:@"opponentID"]
+                      autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                          typ:CHATHISTORY_MATCH
+                  matchNumber:0
+                    matchName:matchName.text];
     }
 
     UITextView *opponentChat = [[UITextView alloc] init];
@@ -740,6 +751,27 @@
     popController.sourceRect = button.bounds;
 }
 
+- (IBAction)chatHistory:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    ChatHistory *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatHistory"];
+    
+    NSMutableArray *opponentArray = [boardDict objectForKey:@"opponent"];
+    controller.playerName = opponentArray[0];
+    controller.playerID = [app.boardDict objectForKey:@"opponentID"];
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:NO completion:nil];
+    
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
 #pragma mark - There has been an internal error.
 
 - (void)internalError
@@ -1042,6 +1074,17 @@
     if([chatArray[0] containsString:@"chat"])
     {
         NSString *chatString = [textTools cleanChatString:finishedMatchChat.text];
+        if(![chatString isEqualToString: @""])
+        {
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            [chatHistory saveChat:chatString
+                       opponentID:[app.boardDict objectForKey:@"opponentID"]
+                          autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                              typ:CHATHISTORY_MATCH
+                      matchNumber:0
+                        matchName:[finishedMatchDict objectForKey:@"matchName"]];
+        }
 
         if(chatString)
             chatString = [NSString stringWithFormat:@"&chat=%@",chatString];
@@ -1064,9 +1107,21 @@
 - (void)actionToTopFinishedMatch:(UIButton*)button
 {
     [finishedMatchChat endEditing:YES];
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
 
     NSString *href = (NSString *)[button.layer valueForKey:@"href"];
     NSString *chatString = [textTools cleanChatString:finishedMatchChat.text];
+    if(![chatString isEqualToString: @""])
+    {
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+        [chatHistory saveChat:chatString
+                   opponentID:[app.boardDict objectForKey:@"opponentID"]
+                      autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                          typ:CHATHISTORY_MATCH
+                  matchNumber:0
+                    matchName:[finishedMatchDict objectForKey:@"matchName"]];
+    }
 
     NSString *matchLink = [NSString stringWithFormat:@"%@?submit=To%%20Top&commit=1&chat=%@", href, chatString];
     NSURL *urlMatch = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",matchLink]];
