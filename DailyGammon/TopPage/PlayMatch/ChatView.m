@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 #import "TextModul.h"
+#import "ChatHistory.h"
 
 @implementation ChatView
 
@@ -129,7 +130,7 @@
 #pragma mark historyButton
     UIButton *historyButton = [[UIButton alloc] init];
     historyButton = [design designChatHistoryButton:historyButton];
-    [historyButton addTarget:self action:@selector(notYetImplemented:) forControlEvents:UIControlEventTouchUpInside];
+    [historyButton addTarget:self action:@selector(chatHistory:) forControlEvents:UIControlEventTouchUpInside];
     historyButton.tag = 1;
     [self addSubview:historyButton];
 
@@ -219,7 +220,7 @@
     opponentChat.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     opponentChat.layer.cornerRadius = 14.0f;
     opponentChat.layer.masksToBounds = YES;
-
+ 
     [self addSubview:opponentChat];
     if(([opponentChat.text length] != 0) && (isCheckbox == TRUE))
     {
@@ -307,7 +308,7 @@
     }
 }
 
-#pragma mark - chatVieButtons actions
+#pragma mark - chatViewButtons actions
 
 - (IBAction)chatTransparent
 {
@@ -429,4 +430,27 @@
     popController.sourceView = button;
     popController.sourceRect = button.bounds;
 }
+
+- (IBAction)chatHistory:(id)sender
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    ChatHistory *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatHistory"];
+    
+    NSMutableArray *opponentArray = [boardDict objectForKey:@"opponent"];
+    controller.playerName = opponentArray[0];
+    controller.playerID = [app.boardDict objectForKey:@"opponentID"];
+
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [presentingVC presentViewController:controller animated:NO completion:nil];
+
+    UIPopoverPresentationController *popController = [controller popoverPresentationController];
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+    popController.delegate = self;
+    
+    UIButton *button = (UIButton *)sender;
+    popController.sourceView = button;
+    popController.sourceRect = button.bounds;
+}
+
 @end

@@ -81,8 +81,6 @@
     request.predicate =  compoundPredicate;
     [request setPredicate:compoundPredicate];
 
-    NSArray *arrResult = [context executeFetchRequest:request error:&error];
-
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO];
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     [request setSortDescriptors:sortDescriptors];
@@ -112,13 +110,14 @@
     
     Chat *dict = chatHistoryArray[indexPath.row];
 
-     UIFont *font = [UIFont systemFontOfSize:15.0];
-     CGFloat cellWidth = tableView.frame.size.width - 100;
-     CGFloat maxHeight = 200;
-     CGSize textSize = [dict.text boundingRectWithSize:CGSizeMake(cellWidth, maxHeight)
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                attributes:@{NSFontAttributeName: font}
-                                                   context:nil].size;
+    UIFont *font = [UIFont systemFontOfSize:15.0];
+    CGFloat cellWidth = tableView.frame.size.width - 100;
+    CGFloat maxHeight = 200;
+    NSString *text = [self trimLeadingAndTrailingNewlinesFromString:dict.text];
+    CGSize textSize = [text boundingRectWithSize:CGSizeMake(cellWidth, maxHeight)
+                                         options:NSStringDrawingUsesLineFragmentOrigin
+                                      attributes:@{NSFontAttributeName: font}
+                                         context:nil].size;
 
     int labelHeight = 25;
 
@@ -206,17 +205,25 @@
     y += labelHeight;
 
     int labelForTextHeight = cell.contentView.frame.size.height-labelHeight-labelHeight;
+    
     if([dict.autorID isEqualToString:dict.userID])
     {
         x = 50;
-        label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, cell.frame.size.width-50, labelForTextHeight)];
+        label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, cell.frame.size.width-55, labelForTextHeight)];
         [label setTextColor:[design getTintColorSchema]];
+        label.layer.borderWidth = 1;
+        label.layer.cornerRadius = 14.0f;
+        label.layer.borderColor = [design getTintColorSchema].CGColor;
+
     }
     else
     {
-        label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, cell.frame.size.width-50, labelForTextHeight)];
+        x = 5;
+        label = [[DGLabel alloc] initWithFrame:CGRectMake(x, y, cell.frame.size.width-10, labelForTextHeight)];
+        label.layer.borderWidth = 1;
+        label.layer.cornerRadius = 14.0f;
     }
-    [label setText:dict.text];
+    [label setText:[self trimLeadingAndTrailingNewlinesFromString:dict.text]];
     label.numberOfLines = 0;
     label.adjustsFontSizeToFitWidth = YES;
     label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -292,4 +299,44 @@
     }
 
 }
-@end
+
+- (NSString *)trimLeadingAndTrailingNewlinesFromString:(NSString *)inputString 
+{
+    // Finde die Anzahl der führenden Zeilenumbrüche
+    NSUInteger leadingNewlinesCount = 0;
+    for (NSUInteger i = 0; i < inputString.length; i++) 
+    {
+        unichar character = [inputString characterAtIndex:i];
+        if (character == '\n') 
+        {
+            leadingNewlinesCount++;
+        } 
+        else
+        {
+            // Beende die Schleife, wenn ein Zeichen gefunden wurde, das kein Zeilenumbruch ist
+            break;
+        }
+    }
+    
+    // Finde die Anzahl der abschließenden Zeilenumbrüche
+    NSUInteger trailingNewlinesCount = 0;
+    for (NSInteger i = inputString.length - 1; i >= 0; i--) 
+    {
+        unichar character = [inputString characterAtIndex:i];
+        if (character == '\n') 
+        {
+            trailingNewlinesCount++;
+        } 
+        else
+        {
+            // Beende die Schleife, wenn ein Zeichen gefunden wurde, das kein Zeilenumbruch ist
+            break;
+        }
+    }
+    
+    // Entferne führende und abschließende Zeilenumbrüche
+    NSRange trimmedRange = NSMakeRange(leadingNewlinesCount, inputString.length - leadingNewlinesCount - trailingNewlinesCount);
+    NSString *trimmedString = [inputString substringWithRange:trimmedRange];
+    
+    return trimmedString;
+}@end

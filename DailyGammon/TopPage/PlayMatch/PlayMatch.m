@@ -34,6 +34,7 @@
 #import "Review.h"
 #import "NoBoard.h"
 #import "PlayerDetail.h"
+#import "ChatHistory.h"
 
 @interface PlayMatch ()
 
@@ -81,7 +82,7 @@
 
 @implementation PlayMatch
 
-@synthesize design, match, rating, tools, textTools;
+@synthesize design, match, rating, tools, textTools, chatHistory;
 //@synthesize matchLink, isReview;
 @synthesize isReview;
 @synthesize ratingDict;
@@ -133,12 +134,13 @@
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
     
-    design = [[Design alloc] init];
-    match  = [[Match alloc] init];
-    rating = [[Rating alloc] init];
-    tools = [[Tools alloc] init];
-    matchTools = [[MatchTools alloc] init];
-    textTools = [[TextTools alloc] init];
+    design      = [[Design alloc] init];
+    match       = [[Match alloc] init];
+    rating      = [[Rating alloc] init];
+    tools       = [[Tools alloc] init];
+    matchTools  = [[MatchTools alloc] init];
+    textTools   = [[TextTools alloc] init];
+    chatHistory = [[ChatHistory alloc] init];
 
     [self.view addSubview:self.matchName];
     
@@ -814,6 +816,16 @@
                 }
 
             }
+            if(![[app.boardDict objectForKey:@"chat"] isEqualToString: @""])
+            {
+                
+                [chatHistory saveChat:[app.boardDict objectForKey:@"chat"]
+                           opponentID:[app.boardDict objectForKey:@"opponentID"]
+                              autorID:[app.boardDict objectForKey:@"opponentID"]
+                                  typ:CHATHISTORY_MATCH
+                          matchNumber:0
+                            matchName:self.matchName.text];
+            }
             chatView = [[ChatView alloc]init];
             chatView.navigationController = self.navigationController;
             chatView.boardDict = app.boardDict;
@@ -1368,7 +1380,17 @@
 
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
-    
+    if(![chat isEqualToString: @""])
+    {
+        
+        [chatHistory saveChat:chat
+                   opponentID:[app.boardDict objectForKey:@"opponentID"]
+                      autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                          typ:CHATHISTORY_MATCH
+                  matchNumber:0
+                    matchName:self.matchName.text];
+    }
+
     NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
     for(NSMutableDictionary *dict in attributesArray)
@@ -1443,6 +1465,16 @@
 
     NSString *chat = notification.userInfo[@"playerChat"] ;
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
+    if(![chat isEqualToString: @""])
+    {
+        
+        [chatHistory saveChat:chat
+                   opponentID:[app.boardDict objectForKey:@"opponentID"]
+                      autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
+                          typ:CHATHISTORY_MATCH
+                  matchNumber:0
+                    matchName:self.matchName.text];
+    }
 
     NSMutableArray *attributesArray = [app.actionDict objectForKey:@"attributes"];
     NSString *checkbox = @"";
