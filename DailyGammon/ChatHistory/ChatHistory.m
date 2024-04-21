@@ -232,6 +232,58 @@
     return cell;
 }
 
+#pragma mark - Table view delegate
+
+- (IBAction)editAction:(id)sender
+{
+    if(self.tableView.isEditing == true)
+    {
+        self.tableView.editing = false;
+        [self.editButton setTitle:@"Edit" forState:UIControlStateNormal];
+    }
+    else
+    {
+        self.tableView.editing = true;
+        [self.editButton setTitle:@"Done" forState:UIControlStateNormal];
+    }
+}
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+     return YES;
+ }
+ 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        Chat *dict = chatHistoryArray[indexPath.row];
+        NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+        NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Chat" inManagedObjectContext:context];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"date = %@",dict.date];
+        [fetchRequest setEntity:entity];
+        [fetchRequest setPredicate:predicate];
+
+        NSError *error;
+        NSArray *items = [context executeFetchRequest:fetchRequest error:&error];
+
+        for (NSManagedObject *managedObject in items)
+        {
+            [context deleteObject:managedObject];
+        }
+        if (![context save:&error])
+        {
+            // Something's gone seriously wrong
+            XLog(@"Error deleting Chat %@", [error localizedDescription]);
+        }
+
+        [self readArray];
+        [self.tableView reloadData];
+    }
+}
+
+
 #pragma mark - autoLayout
 -(void)layoutObjects
 {
