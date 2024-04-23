@@ -423,7 +423,7 @@
     [presentingVC presentViewController:controller animated:NO completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     popController.delegate = self;
     
     UIButton *button = (UIButton *)sender;

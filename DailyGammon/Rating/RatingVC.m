@@ -381,8 +381,6 @@
     [highRating.leftAnchor constraintEqualToAnchor:highText.rightAnchor constant:gap].active = YES;
     [highRating.heightAnchor constraintEqualToConstant:25].active = YES;
 
-    NSLog(@"Date: %@", [NSDateFormatter localizedStringFromDate:NSDate.date dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle]);
-
     DGLabel *highDate = [[DGLabel alloc] init];
     highDate.text = [NSDateFormatter localizedStringFromDate:dateDBBest dateStyle:NSDateFormatterLongStyle timeStyle:NSDateFormatterNoStyle];
     highDate.textAlignment = NSTextAlignmentCenter;

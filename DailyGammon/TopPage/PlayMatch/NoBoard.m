@@ -743,7 +743,7 @@
     [self presentViewController:controller animated:NO completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
     popController.delegate = self;
     
     UIButton *button = (UIButton *)sender;
@@ -906,7 +906,7 @@
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* yesButton = [UIAlertAction
-                                actionWithTitle:@"NEXT"
+                                actionWithTitle:@"Next"
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {

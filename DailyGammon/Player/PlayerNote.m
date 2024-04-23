@@ -150,7 +150,7 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Player" inManagedObjectContext:context];
         NSError *error;
 
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userID = %d",playerID];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"userID like %@",playerID];
         [fetchRequest setPredicate:predicate];
         [fetchRequest setFetchLimit:1];
         [fetchRequest setEntity:entity];
@@ -214,7 +214,7 @@
     [self presentViewController:controller animated:NO completion:nil];
     
     UIPopoverPresentationController *popController = [controller popoverPresentationController];
-    popController.permittedArrowDirections = UIPopoverArrowDirectionDown;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
     popController.delegate = self;
     
     UIButton *button = (UIButton *)sender;
