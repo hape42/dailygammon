@@ -1157,6 +1157,15 @@ Did we make you curious?</string>
                                     <action selector="addAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="gw4-M5-RjK"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iPb-h8-NnO" customClass="DGButton">
+                                <rect key="frame" x="131" y="24" width="83" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Help"/>
+                                <connections>
+                                    <action selector="helpAction:" destination="HIj-tK-mxZ" eventType="touchUpInside" id="2hF-eP-848"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vPv-1G-P6s"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1168,6 +1177,7 @@ Did we make you curious?</string>
                         <outlet property="addButton" destination="2kh-LX-IQJ" id="Zue-98-6Hi"/>
                         <outlet property="doneButton" destination="EAJ-6k-XnR" id="HuF-kr-MEY"/>
                         <outlet property="editButton" destination="RBX-3g-wMf" id="570-V8-Tzc"/>
+                        <outlet property="helpButton" destination="iPb-h8-NnO" id="T9q-wb-sqy"/>
                         <outlet property="tableView" destination="GJO-lz-ZJs" id="Hv6-HZ-Pat"/>
                     </connections>
                 </viewController>

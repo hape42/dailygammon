@@ -44,7 +44,7 @@
     }
     else
     {
-        XLog(@"AboutCount %ld", [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"]);
+       // XLog(@"AboutCount %ld", [[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"]);
         if ([[NSUserDefaults standardUserDefaults] integerForKey:@"AboutCount"] == 5)
         {
             About *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"About"];

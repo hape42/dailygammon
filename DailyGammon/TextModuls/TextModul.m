@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet DGButton *doneButton;
 @property (weak, nonatomic) IBOutlet DGButton *editButton;
 @property (weak, nonatomic) IBOutlet DGButton *addButton;
+@property (weak, nonatomic) IBOutlet DGButton *helpButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
@@ -79,67 +80,76 @@
     NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     [request setSortDescriptors:sortDescriptors];
 
-    NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
+    textModulArray = [[context executeFetchRequest:request error:&error] mutableCopy];
 
-    if(arrayDB.count == 0)
-    {
-        NSMutableArray *templateArray = [[NSMutableArray alloc] initWithObjects:
-                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithInt:1], @"number",
-                                  [NSNumber numberWithInt:0], @"quantityUsed",
-                                  @"Hi & GL", @"shortText",
-                                  @"Hi & Good luck", @"longText",
-                                  nil],
-                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithInt:2], @"number",
-                                  [NSNumber numberWithInt:0], @"quantityUsed",
-                                  @"congrats", @"shortText",
-                                  @"Congratulations to you. Good luck in the tournament.", @"longText",
-                                  nil],
-                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithInt:3], @"number",
-                                  [NSNumber numberWithInt:0], @"quantityUsed",
-                                  @"TY GM", @"shortText",
-                                  @"Thank you. That was a good and exciting match.", @"longText",
-                                  nil],
-                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithInt:4], @"number",
-                                  [NSNumber numberWithInt:0], @"quantityUsed",
-                                  @"42", @"shortText",
-                                  @"The Answer to the Great Question... Of Life, the Universe and Everything... Is... Forty-two,' said Deep Thought, with infinite majesty and calm.", @"longText",
-                                  nil],
-                                 [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                  [NSNumber numberWithInt:5], @"number",
-                                  [NSNumber numberWithInt:0], @"quantityUsed",
-                                  @"So long", @"shortText",
-                                  @"So long, and thanks for all the fish.", @"longText",
-                                  nil],
-                                nil];
-
-        for(NSMutableDictionary *dict in templateArray)
-        {
-            Phrases *phrasesEntity = (Phrases *)[NSEntityDescription insertNewObjectForEntityForName:@"Phrases" inManagedObjectContext:context];
-
-            phrasesEntity.number = [[dict objectForKey:@"number"]intValue];
-            phrasesEntity.quantityUsed = [[dict objectForKey:@"quantityUsed"]intValue];
-            phrasesEntity.shortText = [dict objectForKey:@"shortText"];
-            phrasesEntity.longText = [dict objectForKey:@"longText"];
-
-            NSError *error;
-            if (![context save:&error])
-            {
-                // Something's gone seriously wrong
-                XLog(@"Error saving Phrases %@", [error localizedDescription]);
-            }
-        }
-        [self readArray];
-    }
-    else
-    {
-        textModulArray = arrayDB;
-    }
 }
 
+- (void)defaultPhrases
+{
+    NSManagedObjectContext *context = ((AppDelegate*)[[UIApplication sharedApplication] delegate]).persistentContainer.viewContext;
+
+    NSMutableArray *templateArray = [[NSMutableArray alloc] initWithObjects:
+                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:1], @"number",
+                              [NSNumber numberWithInt:0], @"quantityUsed",
+                              @"Hi & GL", @"shortText",
+                              @"Hi & Good luck", @"longText",
+                              nil],
+                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:2], @"number",
+                              [NSNumber numberWithInt:0], @"quantityUsed",
+                              @"congrats", @"shortText",
+                              @"Congratulations to you. Good luck in the tournament.", @"longText",
+                              nil],
+                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:3], @"number",
+                              [NSNumber numberWithInt:0], @"quantityUsed",
+                              @"TY GM", @"shortText",
+                              @"Thank you. That was a good and exciting match.", @"longText",
+                              nil],
+                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:4], @"number",
+                              [NSNumber numberWithInt:0], @"quantityUsed",
+                              @"42", @"shortText",
+                              @"The Answer to the Great Question... Of Life, the Universe and Everything... Is... Forty-two,' said Deep Thought, with infinite majesty and calm.", @"longText",
+                              nil],
+                             [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                              [NSNumber numberWithInt:5], @"number",
+                              [NSNumber numberWithInt:0], @"quantityUsed",
+                              @"So long", @"shortText",
+                              @"So long, and thanks for all the fish.", @"longText",
+                              nil],
+                            nil];
+
+    for(NSMutableDictionary *dict in templateArray)
+    {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Phrases" inManagedObjectContext:context];
+        NSError *error;
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        [request setEntity:entity];
+
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:NO];
+        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        [request setSortDescriptors:sortDescriptors];
+        [request setFetchLimit:1];
+
+        NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
+        Phrases *phrase = arrayDB[0];
+
+        Phrases *phraseNew = (Phrases *)[NSEntityDescription insertNewObjectForEntityForName:@"Phrases" inManagedObjectContext:context];
+        phraseNew.number       = phrase.number + 1;
+        phraseNew.quantityUsed = 0;
+        phraseNew.shortText    = [dict objectForKey:@"shortText"];
+        phraseNew.longText     = [dict objectForKey:@"longText"];
+
+        if (![context save:&error])
+        {
+            // Something's gone seriously wrong
+            XLog(@"Error saving Phrases %@", [error localizedDescription]);
+        }
+    }
+
+}
 -(void)updateTableView
 {
     [self readArray];
@@ -187,13 +197,11 @@
     DGLabel *label = [[DGLabel alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
     [label setText:@"Used"];
     label.layer.borderWidth = borderWidth;
- //   label.textColor = [UIColor whiteColor];
     [view addSubview:label];
     
     label = [[DGLabel alloc] initWithFrame:CGRectMake(50, 0, tableView.frame.size.width-50, 25)];
     [label setText:@"Short Text"];
     label.layer.borderWidth = borderWidth;
-//    label.textColor = [UIColor whiteColor];
 
     [view addSubview:label];
 
@@ -208,14 +216,8 @@
  
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    static NSString *CellIdentifier = @"cell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
 
-//    if (cell == nil)
-//    {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-//    }
     for (UIView *subview in [cell.contentView subviews])
     {
         if ([subview isKindOfClass:[UILabel class]])
@@ -367,6 +369,35 @@
     }
 }
 
+- (IBAction)helpAction:(id)sender 
+{
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Information"
+                                 message:@"Wherever you can enter texts (Chats, QuickMessages), TextModules are available for selection. You can of course create, change and delete as many texts as you like. \n\nIf you want me to create a small selection of texts for you (there are only 5), just tap the \"Yes please\" button. \n\nHave fun with the texts. "
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* yesButton = [UIAlertAction
+                                actionWithTitle:@"Yes please"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    [self defaultPhrases];
+                                    [self readArray];
+                                    [self.tableView reloadData];
+                                }];
+    UIAlertAction* noButton = [UIAlertAction
+                                actionWithTitle:@"No, thanks"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                }];
+
+    [alert addAction:yesButton];
+    [alert addAction:noButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
+}
 
 - (IBAction)addAction:(id)sender 
 {
@@ -409,7 +440,7 @@
     [self.editButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [self.editButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
-    [self.editButton.rightAnchor   constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.editButton.rightAnchor  constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
     [self.editButton.heightAnchor constraintEqualToConstant:35].active = YES;
     [self.editButton.widthAnchor  constraintEqualToConstant:60].active = YES;
 
@@ -417,9 +448,17 @@
     [self.addButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [self.addButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
-    [self.addButton.rightAnchor   constraintEqualToAnchor:self.editButton.leftAnchor constant:-edge].active = YES;
+    [self.addButton.rightAnchor  constraintEqualToAnchor:self.editButton.leftAnchor constant:-edge].active = YES;
     [self.addButton.heightAnchor constraintEqualToConstant:35].active = YES;
     [self.addButton.widthAnchor  constraintEqualToConstant:60].active = YES;
+
+#pragma mark helpButton autoLayout
+    [self.helpButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [self.helpButton.topAnchor    constraintEqualToAnchor:safe.topAnchor  constant:edge].active = YES;
+    [self.helpButton.rightAnchor  constraintEqualToAnchor:self.addButton.leftAnchor constant:-edge].active = YES;
+    [self.helpButton.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.helpButton.widthAnchor  constraintEqualToConstant:60].active = YES;
 
 #pragma mark tableView autoLayout
     [self.tableView setTranslatesAutoresizingMaskIntoConstraints:NO];

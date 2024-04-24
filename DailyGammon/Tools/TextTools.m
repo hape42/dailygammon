@@ -73,7 +73,7 @@
 //    str = [attributedString string];
 
     NSString *encodedString = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    encodedString = str;
+    encodedString = str; // beim encoding passieren noch zu viele seltsame dinge, das habe ich erst mal auskommentiert
     return encodedString;
 }
 
