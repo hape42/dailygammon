@@ -757,9 +757,12 @@
 
     ChatHistory *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"ChatHistory"];
     
-    NSMutableArray *opponentArray = [boardDict objectForKey:@"opponent"];
-    controller.playerName = opponentArray[0];
-    controller.playerID = [app.boardDict objectForKey:@"opponentID"];
+    NSMutableDictionary *finishedMatchDict = [boardDict objectForKey:@"finishedMatch"];
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+    NSArray *playerIDArray = [finishedMatchDict objectForKey:@"href"];
+
+    controller.playerName = playerArray[0];
+    controller.playerID = [playerIDArray[0] lastPathComponent];
 
     controller.modalPresentationStyle = UIModalPresentationPopover;
     [self presentViewController:controller animated:NO completion:nil];
