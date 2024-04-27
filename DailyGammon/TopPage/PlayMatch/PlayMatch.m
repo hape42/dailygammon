@@ -1382,8 +1382,7 @@
     BOOL quote     = [notification.userInfo[@"quoteSwitch"] boolValue];
     if(![chat isEqualToString: @""])
     {
-        
-        [chatHistory saveChat:chat
+        [chatHistory saveChat:[chatHistory removeLinesStartingWithGreaterThan:chat]
                    opponentID:[app.boardDict objectForKey:@"opponentID"]
                       autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
                           typ:CHATHISTORY_MATCH
@@ -1468,7 +1467,7 @@
     if(![chat isEqualToString: @""])
     {
         
-        [chatHistory saveChat:chat
+        [chatHistory saveChat:[chatHistory removeLinesStartingWithGreaterThan:chat]
                    opponentID:[app.boardDict objectForKey:@"opponentID"]
                       autorID:[[NSUserDefaults standardUserDefaults] stringForKey:@"USERID"]
                           typ:CHATHISTORY_MATCH

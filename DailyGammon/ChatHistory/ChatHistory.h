@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
      matchNumber:(int)matchNumber
        matchName:(NSString *)matchName;
 
+- (NSString *)removeLinesStartingWithGreaterThan:(NSString *)inputText;
+
 @end
 
 NS_ASSUME_NONNULL_END
