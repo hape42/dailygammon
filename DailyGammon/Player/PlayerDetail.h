@@ -12,10 +12,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @class Design;
+@class Rating;
 
 @interface PlayerDetail : UIViewController<MFMailComposeViewControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (strong, readwrite, retain, atomic) Design *design;
+@property (strong, readwrite, retain, atomic) Rating *rating;
 
 @property (strong, readwrite, retain, atomic) NSString *userID;
 @property (strong, readwrite, retain, atomic) NSMutableArray *playerProfileArray;

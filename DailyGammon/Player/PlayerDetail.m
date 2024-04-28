@@ -20,6 +20,7 @@
 #import "Design.h"
 #import "PlayerNote.h"
 #import "ChatHistory.h"
+#import "Rating.h"
 
 @interface PlayerDetail ()
 
@@ -38,6 +39,11 @@
 @property (weak, nonatomic) IBOutlet DGButton *inviteButton;
 @property (weak, nonatomic) IBOutlet DGButton *messageButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *matchesHeader;
+@property (weak, nonatomic) IBOutlet UILabel *matchesActive;
+@property (weak, nonatomic) IBOutlet UILabel *matchesWon;
+@property (weak, nonatomic) IBOutlet UILabel *matchesLost;
+
 @end
 
 @implementation PlayerDetail
@@ -45,14 +51,16 @@
 @synthesize userID;
 @synthesize playerProfileArray;
 @synthesize waitView;
-@synthesize design;
+@synthesize design, rating;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     design = [[Design alloc] init];
+    rating = [[Rating alloc] init];
 
     [self layoutObjects];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -250,6 +258,27 @@
     [infoButton.widthAnchor constraintEqualToConstant:35].active = YES;
     [infoButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:+40].active = YES;
 
+#pragma mark matches versus you autoLayout
+    [self.matchesActive setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.matchesActive.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.matchesActive.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.matchesActive.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+
+    [self.matchesWon setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.matchesWon.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.matchesWon.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.matchesWon.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+
+    [self.matchesLost setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.matchesLost.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [self.matchesLost.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.matchesLost.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+    [self.matchesHeader setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.matchesHeader.bottomAnchor constraintEqualToAnchor:self.matchesActive.topAnchor constant:0].active = YES;
+    [self.matchesHeader.heightAnchor constraintEqualToConstant:35].active = YES;
+    [self.matchesHeader.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+
 }
 - (IBAction)doneAction:(id)sender
 {
@@ -364,9 +393,100 @@
             self.playerName.text = [child content];
     }
 
+    [self readMatchesVersusYou];
+
+}
+
+-(void)readMatchesVersusYou
+{
+    DGRequest *request = [[DGRequest alloc] initWithString:
+                          [NSString stringWithFormat:@"http://dailygammon.com/bg/user/%@?sort_win_loss=1&finished=1&active=1&versus=%@",
+                           userID,
+                           [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"]]
+                                         completionHandler:^(BOOL success, NSError *error, NSString *result)
+                          {
+        if (success)
+        {
+            [self analyzeMatchesVersusYou:result];
+        }
+        else
+        {
+            XLog(@"Error: %@", error.localizedDescription);
+        }
+    }];
+    request = nil;
+}
+
+- (void)analyzeMatchesVersusYou:(NSString *)result
+{
+    NSData *htmlData = [result dataUsingEncoding:NSUnicodeStringEncoding];
+    
+    TFHpple *xpathParser = [[TFHpple alloc] initWithHTMLData:htmlData];
+
+    int tableNumber = 4;
+    
+#pragma mark - active games holen
+    int activeGames = 0;
+    if ([result rangeOfString:@"There are no active games."].location != NSNotFound)
+    {
+        tableNumber = 3;
+    }
+    else
+    {
+        
+        NSArray *active  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr",tableNumber]];
+        //    XLog(@"%d active matches", active.count-1); // Überschrift abziehen
+        activeGames = (int)active.count - 1;
+    }
+    
+    tableNumber ++;
+#pragma mark - lost games holen
+    NSArray *finishedMatches  = [xpathParser searchWithXPathQuery:[NSString stringWithFormat:@"//table[%d]/tr",tableNumber]];
+    int lostMatches = 0;
+    int wonMatches  = 0;
+    BOOL won  = FALSE;
+    BOOL lost = FALSE;
+    for(TFHppleElement *element in finishedMatches)
+    {
+        // all games below a line containing "won" are won until until we hit a "lost" or
+        // we come to the end
+        NSString *zeile = [element content];
+        if([zeile isEqualToString:@"won"])
+        {
+            won = TRUE;
+        }
+        if([zeile isEqualToString:@"lost"])
+        {
+            lost = TRUE;
+            won = FALSE;
+        }
+        if(won)
+            wonMatches++;
+        if(lost)
+            lostMatches++;
+    }
+    
+    
+    if (won)
+    {
+        wonMatches -= 2;
+    }
+    else
+    {
+        wonMatches -= 3; // won, header, leerzeile
+    }
+    lostMatches -= 1; //  header
+    wonMatches = MAX(0, wonMatches);
+    lostMatches = MAX(0, lostMatches);
+    
+    self.matchesActive.text = [NSString stringWithFormat:@"Active %d", activeGames];
+    self.matchesWon.text    = [NSString stringWithFormat:@"Won %d", wonMatches];
+    self.matchesLost.text   = [NSString stringWithFormat:@"Lost %d", lostMatches];
+
     [self stopActivityIndicator];
 
 }
+
 #pragma mark - email
 - (void)mail1LblTapped:(id)sender
 {
