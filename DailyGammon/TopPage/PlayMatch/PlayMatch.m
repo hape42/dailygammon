@@ -63,7 +63,7 @@
 @property (assign, atomic) unsigned long memory_start;
 @property (assign, atomic) BOOL first;
 
-@property (readwrite, retain, nonatomic) DGButton *topPageButton;
+@property (readwrite, retain, nonatomic) DGButton *posIdButton;
 
 @property (assign, atomic) int matchCount;
 
@@ -363,8 +363,8 @@
     self.boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
     if(self.boardSchema < 1) self.boardSchema = 4;
 
-    NSMutableDictionary * returnDict = [matchTools drawBoard:self.boardSchema boardInfo:app.boardDict boardView:boardView zoom:zoomFactor];
-#warning könnte aich noch boarddict problematisch sein
+    NSMutableDictionary *returnDict = [matchTools drawBoard:self.boardSchema boardInfo:app.boardDict boardView:boardView zoom:zoomFactor isReview:isReview];
+
     if(returnDict.count == 0)
     {
         return;
@@ -375,6 +375,9 @@
     
     self.moveArray = [returnDict objectForKey:@"moveArray"];
         
+    self.posIdButton = [returnDict objectForKey:@"posIdButton"];
+    [self.posIdButton addTarget:self action:@selector(posID:) forControlEvents:UIControlEventTouchUpInside];
+
     UIView *removeView;
     while((removeView = [self.view viewWithTag:BOARD_VIEW]) != nil)
     {
@@ -1937,6 +1940,57 @@
     
 }
 
+#pragma mark - position ID
 
+-(void)posID:(UIButton*)button
+{
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+    NSString *posID = (NSString *)[button.layer valueForKey:@"posID"];
+    NSString *matchID = @"matchID";
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Export Position"
+                                 message:[NSString stringWithFormat:@"\nYou can copy information about this position to the clipboard. \n\nFor an analysis, you can simply paste the clipboard into BGBlitz, for example\n"]
+                                 preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* posIDButton = [UIAlertAction
+                                actionWithTitle:[NSString stringWithFormat:@"coming soon: %@:%@", posID, matchID]
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                 }];
+
+    UIAlertAction* XGIDButton = [UIAlertAction
+                                actionWithTitle:[NSString stringWithFormat:@"coming soon: XGID"]
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                 }];
+
+    UIAlertAction* urlButton = [UIAlertAction
+                                actionWithTitle:[NSString stringWithFormat:@"Dailygammon URL "]
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
+                                 }];
+
+    UIAlertAction* closeButton = [UIAlertAction
+                                actionWithTitle:[NSString stringWithFormat:@"Close"]
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                 }];
+
+    [alert addAction:posIDButton];
+    [alert addAction:XGIDButton];
+    [alert addAction:urlButton];
+    [alert addAction:closeButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
+
+    return;
+
+}
 
 @end

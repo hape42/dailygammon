@@ -29,9 +29,9 @@
          if([substring isEqualToString:@"‘"])
              str = [NSString stringWithFormat:@"%@%@",str, @"'"];
          else if([substring isEqualToString:@"„"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+             str = [NSString stringWithFormat:@"%@%@",str, @"''"];
          else if([substring isEqualToString:@"“"])
-             str = [NSString stringWithFormat:@"%@%@",str, @"?"];
+             str = [NSString stringWithFormat:@"%@%@",str, @"'"];
          else if([substring isEqualToString:@"&"])
              str = [NSString stringWithFormat:@"%@%@",str, @"+"];
          else if([substring isEqualToString:@"ß"])
@@ -41,6 +41,7 @@
          
      }];
     
+/*
     //return chatString;
     // Remove Emoji in NSString https://gist.github.com/siqin/4201667 löscht aber nur genau 1 Emoji
     //Anticro commented on 1 Jul 2020 •
@@ -59,7 +60,7 @@
             }
         }
     }
-
+*/
 
     // dadurch wird ein Emoji im Format &#128514; in 😂 gewandelt. die Webseite liefert &#128514; wenn 😂 eingegeben wird
 //    NSData *data = [str dataUsingEncoding:NSUTF8StringEncoding];
@@ -72,9 +73,14 @@
 //                                                                               error:nil];
 //    str = [attributedString string];
 
+    /*
     NSString *encodedString = [str stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     encodedString = str; // beim encoding passieren noch zu viele seltsame dinge, das habe ich erst mal auskommentiert
     return encodedString;
+     
+     */
+    
+    return str;
 }
 
 #pragma mark - only for internal tests

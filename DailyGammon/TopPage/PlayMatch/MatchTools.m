@@ -14,13 +14,14 @@
 #import "DGButton.h"
 #import "DGLabel.h"
 #import "Tools.h"
+#import "AppDelegate.h"
 
 @implementation MatchTools
 
 @synthesize design, rating,tools, boardElements;
 
 #pragma mark - draw boardView
--(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor
+-(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor isReview:(BOOL) isReview
 {
     
     //     13 14 15 16 17 18    19 20 21 22 23 24
@@ -51,6 +52,8 @@
     tools         = [[Tools alloc] init];
     boardElements = [[BoardElements alloc] init];
     
+    NSMutableDictionary *returnDict = [[NSMutableDictionary alloc]init];
+
     // I have determined these numbers when planning on paper in order to optimally represent a game board.
     int checkerWidth = 40;
     int offWidth = 70;
@@ -482,6 +485,11 @@
     x = 0;
     y = numberHeight + pointsHeight + indicatorHeight ;
     
+    BOOL idButtonToDraw = YES;
+    UIButton *idButton = [[UIButton alloc]initWithFrame:CGRectMake(0, y, checkerWidth, checkerWidth)];
+    idButton = [design designSystemImageButton:@"square.and.arrow.up" button:idButton];
+    [idButton.layer setValue:[self makePositionsID] forKey:@"posID"];
+
     NSMutableArray *diceArray = [boardDict objectForKey:@"dice"];
     if(diceArray.count < 8)
     {        //sind wohl gar keine Würfel auf dem Board, trotzdem muss der Cube auf 1 gezeichnet werden
@@ -493,6 +501,13 @@
         
         [boardView addSubview:pointView];
 
+        if(pointView.image != nil )
+        {
+            int idButtonX = offWidth  + (checkerWidth * 6) + barWidth + (checkerWidth * 6) + ((offWidth - checkerWidth) / 2);
+            idButton.frame = CGRectMake(idButtonX, y, checkerWidth, checkerWidth);
+            idButtonToDraw = NO;
+        }
+
         x = offWidth + (6 * checkerWidth) + barWidth  + (6 * checkerWidth) ;
 
         img = [[diceArray[4] lastPathComponent] stringByDeletingPathExtension];
@@ -501,6 +516,14 @@
         pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
         
         [boardView addSubview:pointView];
+        
+        if(pointView.image != nil)
+        {
+            // button für PosID auf die andere Seite
+            idButton.frame = CGRectMake(0 + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+            idButtonToDraw = NO;
+        }
+
     }
     else
     {
@@ -517,6 +540,15 @@
                     pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
                     
                     [boardView addSubview:pointView];
+                    
+                    // button für PosID auf die andere Seite
+                    if(pointView.image != nil )
+                    {
+                        int idButtonX = offWidth  + (checkerWidth * 6) + barWidth + (checkerWidth * 6) + ((offWidth - checkerWidth) / 2);
+                        idButton.frame = CGRectMake(idButtonX, y, checkerWidth, checkerWidth);
+                        idButtonToDraw = NO;
+                    }
+
                 }
                    break;
                 case 2:     // 1. dice left half of the board
@@ -582,10 +614,28 @@
                     pointView.frame = CGRectMake(x + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
                     
                     [boardView addSubview:pointView];
+                    
+                    // button für PosID auf die andere Seite
+                    if(pointView.image != nil )
+                    {
+                        idButton.frame = CGRectMake(0 + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);
+                        idButtonToDraw = NO;
+                    }
                 }
                     break;
             }
         }
+        if(idButtonToDraw )
+        {
+            idButton.frame = CGRectMake(0 + ((offWidth - checkerWidth) / 2), y, checkerWidth, checkerWidth);            
+            idButtonToDraw = NO;
+        }
+    }
+    if( (isReview || [[[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"] isEqualToString:@"13014"]))// only for testing
+    {
+        [boardView addSubview:idButton];
+        [returnDict setObject:idButton forKey:@"posIdButton"];
+
     }
 
 #pragma mark - lower moveIndicator
@@ -759,7 +809,6 @@
     }
 
 #pragma mark - end drawBoard
-    NSMutableDictionary *returnDict = [[NSMutableDictionary alloc]init];
     [returnDict setObject:boardView forKey:@"boardView"];
     [returnDict setObject:moveArray forKey:@"moveArray"];
 
@@ -1180,6 +1229,388 @@
     }
     XLog(@"unknown action %@", actionDict);
     return 0;
+}
+
+#pragma mark - ID
+- (NSString *)makePositionsID
+{
+    // https://www.gnu.org/software/gnubg/manual/html_node/A-technical-description-of-the-Position-ID.html
+    /*
+     
+     alle Zungen haben ein image im format pt_dk_down_y2.gif y2 bedeutet dass gelb zwei steine auf der zunge hat , down0 (oder up) kein stein auf der zunge , pt_dk_up_b2.gif bedeutet blau hat zwei Steine auf der zunge
+     down ist die obere Reihe (Zunge nach unten) up die untere Reihe
+     
+     zu klären:
+     - wie stelle ich fest, welche Farbe ich habe?
+     - im SetUp steht ob das homeboard links oder rechts ist, danach ist die 1 entweder links oder rechts. Evtl kann man aber auch das array mit der nummerierung nutzen?
+     - array mit nummerierung durchlaufen und positionsIdArray anlegen mit dict je zunge > nummer farbe steine
+     */
+    
+    NSString *posId = @"positionsID";
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSMutableArray *boardArray = [[NSMutableArray alloc]init];
+    NSMutableArray *numberArray = [app.boardDict objectForKey:@"nummernOben"];
+    
+    NSMutableArray *barArray = [[NSMutableArray alloc]init];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+    [dict setValue:[NSNumber numberWithInt:1] forKey:@"number"];
+    [dict setValue:[NSNumber numberWithInt: 0] forKey:@"checkerCount"];
+    [dict setValue:[NSNumber numberWithInt: 0] forKey:@"checkerColor"];
+    [barArray addObject:dict];
+    dict = [[NSMutableDictionary alloc]init];
+    [dict setValue:[NSNumber numberWithInt:2] forKey:@"number"];
+    [dict setValue:[NSNumber numberWithInt: 0] forKey:@"checkerCount"];
+    [dict setValue:[NSNumber numberWithInt: 0] forKey:@"checkerColor"];
+    [barArray addObject:dict];
+    
+    if(numberArray.count < 17)
+    {
+        // for some reason no board was displayed at all
+        return @"no Board";
+    }
+    
+    for(int i = 1; i <= 6; i++)
+    {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setValue:numberArray[i] forKey:@"number"];
+        [boardArray addObject:dict];
+    }
+    
+    for(int i = 8; i <= 13; i++)
+    {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setValue:numberArray[i] forKey:@"number"];
+        [boardArray addObject:dict];
+    }
+    
+    numberArray = [app.boardDict objectForKey:@"nummernUnten"];
+    
+    for(int i = 1; i <= 6; i++)
+    {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setValue:numberArray[i] forKey:@"number"];
+        [boardArray addObject:dict];
+    }
+    
+    for(int i = 8; i <= 13; i++)
+    {
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
+        [dict setValue:numberArray[i] forKey:@"number"];
+        [boardArray addObject:dict];
+    }
+    
+    NSMutableArray *graphicsArray = [app.boardDict objectForKey:@"grafikOben"];
+    int boardArrayIndex = 0;
+    for(int i = 0; i < graphicsArray.count; i++)
+    {
+        NSMutableDictionary *pointDict = graphicsArray[i];
+        NSMutableArray *images = [pointDict objectForKey:@"img"];
+        switch(i)
+        {
+            case 0:
+                // left side
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
+                {
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    // is it a cube? then get width and height from the img for the view
+                    if ([img containsString:@"cube"])
+                    {
+                        // cube irgendwie irgendwo speichern
+                    }
+                    else
+                    {
+                    }
+                }
+                
+                break;
+            case 7:
+                // bar
+            {
+                if(images.count > 0)
+                {
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
+                    // steine auf der bar speichern
+                    NSArray *paramters = [img componentsSeparatedByString: @"_"];
+                    int checkerCount = 0;
+                    NSString *checker = @"";
+                    int checkerColor = 1;
+                    
+                    if(paramters.count == 2)
+                    {
+                        checker       = [paramters[1] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+                        checkerCount = [[paramters[1] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+                    }
+                    if([checker isEqualToString:@"y"])
+                        checkerColor = CHECKER_LIGHT;
+                    else
+                        checkerColor = CHECKER_DARK;
+                    
+                    NSMutableDictionary *dict = barArray[0];
+                    [dict setValue:[NSNumber numberWithInt: checkerCount] forKey:@"checkerCount"];
+                    [dict setValue:[NSNumber numberWithInt: checkerColor] forKey:@"checkerColor"];
+                }
+            }
+                break;
+            case 14:
+                // right side
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
+                {
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    // is it a cube? then get width and height from the img for the view
+                    if ([img containsString:@"cube"])
+                    {
+                        // cube irgendwie irgendwo speichern
+                    }
+                    else
+                    {
+                    }
+                }
+                
+                break;
+            default:
+                // zungen
+                if(images.count > 0)
+                {
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
+                    // split name for parameters
+                    NSArray *paramters = [img componentsSeparatedByString: @"_"];
+                    int checkerCount = 0;
+                    NSString *checker = @"";
+                    int checkerColor = 1;
+                    
+                    if(paramters.count == 3)
+                    {
+                        // no checker
+                    }
+                    else
+                    {
+                        checker       = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+                        checkerCount = [[paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+                    }
+                    if([checker isEqualToString:@"y"])
+                        checkerColor = CHECKER_LIGHT;
+                    else
+                        checkerColor = CHECKER_DARK;
+                    
+                    NSMutableDictionary *dict = boardArray[boardArrayIndex++];
+                    [dict setValue:[NSNumber numberWithInt: checkerCount] forKey:@"checkerCount"];
+                    [dict setValue:[NSNumber numberWithInt: checkerColor] forKey:@"checkerColor"];
+                    
+                }
+                break;
+        }
+    }
+    
+    graphicsArray = [app.boardDict objectForKey:@"grafikUnten"];
+    boardArrayIndex = 12;
+    for(int i = 0; i < graphicsArray.count; i++)
+    {
+        NSMutableDictionary *pointDict = graphicsArray[i];
+        NSMutableArray *images = [pointDict objectForKey:@"img"];
+        switch(i)
+        {
+            case 0:
+                // left side
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
+                {
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    // is it a cube? then get width and height from the img for the view
+                    if ([img containsString:@"cube"])
+                    {
+                        // cube irgendwie irgendwo speichern
+                    }
+                    else
+                    {
+                    }
+                }
+                
+                break;
+            case 7:
+                // bar
+            {
+                if(images.count > 0)
+                {
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
+                    NSArray *paramters = [img componentsSeparatedByString: @"_"];
+                    int checkerCount = 0;
+                    NSString *checker = @"";
+                    int checkerColor = 1;
+                    
+                    if(paramters.count == 2)
+                    {
+                        checker       = [paramters[1] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+                        checkerCount = [[paramters[1] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+                    }
+                    if([checker isEqualToString:@"y"])
+                        checkerColor = CHECKER_LIGHT;
+                    else
+                        checkerColor = CHECKER_DARK;
+                    
+                    NSMutableDictionary *dict = barArray[1];
+                    [dict setValue:[NSNumber numberWithInt: checkerCount] forKey:@"checkerCount"];
+                    [dict setValue:[NSNumber numberWithInt: checkerColor] forKey:@"checkerColor"];
+                    
+                }
+            }
+                break;
+            case 14:
+                // right side
+                for(int indexOffBoard = 0; indexOffBoard < images.count; indexOffBoard++)
+                {
+                    NSString *img = [[images[indexOffBoard] lastPathComponent] stringByDeletingPathExtension];
+                    // is it a cube? then get width and height from the img for the view
+                    if ([img containsString:@"cube"])
+                    {
+                        // cube irgendwie irgendwo speichern
+                    }
+                    else
+                    {
+                    }
+                }
+                
+                break;
+            default:
+                // zungen
+                if(images.count > 0)
+                {
+                    NSString *img = [[images[0] lastPathComponent] stringByDeletingPathExtension];
+                    // split name for parameters
+                    NSArray *paramters = [img componentsSeparatedByString: @"_"];
+                    int checkerCount = 0;
+                    NSString *checker = @"";
+                    int checkerColor = 1;
+                    
+                    if(paramters.count == 3)
+                    {
+                        // no checker
+                    }
+                    else
+                    {
+                        checker       = [paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+                        checkerCount = [[paramters[3] stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]]intValue];
+                    }
+                    if([checker isEqualToString:@"y"])
+                        checkerColor = CHECKER_LIGHT;
+                    else
+                        checkerColor = CHECKER_DARK;
+                    
+                    NSMutableDictionary *dict = boardArray[boardArrayIndex++];
+                    [dict setValue:[NSNumber numberWithInt: checkerCount] forKey:@"checkerCount"];
+                    [dict setValue:[NSNumber numberWithInt: checkerColor] forKey:@"checkerColor"];
+                    
+                }
+                break;
+        }
+    }
+    
+    // die hintergrundfarbe rechts unten beim namen legt fest ob ich CHECKER_LIGHT oder CHECKER_DARK bin
+    // mögliche farben
+    // #9999FF & #3399CC = b
+    // #FFFF66 & #FFFFFF = y
+    
+    // boardArray nach Number sortieren
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"number" ascending:YES comparator:^(id obj1, id obj2)
+                                        {
+        int number1 = [(NSNumber *)obj1 intValue];
+        int number2 = [(NSNumber *)obj2 intValue];
+        
+        if(number1 < number2)
+            return NSOrderedAscending;
+        if(number1 > number2)
+            return NSOrderedDescending;
+        if(number1 == number2)
+            return NSOrderedSame;
+        
+        //  return [(NSNumber *)obj1 compare:(NSNumber *)obj2];
+        return NSOrderedSame;
+        
+    }];
+    NSArray *boardArraySorted = [boardArray sortedArrayUsingDescriptors:@[sortDescriptor]];
+    
+    int checkerColorPlayer = CHECKER_LIGHT;
+    int checkerColorOpponent = CHECKER_DARK;
+
+    if([[app.boardDict objectForKey:@"playerColor"] isEqualToString:@"#9999FF"] ||[[app.boardDict objectForKey:@"playerColor"] isEqualToString:@"#3399CC"] )
+    {
+        checkerColorPlayer = CHECKER_DARK;
+        checkerColorOpponent = CHECKER_LIGHT;
+    }
+    NSString *bitString = @"";
+    for(NSMutableDictionary *dict in boardArraySorted)
+    {
+        if([[dict objectForKey:@"checkerColor"]intValue] == checkerColorPlayer)
+        {
+            for(int i = 0; i < [[dict objectForKey:@"checkerCount"]intValue]; i++)
+                bitString = [NSString stringWithFormat:@"%@%@", bitString, @"1"];
+        }
+        bitString = [NSString stringWithFormat:@"%@%@", bitString, @"0"];
+    }
+    // checker bar
+    bitString = [NSString stringWithFormat:@"%@%@", bitString, @"0"];
+
+    for(NSMutableDictionary *dict in [boardArraySorted reverseObjectEnumerator])
+    {
+        if([[dict objectForKey:@"checkerColor"]intValue] == checkerColorOpponent)
+        {
+            for(int i = 0; i < [[dict objectForKey:@"checkerCount"]intValue]; i++)
+                bitString = [NSString stringWithFormat:@"%@%@", bitString, @"1"];
+        }
+        bitString = [NSString stringWithFormat:@"%@%@", bitString, @"0"];
+    }
+    // checker bar
+    bitString = [NSString stringWithFormat:@"%@%@", bitString, @"0"];
+
+ //   bitString = @"00000111110011100000111110000000000011000000011111001110000011111000000000001100";
+
+    NSString *littleEndianString = @"";
+    
+    for (int i = 0; i < bitString.length; i += 8)
+    {
+        NSString *byteString = [bitString substringWithRange:NSMakeRange(i, 8)];
+        for(int j=7; j >= 0; j --)
+            littleEndianString = [NSString stringWithFormat:@"%@%@", littleEndianString, [byteString substringWithRange:NSMakeRange(j, 1)]];
+    }
+
+    NSLog(@"littleEndianString Key: %@", littleEndianString);
+    
+    // Konvertieren des Bit-Strings in Bytes
+    NSMutableData *data = [[NSMutableData alloc] init];
+    for (int i = 0; i < littleEndianString.length; i += 8) {
+        NSString *byteString = [littleEndianString substringWithRange:NSMakeRange(i, 8)];
+        unsigned char byte = strtol([byteString UTF8String], NULL, 2);
+        [data appendBytes:&byte length:1];
+    }
+
+//    // Konvertieren der Bytes in eine hexadezimale Zeichenkette
+//    const unsigned char *bytes = [data bytes];
+//    NSMutableString *hexString = [NSMutableString stringWithCapacity:data.length * 2];
+//    for (int i = 0; i < data.length; i++) {
+//        [hexString appendFormat:@"%02X", bytes[i]];
+//    }
+//
+//    NSLog(@"Hexadecimal Key: %@", hexString);
+    
+    // Base64-Kodierung der Bytes
+    NSString *base64String = [data base64EncodedStringWithOptions:0];
+
+    NSLog(@"Base64 Encoded String: %@", base64String);
+    return posId;
+}
+
+- (void)makeMatchID
+{
+    // https://www.gnu.org/software/gnubg/manual/html_node/A-technical-description-of-the-Match-ID.html#A-technical-description-of-the-Match-ID
+    /*
+     
+      zu klären:
+     - wer ist dran?
+     - Matchstand
+     
+     */
+
+    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
 }
 
 @end

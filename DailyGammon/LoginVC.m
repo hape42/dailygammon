@@ -268,7 +268,7 @@ didCompleteWithError:(NSError *)error
 #pragma mark header autoLayout
     [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:10.0].active = YES;
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
     [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
     [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.header.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
@@ -280,7 +280,7 @@ didCompleteWithError:(NSError *)error
     [self.loginButton setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     CGFloat labelWidth  = 100.0;
-    CGFloat labelHeigth = 35.0;
+    CGFloat labelHeigth = 30.0;
 
     [self.usernameLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
     [self.usernameLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;

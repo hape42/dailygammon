@@ -245,7 +245,7 @@
     [historyButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:-40].active = YES;
 
 #pragma mark infoButton
-    UIButton *infoButton = [[UIButton alloc] init];
+    UIButton *infoButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
     infoButton = [design designSystemImageButton:@"info.circle" button:infoButton];
     [infoButton addTarget:self action:@selector(playerNote:) forControlEvents:UIControlEventTouchUpInside];
     infoButton.tag = 1;
