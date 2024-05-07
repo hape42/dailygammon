@@ -1247,6 +1247,9 @@
      */
     
     NSString *posId = @"positionsID";
+    
+    return posId;
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     
     NSMutableArray *boardArray = [[NSMutableArray alloc]init];
