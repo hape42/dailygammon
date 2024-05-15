@@ -781,7 +781,7 @@
 {
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"There has been an internal error."
-                                 message:@" The error has been logged and the administrators will be alerted. Our apologies.\nThis is a message from the server. The app did not cause this. This is usually not a big deal and you can just keep playing."
+                                 message:@"The Dailygammon Server responds with: \n\n The error has been logged and the administrators will be alerted. Our apologies.\n\nThis is a message from the server. The app did not cause this. This is usually not a big deal and you can just keep playing."
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* okButton = [UIAlertAction

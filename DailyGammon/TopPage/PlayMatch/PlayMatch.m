@@ -1947,17 +1947,25 @@
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     NSString *posID = (NSString *)[button.layer valueForKey:@"posID"];
-    NSString *matchID = @"matchID";
+    NSString *matchID = (NSString *)[button.layer valueForKey:@"matchID"];
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:@"Export Position"
                                  message:[NSString stringWithFormat:@"\nYou can copy information about this position to the clipboard. \n\nFor an analysis, you can simply paste the clipboard into BGBlitz, for example\n"]
                                  preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction* posIDButton = [UIAlertAction
-                                actionWithTitle:[NSString stringWithFormat:@"coming soon: %@:%@", posID, matchID]
+                                actionWithTitle:[NSString stringWithFormat:@"PositionID: %@:%@", posID, matchID]
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
+      //  [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"%@:%@", posID, matchID]];
+        UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithFormat:@"%@:%@", posID, matchID]] applicationActivities:nil];
+        shareVC.popoverPresentationController.sourceView    = self.view;
+
+        shareVC.popoverPresentationController.sourceRect = button.frame;
+
+        [self presentViewController:shareVC animated:YES completion:nil];
+
                                  }];
 
     UIAlertAction* XGIDButton = [UIAlertAction
@@ -1972,7 +1980,12 @@
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action)
                                 {
-        [[UIPasteboard generalPasteboard] setString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
+        UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]] applicationActivities:nil];
+        shareVC.popoverPresentationController.sourceView    = self.view;
+
+        shareVC.popoverPresentationController.sourceRect = button.frame;
+
+        [self presentViewController:shareVC animated:YES completion:nil];
                                  }];
 
     UIAlertAction* closeButton = [UIAlertAction

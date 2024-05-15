@@ -157,14 +157,10 @@
     }
 
 #pragma mark - There has been an internal error.
-    if ([htmlString rangeOfString:@"There has been an internal error. "].location != NSNotFound)
+    if ([htmlString rangeOfString:@"There has been an internal error."].location != NSNotFound)
     {
-        errorText = @"The http request you submitted was in error.";
         [app.boardDict setObject:@"There has been an internal error. " forKey:@"internal error"];
         noBoard = TRUE;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"analyzeMatch" object:self];
-
-        return ;
     }
 
     NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
