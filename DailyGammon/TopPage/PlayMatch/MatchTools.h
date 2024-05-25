@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class Rating;
 @class BoardElements;
 @class Tools;
+@class ExportPosition;
 
 @interface MatchTools : NSObject
 
@@ -20,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) Rating *rating;
 @property (strong, readwrite, retain, atomic) Tools *tools;
 @property (strong, readwrite, retain, atomic) BoardElements *boardElements;
+@property (strong, readwrite, retain, atomic) ExportPosition *exportPosition;
 
 -(NSMutableDictionary *)drawBoard:(int)schema boardInfo:(NSMutableDictionary *)boardDict boardView:(UIView *)boardView zoom:(float)zoomFactor isReview:(BOOL) isReview;
 -(NSMutableDictionary *)drawActionView:(NSMutableDictionary *)boardDict bordView:(UIView *)boardView actionViewWidth:(float)actionViewWidth isPortrait:(BOOL)isPortrait maxHeight:(int)maxHeight;

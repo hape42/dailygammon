@@ -209,7 +209,12 @@
         app.boardDict  = [[NSMutableDictionary alloc]init];
         app.actionDict = [[NSMutableDictionary alloc]init];
 
+        XLog(@"Start readMatch");
+
         [match readMatch:app.matchLink reviewMatch:isReview ];
+        
+        XLog(@"Ende readMatch");
+
     }
     else
     {
@@ -218,7 +223,7 @@
 }
 -(void)analyzeMatch
 {
-    AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     if((app.actionDict == nil) || (app.boardDict == nil))
     {
@@ -933,6 +938,8 @@
         [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
         [actionView addSubview:buttonSkipGame];
     }
+
+    XLog(@"Ende drwa...");
 
 }
 
@@ -1994,9 +2001,11 @@
                                 handler:^(UIAlertAction * action)
                                 {
                                  }];
-
-    [alert addAction:posIDButton];
-    [alert addAction:XGIDButton];
+    if( (isReview || [[[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"] isEqualToString:@"13014"]))// only for testing
+    {
+        [alert addAction:posIDButton];
+        [alert addAction:XGIDButton];
+    }
     [alert addAction:urlButton];
     [alert addAction:closeButton];
 

@@ -239,7 +239,9 @@
     ratingCD    = [[RatingCD alloc] init];
 
     NSMutableDictionary *schemaDict = [design schema:[[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue]];
-    if(schemaDict.count == 0)
+    int boardSchema = [[[NSUserDefaults standardUserDefaults] valueForKey:@"BoardSchema"]intValue];
+
+    if(boardSchema < 1)
     {
         [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"BoardSchema"];
         [[NSUserDefaults standardUserDefaults] synchronize];

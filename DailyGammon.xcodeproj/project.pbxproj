@@ -21,6 +21,7 @@
 		E0264ADF2BC7DC2500A6C9D4 /* ProfileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264ADE2BC7DC2500A6C9D4 /* ProfileVC.m */; };
 		E0264AE22BCD0E8500A6C9D4 /* TextTools.m in Sources */ = {isa = PBXBuildFile; fileRef = E0264AE12BCD0E8500A6C9D4 /* TextTools.m */; };
 		E02C7BC729C4461E003B6357 /* WaitView.m in Sources */ = {isa = PBXBuildFile; fileRef = E02C7BC629C4461E003B6357 /* WaitView.m */; };
+		E031256D2C01CFA40093A80B /* ExportPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = E031256C2C01CFA40093A80B /* ExportPosition.m */; };
 		E035538B29867C93002C820C /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538A29867C93002C820C /* BackgroundTasks.framework */; };
 		E035538D29898798002C820C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538C29898798002C820C /* UserNotifications.framework */; };
 		E035538F298987CC002C820C /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E035538E298987CB002C820C /* NotificationCenter.framework */; };
@@ -162,6 +163,8 @@
 		E0264AE12BCD0E8500A6C9D4 /* TextTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TextTools.m; sourceTree = "<group>"; };
 		E02C7BC529C4461E003B6357 /* WaitView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WaitView.h; sourceTree = "<group>"; };
 		E02C7BC629C4461E003B6357 /* WaitView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WaitView.m; sourceTree = "<group>"; };
+		E031256B2C01CFA40093A80B /* ExportPosition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ExportPosition.h; sourceTree = "<group>"; };
+		E031256C2C01CFA40093A80B /* ExportPosition.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExportPosition.m; sourceTree = "<group>"; };
 		E035538A29867C93002C820C /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
 		E035538C29898798002C820C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		E035538E298987CB002C820C /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -515,6 +518,8 @@
 				E09C007321B042020056D2A2 /* PlayMatch.m */,
 				E09871E8294870E60043DC8A /* MatchTools.h */,
 				E09871E9294870E60043DC8A /* MatchTools.m */,
+				E031256B2C01CFA40093A80B /* ExportPosition.h */,
+				E031256C2C01CFA40093A80B /* ExportPosition.m */,
 				E0777D60294E24DB00712C76 /* BoardElements.h */,
 				E0777D61294E24DB00712C76 /* BoardElements.m */,
 				E09871E629448DA90043DC8A /* ConstantsMatch.h */,
@@ -995,6 +1000,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E031256D2C01CFA40093A80B /* ExportPosition.m in Sources */,
 				E0BC24682BB1884500B554B2 /* QuickMessage.m in Sources */,
 				E002F1A229A0F9740028098C /* Review.m in Sources */,
 				E005AA692BD2C0DA0075F313 /* ChatHistory.m in Sources */,
