@@ -53,6 +53,9 @@
     design = [[Design alloc] init];
     preferences = [[Preferences alloc] init];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initSwitches) name:@"dgPreferences" object:nil];
+    self.preferencesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"preferencesArray"];
+
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 }
 
@@ -81,6 +84,7 @@
     
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     self.navigationItem.hidesBackButton = YES;
+    self.preferencesArray = [preferences readPreferences];
 
     [self layoutObjects];
 }
@@ -212,14 +216,13 @@
     [self.HomeBoardleftSideLabel.leftAnchor   constraintEqualToAnchor:self.HomeBoardleftSide.rightAnchor  constant:gap].active = YES;
     [self.HomeBoardleftSideLabel.heightAnchor constraintEqualToAnchor:self.HomeBoardleftSide.heightAnchor constant:0].active   = YES;
 
-
-
 }
 
 - (void)initSwitches
 {
-    self.preferencesArray = [preferences readPreferences];
     
+    self.preferencesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"preferencesArray"];
+
     NSMutableDictionary *preferencesDict = self.preferencesArray[0];
     if([preferencesDict objectForKey:@"checked"] != nil)
         [self.ConfirmationDouble setOn:YES animated:YES];

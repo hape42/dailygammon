@@ -1369,6 +1369,11 @@
 
 - (void)opponent:(UIButton*)sender
 {    
+    
+    NSMutableArray *preferencesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"preferencesArray"];
+    NSMutableDictionary *preferencesDict = preferencesArray[3];
+    if([preferencesDict objectForKey:@"checked"] == nil)
+        return;
     PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
     vc.modalPresentationStyle = UIModalPresentationPopover;
     vc.userID = (NSString *)[sender.layer valueForKey:@"userID"];

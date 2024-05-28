@@ -60,6 +60,9 @@
                 }
             }
             [[NSUserDefaults standardUserDefaults] setBool:isMiniBoard forKey:@"isMiniBoard"];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"dgPreferences" object:self userInfo:nil];
+
         }
         else
         {
@@ -72,7 +75,7 @@
 - (NSMutableArray *)readPreferences
 {
     NSMutableArray *preferencesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"preferencesArray"];
-    if(!preferencesArray)
+//    if(!preferencesArray)
     {
         [self initPreferences];
         preferencesArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"preferencesArray"];

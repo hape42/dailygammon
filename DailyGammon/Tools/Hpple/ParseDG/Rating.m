@@ -89,6 +89,22 @@
     NSString *wonPlayer = [NSString stringWithFormat:@"Won %d", lostMatches];
     NSString *lostPlayer = [NSString stringWithFormat:@"Lost %d", wonMatches];
 
+    if([opponentID isEqualToString:@""])
+    {
+        // Personal Preferences -> no Player Name links on game page -> no OpponentID
+        
+        ratingOpponent = @"no link";
+        wlaOpponent = [NSString stringWithFormat:@" w=? l=? a=?"];
+        activeOpponent = [NSString stringWithFormat:@"Active ? "];
+        wonOpponent = [NSString stringWithFormat:@"Won ?"];
+        lostOpponent = [NSString stringWithFormat:@"Lost ?"];
+        
+        wlaPlayer = [NSString stringWithFormat:@" w=? l=? a=? "];
+        activePlayer = [NSString stringWithFormat:@"Active ? "];
+        wonPlayer = [NSString stringWithFormat:@"Won ?"];
+        lostPlayer = [NSString stringWithFormat:@"Lost ?"];
+
+    }
 #pragma mark - rating player holen
 
     //http://dailygammon.com/bg/user/13014
