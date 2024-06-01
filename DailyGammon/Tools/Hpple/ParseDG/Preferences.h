@@ -10,11 +10,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface Preferences : NSObject
+@interface Preferences : NSObject<NSURLSessionDelegate>
 
 -(void)initPreferences;
 
 - (NSMutableArray *)readPreferences;
+
+-(void)ensurePlayerNameLink;
+
 - (void)readNextMatchOrdering;
 - (bool)isMiniBoard;
 

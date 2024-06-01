@@ -247,6 +247,9 @@ didCompleteWithError:(NSError *)error
     }
     else
     {
+        [preferences ensurePlayerNameLink];
+        
+
         [preferences initPreferences];
 
         [ self readTopPage];
