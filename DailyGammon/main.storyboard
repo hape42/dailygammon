@@ -3,7 +3,7 @@
     <device id="ipad12_9rounded" orientation="landscape" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1771,7 +1771,7 @@ Did we make you curious?</string>
             <objects>
                 <viewController storyboardIdentifier="QuickMessage" id="Ofi-DZ-Q7C" customClass="QuickMessage" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="PXa-XC-dKP">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quick message to " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hgo-eO-OaJ">
@@ -1809,22 +1809,31 @@ Did we make you curious?</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6M4-yG-KjO">
+                                <rect key="frame" x="180" y="64" width="240" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Qga-2T-83o"/>
                         <color key="backgroundColor" name="ColorViewBackground"/>
                     </view>
                     <value key="contentSizeForViewInPopover" type="size" width="400" height="400"/>
-                    <size key="freeformSize" width="600" height="400"/>
+                    <size key="freeformSize" width="600" height="500"/>
                     <connections>
                         <outlet property="cancelButton" destination="bM5-p2-Qem" id="0ua-rK-LL3"/>
                         <outlet property="header" destination="hgo-eO-OaJ" id="DdO-xo-hfe"/>
+                        <outlet property="message" destination="6M4-yG-KjO" id="dfG-uK-2a4"/>
                         <outlet property="sendButton" destination="SiC-jn-kmI" id="Bgv-o8-PFQ"/>
                         <outlet property="textView" destination="5mS-KU-bVc" id="549-QH-hKK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fKn-Vc-5JW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4022" y="-984"/>
+            <point key="canvasLocation" x="4021.6691068814052" y="-984.37499999999989"/>
         </scene>
         <!--Player Note-->
         <scene sceneID="HNF-wi-EjG">
@@ -1882,7 +1891,7 @@ Did we make you curious?</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BPL-7s-7eM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4022" y="-703"/>
+            <point key="canvasLocation" x="4022" y="-665"/>
         </scene>
         <!--ProfileVC-->
         <scene sceneID="ga0-Do-aI6">

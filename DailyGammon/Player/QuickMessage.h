@@ -23,6 +23,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) TextTools *textTools;
 @property (strong, readwrite, retain, atomic) ChatHistory *chatHistory;
 
+@property (readwrite, assign, atomic) BOOL receivedMessage;
+@property (strong, readwrite, retain, atomic) NSMutableDictionary *boardDict;
+@property (strong, readwrite, retain, atomic) UINavigationController *navController;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -34,6 +34,7 @@
 #import "GameLoungeCV.h"
 #import "PlayerLists.h"
 #import "ProfileVC.h"
+#import "QuickMessage.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -62,6 +63,18 @@
             orientationMask = UIInterfaceOrientationMaskPortrait;
         }
     }
+    if (currentViewController.class == QuickMessage.class)
+    {
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+            QuickMessage *controller = (QuickMessage *)currentViewController;
+            if (controller.receivedMessage)
+            {
+                orientationMask = UIInterfaceOrientationMaskPortrait;
+            }
+        }
+    }
+
 //    if (currentViewController.class == Review.class)       orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == Tournament.class)   orientationMask = UIInterfaceOrientationMaskAll;
 //    if (currentViewController.class == TopPageCV.class)    orientationMask = UIInterfaceOrientationMaskAll;

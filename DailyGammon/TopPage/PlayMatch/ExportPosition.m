@@ -16,7 +16,7 @@
 - (NSString *)makePositionsID
 {
     // https://www.gnu.org/software/gnubg/manual/html_node/A-technical-description-of-the-Position-ID.html
-   
+    return @"";
     NSString *posId = @"positionsID";
 
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -389,7 +389,7 @@
 
 - (NSString *)makeMatchID
 {
-    
+    return @"";
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     NSString *bitString = @"";
     NSString *bitStringTemp = @"";

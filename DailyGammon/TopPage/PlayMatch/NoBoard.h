@@ -36,10 +36,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readwrite, retain, nonatomic) UITextView *finishedMatchChat;
 @property (readwrite, assign, atomic) BOOL isFinishedMatch;
 
-@property (assign, atomic) CGRect quickmessageChatViewFrame;
-@property (readwrite, retain, nonatomic) UITextView *quickmessageChat;
-@property (readwrite, assign, atomic) BOOL isQuickmessage;
-
 @property (strong, readwrite, retain, atomic) UIViewController *presentingVC;
 
 @end
