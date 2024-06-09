@@ -810,7 +810,10 @@
                                      alertControllerWithTitle:@"Message"
                                      message:inviteArray[1]
                                      preferredStyle:UIAlertControllerStyleAlert];
-        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",inviteArray[0],inviteArray[1]]];
+        NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@ \n%@ \n%@",
+                                                                                                inviteArray[0],
+                                                                                                inviteArray[1],
+                                                                                                inviteArray[2]]];
         [message addAttribute:NSFontAttributeName
                         value:[UIFont systemFontOfSize:15.0]
                         range:NSMakeRange(0, [message length])];
@@ -834,6 +837,7 @@
                                        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
 
                                    }];
+        [okButton setValue:[design designSystemImage:@"checkmark.circle"] forKey:@"image"];
         
         UIAlertAction* noButton = [UIAlertAction
                                    actionWithTitle:@"Decline"
@@ -853,29 +857,31 @@
                                        [self playMatch:[NSString stringWithFormat:@"/bg/nextgame?submit=Next"]];
                                    }];
         
-        UIAlertAction* webButton = [UIAlertAction
-                                    actionWithTitle:@"Go to Website"
+        [noButton setValue:[design designSystemImage:@"x.circle"] forKey:@"image"];
+
+        UIAlertAction* playerButton = [UIAlertAction
+                                    actionWithTitle:@"Show player details"
                                     style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action)
                                     {
-                                        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/nextgame"]];
-                                        if ([SFSafariViewController class] != nil) {
-                                            SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:URL];
-                                            [self presentViewController:sfvc animated:YES completion:nil];
-                                        } else {
-                                            [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
-                                        }
-                                                [self.navigationController popToRootViewControllerAnimated:NO];
+            PlayerDetail *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerDetail"];
+            vc.modalPresentationStyle = UIModalPresentationPopover;
+            vc.userID = [inviteDict objectForKey:@"user"];
+            vc.navController = self.navigationController;
 
-                                                TopPageCV *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"TopPageCV"];
-
-                                                [self.navigationController pushViewController:vc animated:NO];
-
+            UIPopoverPresentationController *popController = [vc popoverPresentationController];
+            popController.permittedArrowDirections = UIPopoverArrowDirectionUnknown;
+            
+            popController.sourceView = self.view;
+            popController.sourceRect = CGRectMake(self.view.center.x, 50, 50, 50);
+            [self.navigationController presentViewController:vc animated:NO completion:nil];
+            
                                     }];
-        
+        [playerButton setValue:[design designSystemImage:@"person.circle"] forKey:@"image"];
+
         [alert addAction:okButton];
         [alert addAction:noButton];
-        [alert addAction:webButton];
+        [alert addAction:playerButton];
         alert.view.tag = ALERT_VIEW_TAG;
 
         [self presentViewController:alert animated:YES completion:nil];

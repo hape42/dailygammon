@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, readwrite, retain, atomic) NSMutableArray *playerProfileArray;
 
 @property (strong, nonatomic, readwrite) WaitView *waitView;
+@property (strong, readwrite, retain, atomic) UINavigationController *navController;
 
 @end
 

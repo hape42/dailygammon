@@ -704,6 +704,18 @@
     }
     [inviteDict setObject:inviteName forKey:@"inviteHeader"];
     
+    for(TFHppleElement *element in inviteHeader)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+                NSDictionary *dict = [child attributes];
+                NSString *href = [dict objectForKey:@"href"];
+                if(href != nil)
+                    [inviteDict setObject:[href lastPathComponent] forKey:@"user"];
+        }
+    }
+
+
     NSArray *elements  = [xpathParser searchWithXPathQuery:@"//body"];
 
     NSMutableArray *inviteDetails = [[NSMutableArray alloc]init ];

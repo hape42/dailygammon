@@ -21,6 +21,7 @@
 #import "PlayerNote.h"
 #import "ChatHistory.h"
 #import "Rating.h"
+#import "PlayMatch.h"
 
 @interface PlayerDetail ()
 
@@ -52,6 +53,7 @@
 @synthesize playerProfileArray;
 @synthesize waitView;
 @synthesize design, rating;
+@synthesize navController;
 
 - (void)viewDidLoad
 {
@@ -282,7 +284,27 @@
 }
 - (IBAction)doneAction:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+  //  [self dismissViewControllerAnimated:YES completion:nil];
+    
+    
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (self->navController)
+        {
+            NSString *matchLink = @"/bg/nextgame?submit=Next";
+
+            AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
+            app.matchLink = matchLink;
+
+            PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+            vc.topPageArray = [[NSMutableArray alloc]init];
+            
+            [self->navController pushViewController:vc animated:NO];
+        }
+     }];
+    
+    return;
+
 }
 
 -(void)readDataForPlayer
