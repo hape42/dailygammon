@@ -867,7 +867,7 @@
             float y = gap;
             NSArray *reviewText = [NSArray arrayWithObjects: @"First Move", @"Prev Move", @"Next Move", @"Last Move",nil];
             for(int i = 0; i < reviewText.count; i++)
-            {
+            { 
                 NSString *url = reviewArray[i];
                 if(!url.length)
                 {

@@ -117,11 +117,31 @@
                     
                     finishedMatchDict = [self analyzeFinishedMatch:xpathParser];
                     [app.boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
-                    
+
                  //   return boardDict;
                 }
             }
         }
+    }
+    else
+    {
+        if(caption.count > 0)
+        {
+            for(TFHppleElement *element in caption)
+            {
+                if([[element content] isEqualToString:@"Score"])
+                {
+                    NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
+                    
+                    finishedMatchDict = [self analyzeFinishedMatchReview:xpathParser];
+                    [app.boardDict setObject:finishedMatchDict forKey:@"finishedMatch"];
+                    [app.boardDict setObject:[NSNumber numberWithBool: isReview] forKey:@"isReview"];
+
+                 //   return boardDict;
+                }
+            }
+        }
+
     }
     NSString *chat = @"";
     NSRange preStart = [htmlString rangeOfString:@"<PRE>"];
@@ -685,6 +705,131 @@
     return finishedMatchDict;
 }
 
+- (NSMutableDictionary*) analyzeFinishedMatchReview: (TFHpple *)xpathParser
+{
+    
+    NSMutableDictionary *finishedMatchDict = [[NSMutableDictionary alloc]init];
+    
+    NSArray *matchHeader  = [xpathParser searchWithXPathQuery:@"//h3"];
+    NSMutableString *matchName = [[NSMutableString alloc]init];
+    NSMutableString *move = [[NSMutableString alloc]init];
+    TFHppleElement *element = matchHeader[0];
+    for (TFHppleElement *child in element.children)
+    {
+        [matchName appendString:[child content]];
+    }
+    
+    [finishedMatchDict setObject:matchName forKey:@"matchName"];
+    element = matchHeader[1];
+    for (TFHppleElement *child in element.children)
+    {
+        [move appendString:[child content]];
+    }
+    
+    [finishedMatchDict setObject:move forKey:@"move"];
+
+    NSArray *winnerHeader  = [xpathParser searchWithXPathQuery:@"//h4"];
+    NSMutableString *winnerName = [[NSMutableString alloc]init];
+    for(TFHppleElement *element in winnerHeader)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            [winnerName appendString:[child content]];
+        }
+    }
+    [finishedMatchDict setObject:winnerName forKey:@"winnerName"];
+    
+    NSArray *elements = [xpathParser searchWithXPathQuery:@"//table[2]/tr/th"];
+    NSMutableArray *elementArray = [[NSMutableArray alloc]init];
+    
+    for(TFHppleElement *element in elements)
+    {
+        [elementArray addObject:[element content]];
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"matchLength"];
+
+    elements = [xpathParser searchWithXPathQuery:@"//table[2]/tr/td"];
+    elementArray = [[NSMutableArray alloc]init];
+    
+    for(TFHppleElement *element in elements)
+    {
+        [elementArray addObject:[element content]];
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"matchPlayer"];
+    
+    elementArray = [[NSMutableArray alloc]init];
+    for(TFHppleElement *element in elements)
+    {
+        for (TFHppleElement *child in element.children)
+        {
+            for (TFHppleElement *childChild in child.children)
+            {
+                NSDictionary *dict = [childChild attributes];
+                NSString *href = [dict objectForKey:@"href"];
+                if(href != nil)
+                    [elementArray addObject:href];
+
+            }
+        }
+    }
+    [finishedMatchDict setObject:elementArray forKey:@"href"];
+
+    elements  = [xpathParser searchWithXPathQuery:@"//form[1]"];
+    elementArray = [[NSMutableArray alloc]init];
+    NSMutableArray *attributesArray = [[NSMutableArray alloc]init ];
+    
+    elements  = [xpathParser searchWithXPathQuery:@"//a"];
+    NSMutableArray *reviewArray = [[NSMutableArray alloc]initWithCapacity:4];
+    for(int i = 0; i < 4; i++)
+    {
+        reviewArray[i] = @"";
+    }
+    for(TFHppleElement *element in elements)
+    {
+        if([[element content] isEqualToString:@"First"])
+        {
+            reviewArray[0] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Prev"])
+        {
+            reviewArray[1] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Next"])
+        {
+            reviewArray[2] = [element objectForKey:@"href"];
+        }
+        if([[element content] isEqualToString:@"Last"])
+        {
+            reviewArray[3] = [element objectForKey:@"href"];
+        }
+        [finishedMatchDict setObject:reviewArray forKey:@"buttonArray"];
+
+        if([[element content] isEqualToString:@"List of Moves"])
+        {
+            [finishedMatchDict setObject:[element objectForKey:@"href"] forKey:@"List of Moves"];
+        }
+        if([[element content] isEqualToString:@"Export match"])
+        {
+            [finishedMatchDict setObject:[element objectForKey:@"href"] forKey:@"Export match"];
+        }
+
+    }
+    elements  = [xpathParser searchWithXPathQuery:@"//p[3]"];
+    for(TFHppleElement *element in elements)
+    {
+        for (TFHppleElement *child in [element children])
+        {
+           for (TFHppleElement *childs in [child children])
+            {
+                NSDictionary *dict = [childs attributes];
+                if([dict objectForKey:@"href"])
+                    [finishedMatchDict setObject:[dict objectForKey:@"href"] forKey:@"Export match"];
+            }
+        }
+    }
+
+    return finishedMatchDict;
+}
 
 - (NSMutableDictionary*) analyzeInvite: (NSString *)htmlString
 {

@@ -138,7 +138,11 @@
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
     if( finishedMatchDict != nil)
     {
-        [self finishedMatch];
+        if([[self.boardDict objectForKey:@"isReview"]boolValue])
+            [self finishedMatchReview];
+        else
+            [self finishedMatch];
+
         return;
     }
 #pragma mark TopPage
@@ -237,6 +241,8 @@
     app.matchLink = matchLink;
     
     PlayMatch *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil]  instantiateViewControllerWithIdentifier:@"PlayMatch"];
+    if([[self.boardDict objectForKey:@"isReview"]boolValue])
+        vc.isReview = YES;
     vc.topPageArray = [[NSMutableArray alloc]init];
     [self.navigationController pushViewController:vc animated:NO];
     
@@ -341,6 +347,7 @@
 - (void)finishedMatch
 {
     NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    BOOL isReview = [[self.boardDict objectForKey:@"isReview"]boolValue] ;
     NSString *href = @"";
 
     for(NSDictionary *dict in [finishedMatchDict objectForKey:@"attributes"])
@@ -350,8 +357,9 @@
     isFinishedMatch = YES;
     NSArray *chatArray = [finishedMatchDict objectForKey:@"chat"];
     bool withChat = NO;
-    if([chatArray[0] containsString:@"chat"] || ([chatArray[0] containsString:@"Quote previous message"]))
-        withChat = YES;
+    if(!isReview)
+        if([chatArray[0] containsString:@"chat"] || ([chatArray[0] containsString:@"Quote previous message"]))
+            withChat = YES;
     int edge = 10;
     int gap = 10;
     float buttonWidth = 150.0;
@@ -672,6 +680,317 @@
 
     return;
 }
+
+- (void)finishedMatchReview
+{
+    NSMutableDictionary *finishedMatchDict = [self.boardDict objectForKey:@"finishedMatch"] ;
+    BOOL isReview = [[self.boardDict objectForKey:@"isReview"]boolValue] ;
+    NSString *href = @"";
+
+    for(NSDictionary *dict in [finishedMatchDict objectForKey:@"attributes"])
+    {
+        href = [dict objectForKey:@"action"];
+    }
+    isFinishedMatch = YES;
+    int edge = 10;
+    int gap = 10;
+    float buttonWidth = 150.0;
+    float buttonHight = 30;
+    float scoreWidth = 50;
+    
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+
+#pragma mark infoView
+    self.infoView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+    [self.view addSubview:self.infoView];
+
+    [self.infoView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.infoView.heightAnchor constraintEqualToConstant:350].active = YES;
+    [self.infoView.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.infoView.leftAnchor   constraintEqualToAnchor:safe.leftAnchor            constant:edge].active  = YES;
+    [self.infoView.rightAnchor  constraintEqualToAnchor:self.moreButton.leftAnchor constant:0].active     = YES;
+
+#pragma mark matchName
+
+    UILabel *matchName = [[UILabel alloc] initWithFrame:CGRectZero];
+    matchName.text = [finishedMatchDict objectForKey:@"matchName"];
+    matchName.textAlignment = NSTextAlignmentCenter;
+    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:[finishedMatchDict objectForKey:@"matchName"]];
+    [attr addAttribute:NSFontAttributeName
+                  value:[UIFont systemFontOfSize:40.0]
+                  range:NSMakeRange(0, [attr length])];
+    [matchName setAttributedText:attr];
+    matchName.adjustsFontSizeToFitWidth = YES;
+    matchName.numberOfLines = 0;
+    matchName.minimumScaleFactor = 0.5;
+    matchName.adjustsFontSizeToFitWidth = YES;
+    [self.infoView addSubview:matchName];
+    
+    [matchName setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [matchName.topAnchor    constraintEqualToAnchor:self.infoView.topAnchor   constant:0].active     = YES;
+    [matchName.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [matchName.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [matchName.heightAnchor constraintEqualToConstant:30].active                                     = YES;
+
+#pragma mark move
+
+    NSString *moveText = [finishedMatchDict objectForKey:@"move"];
+        
+    UILabel *move = [[UILabel alloc] initWithFrame:CGRectZero];
+    move.textAlignment = NSTextAlignmentLeft;
+    attr = [[NSMutableAttributedString alloc] initWithString:moveText];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:20.0]
+                 range:NSMakeRange(0, [attr length])];
+    [move setAttributedText:attr];
+    move.adjustsFontSizeToFitWidth = YES;
+    move.numberOfLines = 0;
+    move.minimumScaleFactor = 0.1;
+    move.adjustsFontSizeToFitWidth = YES;
+    
+    [self.infoView addSubview:move];
+    
+    [move setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [move.topAnchor    constraintEqualToAnchor:matchName.bottomAnchor    constant:0].active     = YES;
+    [move.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [move.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [move.heightAnchor constraintEqualToConstant:30].active                                     = YES;
+
+#pragma mark winner
+
+    NSString *htmlString = [self.boardDict objectForKey:@"htmlString"];
+
+    NSString *winnerText = [finishedMatchDict objectForKey:@"winnerName"];
+        
+    UILabel *winner = [[UILabel alloc] initWithFrame:CGRectZero];
+    winner.textAlignment = NSTextAlignmentLeft;
+    attr = [[NSMutableAttributedString alloc] initWithString:winnerText];
+    [attr addAttribute:NSFontAttributeName
+                 value:[UIFont systemFontOfSize:30.0]
+                 range:NSMakeRange(0, [attr length])];
+    [winner setAttributedText:attr];
+    winner.adjustsFontSizeToFitWidth = YES;
+    winner.numberOfLines = 0;
+    winner.minimumScaleFactor = 0.1;
+    winner.adjustsFontSizeToFitWidth = YES;
+    
+    [self.infoView addSubview:winner];
+    
+    [winner setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [winner.topAnchor    constraintEqualToAnchor:move.bottomAnchor    constant:0].active     = YES;
+    [winner.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [winner.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [winner.heightAnchor constraintEqualToConstant:30].active                                     = YES;
+
+#pragma mark length
+
+    UILabel *length = [[UILabel alloc] initWithFrame:CGRectZero];
+    length.textAlignment = NSTextAlignmentLeft;
+    NSArray *lengthArray = [finishedMatchDict objectForKey:@"matchLength"];
+    length.text = [NSString stringWithFormat:@"%@ %@",lengthArray[0], lengthArray[1]];
+    [self.infoView addSubview:length];
+    
+    [length setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [length.topAnchor    constraintEqualToAnchor:winner.bottomAnchor       constant:0].active     = YES;
+    [length.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor  constant:edge].active  = YES;
+    [length.rightAnchor  constraintEqualToAnchor:self.infoView.rightAnchor constant:-edge].active = YES;
+    [length.heightAnchor constraintEqualToConstant:30].active                                     = YES;
+
+#pragma mark buttonPlayer1 player1Score buttonPlayer2 player2Score
+
+    NSArray *playerArray = [finishedMatchDict objectForKey:@"matchPlayer"];
+    NSArray *playerIDArray = [finishedMatchDict objectForKey:@"href"];
+    
+    NSString *userID = [[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"];
+
+    self.buttonPlayer1 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+    [self.buttonPlayer1 setTitle:playerArray[0] forState: UIControlStateNormal];
+    [self.buttonPlayer1.layer setValue:playerArray[0] forKey:@"name"];
+    [self.buttonPlayer1.layer setValue:[playerIDArray[0] lastPathComponent] forKey:@"userID"];
+    if(![userID isEqualToString:[playerIDArray[0] lastPathComponent] ])
+        [self.buttonPlayer1 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [self.infoView addSubview:self.buttonPlayer1];
+
+    self.player1Score = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.player1Score.textAlignment = NSTextAlignmentCenter;
+    self.player1Score.text = playerArray[1];
+    [self.infoView addSubview:self.player1Score];
+
+    self.buttonPlayer2 = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+    [self.buttonPlayer2 setTitle:playerArray[2] forState: UIControlStateNormal];
+    [self.buttonPlayer2.layer setValue:playerArray[2] forKey:@"name"];
+    [self.buttonPlayer2.layer setValue:[playerIDArray[1] lastPathComponent] forKey:@"userID"];
+    if(![userID isEqualToString:[playerIDArray[1] lastPathComponent] ])
+        [self.buttonPlayer2 addTarget:self action:@selector(player:) forControlEvents:UIControlEventTouchUpInside];
+    [self.infoView addSubview:self.buttonPlayer2];
+
+    self.player2Score = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.player2Score.textAlignment = NSTextAlignmentCenter;
+    self.player2Score.text = playerArray[3];
+    [self.infoView addSubview:self.player2Score];
+
+#pragma mark autoLayout buttonPlayer1 player1Score buttonPlayer2 player2Score
+
+    [self.buttonPlayer1 setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.player1Score  setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.buttonPlayer2 setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.player2Score  setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.buttonPlayer1.topAnchor    constraintEqualToAnchor:length.bottomAnchor      constant:gap].active  = YES;
+    [self.buttonPlayer1.leftAnchor   constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [self.buttonPlayer1.widthAnchor  constraintEqualToConstant:buttonWidth].active                          = YES;
+    [self.buttonPlayer1.heightAnchor constraintEqualToConstant:buttonHight].active                          = YES;
+
+    [self.player1Score.topAnchor    constraintEqualToAnchor:length.bottomAnchor            constant:gap].active = YES;
+    [self.player1Score.leftAnchor   constraintEqualToAnchor:self.buttonPlayer1.rightAnchor constant:gap].active = YES;
+    [self.player1Score.widthAnchor  constraintEqualToConstant:scoreWidth].active  = YES;
+    [self.player1Score.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+
+    [self.buttonPlayer2.heightAnchor constraintEqualToConstant:buttonHight].active  = YES;
+    [self.buttonPlayer2.widthAnchor  constraintEqualToConstant:buttonWidth].active  = YES;
+
+    [self.player2Score.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [self.player2Score.widthAnchor constraintEqualToConstant:scoreWidth].active   = YES;
+
+    self.landscapeConstraints = @[
+        [self.buttonPlayer2.topAnchor  constraintEqualToAnchor:length.bottomAnchor            constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.player1Score.rightAnchor  constant:gap],
+        [self.player2Score.topAnchor   constraintEqualToAnchor:self.buttonPlayer2.topAnchor   constant:0],
+        [self.player2Score.leftAnchor  constraintEqualToAnchor:self.buttonPlayer2.rightAnchor constant:gap]
+
+    ];
+    self.portraitConstraints = @[
+        [self.buttonPlayer2.topAnchor  constraintEqualToAnchor:self.buttonPlayer1.bottomAnchor constant:gap],
+        [self.buttonPlayer2.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor        constant:edge] ,
+        [self.player2Score.topAnchor   constraintEqualToAnchor:self.buttonPlayer2.topAnchor    constant:0],
+        [self.player2Score.leftAnchor  constraintEqualToAnchor:self.buttonPlayer2.rightAnchor  constant:gap]
+    ];
+
+    if(safe.layoutFrame.size.width > (edge + buttonWidth + gap + scoreWidth + gap + buttonWidth + gap + scoreWidth + edge) )
+    {
+        [NSLayoutConstraint deactivateConstraints:self.portraitConstraints];
+        [NSLayoutConstraint activateConstraints:self.landscapeConstraints];
+    }
+    else
+    {
+        [NSLayoutConstraint deactivateConstraints:self.landscapeConstraints];
+        [NSLayoutConstraint activateConstraints:self.portraitConstraints];
+    }
+ 
+#pragma mark First Prev Next Last / Move
+    
+    NSMutableArray *buttonArray = [finishedMatchDict objectForKey:@"buttonArray"];
+
+    DGButton *buttonFirst = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+    [buttonFirst setTitle:@"First" forState: UIControlStateNormal];
+    [buttonFirst addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonFirst.layer setValue:buttonArray[0] forKey:@"href"];
+
+    [self.infoView addSubview:buttonFirst];
+    
+    [buttonFirst setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [buttonFirst.topAnchor constraintEqualToAnchor:self.buttonPlayer2.bottomAnchor constant:gap*3].active = YES;
+    [buttonFirst.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [buttonFirst.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [buttonFirst.widthAnchor constraintEqualToConstant:70].active = YES;
+
+    DGButton *buttonPrev = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+    [buttonPrev setTitle:@"Prev" forState: UIControlStateNormal];
+    [buttonPrev addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonPrev.layer setValue:buttonArray[1] forKey:@"href"];
+
+    [self.infoView addSubview:buttonPrev];
+    
+    [buttonPrev setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [buttonPrev.topAnchor constraintEqualToAnchor:buttonFirst.topAnchor constant:0].active = YES;
+    [buttonPrev.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [buttonPrev.leftAnchor constraintEqualToAnchor:buttonFirst.rightAnchor constant:gap].active = YES;
+    [buttonPrev.widthAnchor constraintEqualToConstant:70].active = YES;
+
+    NSString *url = buttonArray[2];
+    if(url.length == 0) // no next and no last move Button
+    {
+        
+    }
+    else
+    {
+        DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+        [buttonNext setTitle:@"Next" forState: UIControlStateNormal];
+        [buttonNext addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
+        [buttonNext.layer setValue:buttonArray[2] forKey:@"href"];
+        
+        [self.infoView addSubview:buttonNext];
+        
+        [buttonNext setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [buttonNext.topAnchor constraintEqualToAnchor:buttonFirst.topAnchor constant:0].active = YES;
+        [buttonNext.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [buttonNext.leftAnchor constraintEqualToAnchor:buttonPrev.rightAnchor constant:gap].active = YES;
+        [buttonNext.widthAnchor constraintEqualToConstant:70].active = YES;
+        
+        DGButton *buttonLast = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+        [buttonLast setTitle:@"Last" forState: UIControlStateNormal];
+        [buttonLast addTarget:self action:@selector(actionReview:) forControlEvents:UIControlEventTouchUpInside];
+        [buttonLast.layer setValue:buttonArray[3] forKey:@"href"];
+        
+        [self.infoView addSubview:buttonLast];
+        
+        [buttonLast setTranslatesAutoresizingMaskIntoConstraints:NO];
+        
+        [buttonLast.topAnchor constraintEqualToAnchor:buttonFirst.topAnchor constant:0].active = YES;
+        [buttonLast.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+        [buttonLast.leftAnchor constraintEqualToAnchor:buttonNext.rightAnchor constant:gap].active = YES;
+        [buttonLast.widthAnchor constraintEqualToConstant:70].active = YES;
+    }
+    url = [finishedMatchDict objectForKey:@"Export match"];
+    if(url.length == 0) // Export Button
+        return;
+
+#pragma mark Export Button
+    
+    DGButton *buttonExport = [[DGButton alloc] initWithFrame:CGRectMake(0, 0, buttonWidth, buttonHight)];
+    [buttonExport setTitle:@"Export match URL" forState: UIControlStateNormal];
+    [buttonExport addTarget:self action:@selector(exportAction:) forControlEvents:UIControlEventTouchUpInside];
+    [buttonExport.layer setValue:url forKey:@"href"];
+
+    [self.infoView addSubview:buttonExport];
+    
+    [buttonExport setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [buttonExport.bottomAnchor constraintEqualToAnchor:self.infoView.bottomAnchor constant:-edge].active = YES;
+    [buttonExport.heightAnchor constraintEqualToConstant:buttonHight].active = YES;
+    [buttonExport.leftAnchor constraintEqualToAnchor:self.infoView.leftAnchor constant:edge].active = YES;
+    [buttonExport.widthAnchor constraintEqualToConstant:140+gap].active = YES;
+
+    return;
+}
+- (void)actionReview:(UIButton*)button
+{
+    [self playMatch:(NSString *)[button.layer valueForKey:@"href"]];
+}
+
+- (IBAction)exportAction:(UIButton*)button
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@", (NSString *)[button.layer valueForKey:@"href"]]];
+
+    UIActivityViewController *shareVC = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
+    
+    shareVC.popoverPresentationController.sourceView    = self.view;
+    shareVC.popoverPresentationController.sourceRect = button.frame;
+    [self presentViewController:shareVC animated:YES completion:nil];
+
+    return;
+
+}
+
 -(void)notYetImplemented:(id)sender
 {
     NSString *title = @"not yet implemented";
