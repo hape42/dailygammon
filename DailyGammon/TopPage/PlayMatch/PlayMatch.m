@@ -306,6 +306,18 @@
  
         [alert addAction:okButton];
 
+        UIAlertAction* nextButton = [UIAlertAction
+                                    actionWithTitle:@"Next Game"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+            app.matchLink = [app.actionDict objectForKey:@"SkipGame"];
+
+            [self showMatch:YES];
+                                     }];
+ 
+        [alert addAction:nextButton];
+
         [self presentViewController:alert animated:YES completion:nil];
 
         return;
