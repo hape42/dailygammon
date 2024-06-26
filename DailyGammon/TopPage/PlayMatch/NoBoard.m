@@ -1223,6 +1223,10 @@
                       matchName:@""];
 
     QuickMessage *controller = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"QuickMessage"];
+    controller.playerName = [[self.boardDict objectForKey:@"matchName"]
+                             stringByReplacingOccurrencesOfString:@"You have received the following quick message from "
+                             withString:@""];
+    controller.playerNumber = [[dict objectForKey:@"action"] lastPathComponent];
     controller.receivedMessage = YES;
     controller.boardDict = self.boardDict;
     controller.navController = self.navigationController;
