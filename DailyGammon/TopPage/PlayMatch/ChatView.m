@@ -261,6 +261,8 @@
 #pragma mark - PlayerChat
     playerChat = [[UITextView alloc] init];
     [playerChat setFont:[UIFont systemFontOfSize:15]];
+    playerChat.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
+
     playerChat.layer.borderWidth = 1;
     playerChat.layer.borderColor = [[schemaDict objectForKey:@"TintColor"] CGColor];
     playerChat.layer.cornerRadius = 14.0f;
@@ -315,7 +317,7 @@
     if(self.backgroundColor == [UIColor clearColor])
     {
         self.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-        playerChat.backgroundColor = [UIColor whiteColor];
+        playerChat.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
 
         transparentButton = [design designChatTransparentButton:transparentButton isTransparent:NO];
     }
