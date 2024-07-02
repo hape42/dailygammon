@@ -104,6 +104,7 @@
 		E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FA69362969CE0900D88C26 /* DGLabel.m */; };
 		E0FB9E4329AA35BA00E668B9 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FB9E4229AA35B900E668B9 /* Constants.m */; };
 		E0FD83532B6A340E003B6DBF /* TopPageCV.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FD83522B6A340E003B6DBF /* TopPageCV.m */; };
+		E0FE9FA22C33E886003ADDF4 /* WebViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E0FE9FA12C33E886003ADDF4 /* WebViewVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -367,6 +368,8 @@
 		E0FB9E4229AA35B900E668B9 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		E0FD83512B6A340E003B6DBF /* TopPageCV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopPageCV.h; sourceTree = "<group>"; };
 		E0FD83522B6A340E003B6DBF /* TopPageCV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopPageCV.m; sourceTree = "<group>"; };
+		E0FE9FA02C33E886003ADDF4 /* WebViewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewVC.h; sourceTree = "<group>"; };
+		E0FE9FA12C33E886003ADDF4 /* WebViewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -772,6 +775,7 @@
 				E002F19F29A0F8DC0028098C /* Review */,
 				E0F1E3FB2229066300494918 /* iPad */,
 				E0F1E3FA2229054700494918 /* iPhone */,
+				E0FE9F9D2C33E7DC003ADDF4 /* WebView */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
 				E0F9589F21AD185C003DAC01 /* Tools */,
 				E0F9588921AD1688003DAC01 /* AppDelegate.h */,
@@ -847,6 +851,15 @@
 				E0F9589221AD168B003DAC01 /* Assets.xcassets */,
 			);
 			path = Bilder;
+			sourceTree = "<group>";
+		};
+		E0FE9F9D2C33E7DC003ADDF4 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				E0FE9FA02C33E886003ADDF4 /* WebViewVC.h */,
+				E0FE9FA12C33E886003ADDF4 /* WebViewVC.m */,
+			);
+			path = WebView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1026,6 +1039,7 @@
 				E0FA69372969CE0900D88C26 /* DGLabel.m in Sources */,
 				E09C009221B2FADB0056D2A2 /* TFHpple.m in Sources */,
 				E0264AE22BCD0E8500A6C9D4 /* TextTools.m in Sources */,
+				E0FE9FA22C33E886003ADDF4 /* WebViewVC.m in Sources */,
 				E02C7BC729C4461E003B6357 /* WaitView.m in Sources */,
 				E0F9589921AD168B003DAC01 /* main.m in Sources */,
 				E038E502273D67050087C4A4 /* RatingTools.m in Sources */,

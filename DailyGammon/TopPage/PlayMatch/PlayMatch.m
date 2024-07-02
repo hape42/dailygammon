@@ -35,6 +35,7 @@
 #import "NoBoard.h"
 #import "PlayerDetail.h"
 #import "ChatHistory.h"
+#import "WebViewVC.h"
 
 @interface PlayMatch ()
 
@@ -292,7 +293,7 @@
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Double Repeat"
-                                     message:@"Unfortunately, this app does not support \"Double Repeat\" matches."
+                                     message:@"Unfortunately, this app does not support \"Double Repeat\" matches. \n You can skip the match or play in the browser."
                                      preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction* okButton = [UIAlertAction
@@ -317,6 +318,20 @@
                                      }];
  
         [alert addAction:nextButton];
+
+        UIAlertAction* playButton = [UIAlertAction
+                                    actionWithTitle:@"Play in browser"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action)
+                                    {
+
+            WebViewVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"WebViewVC"];
+            vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[app.actionDict objectForKey:@"action"]]];
+            [self.navigationController pushViewController:vc animated:NO];
+
+                                     }];
+ 
+        [alert addAction:playButton];
 
         [self presentViewController:alert animated:YES completion:nil];
 

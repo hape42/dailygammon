@@ -201,7 +201,7 @@
     
     [self layoutObjects];
     [self initGraph];
-
+ 
 }
 
 -(void)makeAverageArray

@@ -165,7 +165,7 @@
 #pragma mark sendButton autoLayout
     [self.sendButton setTranslatesAutoresizingMaskIntoConstraints:NO];
     if(receivedMessage)
-        [self.sendButton setTitle:@"Send Replay" forState: UIControlStateNormal];
+        [self.sendButton setTitle:@"Send Reply" forState: UIControlStateNormal];
     
     [self.sendButton.bottomAnchor constraintEqualToAnchor:self.view.keyboardLayoutGuide.topAnchor constant:-edge].active = YES;
     [self.sendButton.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;

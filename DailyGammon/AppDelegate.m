@@ -35,6 +35,7 @@
 #import "PlayerLists.h"
 #import "ProfileVC.h"
 #import "QuickMessage.h"
+#import "WebViewVC.h"
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
 
@@ -142,15 +143,16 @@
 
     }]];
 
-    [menuArray addObject:[UIAction actionWithTitle:@"Help"
+    [menuArray addObject:[UIAction actionWithTitle:@"Help" 
                                              image:[design designSystemImage:@"questionmark.circle"]
                                         identifier:@"3"
                                            handler:^(__kindof UIAction* _Nonnull action) {
         [navigationController popToRootViewControllerAnimated:NO];
         
-        NSURL *URL = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
-        
-        [[UIApplication sharedApplication] openURL:URL options:@{} completionHandler:nil];
+        WebViewVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"WebViewVC"];
+        vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/help"]];
+
+        [navigationController pushViewController:vc animated:NO];
 
     }]];
 
@@ -227,6 +229,18 @@
         
         PlayerLists *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"PlayerLists"];
         [navigationController pushViewController:vc animated:NO];
+    }]];
+
+    [menuArray addObject:[UIAction actionWithTitle:@"Discussion"
+                                             image:[design designSystemImage:@"text.bubble"]
+                                        identifier:@"10"
+                                           handler:^(__kindof UIAction* _Nonnull action) {
+        [navigationController popToRootViewControllerAnimated:NO];
+        
+        WebViewVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"WebViewVC"];
+        vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com/bg/forum2"]];
+        [navigationController pushViewController:vc animated:NO];
+
     }]];
 
     return [UIMenu menuWithChildren:menuArray];

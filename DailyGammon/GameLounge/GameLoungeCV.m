@@ -480,24 +480,69 @@
 
 -(void)signUp:(UIButton*)sender
 {
-    NSArray *row = self.gameLoungeArray[sender.tag];
-    NSDictionary *signUp = row[7];
-    
     [self startActivityIndicator:@"Getting Game Lounge data from www.dailygammon.com"];
     
-    DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
-                          {
-        if (success)
-        {
-            [self readGameLounge];
-        }
-        else
-        {
-            XLog(@"Error: %@", error.localizedDescription);
-        }
+    NSArray *row = self.gameLoungeArray[sender.tag];
+    NSDictionary *signUp = row[7];
+    NSDictionary *typ = row[1];
+    if([[typ objectForKey:@"Text"] isEqualToString:@"double-repeat"] && ![[signUp objectForKey:@"Text"] isEqualToString:@"Cancel Signup\n"])
+    {
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Note"
+                                     message:@"This App doesn't support Double-repeat variants. If you join, play must be in web browser, not this app. "
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* exitButton = [UIAlertAction
+                                     actionWithTitle:@"Exit"
+                                     style:UIAlertActionStyleDefault
+                                     handler:^(UIAlertAction * action)
+                                     {
+            [self stopActivityIndicator];
+            return;
+        }];
+        
+        UIAlertAction* joinButton = [UIAlertAction
+                                     actionWithTitle:@"Join anyway"
+                                     style:UIAlertActionStyleDefault
+                                     handler:^(UIAlertAction * action)
+                                     {
+            DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                                  {
+                if (success)
+                {
+                    [self readGameLounge];
+                }
+                else
+                {
+                    XLog(@"Error: %@", error.localizedDescription);
+                }
+            }];
+            request = nil;
+        
     }];
-    request = nil;
-    
+
+        alert.view.tag = ALERT_VIEW_TAG;
+        [alert addAction:exitButton];
+        [alert addAction:joinButton];
+
+        [self presentViewController:alert animated:YES completion:nil];
+
+    }
+    else
+    {
+        DGRequest *request = [[DGRequest alloc] initWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[signUp objectForKey:@"href"]] completionHandler:^(BOOL success, NSError *error, NSString *result)
+                              {
+            if (success)
+            {
+                [self readGameLounge];
+            }
+            else
+            {
+                XLog(@"Error: %@", error.localizedDescription);
+            }
+        }];
+        request = nil;
+    }
 }
 
 - (void)showNote:(UIButton*)sender
