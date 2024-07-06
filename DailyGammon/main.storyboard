@@ -2161,7 +2161,7 @@ Did we make you curious?</string>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="LkA-BR-Umb"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="ColorViewBackground"/>
                     </view>
                     <connections>
                         <outlet property="moreButton" destination="OUS-ft-4GE" id="XRx-10-wxN"/>

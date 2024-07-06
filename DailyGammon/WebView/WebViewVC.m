@@ -28,6 +28,8 @@
 
     design = [[Design alloc] init];
 
+    self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
+
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
     self.moreButton.showsMenuAsPrimaryAction = YES;

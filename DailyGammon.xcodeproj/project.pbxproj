@@ -714,20 +714,6 @@
 			path = Encode;
 			sourceTree = "<group>";
 		};
-		E0F1E3FA2229054700494918 /* iPhone */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = iPhone;
-			sourceTree = "<group>";
-		};
-		E0F1E3FB2229066300494918 /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = iPad;
-			sourceTree = "<group>";
-		};
 		E0F5597829914B0600EB5DBE /* Tournament */ = {
 			isa = PBXGroup;
 			children = (
@@ -773,8 +759,6 @@
 				E09871E52938B91A0043DC8A /* About */,
 				E0355390298E694C002C820C /* PlayerLists */,
 				E002F19F29A0F8DC0028098C /* Review */,
-				E0F1E3FB2229066300494918 /* iPad */,
-				E0F1E3FA2229054700494918 /* iPhone */,
 				E0FE9F9D2C33E7DC003ADDF4 /* WebView */,
 				E06E1C5421B7B2DE003B310F /* SetUp */,
 				E0F9589F21AD185C003DAC01 /* Tools */,

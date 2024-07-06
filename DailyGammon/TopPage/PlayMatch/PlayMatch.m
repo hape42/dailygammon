@@ -326,7 +326,7 @@
                                     {
 
             WebViewVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"WebViewVC"];
-            vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",[app.actionDict objectForKey:@"action"]]];
+            vc.url = [NSURL URLWithString:[NSString stringWithFormat:@"http://dailygammon.com%@",app.matchLink]];
             [self.navigationController pushViewController:vc animated:NO];
 
                                      }];
