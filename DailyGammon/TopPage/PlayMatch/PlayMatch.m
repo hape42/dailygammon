@@ -210,12 +210,7 @@
         app.boardDict  = [[NSMutableDictionary alloc]init];
         app.actionDict = [[NSMutableDictionary alloc]init];
 
-        XLog(@"Start readMatch");
-
         [match readMatch:app.matchLink reviewMatch:isReview ];
-        
-        XLog(@"Ende readMatch");
-
     }
     else
     {
@@ -451,7 +446,7 @@
     [self.view addSubview:playerView];
     [self.view addSubview:opponentView];
 
-    float actionViewHeight  = actionView.layer.frame.size.height - 50 ; // skip Button
+    float actionViewHeight  = actionView.layer.frame.size.height / 4 * 3 ; // skip Button
     float actionViewWidth = actionView.layer.frame.size.width;
 
     UIView *upperThird = [[UIView alloc]initWithFrame:CGRectMake(0, 0,  actionViewWidth, actionViewHeight /3)];
@@ -471,8 +466,8 @@
 
     float gap = 10;
     float verifyTextWidth = 50;
-
-    int buttonHeight = 35;
+    
+    int buttonHeight = MIN( (actionViewHeight/3 - 4), 35) ;
     int buttonWidth = 110;
     
     float switchWidth = 50;
@@ -553,24 +548,18 @@
             {
                 buttonDouble.frame = CGRectMake(thirdXwithVerify, thirdY, buttonWidth, buttonHeight);
                 
-                UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
-                                          CGRectMake(buttonDouble.frame.origin.x + buttonWidth + gap,
-                                                     thirdY  ,
-                                                     switchWidth,
-                                                     buttonHeight)];
-//                verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
-                frame = verifyDouble.frame;
-                frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
-                verifyDouble.frame = frame;
-                
+                UISwitch *verifyDouble = [self makeSwitch:buttonDouble.frame.origin.x + buttonWidth + gap
+                                                        y:buttonDouble.frame.origin.y + (buttonDouble.frame.size.height - 31) / 2
+                                                    width:switchWidth
+                                                   height:buttonHeight];
                 [verifyDouble addTarget: self action: @selector(actionVerifyDouble:) forControlEvents:UIControlEventValueChanged];
-                verifyDouble = [design makeNiceSwitch:verifyDouble];
                 [middleThird addSubview: verifyDouble];
                 
-                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + gap,
-                                                                                      thirdY,
-                                                                                      verifyTextWidth,
-                                                                                      buttonHeight)];
+                UILabel *verifyDoubleText = [[UILabel alloc] initWithFrame:
+                                             CGRectMake(verifyDouble.frame.origin.x + verifyDouble.frame.size.width + gap,
+                                                        thirdY,
+                                                        verifyTextWidth,
+                                                        buttonHeight)];
                 verifyDoubleText.text = @"Verify";
                 [middleThird addSubview: verifyDoubleText];
             }
@@ -602,49 +591,41 @@
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
-                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                thirdY  ,
-                                                                                                switchWidth,
-                                                                                                buttonHeight)];
-//                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
-                            frame = verifyAccept.frame;
-                            frame.origin.y = buttonAccept.frame.origin.y;
-                            verifyAccept.frame = frame;
                             
+                            UISwitch *verifyAccept = [self makeSwitch:buttonAccept.frame.origin.x + buttonWidth + gap
+                                                                    y:buttonAccept.frame.origin.y + (buttonAccept.frame.size.height - 31) / 2
+                                                                width:switchWidth
+                                                               height:buttonHeight];
+
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
-                            verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [upperThird addSubview: verifyAccept];
                             
-                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
-                                                                                                  thirdY,
-                                                                                                  verifyTextWidth,
-                                                                                                  buttonHeight)];
+                            UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:
+                                                         CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
+                                                                    thirdY,
+                                                                    verifyTextWidth,
+                                                                    buttonHeight)];
                             verifyAcceptText.text = @"Verify";
                             [upperThird addSubview: verifyAcceptText];
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 thirdY  ,
-                                                                                                 switchWidth,
-                                                                                                 buttonHeight)];
-//                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
-                            frame = verifyDecline.frame;
-                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
-                            verifyDecline.frame = frame;
-                            
+                            UISwitch *verifyDecline = [self makeSwitch:buttonAccept.frame.origin.x + buttonWidth + gap
+                                                                     y:buttonAccept.frame.origin.y + (buttonAccept.frame.size.height - 31) / 2
+                                                                 width:switchWidth
+                                                                height:buttonHeight];
+
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
-                            verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [middleThird addSubview: verifyDecline];
                             
-                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
-                                                                                                   thirdY,
-                                                                                                   verifyTextWidth,
-                                                                                                   buttonHeight)];
+                            UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:
+                                                          CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
+                                                                     thirdY,
+                                                                     verifyTextWidth,
+                                                                    buttonHeight)];
                             verifyDeclineText.text = @"Verify";
                             [middleThird addSubview: verifyDeclineText];
                         }
-                        
                     }
                 }
             }
@@ -682,17 +663,12 @@
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Accept"])
                         {
-                            UISwitch *verifyAccept = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                thirdY  ,
-                                                                                                switchWidth,
-                                                                                                buttonHeight)];
-                            verifyAccept.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
-                            frame = verifyAccept.frame;
-                            frame.origin.y = buttonAccept.frame.origin.y;
-                            verifyAccept.frame = frame;
-                            
+                            UISwitch *verifyAccept = [self makeSwitch:buttonAccept.frame.origin.x + buttonWidth + gap
+                                                                    y:buttonAccept.frame.origin.y + (buttonAccept.frame.size.height - 31) / 2
+                                                                width:switchWidth
+                                                               height:buttonHeight];
+
                             [verifyAccept addTarget: self action: @selector(actionVerifyAccept:) forControlEvents:UIControlEventValueChanged];
-                            verifyAccept = [design makeNiceSwitch:verifyAccept];
                             [upperThird addSubview: verifyAccept];
                             
                             UILabel *verifyAcceptText = [[UILabel alloc] initWithFrame:CGRectMake(verifyAccept.frame.origin.x + verifyAccept.frame.size.width + gap,
@@ -704,15 +680,11 @@
                         }
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 thirdY  ,
-                                                                                                 switchWidth,
-                                                                                                 buttonHeight)];
-                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
-                            frame = verifyDecline.frame;
-                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
-                            verifyDecline.frame = frame;
-                            
+                            UISwitch *verifyDecline = [self makeSwitch:buttonAccept.frame.origin.x + buttonWidth + gap
+                                                                     y:buttonAccept.frame.origin.y + (buttonAccept.frame.size.height - 31) / 2
+                                                                 width:switchWidth
+                                                                height:buttonHeight];
+
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
                             verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [lowerThird addSubview: verifyDecline];
@@ -757,17 +729,12 @@
                     {
                         if([[dict objectForKey:@"value"]isEqualToString:@"Decline"])
                         {
-                            UISwitch *verifyDecline = [[UISwitch alloc] initWithFrame:CGRectMake(buttonAccept.frame.origin.x + buttonWidth + gap,
-                                                                                                 thirdY  ,
-                                                                                                 switchWidth,
-                                                                                                 buttonHeight)];
-                            verifyDecline.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0);
-                            frame = verifyDecline.frame;
-                            frame.origin.y = buttonPass.frame.origin.y; // Yposition wie double Button
-                            verifyDecline.frame = frame;
-                            
+                            UISwitch *verifyDecline = [self makeSwitch:buttonAccept.frame.origin.x + buttonWidth + gap
+                                                                     y:buttonAccept.frame.origin.y + (buttonAccept.frame.size.height - 31) / 2
+                                                                 width:switchWidth
+                                                                height:buttonHeight];
+
                             [verifyDecline addTarget: self action: @selector(actionVerifyDecline:) forControlEvents:UIControlEventValueChanged];
-                            verifyDecline = [design makeNiceSwitch:verifyDecline];
                             [middleThird addSubview: verifyDecline];
                             
                             UILabel *verifyDeclineText = [[UILabel alloc] initWithFrame:CGRectMake(verifyDecline.frame.origin.x + verifyDecline.frame.size.width + gap,
@@ -931,27 +898,32 @@
     if([[app.actionDict objectForKey:@"Message"] length] != 0)
     {
         DGLabel *messageText = [[DGLabel alloc] initWithFrame:CGRectMake(10,
-                                                                         actionView.frame.size.height - 40 - 10 - 40,
-                                                                         actionView.frame.size.width - 20,
-                                                                         35)];
+thirdY,                                                                         actionView.frame.size.width - 20,
+                                                                         buttonHeight)];
         messageText.text = [app.actionDict objectForKey:@"Message"];
         messageText.textAlignment = NSTextAlignmentCenter;
         messageText.textColor   = [UIColor colorNamed:@"ColorSwitch"];
         messageText.numberOfLines = 0;
 
-        [actionView addSubview: messageText];
+        [lowerThird addSubview: messageText];
 
     }
 
 #pragma mark - Button Skip Game
     
-    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, actionView.frame.size.height - 40 - 10, actionView.frame.size.width - 10, 1)];
+    UIView *skipGameArea =  [[UIView alloc]initWithFrame:CGRectMake(0, lowerThird.frame.origin.y + lowerThird.frame.size.height,  actionViewWidth, actionViewHeight /3)];
+//    skipGameArea.backgroundColor = UIColor.cyanColor;
+//    middleThird.layer.borderWidth = 1;
+    [actionView addSubview:skipGameArea];
+
+    UIView *linie = [[UIView alloc] initWithFrame:CGRectMake(5, ((actionView.frame.size.height / 4) * 3) + 0, actionView.frame.size.width - 10, 1)];
     linie.backgroundColor = [UIColor blackColor];
-    [actionView addSubview:linie];
+    [skipGameArea addSubview:linie];
+
 
     if(isReview)
     {
-        DGButton *buttonAllMoves = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, actionView.frame.size.height - 45, 150, 35)];
+        DGButton *buttonAllMoves = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 75, actionView.frame.size.height - 45, 150, buttonHeight)];
         [buttonAllMoves setTitle:@"List of Moves" forState: UIControlStateNormal];
         [buttonAllMoves addTarget:self action:@selector(actionAllMoves:) forControlEvents:UIControlEventTouchUpInside];
         [buttonAllMoves.layer setValue: [app.actionDict objectForKey:@"List of Moves"] forKey:@"href"];
@@ -960,16 +932,37 @@
     }
     else
     {
-        DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, 35)];
+     //   DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake((actionView.frame.size.width/2) - 50, actionView.frame.size.height - 45, 100, buttonHeight)];
+        DGButton *buttonSkipGame = [[DGButton alloc] initWithFrame:CGRectMake(thirdX, thirdY, buttonWidth, buttonHeight)];
         [buttonSkipGame setTitle:@"Skip Game" forState: UIControlStateNormal];
         [buttonSkipGame addTarget:self action:@selector(actionSkipGame) forControlEvents:UIControlEventTouchUpInside];
-        [actionView addSubview:buttonSkipGame];
+        [skipGameArea addSubview:buttonSkipGame];
     }
-
-    XLog(@"Ende drwa...");
 
 }
 
+- (UISwitch *)makeSwitch:(float)x y:(float)y width:(float)width height:(float)height
+{
+    UISwitch *newSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(x, y, width, height)];
+
+
+//    UISwitch *verifyDouble = [[UISwitch alloc] initWithFrame:
+//                              CGRectMake(buttonDouble.frame.origin.x + buttonWidth + gap,
+//                                         buttonDouble.frame.origin.y  ,
+//                                         switchWidth,
+//                                         buttonHeight)];
+//    CGRect frame = verifyDouble.frame;
+//    frame.origin.y = buttonDouble.frame.origin.y; // Yposition wie double Button
+//    frame.origin.y = buttonDouble.frame.origin.y + (buttonDouble.frame.size.height - frame.size.height) / 2;
+//
+//    verifyDouble.frame = frame;
+//    verifyDouble.transform = CGAffineTransformMakeScale(buttonHeight / 31.0, buttonHeight / 31.0); // größe genau wie Doubel Button
+//
+    newSwitch.transform = CGAffineTransformMakeScale(height / 31.0, height / 31.0); // größe genau wie Doubel Button
+
+    newSwitch = [design makeNiceSwitch:newSwitch];
+    return newSwitch;
+}
 #pragma mark - actions
 - (void)actionSubmitMove
 {
@@ -1925,6 +1918,7 @@
             zoomFactor =  boardWidth / 660;
 
             y += ((maxHeight - y) - boardHeight) / 2; // center views vertical if we had du resize boardView
+            y = MAX(y, 50);
             actionColor = UIColor.yellowColor;
         }
         if(actionViewWidth > 250)
