@@ -888,7 +888,8 @@
     [opponentPips setFont:[UIFont boldSystemFontOfSize: 20]];
     opponentPips.backgroundColor = [UIColor clearColor];
     opponentPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
-
+    opponentPips.enabled = NO;
+    
     [opponentView addSubview:opponentActive];
     [opponentView addSubview:opponentHistory];
 
@@ -938,6 +939,7 @@
     [playerPips setFont:[UIFont boldSystemFontOfSize: 20]];
     playerPips.backgroundColor = [UIColor clearColor];
     playerPips.contentVerticalAlignment = UIControlContentVerticalAlignmentBottom;
+    playerPips.enabled = NO;
 
     [playerView addSubview:playerActive];
     [playerView addSubview:playerHistory];
