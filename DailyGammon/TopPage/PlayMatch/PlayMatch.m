@@ -284,7 +284,8 @@
         return;
     }
 
-    if ([[app.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"])
+    if ([[app.boardDict objectForKey:@"htmlString"] containsString:@"cubedr.gif"] ||
+        [[app.boardDict objectForKey:@"htmlString"] containsString:@"cubedrs.gif"])
     {
         UIAlertController * alert = [UIAlertController
                                      alertControllerWithTitle:@"Double Repeat"
