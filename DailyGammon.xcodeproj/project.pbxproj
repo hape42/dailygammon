@@ -88,6 +88,7 @@
 		E0C1D82521E7CCEA00494A82 /* dice_rot.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D81F21E7CCE900494A82 /* dice_rot.png */; };
 		E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82B21EB99C400494A82 /* classicHD.png */; };
 		E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82F21EB9F5600494A82 /* app_icon.png */; };
+		E0C56CF02C418C6C001FB5C6 /* DG.html in Resources */ = {isa = PBXBuildFile; fileRef = E0C56CEF2C418C6C001FB5C6 /* DG.html */; };
 		E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */; };
 		E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */; };
 		E0EE051729D7237C003DEDE8 /* NoBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EE051629D7237C003DEDE8 /* NoBoard.m */; };
@@ -337,6 +338,7 @@
 		E0C1D81F21E7CCE900494A82 /* dice_rot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dice_rot.png; sourceTree = "<group>"; };
 		E0C1D82B21EB99C400494A82 /* classicHD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = classicHD.png; sourceTree = "<group>"; };
 		E0C1D82F21EB9F5600494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
+		E0C56CEF2C418C6C001FB5C6 /* DG.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = DG.html; sourceTree = "<group>"; };
 		E0EC955A221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+URLQueryValueAllowed.h"; sourceTree = "<group>"; };
 		E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+URLQueryValueAllowed.m"; sourceTree = "<group>"; };
 		E0EC955D221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PercentEncodeURLQueryValue.h"; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
 				E0F9588C21AD1688003DAC01 /* LoginVC.h */,
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
+				E0C56CEF2C418C6C001FB5C6 /* DG.html */,
 				E0F9589821AD168B003DAC01 /* main.m */,
 				E09C008821B13D010056D2A2 /* SupportingFiles */,
 			);
@@ -937,6 +940,7 @@
 				E0C1D82221E7CCEA00494A82 /* dice_gruen.png in Resources */,
 				E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */,
 				E0C1D82121E7CCEA00494A82 /* dice_blau.png in Resources */,
+				E0C56CF02C418C6C001FB5C6 /* DG.html in Resources */,
 				E0A92D4C273F8BCA00008477 /* iCloudON.png in Resources */,
 				E0BDCC3321BD140300E8AF25 /* BlueWhite.png in Resources */,
 				E0BE3AFB2231194D003A824D /* menue.png in Resources */,

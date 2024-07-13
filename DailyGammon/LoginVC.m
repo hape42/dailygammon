@@ -12,7 +12,6 @@
 #import "NSDictionary+PercentEncodeURLQueryValue.h"
 #import "AppDelegate.h"
 #import <SafariServices/SafariServices.h>
-#import "DGButton.h"
 
 @interface LoginVC ()<NSURLSessionDataDelegate>
 
@@ -29,6 +28,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *faqLabel;
 @property (weak, nonatomic) IBOutlet DGButton *faqButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *dgText;
+@property (weak, nonatomic) IBOutlet DGButton *dgButton;
+
 @property (readwrite, retain, nonatomic) NSURLConnection *downloadConnection;
 
 @end
@@ -36,6 +38,7 @@
 @implementation LoginVC
 
 @synthesize design;
+@synthesize webView, closeButton;
 
 - (void)viewDidLoad
 {
@@ -247,6 +250,54 @@ didCompleteWithError:(NSError *)error
     }
 
 }
+- (IBAction)dgAction:(id)sender
+{
+    
+    UIView *superview = self.view;
+    UILayoutGuide *safe = superview.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5.0;
+
+    webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DG" ofType:@"html"];
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURLRequest *request = [NSURLRequest requestWithURL:fileURL];
+    [webView loadRequest:request];
+
+    [self.view addSubview:webView];
+
+    closeButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 60, 30)];
+    [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    [closeButton addTarget:self action:@selector(closeWebView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:closeButton];
+    
+#pragma mark closeButton & webView autoLayout
+
+    [closeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [closeButton.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [closeButton.heightAnchor constraintEqualToConstant:25].active = YES;
+    [closeButton.widthAnchor constraintEqualToConstant:60].active = YES;
+    [closeButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    
+    [webView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [webView.topAnchor constraintEqualToAnchor:closeButton.bottomAnchor constant:gap].active = YES;
+    [webView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [webView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [webView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+}
+- (void)closeWebView 
+{
+    [webView removeFromSuperview];
+    webView = nil;
+    [closeButton removeFromSuperview];
+    closeButton = nil;
+}
+
 
 #pragma mark - Email
 -(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
@@ -264,23 +315,37 @@ didCompleteWithError:(NSError *)error
     UILayoutGuide *safe = superview.safeAreaLayoutGuide;
     float edge = 5.0;
     float gap = 5.0;
+    CGFloat labelWidth  = 100.0;
+    CGFloat labelHeigth = 30.0;
 
 #pragma mark header autoLayout
     [self.header setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
+    [self.header.topAnchor constraintEqualToAnchor:safe.topAnchor constant:gap+25+gap].active = YES;
     [self.header.heightAnchor constraintEqualToConstant:40].active = YES;
     [self.header.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.header.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+#pragma mark explain dg autoLayout
+
+    [self.dgText setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.dgButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.dgText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.dgText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.dgText.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.dgText.centerYAnchor constraintEqualToAnchor:safe.centerYAnchor constant:-20.0].active = YES;
+
+    [self.dgButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.dgButton.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;
+    [self.dgButton.topAnchor constraintEqualToAnchor:self.dgText.bottomAnchor constant:gap].active = YES;
+    [self.dgButton.centerXAnchor constraintEqualToAnchor:superview.centerXAnchor].active = YES;
 
 #pragma mark user & password autoLayout
 
     [self.usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.username setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.loginButton setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    CGFloat labelWidth  = 100.0;
-    CGFloat labelHeigth = 30.0;
 
     [self.usernameLabel.widthAnchor constraintEqualToConstant:labelWidth].active = YES;
     [self.usernameLabel.heightAnchor constraintEqualToConstant:labelHeigth].active = YES;

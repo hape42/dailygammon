@@ -25,14 +25,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No account yet? Then make one." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXM-Hi-q8x">
-                                <rect key="frame" x="91" y="226" width="348" height="21"/>
+                                <rect key="frame" x="105" y="399" width="348" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v5l-vh-YsX" customClass="DGButton">
-                                <rect key="frame" x="458" y="226" width="148" height="35"/>
+                                <rect key="frame" x="472" y="399" width="150" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Create Account">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -41,15 +41,22 @@
                                     <action selector="createAccountAction:" destination="BS1-mn-5rS" eventType="touchUpInside" id="9fz-nu-J2f"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="You don't know DailyGammon yet?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wBP-Ub-e3c">
+                                <rect key="frame" x="105" y="310" width="348" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Or feel free to browse the FAQ first." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fuz-BT-eYB">
-                                <rect key="frame" x="89" y="294" width="326" height="21"/>
+                                <rect key="frame" x="103" y="467" width="326" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7c2-yI-tjf" customClass="DGButton">
-                                <rect key="frame" x="458" y="290" width="148" height="35"/>
+                                <rect key="frame" x="472" y="463" width="150" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="FAQ">
                                     <color key="titleColor" systemColor="darkTextColor"/>
@@ -92,13 +99,23 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uP5-PM-vq9" customClass="DGButton">
-                                <rect key="frame" x="215" y="146" width="148" height="35"/>
+                                <rect key="frame" x="215" y="146" width="150" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Log In">
                                     <color key="titleColor" systemColor="darkTextColor"/>
                                 </state>
                                 <connections>
                                     <action selector="loginAction:" destination="BS1-mn-5rS" eventType="touchUpInside" id="GLh-nx-2w5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0l-ev-FdZ" customClass="DGButton">
+                                <rect key="frame" x="413" y="302" width="150" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Tell me more">
+                                    <color key="titleColor" systemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="dgAction:" destination="BS1-mn-5rS" eventType="touchUpInside" id="lLh-56-FyR"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -111,6 +128,8 @@
                     <connections>
                         <outlet property="accountLabel" destination="uXM-Hi-q8x" id="Yqh-HY-xmg"/>
                         <outlet property="createAccountButton" destination="v5l-vh-YsX" id="Pn8-Qm-QWI"/>
+                        <outlet property="dgButton" destination="f0l-ev-FdZ" id="Der-P0-ypR"/>
+                        <outlet property="dgText" destination="wBP-Ub-e3c" id="AW2-iO-50U"/>
                         <outlet property="faqButton" destination="7c2-yI-tjf" id="ol6-8f-SjB"/>
                         <outlet property="faqLabel" destination="fuz-BT-eYB" id="qjQ-jP-XZD"/>
                         <outlet property="header" destination="Dfa-LP-gFC" id="vx3-jx-Td2"/>
@@ -2206,10 +2225,10 @@ Did we make you curious?</string>
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray5Color">
-            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPurpleColor">
-            <color red="0.68627450980000004" green="0.32156862749999998" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -59,14 +59,22 @@
 
     if (currentViewController.class == ProfileVC.class)
     {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
         {
             orientationMask = UIInterfaceOrientationMaskPortrait;
         }
     }
+    if (currentViewController.class == LoginVC.class)
+    {
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+        {
+            orientationMask = UIInterfaceOrientationMaskPortrait;
+        }
+    }
+
     if (currentViewController.class == QuickMessage.class)
     {
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
         {
             QuickMessage *controller = (QuickMessage *)currentViewController;
             if (controller.receivedMessage)
