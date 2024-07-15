@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
+#import <WebKit/WebKit.h>
 #import "DGButton.h"
 
 @class Design;
@@ -30,5 +31,11 @@
 - (IBAction)MRAboutButtonInfo:(id)sender;
 
 @property (nonatomic, assign) BOOL showRemindMeLaterButton;
+
+@property (strong, nonatomic) WKWebView *webView;
+@property (strong, nonatomic) DGButton *closeButton;
+@property (strong, nonatomic) UIView *containerView;
+@property (strong, nonatomic) DGButton *buttonGitHub;
+@property (strong, nonatomic) DGButton *buttonReminder;
 
 @end

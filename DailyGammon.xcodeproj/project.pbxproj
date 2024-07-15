@@ -89,6 +89,7 @@
 		E0C1D82C21EB99C400494A82 /* classicHD.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82B21EB99C400494A82 /* classicHD.png */; };
 		E0C1D83021EB9F5800494A82 /* app_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1D82F21EB9F5600494A82 /* app_icon.png */; };
 		E0C56CF02C418C6C001FB5C6 /* DG.html in Resources */ = {isa = PBXBuildFile; fileRef = E0C56CEF2C418C6C001FB5C6 /* DG.html */; };
+		E0C56CF52C43DEB2001FB5C6 /* GitHub.html in Resources */ = {isa = PBXBuildFile; fileRef = E0C56CF42C43DEB2001FB5C6 /* GitHub.html */; };
 		E0EC955C221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */; };
 		E0EC955F221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EC955E221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.m */; };
 		E0EE051729D7237C003DEDE8 /* NoBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = E0EE051629D7237C003DEDE8 /* NoBoard.m */; };
@@ -339,6 +340,7 @@
 		E0C1D82B21EB99C400494A82 /* classicHD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = classicHD.png; sourceTree = "<group>"; };
 		E0C1D82F21EB9F5600494A82 /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		E0C56CEF2C418C6C001FB5C6 /* DG.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = DG.html; sourceTree = "<group>"; };
+		E0C56CF42C43DEB2001FB5C6 /* GitHub.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = GitHub.html; sourceTree = "<group>"; };
 		E0EC955A221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSCharacterSet+URLQueryValueAllowed.h"; sourceTree = "<group>"; };
 		E0EC955B221A9CF700E31CA0 /* NSCharacterSet+URLQueryValueAllowed.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSCharacterSet+URLQueryValueAllowed.m"; sourceTree = "<group>"; };
 		E0EC955D221A9D5C00E31CA0 /* NSDictionary+PercentEncodeURLQueryValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+PercentEncodeURLQueryValue.h"; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				E01955802BA7279D00ADF6D0 /* PrivacyInfo.xcprivacy */,
+				E0C56CF32C43DD0C001FB5C6 /* HelpFiles */,
 				E0F958A621AD5B54003DAC01 /* Bilder */,
 				E0F9589421AD168B003DAC01 /* LaunchScreen.storyboard */,
 				E0F9589721AD168B003DAC01 /* Info.plist */,
@@ -705,6 +708,15 @@
 			path = Boards;
 			sourceTree = "<group>";
 		};
+		E0C56CF32C43DD0C001FB5C6 /* HelpFiles */ = {
+			isa = PBXGroup;
+			children = (
+				E0C56CEF2C418C6C001FB5C6 /* DG.html */,
+				E0C56CF42C43DEB2001FB5C6 /* GitHub.html */,
+			);
+			path = HelpFiles;
+			sourceTree = "<group>";
+		};
 		E0EC9559221A9CAB00E31CA0 /* Encode */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,7 +780,6 @@
 				E0F9588A21AD1688003DAC01 /* AppDelegate.m */,
 				E0F9588C21AD1688003DAC01 /* LoginVC.h */,
 				E0F9588D21AD1688003DAC01 /* LoginVC.m */,
-				E0C56CEF2C418C6C001FB5C6 /* DG.html */,
 				E0F9589821AD168B003DAC01 /* main.m */,
 				E09C008821B13D010056D2A2 /* SupportingFiles */,
 			);
@@ -969,6 +980,7 @@
 				E06E1C5921B7BD94003B310F /* classic.png in Resources */,
 				E0763D3022D6506200EDA562 /* PfeilUp.png in Resources */,
 				E0763D2B22D62DE300EDA562 /* pfeil_up.png in Resources */,
+				E0C56CF52C43DEB2001FB5C6 /* GitHub.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

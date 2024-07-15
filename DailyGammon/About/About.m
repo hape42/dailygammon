@@ -28,20 +28,23 @@
 @property (assign, atomic) BOOL loginOk;
 @property (weak, nonatomic) IBOutlet UIButton *moreButton;
 @property (weak, nonatomic) IBOutlet DGButton *creditButton;
-@property (weak, nonatomic) IBOutlet UILabel  *infoText;
-@property (weak, nonatomic) IBOutlet DGButton *clipBoard;
-@property (weak, nonatomic) IBOutlet DGButton *buttonGitHub;
-@property (weak, nonatomic) IBOutlet DGButton *buttonReminder;
+@property (weak, nonatomic) IBOutlet UILabel *buildDate;
 
 @property (weak, nonatomic) IBOutlet DGButton *buttonEmail;
 @property (weak, nonatomic) IBOutlet DGButton *buttonPrivacy;
 @property (weak, nonatomic) IBOutlet UILabel  *appVersion;
+
+@property (weak, nonatomic) IBOutlet UILabel *dgText;
+@property (weak, nonatomic) IBOutlet DGButton *dgButton;
+@property (weak, nonatomic) IBOutlet UILabel *helpText;
+@property (weak, nonatomic) IBOutlet DGButton *helpButton;
 
 @end
 
 @implementation About
 
 @synthesize design, preferences, rating, tools;
+@synthesize containerView, webView, closeButton, buttonReminder, buttonGitHub;
 
 @synthesize showRemindMeLaterButton;
 
@@ -55,7 +58,6 @@
     tools = [[Tools alloc] init];
 
     self.view.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
-    self.infoText.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];;
 
     NSString *version = @"?";
     NSString *settingsBundle = [[NSBundle mainBundle] pathForResource:@"Settings" ofType:@"bundle"];
@@ -70,15 +72,9 @@
         }
     }
 
-    self.appVersion.text = [NSString stringWithFormat:@"Version %@ from %@", version, [self getBuildDate]];
+    self.appVersion.text = [NSString stringWithFormat:@"Version %@", version];
+    self.buildDate.text = [NSString stringWithFormat:@"from %@", [self getBuildDate]];
 
-    self.infoText.numberOfLines = 0;
-    self.infoText.adjustsFontSizeToFitWidth = YES;
-    self.infoText.minimumScaleFactor = 0.1;
-    self.infoText.lineBreakMode = NSLineBreakByClipping; // <-- MAGIC LINE
-    self.infoText.font = [UIFont systemFontOfSize:25.f];
-    
-    
     AppDelegate *app = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     self.moreButton.menu = [app mainMenu:self.navigationController button:self.moreButton];
     self.moreButton.showsMenuAsPrimaryAction = YES;
@@ -88,7 +84,8 @@
 #define DATE [NSString stringWithUTF8String:__DATE__]
 #define TIME [NSString stringWithUTF8String:__TIME__]
  
-- (NSString *)getBuildDate {
+- (NSString *)getBuildDate 
+{
     NSString *buildDate;
  
     // Get build date and time, format to 'yyMMddHHmm'
@@ -114,18 +111,11 @@
 
     [self layoutObjects];
     
-    self.appVersion.textColor       = [design getTintColorSchema];
-    self.moreButton                = [design designMoreButton:self.moreButton];
+    self.appVersion.textColor = [design getTintColorSchema];
+    self.buildDate.textColor  = [design getTintColorSchema];
 
-//    You are missing a feature?
-//    You have found a bug?
-//    You have an idea how to implement something better than we have done so far?
-//    You have an idea that no one has come up with yet?
-//    Then join our team on GitHub and work together with us on the continuous development of the app. Or just send us an email
-//
-//    You don't have to be good at IOS programming to help. We also need help describing problems. And we also need support in testing new versions.
-//
-//    Did we make you curious?
+    self.moreButton           = [design designMoreButton:self.moreButton];
+
 }
 
 - (IBAction)copyInfoToClipBoard:(id)sender
@@ -404,22 +394,50 @@ didCompleteWithError:(NSError *)error
     [self.moreButton.widthAnchor constraintEqualToConstant:40].active = YES;
     [self.moreButton.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
 
-#pragma mark appVersion autoLayout
+#pragma mark appVersion & buildDate autoLayout
     [self.appVersion setTranslatesAutoresizingMaskIntoConstraints:NO];
 
     [self.appVersion.topAnchor constraintEqualToAnchor:safe.topAnchor constant:edge].active = YES;
-    [self.appVersion.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.appVersion.heightAnchor constraintEqualToConstant:30].active = YES;
     [self.appVersion.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
     [self.appVersion.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
 
-#pragma mark clipBoard Button  autoLayout
-    [self.clipBoard setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.buildDate setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.clipBoard.topAnchor constraintEqualToAnchor:self.appVersion.bottomAnchor constant:edge].active = YES;
-    [self.clipBoard.heightAnchor constraintEqualToConstant:40].active = YES;
-//    [self.clipBoard.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-//    [self.clipBoard.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
-    [self.clipBoard.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
+    [self.buildDate.topAnchor constraintEqualToAnchor:self.appVersion.bottomAnchor constant:0].active = YES;
+    [self.buildDate.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.buildDate.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.buildDate.rightAnchor constraintEqualToAnchor:self.moreButton.leftAnchor constant:-edge].active = YES;
+
+#pragma mark explain dg autoLayout
+
+    [self.dgText setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.dgButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.dgText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.dgText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.dgText.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.dgText.centerYAnchor constraintEqualToAnchor:safe.centerYAnchor constant:-80.0].active = YES;
+
+    [self.dgButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.dgButton.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.dgButton.topAnchor constraintEqualToAnchor:self.dgText.bottomAnchor constant:edge].active = YES;
+    [self.dgButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor].active = YES;
+
+#pragma mark helpText helpButton autoLayout
+
+    [self.helpText setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.helpButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.helpText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [self.helpText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+    [self.helpText.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.helpText.centerYAnchor constraintEqualToAnchor:safe.centerYAnchor constant:10.0].active = YES;
+
+    [self.helpButton.widthAnchor constraintEqualToConstant:150].active = YES;
+    [self.helpButton.heightAnchor constraintEqualToConstant:30].active = YES;
+    [self.helpButton.topAnchor constraintEqualToAnchor:self.helpText.bottomAnchor constant:edge].active = YES;
+    [self.helpButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor].active = YES;
 
 #pragma mark email Button  autoLayout
     [self.buttonEmail setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -442,37 +460,7 @@ didCompleteWithError:(NSError *)error
     [self.creditButton.centerXAnchor constraintEqualToAnchor:safe.centerXAnchor constant:0].active = YES;
     [self.creditButton.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
 
-#pragma mark gitHub Button  autoLayout
-    [self.buttonGitHub setTranslatesAutoresizingMaskIntoConstraints:NO];
 
-    [self.buttonGitHub.bottomAnchor constraintEqualToAnchor:self.buttonEmail.topAnchor constant:-edge].active = YES;
-    [self.buttonGitHub.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-    [self.buttonGitHub.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
-
-#pragma mark reminder Button  autoLayout
-    [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    showRemindMeLaterButton = YES;
-    if(showRemindMeLaterButton)
-    {
-        [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-        [self.buttonReminder.bottomAnchor constraintEqualToAnchor:self.buttonEmail.topAnchor constant:-edge].active = YES;
-        [self.buttonReminder.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
-        [self.buttonReminder.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
-    }
-    else
-    {
-        [self.buttonReminder.leftAnchor constraintEqualToAnchor:safe.rightAnchor constant:99].active = YES;
-    }
-
-#pragma mark infoText  autoLayout
-    [self.infoText setTranslatesAutoresizingMaskIntoConstraints:NO];
-
-    [self.infoText.topAnchor constraintEqualToAnchor:self.clipBoard.bottomAnchor constant:edge].active = YES;
-    [self.infoText.bottomAnchor constraintEqualToAnchor:self.buttonGitHub.topAnchor constant:-edge].active = YES;
-    [self.infoText.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
-    [self.infoText.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
 
 }
 
@@ -514,6 +502,158 @@ didCompleteWithError:(NSError *)error
     if (!success) {
         NSLog(@"oh no! - %@",error.localizedDescription);
     }
+}
+#pragma mark - webView explain dailyGammon
+- (IBAction)dgAction:(id)sender
+{
+
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5.0;
+
+    containerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DG" ofType:@"html"];
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURLRequest *request = [NSURLRequest requestWithURL:fileURL];
+    [webView loadRequest:request];
+
+    closeButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 60, 30)];
+    [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    [closeButton addTarget:self action:@selector(closeWebView) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.view addSubview:containerView];
+    [containerView addSubview:webView];
+    [containerView addSubview:closeButton];
+    
+    containerView.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
+    webView.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
+    
+#pragma mark closeButton & webView autoLayout
+    
+    [containerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [containerView.topAnchor constraintEqualToAnchor:self.buildDate.bottomAnchor constant:gap].active = YES;
+    [containerView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [containerView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [containerView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+    [closeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [closeButton.topAnchor constraintEqualToAnchor:self.containerView.topAnchor constant:edge].active = YES;
+    [closeButton.heightAnchor constraintEqualToConstant:25].active = YES;
+    [closeButton.widthAnchor constraintEqualToConstant:60].active = YES;
+    [closeButton.rightAnchor constraintEqualToAnchor:self.containerView.rightAnchor constant:-edge].active = YES;
+    
+    [webView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [webView.topAnchor constraintEqualToAnchor:closeButton.bottomAnchor constant:gap].active = YES;
+    [webView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [webView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [webView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+}
+- (void)closeWebView
+{
+    [containerView removeFromSuperview];
+    containerView = nil;
+
+    [webView removeFromSuperview];
+    webView = nil;
+    [closeButton removeFromSuperview];
+    closeButton = nil;
+}
+
+#pragma mark - webView explain dailyGammon
+- (IBAction)gitHubAction:(id)sender
+{
+
+    UILayoutGuide *safe = self.view.safeAreaLayoutGuide;
+    float edge = 5.0;
+    float gap = 5.0;
+    float buttonHeight = 35;
+
+    containerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"GitHub" ofType:@"html"];
+    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURLRequest *request = [NSURLRequest requestWithURL:fileURL];
+    [webView loadRequest:request];
+
+    closeButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 60, 30)];
+    [closeButton setTitle:@"Close" forState:UIControlStateNormal];
+    [closeButton addTarget:self action:@selector(closeWebView) forControlEvents:UIControlEventTouchUpInside];
+    
+    buttonReminder = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 150, 30)];
+    [buttonReminder setTitle:@"Remind me later" forState:UIControlStateNormal];
+    [buttonReminder addTarget:self action:@selector(reminder:) forControlEvents:UIControlEventTouchUpInside];
+
+    buttonGitHub = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 30, 300, 30)];
+    [buttonGitHub setTitle:@"  Project on GitHub" forState:UIControlStateNormal];
+    [buttonGitHub setImage:[UIImage imageNamed:@"GitHub-Mark-32px"] forState:UIControlStateNormal];
+    [buttonGitHub addTarget:self action:@selector(gitHubAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:containerView];
+    [containerView addSubview:webView];
+    [containerView addSubview:closeButton];
+    [containerView addSubview:buttonReminder];
+    [containerView addSubview:buttonGitHub];
+
+    containerView.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
+    webView.backgroundColor = [UIColor colorNamed:@"ColorPlayerChat"];
+    
+#pragma mark autoLayout
+    
+    [containerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [containerView.topAnchor constraintEqualToAnchor:self.buildDate.bottomAnchor constant:gap].active = YES;
+    [containerView.bottomAnchor constraintEqualToAnchor:safe.bottomAnchor constant:-edge].active = YES;
+    [containerView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [containerView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+    [closeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [closeButton.topAnchor constraintEqualToAnchor:self.containerView.topAnchor constant:edge].active = YES;
+    [closeButton.heightAnchor constraintEqualToConstant:25].active = YES;
+    [closeButton.widthAnchor constraintEqualToConstant:60].active = YES;
+    [closeButton.rightAnchor constraintEqualToAnchor:self.containerView.rightAnchor constant:-edge].active = YES;
+    
+#pragma mark gitHub Button  autoLayout
+    [self.buttonGitHub setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [self.buttonGitHub.bottomAnchor constraintEqualToAnchor:containerView.bottomAnchor constant:-edge].active = YES;
+    [self.buttonGitHub.leftAnchor constraintEqualToAnchor:containerView.leftAnchor constant:edge].active = YES;
+    [self.buttonGitHub.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+
+#pragma mark reminder Button  autoLayout
+    [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    showRemindMeLaterButton = YES;
+    if(showRemindMeLaterButton)
+    {
+        [self.buttonReminder setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+        [self.buttonReminder.bottomAnchor constraintEqualToAnchor:containerView.bottomAnchor constant:-edge].active = YES;
+        [self.buttonReminder.rightAnchor constraintEqualToAnchor:containerView.rightAnchor constant:-edge].active = YES;
+        [self.buttonReminder.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+    }
+    else
+    {
+        [self.buttonReminder.leftAnchor constraintEqualToAnchor:safe.rightAnchor constant:99].active = YES;
+    }
+
+    [webView setTranslatesAutoresizingMaskIntoConstraints:NO];
+
+    [webView.topAnchor constraintEqualToAnchor:closeButton.bottomAnchor constant:gap].active = YES;
+    [webView.bottomAnchor constraintEqualToAnchor:buttonGitHub.topAnchor constant:-edge].active = YES;
+    [webView.leftAnchor constraintEqualToAnchor:safe.leftAnchor constant:edge].active = YES;
+    [webView.rightAnchor constraintEqualToAnchor:safe.rightAnchor constant:-edge].active = YES;
+
+
 }
 
 @end
