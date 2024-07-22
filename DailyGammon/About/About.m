@@ -515,10 +515,9 @@ didCompleteWithError:(NSError *)error
     webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"DG" ofType:@"html"];
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURL *fileURL = [NSURL URLWithString:@"https://www.hape42.de/DG/HelpFiles/DG.html"];
     NSURLRequest *request = [NSURLRequest requestWithURL:fileURL];
-    [webView loadRequest:request];
+    [self.webView loadRequest:request];
 
     closeButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 60, 30)];
     [closeButton setTitle:@"Close" forState:UIControlStateNormal];
@@ -579,10 +578,9 @@ didCompleteWithError:(NSError *)error
     webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
     webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"GitHub" ofType:@"html"];
-    NSURL *fileURL = [NSURL fileURLWithPath:filePath];
+    NSURL *fileURL = [NSURL URLWithString:@"https://www.hape42.de/DG/HelpFiles/GitHub.html"];
     NSURLRequest *request = [NSURLRequest requestWithURL:fileURL];
-    [webView loadRequest:request];
+    [self.webView loadRequest:request];
 
     closeButton = [[DGButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width - 70, 10, 60, 30)];
     [closeButton setTitle:@"Close" forState:UIControlStateNormal];

@@ -636,7 +636,7 @@
     }
     if( (isReview || [[[NSUserDefaults standardUserDefaults] valueForKey:@"USERID"] isEqualToString:@"13014"]))// only for testing
     {
-        [boardView addSubview:idButton];
+//        [boardView addSubview:idButton];
         [returnDict setObject:idButton forKey:@"posIdButton"];
 
     }
