@@ -132,12 +132,20 @@
         NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
         [request setSortDescriptors:sortDescriptors];
         [request setFetchLimit:1];
-
+ 
         NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
-        Phrases *phrase = arrayDB[0];
-
+        int newNumber = 0;
+        if(arrayDB.count > 0)
+        {
+            Phrases *phrase = arrayDB[0];
+            newNumber       = phrase.number + 1;
+        }
+        else
+        {
+            newNumber = 1;
+        }
         Phrases *phraseNew = (Phrases *)[NSEntityDescription insertNewObjectForEntityForName:@"Phrases" inManagedObjectContext:context];
-        phraseNew.number       = phrase.number + 1;
+        phraseNew.number       = newNumber;
         phraseNew.quantityUsed = 0;
         phraseNew.shortText    = [dict objectForKey:@"shortText"];
         phraseNew.longText     = [dict objectForKey:@"longText"];

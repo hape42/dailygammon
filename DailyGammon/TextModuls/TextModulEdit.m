@@ -208,10 +208,18 @@
         [request setFetchLimit:1];
 
         NSMutableArray *arrayDB = [[context executeFetchRequest:request error:&error] mutableCopy];
-        Phrases *phrase = arrayDB[0];
-
+        int newNumber = 0;
+        if(arrayDB.count > 0)
+        {
+            Phrases *phrase = arrayDB[0];
+            newNumber       = phrase.number + 1;
+        }
+        else
+        {
+            newNumber = 1;
+        }
         Phrases *phraseNew = (Phrases *)[NSEntityDescription insertNewObjectForEntityForName:@"Phrases" inManagedObjectContext:context];
-        phraseNew.number       = phrase.number + 1;
+        phraseNew.number       = newNumber;
         phraseNew.quantityUsed = [self.used.text intValue];
         phraseNew.shortText    = self.shortText.text;
         phraseNew.longText     = self.longText.text;
