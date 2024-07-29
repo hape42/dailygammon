@@ -23,6 +23,7 @@
 #import "Tournament.h"
 #import "PlayMatch.h"
 #import "Constants.h"
+#import "WebViewVC.h"
 
 @interface TopPageCV ()
 
@@ -1049,72 +1050,50 @@ didCompleteWithError:(NSError *)error
 #pragma mark - miniBoard
 - (void)miniBoardSchemaWarning
 {
-    int rand = 10;
-    int maxBreite = [UIScreen mainScreen].bounds.size.width;
-    int maxHoehe  = [UIScreen mainScreen].bounds.size.height;
+    UIAlertController * alert = [UIAlertController
+                                 alertControllerWithTitle:@"Warning"
+                                 message:@"This App doesn’t currently support Board Scheme \"Mini\" as set in your account preferences. Only \"Classic\" or \"Blue/White\" will work. \n\nPlease select:"
+                                 preferredStyle:UIAlertControllerStyleAlert];
     
-    UIView *infoView = [[UIView alloc] initWithFrame:CGRectMake((maxBreite - (maxBreite / 3)) / 2 ,
-                                                                (maxHoehe - (maxHoehe / 3)) / 2 ,
-                                                                maxBreite / 3,
-                                                                maxHoehe / 3)];
-    
-    infoView.backgroundColor = [UIColor colorNamed:@"ColorViewBackground"];
-    infoView.layer.borderWidth = 1;
-    infoView.tag = 42;
-    [self.view addSubview:infoView];
-    
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(rand, rand, infoView.layer.frame.size.width - (2 * rand), 40)];
-    title.text = @"Warning:";
-    NSMutableAttributedString *attr = [[NSMutableAttributedString alloc] initWithString:@"Warning:"];
-    [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:20.0]
-                 range:NSMakeRange(0, [attr length])];
-    [title setAttributedText:attr];
+    UIAlertAction* fixItButton = [UIAlertAction
+                                actionWithTitle:@"Fix it for me"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+                                    [self fixIt];
+                                 }];
 
-    title.textAlignment = NSTextAlignmentCenter;
-    [infoView addSubview:title];
-    
-    
-    UITextView *message  = [[UITextView alloc] initWithFrame:CGRectMake(rand, 50 , infoView.layer.frame.size.width - (2 * rand), infoView.layer.frame.size.height - 50 - rand)];
-    message.textAlignment = NSTextAlignmentCenter;
-    message.text = @"This App doesn’t currently support Board Scheme “Mini” as set in your account preferences. Only “Classic” or “Blue/White” will work. \n\nPlease select:";
-    attr = [[NSMutableAttributedString alloc] initWithString:@"This App doesn’t currently support Board Scheme “Mini” as set in your account preferences. Only “Classic” or “Blue/White” will work. \n\nPlease select:"];
-    [attr addAttribute:NSFontAttributeName
-                 value:[UIFont systemFontOfSize:20.0]
-                 range:NSMakeRange(0, [attr length])];
-    [message setAttributedText:attr];
-    message.textAlignment = NSTextAlignmentCenter;
+    [alert addAction:fixItButton];
 
-    [infoView addSubview:message];
-    
-    float r = (infoView.layer.frame.size.width - ( 3 * 100)) / 4;
-    
-    DGButton *buttonNext = [[DGButton alloc] initWithFrame:CGRectMake(r, infoView.layer.frame.size.height - 50, 100, 35)];
-    [buttonNext setTitle:@"Fix it for me" forState: UIControlStateNormal];
-    [buttonNext addTarget:self action:@selector(fixIt) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonNext];
-    
-    DGButton *buttonToTop = [[DGButton alloc] initWithFrame:CGRectMake(r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35)];
-    [buttonToTop setTitle:@"I fix it" forState: UIControlStateNormal];
-    [buttonToTop addTarget:self action:@selector(gotoWebsite) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:buttonToTop];
-    
-    DGButton *cancel = [[DGButton alloc] initWithFrame:CGRectMake(r + 100 + r + 100 + r, infoView.layer.frame.size.height - 50, 100, 35)];
-    [cancel setTitle:@"Cancel" forState: UIControlStateNormal];
-    [cancel addTarget:self action:@selector(cancelInfo) forControlEvents:UIControlEventTouchUpInside];
-    [infoView addSubview:cancel];
+    UIAlertAction* gotoWebsiteButton = [UIAlertAction
+                                actionWithTitle:@"I fix it"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+        WebViewVC *vc = [[UIStoryboard storyboardWithName:@"main" bundle:nil] instantiateViewControllerWithIdentifier:@"WebViewVC"];
+        vc.url = [NSURL URLWithString:@"http://dailygammon.com/bg/profile"];
+        [self.navigationController pushViewController:vc animated:NO];
+
+                                 }];
+
+    [alert addAction:gotoWebsiteButton];
+
+    UIAlertAction* cancelButton = [UIAlertAction
+                                actionWithTitle:@"Cancel"
+                                style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction * action)
+                                {
+
+                                 }];
+
+    [alert addAction:cancelButton];
+
+    [self presentViewController:alert animated:YES completion:nil];
 
     return;
+
 }
 
--(void)cancelInfo
-{
-    UIView *removeView;
-    while((removeView = [self.view viewWithTag:42]) != nil)
-    {
-        [removeView removeFromSuperview];
-    }
-}
 
 -(void)fixIt
 {
@@ -1150,29 +1129,5 @@ didCompleteWithError:(NSError *)error
     [task resume];
 
 }
--(void)gotoWebsite
-{
-    UIView *removeView;
-    while((removeView = [self.view viewWithTag:42]) != nil)
-    {
-        [removeView removeFromSuperview];
-    }
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString: @"http://dailygammon.com/bg/profile"] options:@{} completionHandler:nil];
-
-}
-//
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-//{
-//    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-//
-//    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed during the animation
-//     } completion:^(id<UIViewControllerTransitionCoordinatorContext> context)
-//     {
-//         // Code to be executed after the animation is completed
-//     }];
-//    XLog(@"Neue Breite: %.2f, Neue Höhe: %.2f", size.width, size.height);
-//}
 
 @end
